@@ -1,0 +1,4 @@
+site_name: DCTAP Checker
+nav:
+    - About: index.md
+theme: readthedocs

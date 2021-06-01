@@ -13,7 +13,6 @@ chardet==3.0.4
 click==7.1.2
 configobj==5.0.6
 coverage==5.2
-csv2shex==0.2
 dataclasses==0.6
 decorator==4.4.2
 docutils==0.16

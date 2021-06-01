@@ -3,7 +3,7 @@ requires = ["setuptools!=50.0","flit"]
 build-backend = "flit.buildapi"
 
 [tool.flit.metadata]
-module = "dctap-python"
+module = "dctap"
 author = "DCMI"
 author-email = "admin@dublincore.net"
 home-page = "https://github.com/dcmi/dctap-python"
@@ -15,7 +15,6 @@ requires = [
     "rdflib",
 ]
 classifiers = [
-    "License :: MIT License",
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.9",
 ]

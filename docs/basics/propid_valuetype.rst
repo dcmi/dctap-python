@@ -7,7 +7,7 @@ Properties and value types
 
 Interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: @default
             start: True

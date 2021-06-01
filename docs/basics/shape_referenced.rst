@@ -9,7 +9,7 @@ A statement may include a reference back to a shape to which the object value of
 
 Interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: :book
             start: True

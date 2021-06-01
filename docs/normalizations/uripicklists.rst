@@ -9,7 +9,7 @@ Constraint values of constraint type `UriPicklist` are interpreted as lists of U
 
 This is interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: :book
             start: True

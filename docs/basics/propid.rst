@@ -1,5 +1,5 @@
-Minimal DCAP
-^^^^^^^^^^^^
+Minimal DCTAP instance
+^^^^^^^^^^^^^^^^^^^^^^
 
 The most minimal application profile simply provides a list of properties used.
 
@@ -9,7 +9,7 @@ The most minimal application profile simply provides a list of properties used.
 
 Interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: @default
             start: True

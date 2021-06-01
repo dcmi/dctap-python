@@ -7,7 +7,7 @@ Properties and labels
 
 Interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: @default
             start: True

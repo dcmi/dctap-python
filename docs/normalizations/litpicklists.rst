@@ -9,7 +9,7 @@ Constraint values of constraint type `LitPicklist` are interpreted as lists.
 
 This is interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: :book
             start: True

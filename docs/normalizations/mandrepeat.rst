@@ -9,7 +9,7 @@ The cardinality elements `mandatory` ("mandatory") and `repeatable` ("repeatable
 
 This is interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: @default
             start: True
@@ -30,7 +30,7 @@ Note that string values such as "No", "N", "n", "0", or "False" will be interpre
 
 This is interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: @default
             start: True

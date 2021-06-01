@@ -1,13 +1,13 @@
 URIs
 ^^^^
 
-In the CSV file of a DCAP, URIs can be represented in three possible ways:
+In the CSV file of a DCTAP, URIs can be represented in three possible ways:
 
 - as full URIs
 - as full URIs enclosed in angle brackets
 - as prefixed URIs (eg, `dc:`, `wd:Q46914185`)
 
-The base URI of the DCAP can be depicted as a bare colon (`:`).
+The base URI of the DCTAP can be depicted as a bare colon (`:`).
 
 The Statement class performs some normalization of URI values (stripping out enclosing angle brackets) and checks whether URIs and prefixed URIs are basically well-formed. No attempt is made to cover all edge cases; the sanity checks are no substitute for careful modeling. There is also an attempt to catch inconsistencies in cases where one element depends on, or implies, another. For example:
 
@@ -22,7 +22,7 @@ The following table shows various valid uses of URIs as constraint values.
 
 This is interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: :book
             start: True
@@ -66,7 +66,7 @@ If URIs are enclosed URIs in angle brackets, the brackets are stripped away.
 
 This is interpreted as::
 
-    DCAP
+    DCTAP
         Shape
             shapeID: :book
             start: True

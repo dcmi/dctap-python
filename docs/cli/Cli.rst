@@ -10,6 +10,6 @@ The subcommand 'inspect' reads and displays the contents of a given CSV file (he
 
     $ dctap inspect example.csv
 
-The subcommend 'model' displays program built-ins for the DCAP model::
+The subcommend 'model' displays program built-ins for the DCTAP model::
 
     $ dctap model

@@ -1,0 +1,22 @@
+[flake8]
+# See http://flake8.pycqa.org/en/latest/user/configuration.html
+# Ignore E501: to allow Black line length of 88 instead of 79. 
+# Ignore E501: Also suppresses error when content of triple-quoted string is too long.
+# text in test files legitimately exceeds 88 - black will correct 
+# code lines longer than 88 but will (correctly) leave quoted text
+# untouched.
+max-line-length = 88
+# ignore = F841
+ignore = E203,E501,F401,W503,W605
+exclude =
+    .git,
+    notes,
+    postponed,
+    .html,
+    .idea,
+    .cache,
+    .pytest_cache,
+    build,
+    bin,
+    dist,
+    mklists.egg-info

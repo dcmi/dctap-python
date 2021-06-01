@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools!=50.0","flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "dctap-python"
+author = "DCMI"
+author-email = "admin@dublincore.net"
+home-page = "https://github.com/dcmi/dctap-python"
+requires = [
+    "click",
+    "dataclasses",
+    "ruamel.base",
+    "ruamel.yaml",
+    "rdflib",
+]
+classifiers = [
+    "License :: MIT License",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.9",
+]
+description-file = 'README.rst'
+requires-python = '>=3.9'
+
+[tool.flit.metadata.requires-extra]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+doc = [
+    "sphinx",
+    "sphinx_rtd_theme",
+]
+
+[tool.flit.scripts]
+dctap = "dctap.cli:cli"

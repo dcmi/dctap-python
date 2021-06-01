@@ -1,0 +1,37 @@
+shapeID,shape_label,mand,repeat,prop_id,constraint_value,annot
+descriptionSet,,N,N,dsp:descriptionSet,,
+,descSetID,Y,N,,xsd:literal,
+,display name,"1,-1",rdfs:label,xsd:literal,one value per language
+,descriptions,N,Y,dsp:description,xsd:literal (array),
+description,,N,Y,dsp:description,,
+,descID,Y,N,dct:identifier,xsd:literal,
+,display name,"1,-1",rdfs:label,xsd:literal,one value per language?
+,description,N,N,dct:description,xsd:literal,
+,example,N,Y,vann:example,xsd:literal,
+,usage note,N,N,vann:usageNote,xsd:literal,
+,class,N,Y,rdf:type,rdfs:Class,The valid RDF  class(es) for this description; only for RDF data 
+,min. occurrence,N,N,sx:min,xsd:integer,Default 0
+,max. occurrence,N,N,sx:max,xsd:integer,Default -1
+,statements,N,Y,dsp:statement,xsd:literal (array),
+statement,,N,Y,dsp:statement,,
+,statementID,Y,N,dct:identifier,xsd:literal,
+,property name,Y,N,?,xsd:literal or URI,Expected to be a URI but minimally can just be the name of a metadata element recognized by a community
+,display name,N,Y,rdfs:label,xsd:literal,one value per language
+,description,N,Y,dct:description,xsd:literal,
+,usage note,N,Y,vann:usageNote,xsd:literal,
+,min. occurrence,N,N,sx:minInclusive,xsd:integer,Default 0
+,max. occurrence,N,N,sx:maxInclusive,xsd:integer,Default -1
+,value link,N,N,sx:valueExpr,xsd:literal,Assuming a statement can be reused within a set
+value,,*,dsp:value (?),,* requires a statement; 1-1 with statement 
+,valueID,Y,N,dct:identifier,xsd:literal,
+,display name,N,Y,rdfs:label,literal or language literal,one value per language
+,short description,N,Y,dct:description,xsd:literal,
+,usage note,N,Y,vann:usageNote,xsd:literal,
+,example,N,Y,vann:example,,
+,data type ,Y,N,sx:datatype,any xsd datatype,
+,datatype value constraint,N,N,sx:pattern,Grep-like string,"this needs to be a shex statement, e.g. <= today's date, or a regex?"
+,max length,N,N,sx:maxLength,,default unlimited
+,min  length,N,N,sx:minLength,,Default (?)
+,language tag constraint,N,N,,,one or more language tags that are considered valid
+,unique language constraint,N,N,,ShEx issue #47 - may be available in the future,only one occurrence of each language tag is allowed
+,literal value list,N,N,,xsd:literal,"Eg:red, blue, green"

@@ -1,0 +1,4 @@
+shapeID,prop_id,prop_label,mand,repeat,value_type,constraint_value,annot
+@book,,Book,y,y,,,
+,rdf:type,instance of,y,n,URI,sdo:Book,must be schema.org/Book 
+,rdf:type,instance of,y,n,URI,wd:Q571,must be wikidata Book

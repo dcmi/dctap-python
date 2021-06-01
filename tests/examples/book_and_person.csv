@@ -1,0 +1,7 @@
+shapeID,shapeLabel,propertyID,propertyLabel,mandatory,repeatable,valueConstraint,valueConstraintType,note
+book,Book,dct:creator,Author,N,Y,person,entity,Author is not required; no limit on the number
+,,dct:title,Title,Y,N,,literal,Each book must have a title
+,,dct:date,Year of publication,Y,N,,xsd:year,"Only the year, 9999"
+person,Person,foaf:Name,Name,Y,N,,literal,Each person has one name
+,,foaf:mbox,Email,N,N,,URI,Email is optional but only one allowed
+,,dct:date,Birth year,Y,N,,xsd:year,"Only the year, 9999"

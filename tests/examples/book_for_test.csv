@@ -1,0 +1,5 @@
+shapeID,prop_id,value_type,constraint_value
+@book,,,
+,rdf:type,URI,sdo:Book
+@author,,,
+,rdf:type,URI,sdo:Person

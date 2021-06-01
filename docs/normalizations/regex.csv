@@ -1,0 +1,6 @@
+propertyID,value_type,constraint_value,constraint_type
+:status,,approved_*,Regex
+:status,,,Regex
+:status,,approved_(*,Regex
+:status,,/approved_*/,Regex
+:status,,^2020 August,Regex

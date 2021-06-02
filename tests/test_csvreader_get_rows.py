@@ -6,6 +6,55 @@ import pytest
 from dctap.csvreader import _get_rows
 
 
+def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
+    """Where headers shorter than rows, extra values collected under header None."""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+        (
+            "shapeID,propertyID,\n" 
+            ":a,dct:creator,URI,comment,comment two\n")
+        )
+    expected_output = [
+        {
+            'shapeID': ':a', 
+            'propertyID': 'dct:creator', 
+            '': 'URI', 
+            None: ['comment', 'comment two']}
+    ]
+    assert _get_rows(csvfile_name) == expected_output
+
+
+def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
+    """Where headers shorter than rows, adds one empty header."""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+        (
+            "shapeID,propertyID,\n" 
+            ":a,dct:creator,URI\n")
+        )
+    expected_output = [
+        {'shapeID': ':a', 'propertyID': 'dct:creator', '': 'URI'}
+    ]
+    assert _get_rows(csvfile_name) == expected_output
+
+
+def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
+    """Fills in short rows with None values."""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+        (
+            "shapeID,propertyID,valueNodeType\n" 
+            ":a,dct:creator\n")
+        )
+    expected_output = [
+        {'shapeID': ':a', 'propertyID': 'dct:creator', 'valueNodeType': None}
+    ]
+    assert _get_rows(csvfile_name) == expected_output
+
+
 def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     """Raises exception if first line of CSV has no propertyID."""
     os.chdir(tmp_path)

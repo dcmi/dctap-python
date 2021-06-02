@@ -19,9 +19,12 @@ def csvreader(csvfile):
 
 def _get_rows(csvfile):
     """Return list of row dicts from CSV file."""
-    csv_dictreader = DictReader(Path(csvfile).open(newline="", encoding="utf-8-sig"))
-    rows = list(csv_dictreader)
-    if "propertyID" not in csv_dictreader.fieldnames:
+    try:
+        reader = DictReader(Path(csvfile).open(newline="", encoding="utf-8-sig"))
+    except IsADirectoryError:
+        raise CsvError("Must be a CSV file")
+    rows = list(reader)
+    if "propertyID" not in reader.fieldnames:
         raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
     return rows
 

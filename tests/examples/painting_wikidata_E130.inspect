@@ -1,0 +1,41 @@
+DC Tabular Application Profile
+    Shape
+        shapeID: painting
+        start: True
+        Statement Constraint
+            propertyID: wdt:P31
+            mandatory: Is a
+            repeatable: yes
+            valueConstraint: no
+        Statement Constraint
+            propertyID: wdt:P571
+            mandatory: Date of inception
+            repeatable: no
+            valueConstraint: no
+        Statement Constraint
+            propertyID: wdt:P276
+            mandatory: Location
+            repeatable: yes
+            valueConstraint: yes
+        Statement Constraint
+            propertyID: wdt:P1476
+            mandatory: Title
+            repeatable: yes
+            valueConstraint: yes
+        Statement Constraint
+            propertyID: wdt:P195
+            mandatory: Collection
+            repeatable: yes
+            valueConstraint: yes
+        Statement Constraint
+            propertyID: wdt:P170
+            mandatory: Creator
+            repeatable: yes
+            valueConstraint: yes
+    Shape
+        shapeID: creator
+        Statement Constraint
+            propertyID: wdt:P31
+            mandatory: Is a
+            repeatable: yes
+            valueConstraint: no

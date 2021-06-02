@@ -1,0 +1,16 @@
+DC Tabular Application Profile
+    Shape
+        shapeID: :default
+        start: True
+        Statement Constraint
+            propertyID: rdf:type
+            propertyLabel: instance of
+            mandatory: y
+            repeatable: n
+            valueConstraint: sdo:Book
+        Statement Constraint
+            propertyID: rdf:type
+            propertyLabel: instance of
+            mandatory: y
+            repeatable: n
+            valueConstraint: wd:Q571

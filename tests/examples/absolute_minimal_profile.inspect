@@ -1,0 +1,10 @@
+DC Tabular Application Profile
+    Shape
+        shapeID: :default
+        start: True
+        Statement Constraint
+            propertyID: dct:title
+        Statement Constraint
+            propertyID: dct:subject
+        Statement Constraint
+            propertyID: dct:date

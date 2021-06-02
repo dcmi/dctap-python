@@ -5,7 +5,7 @@ from dataclasses import asdict
 from typing import Dict, List
 from pathlib import Path
 from .exceptions import CsvError
-from .csvshape import CSVShape, CSVTripleConstraint
+from .csvshape import CSVShape, CSVStatementConstraint
 
 DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
 
@@ -69,14 +69,14 @@ def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[CSVShape]:
             shape = shapes[sh_id] = CSVShape()      # add it with value CSVShape, and
             set_shape_fields(shape, row)            # set its shape-related fields.
 
-        tc = CSVTripleConstraint()                  # Make a new TC object, and
-        for key in list(asdict(tc)):                # iterate TC-related keys, to
+        sc = CSVStatementConstraint()               # Make a new SC object, and
+        for key in list(asdict(sc)):                # iterate SC-related keys, to
             try:                                    # populate that object,
-                setattr(tc, key, row[key])          # with values from the row dict,
+                setattr(sc, key, row[key])          # with values from the row dict,
             except KeyError:                        # while keys not used in dict
                 pass                                # are simply skipped.
 
-        shapes[sh_id].tc_list.append(tc)            # Append TC to csvshape in dict.
+        shapes[sh_id].tc_list.append(sc)            # Append SC to csvshape in dict.
 
     return list(shapes.values())                    # Return list of shapes.
     # fmt: on

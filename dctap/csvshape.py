@@ -6,8 +6,8 @@ from typing import List
 
 
 @dataclass
-class CSVTripleConstraint:
-    """Instances hold TAP/CSV elements related to triple constraints."""
+class CSVStatementConstraint:
+    """Instances hold TAP/CSV elements related to statement constraints."""
 
     # pylint: disable=too-many-instance-attributes
     # It's a dataclass, right?
@@ -37,7 +37,7 @@ class CSVShape:
     shapeLabel: str = ""
     shapeClosed: str = ""
     start: bool = False
-    tc_list: List[CSVTripleConstraint] = field(default_factory=list)
+    tc_list: List[CSVStatementConstraint] = field(default_factory=list)
 
 
 @dataclass

@@ -2,7 +2,7 @@
 
 import pytest
 from dctap.csvreader import _get_csvshapes
-from dctap.csvshape import CSVShape, CSVTripleConstraint
+from dctap.csvshape import CSVShape, CSVStatementConstraint
 
 
 def test_get_csvshapes_one_default_shape():
@@ -63,20 +63,20 @@ def test_get_csvshapes_twoshapes_first_is_default_because_shapeID_empty():
             shapeID=":default",
             start=True,
             tc_list=[
-                CSVTripleConstraint(propertyID="dc:creator"),
-                CSVTripleConstraint(propertyID="dc:type"),
+                CSVStatementConstraint(propertyID="dc:creator"),
+                CSVStatementConstraint(propertyID="dc:type"),
             ],
         ),
         CSVShape(
             shapeID=":author",
             start=False,
             tc_list=[
-                CSVTripleConstraint(propertyID="foaf:name")
+                CSVStatementConstraint(propertyID="foaf:name")
             ],
         ),
     ]
     assert _get_csvshapes(rows) == expected_shapes
-    assert type(_get_csvshapes(rows)[0].tc_list[0]) == CSVTripleConstraint
+    assert type(_get_csvshapes(rows)[0].tc_list[0]) == CSVStatementConstraint
 
 
 def test_get_csvshapes_two_shapes_one_property_each():
@@ -91,13 +91,13 @@ def test_get_csvshapes_two_shapes_one_property_each():
             shapeID=":book",
             start=True,
             tc_list=[
-                CSVTripleConstraint(propertyID="dc:creator"),
-                CSVTripleConstraint(propertyID="dc:type"),
+                CSVStatementConstraint(propertyID="dc:creator"),
+                CSVStatementConstraint(propertyID="dc:type"),
             ],
         ),
         CSVShape(
             shapeID=":author",
-            tc_list=[CSVTripleConstraint(propertyID="foaf:name")],
+            tc_list=[CSVStatementConstraint(propertyID="foaf:name")],
         ),
     ]
     assert _get_csvshapes(rows) == expected_shapes

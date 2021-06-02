@@ -4,7 +4,7 @@ from dataclasses import asdict
 import click
 from .inspect import pprint_csvshapes
 from .csvreader import csvreader
-from .csvshape import CSVShape, CSVTripleConstraint
+from .csvshape import CSVShape, CSVStatementConstraint
 
 # pylint: disable=unused-argument,no-value-for-parameter
 # => unused-argument: Allows placeholders for now.
@@ -41,7 +41,7 @@ def model(context):
 
     shape_elements = list(asdict(CSVShape()))
     shape_elements.remove('tc_list')
-    tconstraint_elements = list(asdict(CSVTripleConstraint()))
+    tconstraint_elements = list(asdict(CSVStatementConstraint()))
     print("DC Tabular Application Profile")
     print("    Shape elements:")
     for element in shape_elements:

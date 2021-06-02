@@ -2,8 +2,8 @@
         start=True,
         shapeID=":a",
         tc_list=[
-            CSVTripleConstraint(propertyID="dct:creator", valueNodeType="IRI"),
-            CSVTripleConstraint(propertyID="dct:subject", valueNodeType="IRI"),
-            CSVTripleConstraint(propertyID="dct:date", valueNodeType="Literal"),
+            CSVStatementConstraint(propertyID="dct:creator", valueNodeType="IRI"),
+            CSVStatementConstraint(propertyID="dct:subject", valueNodeType="IRI"),
+            CSVStatementConstraint(propertyID="dct:date", valueNodeType="Literal"),
         ],
     )

@@ -3,7 +3,7 @@
 import pytest
 from dataclasses import asdict
 from textwrap import dedent
-from dctap.csvshape import CSVShape, CSVTripleConstraint
+from dctap.csvshape import CSVShape, CSVStatementConstraint
 from dctap.inspect import pprint_csvshapes
 from dctap.csvreader import _get_csvshapes
 
@@ -14,7 +14,7 @@ SHAPES_LIST = [
         start=True,
         shapeClosed=False,
         tc_list=[
-            CSVTripleConstraint(
+            CSVStatementConstraint(
                 propertyID="dct:creator",
                 mandatory=False,
                 note=None,
@@ -25,7 +25,7 @@ SHAPES_LIST = [
                 valueDataType=None,
                 valueNodeType=None,
                 valueShape=None,
-            ), CSVTripleConstraint(
+            ), CSVStatementConstraint(
                 propertyID="dct:date",
                 mandatory=False,
                 note=None,
@@ -45,7 +45,7 @@ SHAPES_LIST = [
         start=False,
         shapeClosed=False,
         tc_list=[
-            CSVTripleConstraint(
+            CSVStatementConstraint(
                 propertyID="foaf:name",
                 mandatory=False,
                 note=None,

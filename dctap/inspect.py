@@ -1,14 +1,14 @@
 """Pretty-print CSV contents to screen."""
 
 from dataclasses import asdict
-from .csvshape import CSVShape, CSVTripleConstraint
+from .csvshape import CSVShape, CSVStatementConstraint
 
 
 def pprint_csvshapes(csvshapes_list, verbose=False):
     """Pretty-print CSVShape objects to console."""
     shape_elements = list(asdict(CSVShape()))
     shape_elements.remove('tc_list')
-    tconstraint_elements = list(asdict(CSVTripleConstraint()))
+    tconstraint_elements = list(asdict(CSVStatementConstraint()))
 
     pprint_output = []
     pprint_output.append("DC Tabular Application Profile")

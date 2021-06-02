@@ -1,4 +1,4 @@
-shapeID,shape_label,prop_id,mand,repeat,constraint_value,value_type,annot
+shapeID,shape_label,propertyID,mand,repeat,constraint_value,value_type,annot
 painting,,wdt:P31,Is a,yes,no,wd:Q3305213,URI,
 ,,wdt:P571,Date of inception,no,no,,DateTime,
 ,,wdt:P276,Location,yes,yes,,,

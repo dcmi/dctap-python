@@ -1,4 +1,4 @@
-shapeID,prop_id,prop_label,value_type,constraint_value,mand,repeat,annot
+shapeID,propertyID,prop_label,value_type,constraint_value,mand,repeat,annot
 @hospital,wdt:P31,is a,URI,wd:Q16917,y,n,instance of a hospital
 @hospital,wdt:P17,country,URISTEM,wd:,y,n,Country in which the hospital is located
 @hospital,wdt:P131,located in administrative territorial entity,URISTEM,wd:,y,y,City, state or other administrative unit; can be repeated

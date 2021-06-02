@@ -1,4 +1,4 @@
-shapeID,prop_id,constraint_value,value_type,mand,repeat,prop_label,annot
+shapeID,propertyID,constraint_value,value_type,mand,repeat,prop_label,annot
 book,dct:creator,@person,entity,N,Y,Author,Value to be validated as a person entity
 ,dct:title,,literal,Y,N,Title,
 ,dct:date,,date,Y,N,Date,Use form: YYYY-MM-DD

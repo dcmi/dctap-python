@@ -1,4 +1,4 @@
-shapeID,prop_id,value_type,constraint_value
+shapeID,propertyID,value_type,constraint_value
 @book,,,
 ,rdf:type,URI,sdo:Book
 @author,,,

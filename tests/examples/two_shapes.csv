@@ -1,4 +1,4 @@
-shapeID,propertyID,mandatory,repeatable,valueNodeType,valueDataType,valueShape
+shapeID,propertyID,mandatory,repeatable,valueNodetype,valueDataType,valueShape
 :book,dct:creator,,,,,:person
 ,dct:date,Y,N,,xsd:year,
 ,dct:title,,,,,

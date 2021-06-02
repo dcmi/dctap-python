@@ -1,4 +1,4 @@
-shapeID,shape_label,mand,repeat,propertyID,constraint_value,annot
+shapeID,shapeLabel,mandatory,repeatable,propertyID,valueConstraint,annot
 descriptionSet,,N,N,dsp:descriptionSet,,
 ,descSetID,Y,N,,xsd:literal,
 ,display name,"1,-1",rdfs:label,xsd:literal,one value per language

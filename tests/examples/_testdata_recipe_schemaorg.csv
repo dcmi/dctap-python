@@ -1,4 +1,4 @@
-shapeID,propertyID,prop_label,value_type,constraint_value,mand,repeat,annot
+shapeID,propertyID,propertyLabel,value_type,valueConstraint,mandatory,repeatable,annot
 @Recipe,,Recipe,,,y,n,Application profile for a single recipe
 ,rdf:type,instance of,URI ,sdo:Recipe,y,n,
 ,sdo:image,image, ,xsd:anyURI @Image,y,y,Image of the completed dish.,? how to say Type is URI or Entitiy depending on which Value space is used

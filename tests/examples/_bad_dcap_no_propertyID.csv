@@ -1,4 +1,4 @@
-shapeID,propertyID,constraint_value
+shapeID,propertyID,valueConstraint
 @book,dct:creator,@person
 ,dct:title,Flower arranging simplified
 ,dct:date,xsd:2017

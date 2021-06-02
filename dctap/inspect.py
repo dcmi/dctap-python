@@ -7,7 +7,7 @@ from .csvshape import CSVShape, CSVStatementConstraint
 def pprint_csvshapes(csvshapes_list, verbose=False):
     """Pretty-print CSVShape objects to console."""
     shape_elements = list(asdict(CSVShape()))
-    shape_elements.remove('tc_list')
+    shape_elements.remove('sc_list')
     tconstraint_elements = list(asdict(CSVStatementConstraint()))
 
     pprint_output = []
@@ -21,7 +21,7 @@ def pprint_csvshapes(csvshapes_list, verbose=False):
             if verbose:
                 pprint_output.append(8 * " " + key + ": " + str(csvshape_dict[key]))
 
-        for tc_dict in csvshape_dict.get("tc_list"):
+        for tc_dict in csvshape_dict.get("sc_list"):
             pprint_output.append("        Statement Constraint")
             for key in tconstraint_elements:
                 if not verbose and tc_dict[key]:

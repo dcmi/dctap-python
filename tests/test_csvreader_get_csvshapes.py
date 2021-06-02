@@ -14,7 +14,7 @@ def test_get_csvshapes_one_default_shape():
     expected_shapes = _get_csvshapes(rows)
     assert len(expected_shapes) == 1
     assert expected_shapes[0].shapeID == ":default"
-    assert len(expected_shapes[0].tc_list) == 2
+    assert len(expected_shapes[0].sc_list) == 2
 
 
 def test_get_csvshapes_one_default_shape_shapeID_not_specified():
@@ -22,7 +22,7 @@ def test_get_csvshapes_one_default_shape_shapeID_not_specified():
     rows = [{"propertyID": "dc:creator"}]
     expected_shapes = _get_csvshapes(rows)
     assert expected_shapes[0].shapeID == ":default"
-    assert len(expected_shapes[0].tc_list) == 1
+    assert len(expected_shapes[0].sc_list) == 1
 
 
 def test_get_csvshapes_twoshapes_first_is_default():
@@ -34,7 +34,7 @@ def test_get_csvshapes_twoshapes_first_is_default():
     ]
     expected_shapes = _get_csvshapes(rows)
     assert expected_shapes[0].shapeID == ":default"
-    assert len(expected_shapes[0].tc_list) == 2
+    assert len(expected_shapes[0].sc_list) == 2
     assert expected_shapes[1].shapeID == ":author"
 
 
@@ -47,7 +47,7 @@ def test_get_csvshapes_twoshapes_mixed_statements():
     ]
     expected_shapes = _get_csvshapes(rows)
     assert expected_shapes[0].shapeID == ":book"
-    assert len(expected_shapes[0].tc_list) == 2
+    assert len(expected_shapes[0].sc_list) == 2
     assert expected_shapes[1].shapeID == ":author"
 
 
@@ -62,7 +62,7 @@ def test_get_csvshapes_twoshapes_first_is_default_because_shapeID_empty():
         CSVShape(
             shapeID=":default",
             start=True,
-            tc_list=[
+            sc_list=[
                 CSVStatementConstraint(propertyID="dc:creator"),
                 CSVStatementConstraint(propertyID="dc:type"),
             ],
@@ -70,13 +70,13 @@ def test_get_csvshapes_twoshapes_first_is_default_because_shapeID_empty():
         CSVShape(
             shapeID=":author",
             start=False,
-            tc_list=[
+            sc_list=[
                 CSVStatementConstraint(propertyID="foaf:name")
             ],
         ),
     ]
     assert _get_csvshapes(rows) == expected_shapes
-    assert type(_get_csvshapes(rows)[0].tc_list[0]) == CSVStatementConstraint
+    assert type(_get_csvshapes(rows)[0].sc_list[0]) == CSVStatementConstraint
 
 
 def test_get_csvshapes_two_shapes_one_property_each():
@@ -90,14 +90,14 @@ def test_get_csvshapes_two_shapes_one_property_each():
         CSVShape(
             shapeID=":book",
             start=True,
-            tc_list=[
+            sc_list=[
                 CSVStatementConstraint(propertyID="dc:creator"),
                 CSVStatementConstraint(propertyID="dc:type"),
             ],
         ),
         CSVShape(
             shapeID=":author",
-            tc_list=[CSVStatementConstraint(propertyID="foaf:name")],
+            sc_list=[CSVStatementConstraint(propertyID="foaf:name")],
         ),
     ]
     assert _get_csvshapes(rows) == expected_shapes

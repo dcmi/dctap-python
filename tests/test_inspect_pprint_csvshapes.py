@@ -13,7 +13,7 @@ SHAPES_LIST = [
         shapeLabel=None,
         start=True,
         shapeClosed=False,
-        tc_list=[
+        sc_list=[
             CSVStatementConstraint(
                 propertyID="dct:creator",
                 mandatory=False,
@@ -44,7 +44,7 @@ SHAPES_LIST = [
         shapeLabel=None,
         start=False,
         shapeClosed=False,
-        tc_list=[
+        sc_list=[
             CSVStatementConstraint(
                 propertyID="foaf:name",
                 mandatory=False,

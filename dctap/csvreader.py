@@ -35,8 +35,8 @@ def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[CSVShape]:
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         csvshape_keys = list(asdict(CSVShape()))    # make a list of those keys,
-        csvshape_keys.remove("start")               # remove start and tc_list,
-        csvshape_keys.remove("tc_list")             # as both are set elsewhere.
+        csvshape_keys.remove("start")               # remove start and sc_list,
+        csvshape_keys.remove("sc_list")             # as both are set elsewhere.
         for key in csvshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate csvshape fields
                 setattr(shape, key, row[key])       # with values from the row dict.
@@ -76,7 +76,7 @@ def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[CSVShape]:
             except KeyError:                        # while keys not used in dict
                 pass                                # are simply skipped.
 
-        shapes[sh_id].tc_list.append(sc)            # Append SC to csvshape in dict.
+        shapes[sh_id].sc_list.append(sc)            # Append SC to csvshape in dict.
 
     return list(shapes.values())                    # Return list of shapes.
     # fmt: on

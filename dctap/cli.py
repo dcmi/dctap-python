@@ -40,7 +40,7 @@ def model(context):
     """Show DCTAP model built-ins for ready reference"""
 
     shape_elements = list(asdict(CSVShape()))
-    shape_elements.remove('tc_list')
+    shape_elements.remove('sc_list')
     tconstraint_elements = list(asdict(CSVStatementConstraint()))
     print("DC Tabular Application Profile")
     print("    Shape elements:")

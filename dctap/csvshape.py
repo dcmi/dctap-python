@@ -37,7 +37,7 @@ class CSVShape:
     shapeLabel: str = ""
     shapeClosed: str = ""
     start: bool = False
-    tc_list: List[CSVStatementConstraint] = field(default_factory=list)
+    sc_list: List[CSVStatementConstraint] = field(default_factory=list)
 
 
 @dataclass

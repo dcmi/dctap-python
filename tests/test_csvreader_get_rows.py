@@ -134,7 +134,6 @@ def test_get_rows_with_complete_csvfile(tmp_path):
         {
             "shapeID": ":a",
             "shapeLabel": "Book",
-            "shapeClosed": False,
             "propertyID": "dct:creator",
             "propertyLabel": "Creator",
             "mandatory": True,
@@ -149,7 +148,6 @@ def test_get_rows_with_complete_csvfile(tmp_path):
         {
             "shapeID": ":b",
             "shapeLabel": "Person",
-            "shapeClosed": False,
             "propertyID": "ex:name",
             "propertyLabel": "Name",
             "mandatory": True,

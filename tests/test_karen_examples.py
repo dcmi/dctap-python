@@ -71,16 +71,34 @@ def test_karen_valueNodeTypeLowercase_PASSES(tmp_path):
     local_file="local.csv"
     os.chdir(tmp_path)
     read_from_url_saveas(url, local_file)
-    rows = _get_rows(local_file)
-    shapes_list = _get_csvshapes(rows)
+    rows_list = _get_rows(local_file)
+    shapes_list = _get_csvshapes(rows_list)
     config_dict = dict()
     config_dict['value_node_types'] = ["URI", "BNode", "literal"]
-    assert _get_csvshapes(rows)
+    assert _get_csvshapes(rows_list)
     for shape in shapes_list:
         for statconstraint in shape.sc_list:
             statconstraint._normalize_value_node_type(config_dict)
             if statconstraint.valueNodeType:
                 assert statconstraint.valueNodeType
+
+
+def test_karen_valueNodeTypeWrong_NORMALIZED_TO_EMPTY_STRING(tmp_path):
+    """Exits if value node type is not in enumerated list."""
+    url = "https://raw.githubusercontent.com/dcmi/dctap/main/tests/valueNodeTypeWrong.csv"
+    local_file="local.csv"
+    os.chdir(tmp_path)
+    read_from_url_saveas(url, local_file)
+    rows_list = _get_rows(local_file)
+    shapes_list = _get_csvshapes(rows_list)
+    config_dict = dict()
+    config_dict['value_node_types'] = ["URI", "BNode", "literal"]
+    assert _get_csvshapes(rows_list)
+    for shape in shapes_list:
+        for statconstraint in shape.sc_list:
+            statconstraint._normalize_value_node_type(config_dict)
+            if statconstraint.valueNodeType:
+                assert statconstraint.valueNodeType == "URI"
 
 """ https://raw.githubusercontent.com/dcmi/dctap/main/tests/IRIwithLiteralDatatype.csv """
 """ https://raw.githubusercontent.com/dcmi/dctap/main/tests/bothBlankAndFilledShapeID.csv """
@@ -90,4 +108,3 @@ def test_karen_valueNodeTypeLowercase_PASSES(tmp_path):
 """ https://raw.githubusercontent.com/dcmi/dctap/main/tests/shapewithoutShapeID.csv """
 """ https://raw.githubusercontent.com/dcmi/dctap/main/tests/valueDataTypeWrong.csv """
 """ https://raw.githubusercontent.com/dcmi/dctap/main/tests/valueNodeTypeTwice.csv """
-""" https://raw.githubusercontent.com/dcmi/dctap/main/tests/valueNodeTypeWrong.csv """

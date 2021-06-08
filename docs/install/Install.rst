@@ -19,4 +19,16 @@ the virtual environment:
 
     $ cd dctap-python
     $ source .venv/bin/activate
+    $ dctap
+    Usage: dctap [OPTIONS] COMMAND [ARGS]...
+
+    DC Tabular Application Profiles (DCTAP) - base module
+
+    Options:
+      --version  Show version and exit
+      --help     Show help and exit
+
+    Commands:
+      inspect  Inspect CSV file contents, normalized, maybe with expanded...
+      model    Show DCTAP model built-ins for ready reference
 

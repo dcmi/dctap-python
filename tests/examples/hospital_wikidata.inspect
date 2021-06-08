@@ -1,6 +1,6 @@
-DC Tabular Application Profile
+DCTAP instance
     Shape
-        shapeID: @hospital
+        shapeID: :hospital
         start: True
         Statement Constraint
             propertyID: wdt:P31

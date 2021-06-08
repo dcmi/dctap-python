@@ -1,4 +1,4 @@
-DC Tabular Application Profile
+DCTAP instance
     Shape
         shapeID: book
         start: True
@@ -7,7 +7,7 @@ DC Tabular Application Profile
             propertyLabel: Author
             mandatory: N
             repeatable: Y
-            valueConstraint: @person
+            valueConstraint: :person
         Statement Constraint
             propertyID: dct:title
             propertyLabel: Title

@@ -12,7 +12,6 @@ SHAPES_LIST = [
         shapeID=":a",
         shapeLabel=None,
         start=True,
-        shapeClosed=False,
         sc_list=[
             CSVStatementConstraint(
                 propertyID="dct:creator",
@@ -43,7 +42,6 @@ SHAPES_LIST = [
         shapeID=":b",
         shapeLabel=None,
         start=False,
-        shapeClosed=False,
         sc_list=[
             CSVStatementConstraint(
                 propertyID="foaf:name",
@@ -91,7 +89,6 @@ def test_get_csvshape_dicts_list_two_shapes_verbose():
         Shape
             shapeID: :a
             shapeLabel: None
-            shapeClosed: False
             start: True
             Statement Constraint
                 propertyID: dct:creator
@@ -118,7 +115,6 @@ def test_get_csvshape_dicts_list_two_shapes_verbose():
         Shape
             shapeID: :b
             shapeLabel: None
-            shapeClosed: False
             start: False
             Statement Constraint
                 propertyID: foaf:name

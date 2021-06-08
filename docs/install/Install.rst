@@ -13,7 +13,9 @@ The following commands install 'dctap' in editable mode.
     $ flit install -s
 
 Once installed, the script can be run by first activating 
-the virtual environment:
+the virtual environment. Once the virtual environment is 
+activated, the script will run within any working directory 
+on the filesystem.
 
 .. code-block:: bash
 

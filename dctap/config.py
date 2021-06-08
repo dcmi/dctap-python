@@ -6,7 +6,7 @@ import ruamel.yaml as yaml
 from .exceptions import ConfigError
 
 
-DEFAULT_CONFIGFILE_NAME = ".csv2rc"
+DEFAULT_CONFIGFILE_NAME = ".dctaprc"
 
 DEFAULT_CONFIG_YAML = """\
 default_shape_name: ":default"

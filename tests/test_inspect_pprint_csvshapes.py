@@ -64,7 +64,7 @@ def test_get_csvshape_dicts_list_two_shapes():
     """Turn list of CSVRow objects into list with two csvshape dicts."""
     expected_output_dedented = dedent(
         """\
-    DC Tabular Application Profile
+    DCTAP instance
         Shape
             shapeID: :a
             start: True
@@ -85,7 +85,7 @@ def test_get_csvshape_dicts_list_two_shapes_verbose():
     """Turn list of CSVRow objects into list with two CSVShapes."""
     expected_output_dedented = dedent(
         """\
-    DC Tabular Application Profile
+    DCTAP instance
         Shape
             shapeID: :a
             shapeLabel: None

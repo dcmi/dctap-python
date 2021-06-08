@@ -14,9 +14,9 @@ prefixes:
 """
 
 
-def test_get_config_dict_from_default_config_file_if_present(dir_with_csv2rc):
-    """Get config dict from config file .csvrc (if present)."""
-    os.chdir(Path(dir_with_csv2rc))
+def test_get_config_dict_from_default_config_file_if_present(dir_with_dctaprc):
+    """Get config dict from config file .dctaprc (if present)."""
+    os.chdir(Path(dir_with_dctaprc))
     assert get_config_dict()["prefixes"] == {
         ":": "http://example.org/",
         "dct:": "http://purl.org/dc/terms/",

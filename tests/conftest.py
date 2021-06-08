@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from dctap.config import write_starter_configfile
 
-TEST_CONFIGFILE_NAME = ".csv2rc"
+TEST_CONFIGFILE_NAME = ".dctaprc"
 
 TEST_DEFAULT_CONFIG_SETTINGS_YAML = """\
 prefixes:
@@ -24,7 +24,7 @@ valueConstraintType:
 
 
 @pytest.fixture()
-def dir_with_csv2rc(tmp_path):
+def dir_with_dctaprc(tmp_path):
     """Set up directory with simple config file for use as pytest fixture."""
     os.chdir(tmp_path)
     Path(TEST_CONFIGFILE_NAME).write_text(TEST_DEFAULT_CONFIG_SETTINGS_YAML)

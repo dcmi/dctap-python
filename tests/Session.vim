@@ -11,24 +11,22 @@ endif
 set shortmess=aoO
 argglobal
 %argdel
-$argadd ~/github/dcmi/dctap-python/dctap/csvreader.py
-$argadd test_csvreader_get_csvshapes.py
-$argadd test_csvreader_get_rows.py
-edit ~/github/dcmi/dctap-python/dctap/csvreader.py
+$argadd test_karen_examples.py
+edit test_karen_examples.py
 set splitbelow splitright
 wincmd _ | wincmd |
-vsplit
-1wincmd h
+split
+1wincmd k
 wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 89 + 89) / 179)
-exe 'vert 2resize ' . ((&columns * 89 + 89) / 179)
+exe '1resize ' . ((&lines * 22 + 24) / 48)
+exe '2resize ' . ((&lines * 23 + 24) / 48)
 argglobal
-let s:l = 1 - ((0 * winheight(0) + 23) / 46)
+let s:l = 1 - ((0 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -36,20 +34,20 @@ normal! zt
 normal! 0
 wincmd w
 argglobal
-3argu
-let s:l = 1 - ((0 * winheight(0) + 23) / 46)
+if bufexists("~/github/dcmi/dctap/tests/readme.md") | buffer ~/github/dcmi/dctap/tests/readme.md | else | edit ~/github/dcmi/dctap/tests/readme.md | endif
+let s:l = 1 - ((0 * winheight(0) + 11) / 23)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 89 + 89) / 179)
-exe 'vert 2resize ' . ((&columns * 89 + 89) / 179)
+2wincmd w
+exe '1resize ' . ((&lines * 22 + 24) / 48)
+exe '2resize ' . ((&lines * 23 + 24) / 48)
 tabnext 1
-badd +1 ~/github/dcmi/dctap-python/dctap/csvreader.py
-badd +1 test_csvreader_get_csvshapes.py
-badd +0 test_csvreader_get_rows.py
+badd +0 test_karen_examples.py
+badd +0 ~/github/dcmi/dctap/tests/readme.md
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
 endif

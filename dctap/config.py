@@ -26,13 +26,12 @@ prefixes:
     wd: https://www.wikidata.org/wiki/
     wdt: http://www.wikidata.org/prop/direct/
 
-valueNodeType:
+value_node_types:
 - URI
 - BNode
 - Literal
-- Nonliteral
 
-valueConstraintType:
+value_constraint_types:
 - Datatype
 - UriStem
 - UriPicklist

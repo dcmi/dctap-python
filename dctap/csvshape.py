@@ -25,6 +25,20 @@ class CSVStatementConstraint:
     valueShape: str = ""
     note: str = ""
 
+    def normalize(self, config_dict=None):
+        """Normalizes values of fields."""
+        self._normalize_valueNodeType(config_dict)
+        return True
+
+    def _normalize_value_node_type(self, config_dict=None):
+        """Value of valueNodeType comes from given list, case-insensitive."""
+        valid_types = config_dict['value_node_types']
+        if self.valueNodeType:
+            if self.valueNodeType.lower not in [v.lower for v in valid_types]:
+                print(f"Warning: {self.valueNodeType} is not a recognized node type.")
+                self.valueNodeType = ""
+        return self.valueNodeType
+
 
 @dataclass
 class CSVShape:

@@ -7,10 +7,10 @@ The following commands install 'dctap' in editable mode.
 
     $ git clone https://github.com/dcmi/dctap-python.git
     $ cd dctap-python
-    $ python -m venv .venv
-    $ source .venv/bin/activate
-    $ python3 -m pip install flit Pygments
-    $ flit install -s
+    dctap-python$ python -m venv .venv
+    dctap-python$ source .venv/bin/activate
+    dctap-python$ python3 -m pip install flit Pygments
+    dctap-python$ flit install -s
 
 Once installed, the script can be run by first activating 
 the virtual environment. Once the virtual environment is 
@@ -20,8 +20,8 @@ on the filesystem.
 .. code-block:: bash
 
     $ cd dctap-python
-    $ source .venv/bin/activate
-    $ dctap
+    dctap-python$ source .venv/bin/activate
+    dctap-python$ dctap
     Usage: dctap [OPTIONS] COMMAND [ARGS]...
 
     DC Tabular Application Profiles (DCTAP) - base module

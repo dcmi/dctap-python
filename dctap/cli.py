@@ -3,7 +3,7 @@
 import json
 from dataclasses import asdict
 import click
-from .inspect import pprint_csvshapes, dctap_to_json
+from .inspect import pprint_csvshapes, csvshapes_to_dicts
 from .csvreader import csvreader
 from .csvshape import CSVShape, CSVStatementConstraint
 
@@ -36,8 +36,7 @@ def inspect(context, csvfile_name, expand_prefixes, verbose, json):
             print(line)
 #     if json:
 #         """Nishad's output here."""
-#         csvshapes_dict = [asdict(x) for x in csvshapes_list]
-#         json.dumps(csvshapes_dict, indent=4)
+#         json.dumps(csvshapes_to_dicts(csvshapes_list), indent=4)
 
 
 @cli.command()

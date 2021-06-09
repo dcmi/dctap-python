@@ -34,5 +34,6 @@ def pprint_csvshapes(csvshapes_list, verbose=False):
     return pprint_output
 
 
-def dctap_to_json():
-    """Structure to be built here."""
+def csvshapes_to_dicts(csvshapes_list):
+    """More structure to be built here."""
+

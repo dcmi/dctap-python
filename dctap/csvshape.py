@@ -31,7 +31,7 @@ class CSVStatementConstraint:
         return True
 
     def _normalize_value_node_type(self, config_dict=None):
-        """Value of valueNodeType comes from given list, case-insensitive."""
+        """Take valueNodeType from configurable enumerated list, case-insensitive."""
         valid_types = config_dict['value_node_types']
         if self.valueNodeType:
             if self.valueNodeType.lower not in [v.lower for v in valid_types]:

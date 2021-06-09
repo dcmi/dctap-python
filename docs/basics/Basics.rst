@@ -4,6 +4,6 @@ Basics
 .. toctree::
 
    Basics_minimal
-   propid_label
+   Basics_properties_can_have_labels
    propid_valuetype
    Shapes

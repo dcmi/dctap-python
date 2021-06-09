@@ -67,7 +67,6 @@ def test_get_csvshape_dicts_list_two_shapes():
     DCTAP instance
         Shape
             shapeID: :a
-            start: True
             Statement Constraint
                 propertyID: dct:creator
             Statement Constraint
@@ -89,7 +88,6 @@ def test_get_csvshape_dicts_list_two_shapes_verbose():
         Shape
             shapeID: :a
             shapeLabel: None
-            start: True
             Statement Constraint
                 propertyID: dct:creator
                 propertyLabel: None
@@ -115,7 +113,6 @@ def test_get_csvshape_dicts_list_two_shapes_verbose():
         Shape
             shapeID: :b
             shapeLabel: None
-            start: False
             Statement Constraint
                 propertyID: foaf:name
                 propertyLabel: None

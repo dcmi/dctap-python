@@ -1,0 +1,4 @@
+propertyID,valueNodeType,valueDataType
+dct:creator,URI,
+dct:date,Literal,Date
+dct:extent,Literal,Integer

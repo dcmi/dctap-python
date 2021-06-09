@@ -18,6 +18,20 @@ def test_propertyID_only_IS_OKAY():
     assert _get_csvshapes(rows)
 
 
+def test_propertyID_plus_label_IS_OKAY():
+    """Properties can have labels."""
+    csvfile = Path(TESTS_DIR).joinpath("propertyID_plus_label.csv")
+    rows = _get_rows(csvfile)
+    assert _get_csvshapes(rows)
+
+
+def test_propertyID_plus_nodetype_datatype_IS_OKAY():
+    """Properties can have node types and datatypes."""
+    csvfile = Path(TESTS_DIR).joinpath("propertyID_plus_nodetype_datatype.csv")
+    rows = _get_rows(csvfile)
+    assert _get_csvshapes(rows)
+
+
 def test_propertyID_missing_RAISES_EXCEPTION():
     """Exits if there is no propertyID column - not a valid DCTAP instance."""
     csvfile = Path(TESTS_DIR).joinpath("propertyID_missing.csv")

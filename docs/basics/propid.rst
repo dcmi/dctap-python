@@ -4,20 +4,19 @@ Minimal DCTAP instance
 The most minimal application profile simply provides a list of properties used.
 
 .. csv-table:: 
-   :file: ../basics/propid.csv
+   :file: ../tests/propertyID_only.csv
    :header-rows: 1
 
 Interpreted as::
 
-    DCTAP
-        Shape
-            shapeID: @default
-            start: True
-            Statement
-                propertyID: dct:creator
-            Statement
-                propertyID: dct:title
-            Statement
-                propertyID: dct:publisher
-            Statement
-                propertyID: dct:date
+    DCTAP instance
+	Shape
+	    shapeID: :default
+	    Statement Constraint
+		propertyID: dct:title
+	    Statement Constraint
+		propertyID: dct:publisher
+	    Statement Constraint
+		propertyID: dct:creator
+	    Statement Constraint
+		propertyID: dct:date

@@ -8,6 +8,8 @@ def pprint_csvshapes(csvshapes_list, verbose=False):
     """Pretty-print CSVShape objects to output list, ready for printing to console."""
     shape_elements = list(asdict(CSVShape()))
     shape_elements.remove('sc_list')
+    # 2021-06-09 Removing 'start' for now, not yet part of official DCTAP spec.
+    shape_elements.remove('start')
     tconstraint_elements = list(asdict(CSVStatementConstraint()))
 
     pprint_output = []

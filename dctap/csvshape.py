@@ -37,7 +37,7 @@ class CSVStatementConstraint:
             if self.valueNodeType.lower not in [v.lower for v in valid_types]:
                 print(f"Warning: {self.valueNodeType} is not a recognized node type.")
                 self.valueNodeType = ""
-        return self.valueNodeType
+        return self
 
     def emit_warnings(self, config_dict=None):
         """Emit warnings on possible errors."""
@@ -61,6 +61,17 @@ class CSVShape:
     shapeLabel: str = ""
     start: bool = False
     sc_list: List[CSVStatementConstraint] = field(default_factory=list)
+
+    def normalize(self, config_dict=None):
+        """Normalize values where required."""
+        self._normalize_default_shapeID(config_dict)
+        return True
+
+    def _normalize_default_shapeID(self, config_dict=None):
+        """If shapeID not specified, sets default value from config."""
+        if not self.shapeID:
+            self.shapeID = config_dict['default_shape_name']
+        return self
 
 
 @dataclass

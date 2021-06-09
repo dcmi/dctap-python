@@ -3,7 +3,7 @@ Basics
 
 .. toctree::
 
-   propid.rst
+   Basics_minimal
    propid_label
    propid_valuetype
    Shapes

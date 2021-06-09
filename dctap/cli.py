@@ -1,8 +1,9 @@
 """DC Tabular Application Profiles (DCTAP) - base module"""
 
+import json
 from dataclasses import asdict
 import click
-from .inspect import pprint_csvshapes
+from .inspect import pprint_csvshapes, dctap_to_json
 from .csvreader import csvreader
 from .csvshape import CSVShape, CSVStatementConstraint
 
@@ -23,14 +24,20 @@ def cli(context):
 @click.argument("csvfile_name", type=click.Path(exists=True))
 @click.option("--expand-prefixes", is_flag=True)
 @click.option("--verbose", is_flag=True)
+@click.option("--json", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def inspect(context, csvfile_name, expand_prefixes, verbose):
+def inspect(context, csvfile_name, expand_prefixes, verbose, json):
     """Inspect CSV file contents, normalized, maybe with expanded prefixes."""
     csvshapes_list = csvreader(csvfile_name)
-    pprint_output = pprint_csvshapes(csvshapes_list)
-    for line in pprint_output:
-        print(line)
+    if not json:
+        pprint_output = pprint_csvshapes(csvshapes_list)
+        for line in pprint_output:
+            print(line)
+#     if json:
+#         """Nishad's output here."""
+#         csvshapes_dict = [asdict(x) for x in csvshapes_list]
+#         json.dumps(csvshapes_dict, indent=4)
 
 
 @cli.command()

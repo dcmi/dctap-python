@@ -1,8 +1,9 @@
 Minimal DCTAP instance
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The most minimal application profile simply provides a list of properties used.
-In a simple application, the default shape identifier could be ignored.
+The most minimal application profile simply provides a list of properties used. A property must be one that has been defined previously in a vocabulary, preferably with an IRI to identify it; more about "preferably" below.
+
+A default shape identifier is assigned if not provided in the CSV; more about shapes below. In a very basic application, the shape identifier can simply be ignored.
 
 .. csv-table:: 
    :file: ../tests/propertyID_only.csv
@@ -14,10 +15,10 @@ Interpreted as::
 	Shape
 	    shapeID: :default
 	    Statement Constraint
-		propertyID: dct:title
+		propertyID: http://purl.org/dc/terms/title
 	    Statement Constraint
-		propertyID: dct:publisher
+		propertyID: http://purl.org/dc/terms/publisher
 	    Statement Constraint
-		propertyID: dct:creator
+		propertyID: https://schema.org/creator
 	    Statement Constraint
-		propertyID: dct:date
+		propertyID: http://purl.org/dc/terms/date

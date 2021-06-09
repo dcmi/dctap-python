@@ -39,6 +39,16 @@ class CSVStatementConstraint:
                 self.valueNodeType = ""
         return self.valueNodeType
 
+    def emit_warnings(self, config_dict=None):
+        """Emit warnings on possible errors."""
+        self._warn_about_literal_datatype_used_with_uri(config_dict)
+        return True
+
+    def _warn_about_literal_datatype_used_with_uri(self):
+        """URIs should usually not be typed as literals."""
+        if self.valueDataType == "Literal":
+            pass
+
 
 @dataclass
 class CSVShape:

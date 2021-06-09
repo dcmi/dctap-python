@@ -35,18 +35,18 @@ normal! 0
 wincmd w
 argglobal
 if bufexists("~/github/dcmi/dctap/tests/readme.md") | buffer ~/github/dcmi/dctap/tests/readme.md | else | edit ~/github/dcmi/dctap/tests/readme.md | endif
-let s:l = 1 - ((0 * winheight(0) + 11) / 23)
+let s:l = 22 - ((3 * winheight(0) + 11) / 23)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+22
 normal! 0
 wincmd w
 2wincmd w
 exe '1resize ' . ((&lines * 22 + 24) / 48)
 exe '2resize ' . ((&lines * 23 + 24) / 48)
 tabnext 1
-badd +0 test_karen_examples.py
+badd +1 test_karen_examples.py
 badd +0 ~/github/dcmi/dctap/tests/readme.md
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf

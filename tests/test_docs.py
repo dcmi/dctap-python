@@ -98,7 +98,7 @@ def test_karen_IRIwithLiteralDatatype_EMITS_WARNING_DELETES_DATATYPE():
     csvfile = Path(NORM_DIR).joinpath("IRIwithLiteralDatatype.csv")
 
 def test_karen_bothBlankAndFilledShapeID_SHAPES_EITHER_DECLARED_IN_ROW_OR_CARRIED():
-    """Shapes may be declared on each row or carried from previous."""
+    """Shapes may be declared on each row or carried from previous row."""
     csvfile = Path(NORM_DIR).joinpath("bothBlankAndFilledShapeID.csv")
 
 def test_karen_literalWithoutDatatype_XXX():

@@ -1,4 +1,4 @@
-"""Tests from https://github.com/dcmi/dctap-python/tree/main/docs/normalizations ."""
+"""Tests from https://github.com/dcmi/dctap-python/tree/main/docs/tests ."""
 
 import os
 import pytest
@@ -8,24 +8,26 @@ from dctap.csvshape import CSVShape, CSVStatementConstraint
 
 NORM_DIR = Path(os.path.dirname(os.path.realpath(__file__))).joinpath("../docs/normalizations")
 
+TESTS_DIR = Path(os.path.dirname(os.path.realpath(__file__))).joinpath("../docs/tests")
 
-def test_norms_propIDonly_IS_OKAY():
+
+def test_propertyID_only_IS_OKAY():
     """Minimal application profile can have propertyID column only."""
-    csvfile = Path(NORM_DIR).joinpath("propIDonly.csv")
+    csvfile = Path(TESTS_DIR).joinpath("propertyID_only.csv")
     rows = _get_rows(csvfile)
     assert _get_csvshapes(rows)
 
 
-def test_karen_noPropertyID_RAISES_EXCEPTION():
-    """Exits if no propertyID column - not a valid DCTAP instance."""
-    csvfile = Path(NORM_DIR).joinpath("noPropertyID.csv")
+def test_propertyID_missing_RAISES_EXCEPTION():
+    """Exits if there is no propertyID column - not a valid DCTAP instance."""
+    csvfile = Path(TESTS_DIR).joinpath("propertyID_missing.csv")
     with pytest.raises(SystemExit):
         _get_rows(csvfile)
 
 
-def test_karen_propsBeforeShape_PASSES():
+def test_propertyID_before_shapeID_IS_OKAY():
     """Order of columns does not matter."""
-    csvfile = Path(NORM_DIR).joinpath("propsBeforeShape.csv")
+    csvfile = Path(TESTS_DIR).joinpath("propertyID_before_shapeID.csv")
     rows_list = _get_rows(csvfile)
     assert _get_csvshapes(rows_list)
 

@@ -13,6 +13,7 @@ This project has been undertaken in parallel to, and in support of, a DCMI worki
    cli/Cli
    basics/Basics
    normalizations/Normalizations
+   tests/propertyID
    sources/Sources
 
 .. [#dcapig] https://www.dublincore.org/groups/application_profiles_ig/

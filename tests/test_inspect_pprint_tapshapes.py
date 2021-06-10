@@ -3,17 +3,17 @@
 import pytest
 from dataclasses import asdict
 from textwrap import dedent
-from dctap.csvshape import DCTAPShape, DCTAPStatementConstraint
+from dctap.classes import TAPShape, TAPStatementConstraint
 from dctap.inspect import pprint_csvshapes
 from dctap.csvreader import _get_csvshapes
 
 SHAPES_LIST = [
-    DCTAPShape(
+    TAPShape(
         shapeID=":a",
         shapeLabel=None,
         start=True,
         sc_list=[
-            DCTAPStatementConstraint(
+            TAPStatementConstraint(
                 propertyID="dct:creator",
                 mandatory=False,
                 note=None,
@@ -24,7 +24,7 @@ SHAPES_LIST = [
                 valueDataType=None,
                 valueNodeType=None,
                 valueShape=None,
-            ), DCTAPStatementConstraint(
+            ), TAPStatementConstraint(
                 propertyID="dct:date",
                 mandatory=False,
                 note=None,
@@ -38,12 +38,12 @@ SHAPES_LIST = [
             ),
         ],
     ),
-    DCTAPShape(
+    TAPShape(
         shapeID=":b",
         shapeLabel=None,
         start=False,
         sc_list=[
-            DCTAPStatementConstraint(
+            TAPStatementConstraint(
                 propertyID="foaf:name",
                 mandatory=False,
                 note=None,
@@ -60,8 +60,8 @@ SHAPES_LIST = [
 ]
 
 
-def test_get_csvshape_dicts_list_two_shapes():
-    """Turn list of CSVRow objects into list with two csvshape dicts."""
+def test_pprint_tapshapes_two_shapes():
+    """Pretty-print list of TAPShape objects."""
     expected_output_dedented = dedent(
         """\
     DCTAP instance
@@ -80,8 +80,8 @@ def test_get_csvshape_dicts_list_two_shapes():
     assert pprint_csvshapes(SHAPES_LIST) == expected_output_dedented.splitlines()
 
 
-def test_get_csvshape_dicts_list_two_shapes_verbose():
-    """Turn list of CSVRow objects into list with two DCTAPShapes."""
+def test_pprint_tapshapes_two_shapes_verbose():
+    """Pretty-print list of TAPShape objects."""
     expected_output_dedented = dedent(
         """\
     DCTAP instance

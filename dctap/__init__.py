@@ -1,4 +1,6 @@
-"""Validate and debug instances of DC Tabular Application Profiles."""
-from .csvshape import DCTAPShape, DCTAPStatementConstraint, CSVSchema
+"""Validate and debug DCTAP instances."""
+
+from .classes import TAPShape, TAPStatementConstraint, CSVSchema
 from .csvreader import csvreader
+
 __version__ = "0.1"

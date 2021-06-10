@@ -5,13 +5,13 @@ from dataclasses import asdict
 from typing import Dict, List
 from pathlib import Path
 from .exceptions import CsvError
-from .csvshape import DCTAPShape, DCTAPStatementConstraint
+from .classes import TAPShape, TAPStatementConstraint
 
 DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
 
 
 def csvreader(csvfile):
-    """Return list of DCTAPShape objects from CSV file."""
+    """Return list of TAPShape objects from CSV file."""
     rows = _get_rows(csvfile)
     csvshapes = _get_csvshapes(rows)
     return csvshapes
@@ -29,15 +29,15 @@ def _get_rows(csvfile):
     return rows
 
 
-def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[DCTAPShape]:
-    """Return list of DCTAPShape objects from list of row dicts."""
+def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
+    """Return list of TAPShape objects from list of row dicts."""
 
     # fmt: off
-    shapes: Dict[str, DCTAPShape] = dict()          # To make dict indexing DCTAPShapes,
+    shapes: Dict[str, TAPShape] = dict()          # To make dict indexing TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
-        csvshape_keys = list(asdict(DCTAPShape()))  # make a list of those keys,
+        csvshape_keys = list(asdict(TAPShape()))  # make a list of those keys,
         csvshape_keys.remove("start")               # remove start and sc_list,
         csvshape_keys.remove("sc_list")             # as both are set elsewhere.
         for key in csvshape_keys:                   # Iterate remaining keys, to
@@ -56,7 +56,7 @@ def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[DCTAPShape]:
                 sh_id = row.get("shapeID")          # be it a key for the shapes dict.
             else:                                   # If no truthy shapeID be found,
                 sh_id = row["shapeID"] = default    # may default be the key.
-            shape = shapes[sh_id] = DCTAPShape()    # Add a DCTAPShape to the dict and
+            shape = shapes[sh_id] = TAPShape()    # Add a TAPShape to the dict and
             set_shape_fields(shape, row)            # set its shape-related fields, and
             shapes[sh_id].start = True              # set it be the "start" shape,
             first_valid_row_encountered = False     # the one and only.
@@ -69,10 +69,10 @@ def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[DCTAPShape]:
                 sh_id = so_far[-1]                  # and may the latest one be key.
 
         if sh_id not in shapes:                     # If shape key not be found in dict,
-            shape = shapes[sh_id] = DCTAPShape()    # add it with value DCTAPShape, and
+            shape = shapes[sh_id] = TAPShape()    # add it with value TAPShape, and
             set_shape_fields(shape, row)            # set its shape-related fields.
 
-        sc = DCTAPStatementConstraint()             # Make a new SC object, and
+        sc = TAPStatementConstraint()             # Make a new SC object, and
         for key in list(asdict(sc)):                # iterate SC-related keys, to
             try:                                    # populate that object,
                 setattr(sc, key, row[key])          # with values from the row dict,

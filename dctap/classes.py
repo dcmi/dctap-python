@@ -1,4 +1,4 @@
-"""Class for Python objects derived from CSV files."""
+"""Classes for Python objects derived from CSV files."""
 
 
 from dataclasses import dataclass, field
@@ -6,7 +6,7 @@ from typing import List
 
 
 @dataclass
-class DCTAPStatementConstraint:
+class TAPStatementConstraint:
     """Instances hold TAP/CSV elements related to statement constraints."""
 
     # pylint: disable=too-many-instance-attributes
@@ -51,7 +51,7 @@ class DCTAPStatementConstraint:
 
 
 @dataclass
-class DCTAPShape:
+class TAPShape:
     """Instances hold TAP/CSV row elements related to shapes."""
 
     # pylint: disable=invalid-name
@@ -60,7 +60,7 @@ class DCTAPShape:
     shapeID: str = ""
     shapeLabel: str = ""
     start: bool = False
-    sc_list: List[DCTAPStatementConstraint] = field(default_factory=list)
+    sc_list: List[TAPStatementConstraint] = field(default_factory=list)
 
     def normalize(self, config_dict=None):
         """Normalize values where required."""
@@ -76,6 +76,6 @@ class DCTAPShape:
 
 @dataclass
 class CSVSchema:
-    """List of DCTAPShape instances"""
+    """List of TAPShape instances"""
 
-    csvshapes_list: List[DCTAPShape] = field(default_factory=list)
+    csvshapes_list: List[TAPShape] = field(default_factory=list)

@@ -6,7 +6,7 @@ The most minimal application profile simply provides a list of properties used. 
 A default shape identifier is assigned if not provided in the CSV; more about shapes below. In a very basic application, the shape identifier can simply be ignored.
 
 .. csv-table:: 
-   :file: ../tests/propertyID_only.csv
+   :file: ../test_csvs/propertyID_only.csv
    :header-rows: 1
 
 Interpreted as::

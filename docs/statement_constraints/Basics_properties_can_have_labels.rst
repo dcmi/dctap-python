@@ -2,7 +2,7 @@ Properties can have labels
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table:: 
-   :file: ../tests/propertyID_plus_label.csv
+   :file: ../test_csvs/propertyID_plus_label.csv
    :header-rows: 1
 
 Interpreted as::

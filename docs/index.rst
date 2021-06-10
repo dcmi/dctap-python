@@ -11,7 +11,9 @@ This project has been undertaken in parallel to, and in support of, a DCMI worki
    about/About
    install/Install
    cli/Cli
-   basics/Basics
+   model/DCTAP_Model.rst
+   statement_constraints/Statement_constraints.rst
+   shapes/Shapes.rst
    normalizations/Normalizations
    sources/Sources
 

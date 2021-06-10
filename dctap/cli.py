@@ -47,11 +47,12 @@ def model(context):
 
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove('sc_list')
+    shape_elements.remove('start')
     tconstraint_elements = list(asdict(TAPStatementConstraint()))
-    print("DC Tabular Application Profile")
-    print("    Shape elements:")
+    print("DCTAP instance")
+    print("    Shape")
     for element in shape_elements:
         print(f"        {element}")
-    print("        Statement Constraint elements:")
+    print("        Statement Constraints")
     for element in tconstraint_elements:
         print(f"            {element}")

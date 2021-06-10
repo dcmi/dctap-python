@@ -1,16 +1,16 @@
 """Pretty-print CSV contents to screen."""
 
 from dataclasses import asdict
-from dctap.csvshape import CSVShape, CSVStatementConstraint
+from dctap.csvshape import DCTAPShape, DCTAPStatementConstraint
 
 
 def pprint_csvshapes(csvshapes_list, verbose=False):
-    """Pretty-print CSVShape objects to output list, ready for printing to console."""
-    shape_elements = list(asdict(CSVShape()))
+    """Pretty-print DCTAPShape objects to output list, ready for printing to console."""
+    shape_elements = list(asdict(DCTAPShape()))
     shape_elements.remove('sc_list')
     # 2021-06-09 Removing 'start' for now, not yet part of official DCTAP spec.
     shape_elements.remove('start')
-    tconstraint_elements = list(asdict(CSVStatementConstraint()))
+    tconstraint_elements = list(asdict(DCTAPStatementConstraint()))
 
     pprint_output = []
     pprint_output.append("DCTAP instance")

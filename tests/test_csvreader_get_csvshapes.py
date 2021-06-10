@@ -2,7 +2,7 @@
 
 import pytest
 from dctap.csvreader import _get_csvshapes
-from dctap.csvshape import CSVShape, CSVStatementConstraint
+from dctap.csvshape import DCTAPShape, DCTAPStatementConstraint
 
 
 def test_get_csvshapes_one_default_shape():
@@ -59,24 +59,24 @@ def test_get_csvshapes_twoshapes_first_is_default_because_shapeID_empty():
         {"shapeID": ":author", "propertyID": "foaf:name"},
     ]
     expected_shapes = [
-        CSVShape(
+        DCTAPShape(
             shapeID=":default",
             start=True,
             sc_list=[
-                CSVStatementConstraint(propertyID="dc:creator"),
-                CSVStatementConstraint(propertyID="dc:type"),
+                DCTAPStatementConstraint(propertyID="dc:creator"),
+                DCTAPStatementConstraint(propertyID="dc:type"),
             ],
         ),
-        CSVShape(
+        DCTAPShape(
             shapeID=":author",
             start=False,
             sc_list=[
-                CSVStatementConstraint(propertyID="foaf:name")
+                DCTAPStatementConstraint(propertyID="foaf:name")
             ],
         ),
     ]
     assert _get_csvshapes(rows) == expected_shapes
-    assert type(_get_csvshapes(rows)[0].sc_list[0]) == CSVStatementConstraint
+    assert type(_get_csvshapes(rows)[0].sc_list[0]) == DCTAPStatementConstraint
 
 
 def test_get_csvshapes_two_shapes_one_property_each():
@@ -87,17 +87,17 @@ def test_get_csvshapes_two_shapes_one_property_each():
         {"shapeID": ":author", "propertyID": "foaf:name"},
     ]
     expected_shapes = [
-        CSVShape(
+        DCTAPShape(
             shapeID=":book",
             start=True,
             sc_list=[
-                CSVStatementConstraint(propertyID="dc:creator"),
-                CSVStatementConstraint(propertyID="dc:type"),
+                DCTAPStatementConstraint(propertyID="dc:creator"),
+                DCTAPStatementConstraint(propertyID="dc:type"),
             ],
         ),
-        CSVShape(
+        DCTAPShape(
             shapeID=":author",
-            sc_list=[CSVStatementConstraint(propertyID="foaf:name")],
+            sc_list=[DCTAPStatementConstraint(propertyID="foaf:name")],
         ),
     ]
     assert _get_csvshapes(rows) == expected_shapes

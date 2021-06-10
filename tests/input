@@ -1,9 +1,0 @@
-    input_csvshape = CSVShape(
-        start=True,
-        shapeID=":a",
-        sc_list=[
-            CSVStatementConstraint(propertyID="dct:creator", valueNodeType="IRI"),
-            CSVStatementConstraint(propertyID="dct:subject", valueNodeType="IRI"),
-            CSVStatementConstraint(propertyID="dct:date", valueNodeType="Literal"),
-        ],
-    )

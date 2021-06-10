@@ -3,17 +3,17 @@
 import pytest
 from dataclasses import asdict
 from textwrap import dedent
-from dctap.csvshape import CSVShape, CSVStatementConstraint
+from dctap.csvshape import DCTAPShape, DCTAPStatementConstraint
 from dctap.inspect import pprint_csvshapes
 from dctap.csvreader import _get_csvshapes
 
 SHAPES_LIST = [
-    CSVShape(
+    DCTAPShape(
         shapeID=":a",
         shapeLabel=None,
         start=True,
         sc_list=[
-            CSVStatementConstraint(
+            DCTAPStatementConstraint(
                 propertyID="dct:creator",
                 mandatory=False,
                 note=None,
@@ -24,7 +24,7 @@ SHAPES_LIST = [
                 valueDataType=None,
                 valueNodeType=None,
                 valueShape=None,
-            ), CSVStatementConstraint(
+            ), DCTAPStatementConstraint(
                 propertyID="dct:date",
                 mandatory=False,
                 note=None,
@@ -38,12 +38,12 @@ SHAPES_LIST = [
             ),
         ],
     ),
-    CSVShape(
+    DCTAPShape(
         shapeID=":b",
         shapeLabel=None,
         start=False,
         sc_list=[
-            CSVStatementConstraint(
+            DCTAPStatementConstraint(
                 propertyID="foaf:name",
                 mandatory=False,
                 note=None,
@@ -81,7 +81,7 @@ def test_get_csvshape_dicts_list_two_shapes():
 
 
 def test_get_csvshape_dicts_list_two_shapes_verbose():
-    """Turn list of CSVRow objects into list with two CSVShapes."""
+    """Turn list of CSVRow objects into list with two DCTAPShapes."""
     expected_output_dedented = dedent(
         """\
     DCTAP instance

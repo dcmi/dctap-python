@@ -5,7 +5,7 @@ from dataclasses import asdict
 import click
 from .inspect import pprint_csvshapes, csvshapes_to_dicts
 from .csvreader import csvreader
-from .csvshape import CSVShape, CSVStatementConstraint
+from .csvshape import DCTAPShape, DCTAPStatementConstraint
 
 # pylint: disable=unused-argument,no-value-for-parameter
 # => unused-argument: Allows placeholders for now.
@@ -45,9 +45,9 @@ def inspect(context, csvfile_name, expand_prefixes, verbose, json):
 def model(context):
     """Show DCTAP model built-ins for ready reference"""
 
-    shape_elements = list(asdict(CSVShape()))
+    shape_elements = list(asdict(DCTAPShape()))
     shape_elements.remove('sc_list')
-    tconstraint_elements = list(asdict(CSVStatementConstraint()))
+    tconstraint_elements = list(asdict(DCTAPStatementConstraint()))
     print("DC Tabular Application Profile")
     print("    Shape elements:")
     for element in shape_elements:

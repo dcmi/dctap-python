@@ -1,6 +1,6 @@
-CSVShape class
+DCTAPShape class
 ^^^^^^^^^^^^^^
 
-.. autoclass:: dctap.csvshape.CSVShape
+.. autoclass:: dctap.csvshape.DCTAPShape
     :members:
 

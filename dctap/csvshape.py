@@ -6,7 +6,7 @@ from typing import List
 
 
 @dataclass
-class CSVStatementConstraint:
+class DCTAPStatementConstraint:
     """Instances hold TAP/CSV elements related to statement constraints."""
 
     # pylint: disable=too-many-instance-attributes
@@ -51,7 +51,7 @@ class CSVStatementConstraint:
 
 
 @dataclass
-class CSVShape:
+class DCTAPShape:
     """Instances hold TAP/CSV row elements related to shapes."""
 
     # pylint: disable=invalid-name
@@ -60,7 +60,7 @@ class CSVShape:
     shapeID: str = ""
     shapeLabel: str = ""
     start: bool = False
-    sc_list: List[CSVStatementConstraint] = field(default_factory=list)
+    sc_list: List[DCTAPStatementConstraint] = field(default_factory=list)
 
     def normalize(self, config_dict=None):
         """Normalize values where required."""
@@ -76,6 +76,6 @@ class CSVShape:
 
 @dataclass
 class CSVSchema:
-    """List of CSVShape instances"""
+    """List of DCTAPShape instances"""
 
-    csvshapes_list: List[CSVShape] = field(default_factory=list)
+    csvshapes_list: List[DCTAPShape] = field(default_factory=list)

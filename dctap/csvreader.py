@@ -13,8 +13,8 @@ DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
 def csvreader(csvfile):
     """Return list of TAPShape objects from CSV file."""
     rows = _get_rows(csvfile)
-    csvshapes = _get_csvshapes(rows)
-    return csvshapes
+    tapshapes = _get_tapshapes(rows)
+    return tapshapes
 
 
 def _get_rows(csvfile):
@@ -29,7 +29,7 @@ def _get_rows(csvfile):
     return rows
 
 
-def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
+def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
     """Return list of TAPShape objects from list of row dicts."""
 
     # fmt: off
@@ -37,11 +37,11 @@ def _get_csvshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
-        csvshape_keys = list(asdict(TAPShape()))  # make a list of those keys,
-        csvshape_keys.remove("start")               # remove start and sc_list,
-        csvshape_keys.remove("sc_list")             # as both are set elsewhere.
-        for key in csvshape_keys:                   # Iterate remaining keys, to
-            try:                                    # populate csvshape fields
+        tapshape_keys = list(asdict(TAPShape()))  # make a list of those keys,
+        tapshape_keys.remove("start")               # remove start and sc_list,
+        tapshape_keys.remove("sc_list")             # as both are set elsewhere.
+        for key in tapshape_keys:                   # Iterate remaining keys, to
+            try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from the row dict.
             except KeyError:                        # Keys not found in dict,
                 pass                                # are simply skipped.

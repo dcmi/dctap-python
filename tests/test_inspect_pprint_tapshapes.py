@@ -1,11 +1,11 @@
-"""Pretty-print csvshape dicts to console."""
+"""Pretty-print tapshape dicts to console."""
 
 import pytest
 from dataclasses import asdict
 from textwrap import dedent
 from dctap.classes import TAPShape, TAPStatementConstraint
-from dctap.inspect import pprint_csvshapes
-from dctap.csvreader import _get_csvshapes
+from dctap.inspect import pprint_tapshapes
+from dctap.csvreader import _get_tapshapes
 
 SHAPES_LIST = [
     TAPShape(
@@ -77,7 +77,7 @@ def test_pprint_tapshapes_two_shapes():
                 propertyID: foaf:name
     """
     )
-    assert pprint_csvshapes(SHAPES_LIST) == expected_output_dedented.splitlines()
+    assert pprint_tapshapes(SHAPES_LIST) == expected_output_dedented.splitlines()
 
 
 def test_pprint_tapshapes_two_shapes_verbose():
@@ -127,6 +127,6 @@ def test_pprint_tapshapes_two_shapes_verbose():
     """
     )
     assert (
-        pprint_csvshapes(SHAPES_LIST, verbose=True)
+        pprint_tapshapes(SHAPES_LIST, verbose=True)
         == expected_output_dedented.splitlines()
     )

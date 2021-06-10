@@ -3,7 +3,7 @@
 import json
 from dataclasses import asdict
 import click
-from .inspect import pprint_csvshapes, csvshapes_to_dicts
+from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader
 from .classes import TAPShape, TAPStatementConstraint
 
@@ -29,14 +29,14 @@ def cli(context):
 @click.pass_context
 def inspect(context, csvfile_name, expand_prefixes, verbose, json):
     """Inspect CSV file contents, normalized, maybe with expanded prefixes."""
-    csvshapes_list = csvreader(csvfile_name)
+    tapshapes_list = csvreader(csvfile_name)
     if not json:
-        pprint_output = pprint_csvshapes(csvshapes_list)
+        pprint_output = pprint_tapshapes(tapshapes_list)
         for line in pprint_output:
             print(line)
 #     if json:
 #         """Nishad's output here."""
-#         json.dumps(csvshapes_to_dicts(csvshapes_list), indent=4)
+#         json.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
 
 
 @cli.command()

@@ -10,9 +10,9 @@ class TAPStatementConstraint:
     """Instances hold TAP/CSV elements related to statement constraints."""
 
     # pylint: disable=too-many-instance-attributes
-    # It's a dataclass, right?
+    # - It's a dataclass, right?
     # pylint: disable=invalid-name
-    # propertyID, etc, do not conform to snake-case naming style.
+    # - propertyID, etc, do not conform to snake-case naming style.
 
     propertyID: str = ""
     propertyLabel: str = ""
@@ -73,9 +73,3 @@ class TAPShape:
             self.shapeID = config_dict['default_shape_name']
         return self
 
-
-@dataclass
-class CSVSchema:
-    """List of TAPShape instances"""
-
-    csvshapes_list: List[TAPShape] = field(default_factory=list)

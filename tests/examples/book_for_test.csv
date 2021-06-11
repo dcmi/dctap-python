@@ -1,5 +1,0 @@
-shapeID,propertyID,value_type,valueConstraint
-:book,,,
-,rdf:type,URI,sdo:Book
-:author,,,
-,rdf:type,URI,sdo:Person

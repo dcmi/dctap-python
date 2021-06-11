@@ -1,6 +1,0 @@
-shapeID,propertyID,valueConstraint,valueShape,mandatory,repeatable,propertyLabel,note
-:book,dct:creator,:person,entity,N,Y,Author,Value to be validated as a person entity
-,dct:title,,literal,Y,N,Title,
-,dct:date,,date,Y,N,Date,Use form: YYYY-MM-DD
-:person,foaf:name,,literal,Y,N,Name,Use form: FirstName LastName
-,foaf:mbox,,URI,N,N,Email,Use form: mbox:foo@bar.org

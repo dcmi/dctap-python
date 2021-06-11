@@ -1,4 +1,0 @@
-shapeID,propertyID,propertyLabel,mandatory,repeatable,valueNodetype,valueConstraint,note
-:book,,Book,y,y,,,
-,rdf:type,instance of,y,n,URI,sdo:Book,must be schema.org/Book 
-,rdf:type,instance of,y,n,URI,wd:Q571,must be wikidata Book

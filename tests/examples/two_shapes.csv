@@ -1,5 +1,0 @@
-shapeID,propertyID,mandatory,repeatable,valueNodetype,valueDataType,valueShape
-:book,dct:creator,,,,,:person
-,dct:date,Y,N,,xsd:year,
-,dct:title,,,,,
-:person,foaf:name,,,literal,,

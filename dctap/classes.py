@@ -3,6 +3,7 @@
 
 from dataclasses import dataclass, field
 from typing import List
+from .utils import is_uri_or_prefixed_uri
 
 
 @dataclass
@@ -25,9 +26,13 @@ class TAPStatementConstraint:
     valueShape: str = ""
     note: str = ""
 
+    from io import StringIO as StringBuffer
+    cs_warnings = StringBuffer()
+
     def normalize(self, config_dict=None):
-        """Normalizes values of fields."""
+        """Verifies and normalizes values of fields."""
         self._normalize_valueNodeType(config_dict)
+        self._warn_about_literal_datatype_used_with_uri()
         return True
 
     def _normalize_value_node_type(self, config_dict=None):
@@ -39,15 +44,20 @@ class TAPStatementConstraint:
                 self.valueNodeType = ""
         return self
 
-    def emit_warnings(self, config_dict=None):
-        """Emit warnings on possible errors."""
-        self._warn_about_literal_datatype_used_with_uri(config_dict)
-        return True
-
     def _warn_about_literal_datatype_used_with_uri(self):
-        """URIs should usually not be typed as literals."""
+        """URIs should usually not have a datatype of Literal."""
         if self.valueDataType == "Literal":
-            pass
+            if is_uri_or_prefixed_uri(self.valueConstraint):
+                cs_warnings.write(
+                    f"{self.valueConstraint} looks like URI "
+                    "but typed as {repr(self.valueDataType)}"
+                )
+
+    def get_warnings(self):
+        """Dump contents of warnings buffer as list and close buffer."""
+        warnings_list = cs_warnings.getvalue().splitlines()
+        cs_warnings.close()
+        return warnings_list
 
 
 @dataclass

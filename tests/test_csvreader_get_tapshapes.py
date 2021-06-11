@@ -10,17 +10,20 @@ def test_get_tapshapes_one_default_shape():
     rows = [
         {"shapeID": "", "propertyID": "dc:creator"},
         {"shapeID": "", "propertyID": "dc:date"},
+        {"shapeID": "", "propertyID": "dc:subject"},
     ]
-    expected_shapes = _get_tapshapes(rows)
+    tapshapes_output = _get_tapshapes(rows)
+    expected_shapes = tapshapes_output[0]
     assert len(expected_shapes) == 1
     assert expected_shapes[0].shapeID == ":default"
-    assert len(expected_shapes[0].sc_list) == 2
+    assert len(expected_shapes[0].sc_list) == 3
 
 
 def test_get_tapshapes_one_default_shape_shapeID_not_specified():
     """One shape, default, where shapeID is not specified."""
     rows = [{"propertyID": "dc:creator"}]
-    expected_shapes = _get_tapshapes(rows)
+    tapshapes_output = _get_tapshapes(rows)
+    expected_shapes = tapshapes_output[0]
     assert expected_shapes[0].shapeID == ":default"
     assert len(expected_shapes[0].sc_list) == 1
 
@@ -32,7 +35,8 @@ def test_get_tapshapes_twoshapes_first_is_default():
         {"shapeID": "", "propertyID": "dc:type"},
         {"shapeID": ":author", "propertyID": "foaf:name"},
     ]
-    expected_shapes = _get_tapshapes(rows)
+    tapshapes_output = _get_tapshapes(rows)
+    expected_shapes = tapshapes_output[0]
     assert expected_shapes[0].shapeID == ":default"
     assert len(expected_shapes[0].sc_list) == 2
     assert expected_shapes[1].shapeID == ":author"
@@ -45,7 +49,8 @@ def test_get_tapshapes_twoshapes_mixed_statements():
         {"shapeID": ":author", "propertyID": "foaf:name"},
         {"shapeID": ":book", "propertyID": "dc:type"},
     ]
-    expected_shapes = _get_tapshapes(rows)
+    tapshapes_output = _get_tapshapes(rows)
+    expected_shapes = tapshapes_output[0]
     assert expected_shapes[0].shapeID == ":book"
     assert len(expected_shapes[0].sc_list) == 2
     assert expected_shapes[1].shapeID == ":author"
@@ -75,8 +80,8 @@ def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
             ],
         ),
     ]
-    assert _get_tapshapes(rows) == expected_shapes
-    assert type(_get_tapshapes(rows)[0].sc_list[0]) == TAPStatementConstraint
+    assert _get_tapshapes(rows)[0] == expected_shapes
+    assert type(_get_tapshapes(rows)[0][0].sc_list[0]) == TAPStatementConstraint
 
 
 def test_get_tapshapes_two_shapes_one_property_each():
@@ -100,4 +105,4 @@ def test_get_tapshapes_two_shapes_one_property_each():
             sc_list=[TAPStatementConstraint(propertyID="foaf:name")],
         ),
     ]
-    assert _get_tapshapes(rows) == expected_shapes
+    assert _get_tapshapes(rows)[0] == expected_shapes

@@ -3,6 +3,6 @@ Statement Constraints
 
 .. toctree::
 
-   Basics_minimal
-   Basics_properties_can_have_labels
-   propid_valuetype
+   Statement_constraints_minimal.rst
+   Statement_constraints_properties_can_have_labels.rst
+   Statement_constraints_nodetypes_datatypes.rst

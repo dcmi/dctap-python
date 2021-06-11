@@ -1,4 +1,4 @@
-"""Tests from https://github.com/dcmi/dctap-python/tree/main/docs/tests ."""
+"""Tests from https://github.com/dcmi/dctap-python/tree/main/docs/test_csvs ."""
 
 import os
 import pytest
@@ -8,7 +8,7 @@ from dctap.classes import TAPShape, TAPStatementConstraint
 
 NORM_DIR = Path(os.path.dirname(os.path.realpath(__file__))).joinpath("../docs/normalizations")
 
-TESTS_DIR = Path(os.path.dirname(os.path.realpath(__file__))).joinpath("../docs/tests")
+TESTS_DIR = Path(os.path.dirname(os.path.realpath(__file__))).joinpath("../docs/test_csvs")
 
 
 def test_propertyID_only_IS_OKAY():

@@ -6,6 +6,7 @@ import click
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader
 from .classes import TAPShape, TAPStatementConstraint
+from .loggers import stderr_logger, warning_logger, debug_logger
 
 # pylint: disable=unused-argument,no-value-for-parameter
 # => unused-argument: Allows placeholders for now.
@@ -56,3 +57,13 @@ def model(context):
     print("        Statement Constraints")
     for element in tconstraint_elements:
         print(f"            {element}")
+
+
+@cli.command()
+@click.help_option(help="For testing")
+@click.pass_context
+def tester(context):
+    """Temporary sub-command for testing."""
+    echo = stderr_logger()
+    echo.info('This is an info message')
+    echo.warning('This is a warning message')

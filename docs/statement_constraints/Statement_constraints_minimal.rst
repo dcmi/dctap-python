@@ -3,7 +3,7 @@ Minimal DCTAP instance
 
 The most minimal application profile simply provides a list of properties used. A property must be one that has been defined previously in a vocabulary, preferably with an IRI to identify it; more about "preferably" below.
 
-A default shape identifier is assigned if not provided in the CSV; more about shapes below. In a very basic application, the shape identifier can simply be ignored.
+A default shape identifier is assigned if not provided in the CSV; more about shapes below. In a "Shape-less" application, this default shape identifier can simply be ignored.
 
 .. csv-table:: 
    :file: ../test_csvs/propertyID_only.csv

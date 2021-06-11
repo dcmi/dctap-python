@@ -1,6 +1,5 @@
-shapeID,propertyID,value_type,constraint_value,constraint_type
-:book,dct:subject,,https://id.loc.gov/subjects,UriStem
-:book,dct:subject,,<https://id.loc.gov/subjects>,UriStem
-:book,dct:subject,,nalt:,UriStem
-:book,dct:creator,URI,https://www.wikidata.org/wiki/Q46914185,
-:book,dct:creator,URI,wd:Q46914185,
+propertyID
+http://purl.org/dc/terms/subject
+<http://purl.org/dc/terms/subject>
+dcterms:subject
+:subject

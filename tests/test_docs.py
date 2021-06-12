@@ -66,7 +66,7 @@ def test_karen_valueNodeTypeLowercase_PASSES():
     """valueNodeType in lower case."""
     csvfile = Path(NORM_DIR).joinpath("valueNodeTypeLowercase.csv")
     rows_list = _get_rows(csvfile)
-    shapes_list = _get_tapshapes(rows_list)
+    shapes_list = _get_tapshapes(rows_list)[0]
     config_dict = dict()
     config_dict['value_node_types'] = ["URI", "BNode", "literal"]
     assert _get_tapshapes(rows_list)
@@ -81,7 +81,7 @@ def test_karen_valueNodeTypeWrong_NORMALIZED_TO_EMPTY_STRING():
     """Exits if value node type is not in enumerated list."""
     csvfile = Path(NORM_DIR).joinpath("valueNodeTypeWrong.csv")
     rows_list = _get_rows(csvfile)
-    shapes_list = _get_tapshapes(rows_list)
+    shapes_list = _get_tapshapes(rows_list)[0]
     config_dict = dict()
     config_dict['value_node_types'] = ["URI", "BNode", "literal"]
     assert _get_tapshapes(rows_list)

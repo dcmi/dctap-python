@@ -90,10 +90,10 @@ class TAPShape:
     for field in list(shape_warnings):
         shape_warnings[field] = list()
 
-    def normalize(self, config_dict=None):
-        """Normalize values where required."""
-        self._normalize_default_shapeID(config_dict)
-        return True
+#    def validate(self, config_dict=None):
+#        """Normalize values where required."""
+#        self._normalize_default_shapeID(config_dict)
+#        return True
 
     def _normalize_default_shapeID(self, config_dict=None):
         """If shapeID not specified, sets default value from config."""
@@ -101,10 +101,10 @@ class TAPShape:
             self.shapeID = config_dict['default_shape_name']
         return self
 
-    def get_shape_warnings(self):
-        """Emit shape_warnings for this instance of TAPStatementConstraint."""
-        return dict(shape_warnings)
-
+#    def get_shape_warnings(self):
+#        """Emit shape_warnings for this instance of TAPStatementConstraint."""
+#        return dict(shape_warnings)
+#
 
 # #         if not is_uri_or_prefixed_uri(sh_id):       # If shape key resembles not URI,
 # #             warn_ddict["shapeID"] = (           # Warn that shape identifiers

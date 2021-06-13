@@ -89,9 +89,8 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
-        #sc.normalize()                             # SC instance normalizes itself and
-        sc.validate()                               # collects warnings, then provides
-        sc_warnings = sc.get_warnings()             # those warnings on request.
+        sc.validate()                               # SC validates itself, and 
+        sc_warnings = sc.get_warnings()             # emits warnings on request.
 
         for (elem,warn) in sc_warnings.items():     # Iterate SC instance warnings.
             try:                                    # Try to add each warning to dict

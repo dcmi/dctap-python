@@ -1,7 +1,7 @@
 """Pretty-print CSV contents to screen."""
 
 from dataclasses import asdict
-from dctap.classes import TAPShape, TAPStatementConstraint
+from .tapclasses import TAPShape, TAPStatementConstraint
 
 
 def pprint_tapshapes(tapshapes_list, verbose=False):

@@ -2,7 +2,7 @@
 
 import pytest
 from dctap.csvreader import _get_tapshapes
-from dctap.classes import TAPShape, TAPStatementConstraint
+from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 
 def test_get_tapshapes_valueConstraint_URI_with_valueNodeType_Literal():

@@ -8,7 +8,7 @@ from operator import methodcaller
 from typing import Dict, List
 from pathlib import Path
 from .exceptions import CsvError
-from .classes import TAPShape, TAPStatementConstraint
+from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import is_uri_or_prefixed_uri
 
 DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader

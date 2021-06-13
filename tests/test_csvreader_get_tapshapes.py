@@ -2,7 +2,7 @@
 
 import pytest
 from dctap.csvreader import _get_tapshapes
-from dctap.classes import TAPShape, TAPStatementConstraint
+from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 
 def test_get_tapshapes_one_default_shape():

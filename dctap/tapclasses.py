@@ -2,8 +2,6 @@
 
 from collections import defaultdict
 from dataclasses import dataclass, field, asdict
-from itertools import chain
-from operator import methodcaller
 from typing import List
 from .config import get_config_dict
 from .utils import is_uri_or_prefixed_uri

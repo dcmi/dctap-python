@@ -1,6 +1,6 @@
 """TAPShape object holds statements sharing a common shapeID."""
 
-from dctap.classes import TAPShape
+from dctap.tapclasses import TAPShape
 
 SHAPE_OBJECT = TAPShape(
     start=True,

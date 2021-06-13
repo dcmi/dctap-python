@@ -6,7 +6,7 @@ from dataclasses import asdict
 import click
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader
-from .classes import TAPShape, TAPStatementConstraint
+from .tapclasses import TAPShape, TAPStatementConstraint
 from .loggers import stderr_logger, warning_logger, debug_logger
 
 # pylint: disable=unused-argument,no-value-for-parameter

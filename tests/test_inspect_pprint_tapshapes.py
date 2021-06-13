@@ -3,7 +3,7 @@
 import pytest
 from dataclasses import asdict
 from textwrap import dedent
-from dctap.classes import TAPShape, TAPStatementConstraint
+from dctap.tapclasses import TAPShape, TAPStatementConstraint
 from dctap.inspect import pprint_tapshapes
 from dctap.csvreader import _get_tapshapes
 

@@ -4,7 +4,7 @@ import os
 import pytest
 from pathlib import Path
 from dctap.csvreader import _get_tapshapes, _get_rows
-from dctap.classes import TAPShape, TAPStatementConstraint
+from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 NORM_DIR = Path(os.path.dirname(os.path.realpath(__file__))).joinpath("../docs/normalizations")
 

@@ -35,7 +35,12 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
     csvreader_output = csvreader(csvfile_name)
     tapshapes_list = csvreader_output[0]
     warnings_dict = csvreader_output[1]
-    if not json:
+
+    if json:
+        json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+        print(json_output)
+
+    else:
         pprint_output = pprint_tapshapes(tapshapes_list)
         for line in pprint_output:
             print(line, file=sys.stderr)
@@ -46,10 +51,6 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
                 for (elem,warn_list) in warnings.items():
                     for warning in warn_list:
                         echo.warning(f"Shape {shapeid} => {elem}: {warning}")
-
-    if json:
-        json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
-        print(json_output)
 
 
 

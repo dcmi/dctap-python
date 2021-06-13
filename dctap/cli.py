@@ -1,7 +1,7 @@
 """DC Tabular Application Profiles (DCTAP) - base module"""
 
 import sys
-import json
+import json as j
 from dataclasses import asdict
 import click
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
@@ -48,7 +48,7 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
                         echo.warning(f"Shape {shapeid} => {elem}: {warning}")
 
     if json:
-        json_output = json.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+        json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
         print(json_output)
 
 

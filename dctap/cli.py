@@ -1,5 +1,6 @@
 """DC Tabular Application Profiles (DCTAP) - base module"""
 
+import sys
 import json
 from dataclasses import asdict
 import click
@@ -24,20 +25,33 @@ def cli(context):
 @cli.command()
 @click.argument("csvfile_name", type=click.Path(exists=True))
 @click.option("--expand-prefixes", is_flag=True)
+@click.option("--warnings", is_flag=True)
 @click.option("--verbose", is_flag=True)
 @click.option("--json", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def inspect(context, csvfile_name, expand_prefixes, verbose, json):
+def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
     """Inspect CSV file contents, normalized, maybe with expanded prefixes."""
-    tapshapes_list = csvreader(csvfile_name)
+    csvreader_output = csvreader(csvfile_name)
+    tapshapes_list = csvreader_output[0]
+    warnings_dict = csvreader_output[1]
     if not json:
         pprint_output = pprint_tapshapes(tapshapes_list)
         for line in pprint_output:
-            print(line)
+            print(line, file=sys.stderr)
+        if warnings:
+            print("", file=sys.stderr)
+            echo = stderr_logger()
+            for (shapeid,warnings) in warnings_dict.items():
+                for (elem,warn_list) in warnings.items():
+                    for warning in warn_list:
+                        echo.warn(f"Shape {shapeid} => {elem}: {warning}")
+
 #     if json:
 #         """Nishad's output here."""
 #         json.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+
+
 
 
 @cli.command()

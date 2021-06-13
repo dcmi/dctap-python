@@ -18,7 +18,7 @@ def csvreader(csvfile):
     rows = _get_rows(csvfile)
     tapshapes = _get_tapshapes(rows)[0]
     tapwarnings = _get_tapshapes(rows)[1]
-    return tapshapes
+    return (tapshapes, tapwarnings)
 
 
 def _get_rows(csvfile):

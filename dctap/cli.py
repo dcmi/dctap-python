@@ -2,6 +2,7 @@
 
 import sys
 import json as j
+from ruamel.yaml import YAML
 from dataclasses import asdict
 import click
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
@@ -28,6 +29,7 @@ def cli(context):
 @click.option("--warnings", is_flag=True)
 @click.option("--verbose", is_flag=True)
 @click.option("--json", is_flag=True)
+@click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
@@ -39,6 +41,11 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
     if json:
         json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
         print(json_output)
+
+    if yaml:
+        y = YAML()
+        y.indent(mapping=2, sequence=4, offset=2)
+        y.dump(tapshapes_to_dicts(tapshapes_list), sys.stdout)
 
     else:
         pprint_output = pprint_tapshapes(tapshapes_list)

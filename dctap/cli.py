@@ -47,9 +47,9 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
                     for warning in warn_list:
                         echo.warning(f"Shape {shapeid} => {elem}: {warning}")
 
-#     if json:
-#         """Nishad's output here."""
-#         json.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+    if json:
+        json_output = json.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+        print(json_output)
 
 
 

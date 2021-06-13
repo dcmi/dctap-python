@@ -45,7 +45,7 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
             for (shapeid,warnings) in warnings_dict.items():
                 for (elem,warn_list) in warnings.items():
                     for warning in warn_list:
-                        echo.warn(f"Shape {shapeid} => {elem}: {warning}")
+                        echo.warning(f"Shape {shapeid} => {elem}: {warning}")
 
 #     if json:
 #         """Nishad's output here."""

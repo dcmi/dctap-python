@@ -1,8 +1,11 @@
 """Classes for Python objects derived from CSV files."""
 
-
-from dataclasses import dataclass, field
+from collections import defaultdict
+from dataclasses import dataclass, field, asdict
+from itertools import chain
+from operator import methodcaller
 from typing import List
+from .config import get_config_dict
 from .utils import is_uri_or_prefixed_uri
 
 
@@ -26,38 +29,50 @@ class TAPStatementConstraint:
     valueShape: str = ""
     note: str = ""
 
-    from io import StringIO as StringBuffer
-    cs_warnings = StringBuffer()
+    statement_warnings = defaultdict(list)
 
-    def normalize(self, config_dict=None):
-        """Verifies and normalizes values of fields."""
-        self._normalize_valueNodeType(config_dict)
-        self._warn_about_literal_datatype_used_with_uri()
+    config_dict = get_config_dict()
+
+    def reset_config_dict(self, external_config_dict=None):
+        self.config_dict = external_config_dict
+
+    def normalize(self):
+        """Normalizes values of certain fields."""
+        # self._normalize_value_node_type(config_dict)
+        # self._warn_about_literal_datatype_used_with_uri()
         return True
 
-    def _normalize_value_node_type(self, config_dict=None):
-        """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        valid_types = config_dict['value_node_types']
-        if self.valueNodeType:
-            if self.valueNodeType.lower not in [v.lower for v in valid_types]:
-                print(f"Warning: {self.valueNodeType} is not a recognized node type.")
-                self.valueNodeType = ""
+    def validate(self):
+        """Validates values of certain fields."""
+        self._value_uri_should_not_have_nodetype_literal()
+        self._value_node_type_is_from_enumerated_list()
         return self
 
-    def _warn_about_literal_datatype_used_with_uri(self):
-        """URIs should usually not have a datatype of Literal."""
-        if self.valueDataType == "Literal":
-            if is_uri_or_prefixed_uri(self.valueConstraint):
-                cs_warnings.write(
-                    f"{self.valueConstraint} looks like URI "
-                    "but typed as {repr(self.valueDataType)}"
+    def _value_uri_should_not_have_nodetype_literal(self):
+        """URI values should usually not have a valueNodeType of Literal."""
+        if is_uri_or_prefixed_uri(self.valueConstraint):
+            if "Literal" in self.valueNodeType:
+                self.statement_warnings['valueNodeType'] = (
+                    f"{repr(self.valueConstraint)} looks like URI, but "
+                    f"valueNodeType is {repr(self.valueNodeType)}."
                 )
+        return self
+
+    def _value_node_type_is_from_enumerated_list(self):
+        """Take valueNodeType from configurable enumerated list, case-insensitive."""
+        valid_types = [nt.lower() for nt in self.config_dict['value_node_types']]
+        if self.valueNodeType:
+            self.valueNodeType = self.valueNodeType.lower() # normalize to lowercase
+            if self.valueNodeType not in valid_types:
+                self.statement_warnings['valueNodeType'] = (
+                    f"{repr(self.valueNodeType)} is not a valid node type."
+                )
+        return self
 
     def get_warnings(self):
-        """Dump contents of warnings buffer as list and close buffer."""
-        warnings_list = cs_warnings.getvalue().splitlines()
-        cs_warnings.close()
-        return warnings_list
+        """Emit warnings dictionary for this instance of TAPStatementConstraint.
+        -- Dictionary is populated by invoking validate() mathod."""
+        return dict(self.statement_warnings)
 
 
 @dataclass
@@ -72,6 +87,11 @@ class TAPShape:
     start: bool = False
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
 
+    # Initialize shape_warnings: TAPStatementConstraint as keys, blank list as values.
+    shape_warnings = defaultdict(list)
+    for field in list(shape_warnings):
+        shape_warnings[field] = list()
+
     def normalize(self, config_dict=None):
         """Normalize values where required."""
         self._normalize_default_shapeID(config_dict)
@@ -83,3 +103,13 @@ class TAPShape:
             self.shapeID = config_dict['default_shape_name']
         return self
 
+    def get_shape_warnings(self):
+        """Emit shape_warnings for this instance of TAPStatementConstraint."""
+        return dict(shape_warnings)
+
+
+# #         if not is_uri_or_prefixed_uri(sh_id):       # If shape key resembles not URI,
+# #             warn_ddict["shapeID"] = (           # Warn that shape identifiers
+# #                 f"{repr(sh_id)} should ideally "    # should ideally be URIs.
+# #                 "be a URI."
+# #             )

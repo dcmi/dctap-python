@@ -1,11 +1,15 @@
 """Read DCTAP/CSV (expand prefixes?). Write and read config file."""
 
+from collections import defaultdict
 from csv import DictReader
 from dataclasses import asdict
+from itertools import chain
+from operator import methodcaller
 from typing import Dict, List
 from pathlib import Path
 from .exceptions import CsvError
 from .classes import TAPShape, TAPStatementConstraint
+from .utils import is_uri_or_prefixed_uri
 
 DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
 
@@ -35,7 +39,8 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
     # fmt: off
     shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
-    warnings_list = ["Warning 1", "Warning 2"]      # Initialize warnings list.
+    warnings = defaultdict(dict)                    # Make defaultdict for warnings.
+    # or just dict()?
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
@@ -69,21 +74,34 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
                 so_far = list(shapes)               # see list of shapeIDs used so far,
                 sh_id = so_far[-1]                  # and may the latest one be key.
 
-        if sh_id not in shapes:                     # If shape key not be found in dict,
+        if sh_id not in shapes:                     # If shape ID not in shapes dict,
             shape = shapes[sh_id] = TAPShape()      # add it with value TAPShape, and
-            set_shape_fields(shape, row)            # set its shape-related fields.
+            set_shape_fields(shape, row)            # set its shape-related fields, and
+            warnings[sh_id] = dict()                # give it key in warnings dict.
 
-        sc = TAPStatementConstraint()               # Make new Statement Constraint (SC)
-        for key in list(asdict(sc)):                # and iterate SC-related keys, to
-            try:                                    # populate that object,
+        sc = TAPStatementConstraint()               # Instantiate SC for this row.
+
+        for key in list(asdict(sc)):                # Iterate SC fields, to
+            try:                                    # populate the SC instance
                 setattr(sc, key, row[key])          # with values from the row dict,
-            except KeyError:                        # while keys not used in dict
-                pass                                # are simply skipped.
+            except KeyError:                        # while fields not found in SC
+                pass                                # are simply skipped (yes?).
 
-        shapes[sh_id].sc_list.append(sc)            # Add SC to SCs list in shapes dict.
+        shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
+
+        #sc.normalize()                             # SC instance normalizes itself and
+        sc.validate()                               # collects warnings, then provides
+        sc_warnings = sc.get_warnings()             # those warnings on request.
+
+        for (elem,warn) in sc_warnings.items():     # Iterate SC instance warnings.
+            try:                                    # Try to add each warning to dict
+                warnings[sh_id][elem].append(warn)  # of all warnings by shape,
+            except KeyError:                        # but if needed key not found,
+                warnings[sh_id][elem] = list()      # set new key with value list,
+                warnings[sh_id][elem].append(warn)  # and warning can now be added.
 
     return (                                        # Return tuple:
-        list(shapes.values()),                      # - List of shapes
-        warnings_list                               # - List of warnings
+        list(shapes.values()),                      #   List of shapes
+        dict(warnings)                              #   Dict of warnings, by shape
     )
     # fmt: on

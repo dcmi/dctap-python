@@ -3,8 +3,6 @@
 from collections import defaultdict
 from csv import DictReader
 from dataclasses import asdict
-from itertools import chain
-from operator import methodcaller
 from typing import Dict, List
 from pathlib import Path
 from .exceptions import CsvError

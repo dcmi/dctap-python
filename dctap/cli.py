@@ -32,7 +32,7 @@ def cli(context):
 @click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
+def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yaml):
     """Inspect CSV file contents, normalized, maybe with expanded prefixes."""
     csvreader_output = csvreader(csvfile_name)
     tapshapes_list = csvreader_output[0]

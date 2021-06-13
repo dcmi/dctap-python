@@ -47,7 +47,7 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
         y.indent(mapping=2, sequence=4, offset=2)
         y.dump(tapshapes_to_dicts(tapshapes_list), sys.stdout)
 
-    else:
+    if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_list)
         for line in pprint_output:
             print(line, file=sys.stderr)

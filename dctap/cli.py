@@ -38,6 +38,12 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
     tapshapes_list = csvreader_output[0]
     warnings_dict = csvreader_output[1]
 
+    if (json and yaml):
+        # Quick fix for mutually exclusive options, a better fix in future. 
+        echo = stderr_logger()
+        echo.warning('Please use either --json or --yaml')
+        click.Context.exit(0)
+
     if json:
         json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
         print(json_output)

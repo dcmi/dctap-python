@@ -43,7 +43,7 @@ def tapshapes_to_dicts(tapshapes_list, verbose=False):
         tapshape_dict = asdict(tapshape_obj)
         # Removing 'start' for now, not yet part of official DCTAP spec.
         tapshape_dict.pop('start')
-        tapshape_dict['properties'] = tapshape_dict.pop('sc_list')
+        tapshape_dict['statement_constraints'] = tapshape_dict.pop('sc_list')
         shape_list.append(tapshape_dict)
 
     return dict_output

@@ -34,6 +34,17 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
     return pprint_output
 
 
-def tapshapes_to_dicts(tapshapes_list):
-    """More structure to be built here."""
+def tapshapes_to_dicts(tapshapes_list, verbose=False):
+    """Converting TAPShape objects to dictionaries, ready for generating JSON and YAML."""
+    dict_output = {}
+    shape_list = []
+    dict_output['shapes'] = shape_list
+    for tapshape_obj in tapshapes_list:
+        tapshape_dict = asdict(tapshape_obj)
+        # Removing 'start' for now, not yet part of official DCTAP spec.
+        tapshape_dict.pop('start')
+        tapshape_dict['properties'] = tapshape_dict.pop('sc_list')
+        shape_list.append(tapshape_dict)
+
+    return dict_output
 

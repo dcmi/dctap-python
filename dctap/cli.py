@@ -1,7 +1,8 @@
 """DC Tabular Application Profiles (DCTAP) - base module"""
 
 import sys
-import json
+import json as j
+from ruamel.yaml import YAML
 from dataclasses import asdict
 import click
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
@@ -28,14 +29,31 @@ def cli(context):
 @click.option("--warnings", is_flag=True)
 @click.option("--verbose", is_flag=True)
 @click.option("--json", is_flag=True)
+@click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
+def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yaml):
     """Inspect CSV file contents, normalized, maybe with expanded prefixes."""
     csvreader_output = csvreader(csvfile_name)
     tapshapes_list = csvreader_output[0]
     warnings_dict = csvreader_output[1]
-    if not json:
+
+    if (json and yaml):
+        # Quick fix for mutually exclusive options, a better fix in future. 
+        echo = stderr_logger()
+        echo.warning('Please use either --json or --yaml')
+        click.Context.exit(0)
+
+    if json:
+        json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+        print(json_output)
+
+    if yaml:
+        y = YAML()
+        y.indent(mapping=2, sequence=4, offset=2)
+        y.dump(tapshapes_to_dicts(tapshapes_list), sys.stdout)
+
+    if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_list)
         for line in pprint_output:
             print(line, file=sys.stderr)
@@ -46,10 +64,6 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json):
                 for (elem,warn_list) in warnings.items():
                     for warning in warn_list:
                         echo.warning(f"Shape {shapeid} => {elem}: {warning}")
-
-#     if json:
-#         """Nishad's output here."""
-#         json.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
 
 
 

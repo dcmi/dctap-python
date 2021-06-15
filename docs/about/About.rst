@@ -3,7 +3,7 @@ About dctap
 
 Dctap is:
 
-- a Python module for parsing, normalizing, and converting CSV files formatted according to the [DC Application Profiles (DCTAP) model](https://github.com/dcmi/dctap/blob/main/TAPprimer.md)
+- a Python module for parsing, normalizing, and converting CSV files formatted according to the `DC Application Profiles (DCTAP) model <https://github.com/dcmi/dctap/blob/main/TAPprimer.md>`_
 - a command-line utility usable for
   - viewing the normalized contents of a DCTAP/CSV file on screen as an aid for debugging,
   - generating JSON output for use in an application pipeline.
@@ -13,7 +13,7 @@ As of June 2021, our medium-term plan is:
 - to move the command-line utility off into a separate project
 - to leave the module as a pip-installable basis for utlities that implement more specific features, such as transforming a DCTAP instance into ShEx.
 
-This project has been undertaken in parallel to, and in support of, a [working group of the Dublin Core Metadata Initiative](https://www.dublincore.org/groups/application_profiles_ig/) that is creating the DCTAP model.
+This project has been undertaken in parallel to, and in support of, a [DCMI working group](https://www.dublincore.org/groups/application_profiles_ig/) that is creating the DCTAP model.
 
 The code in this project tries to anticipate messy or incomplete CSV inputs and to fill gaps and normalize inconsistencies. For example, the code allows users to enter URIs either as full URIs (with or without enclosing angle brackets) or as abbreviated URIs written with namespace prefixes (e.g., 'dcterms:creator'), or to enter the datatypes of literal values without using an extra column to specify that the value is a Literal (since this can be inferred).
 

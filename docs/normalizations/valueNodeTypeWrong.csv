@@ -1,3 +1,0 @@
-shapeID,propertyID,valueNodeType,valueShape
-book,dct:creator,wrong,author
-author,rdf:type,URI,

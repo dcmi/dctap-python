@@ -1,3 +1,0 @@
-shapeLabel,propertyID,valueNodeType,valueDataType
-Book,dct:title,literal,xsd:string
-Author,foaf:name,literal,xsd:string

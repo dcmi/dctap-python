@@ -1,2 +1,0 @@
-shapeID,shapeLabel,propertyID,valueNodeType,valueDataType
-book,Book,dct:publisher,IRI,xsd:string

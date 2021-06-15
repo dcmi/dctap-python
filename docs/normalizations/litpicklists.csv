@@ -1,3 +1,0 @@
-shapeID,propertyID,value_type,constraint_value,constraint_type
-:book,:color,,red green yellow,LitPicklist
-:book,:color,,red,LitPicklist

@@ -18,8 +18,8 @@ class TAPStatementConstraint:
 
     propertyID: str = ""
     propertyLabel: str = ""
-    mandatory: str = None
-    repeatable: str = None
+    mandatory: bool = None
+    repeatable: bool = None
     valueNodeType: str = ""
     valueDataType: str = ""
     valueConstraint: str = ""

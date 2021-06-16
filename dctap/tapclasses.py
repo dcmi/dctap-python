@@ -18,8 +18,8 @@ class TAPStatementConstraint:
 
     propertyID: str = ""
     propertyLabel: str = ""
-    mandatory: bool = None
-    repeatable: bool = None
+    mandatory: str = None
+    repeatable: str = None
     valueNodeType: str = ""
     valueDataType: str = ""
     valueConstraint: str = ""
@@ -74,30 +74,26 @@ class TAPStatementConstraint:
         valid_values_for_true = [ "true", "1" ]
         valid_values_for_false = [ "false", "0" ]
         valid_values = valid_values_for_true + valid_values_for_false
-        if self.mandatory:
-            self.mandatory = self.mandatory.lower() # normalize to lowercase
-            if self.mandatory in valid_values_for_true:
+        if self.mandatory is not None:
+            local_mandatory = self.mandatory.lower() # normalize to lowercase
+            if local_mandatory in valid_values_for_true:
                 self.mandatory = True
-            elif self.mandatory in valid_values_for_false:
+            elif local_mandatory in valid_values_for_false:
                 self.mandatory = False
-            elif self.mandatory not in valid_values:
+            elif local_mandatory not in valid_values:
                 self.statement_warnings['mandatory'] = (
-                    f"{repr(self.mandatory)} is not a supported Boolean value; "
-                    "value defaults to 'false'."
+                    f"{repr(self.mandatory)} is not a supported Boolean value."
                 )
-                self.mandatory = None
-        if self.repeatable:
-            self.repeatable = self.repeatable.lower() # normalize to lowercase
-            if self.repeatable in valid_values_for_true:
+        if self.repeatable is not None:
+            local_repeatable = self.repeatable.lower() # normalize to lowercase
+            if local_repeatable in valid_values_for_true:
                 self.repeatable = True
-            elif self.repeatable in valid_values_for_false:
+            elif local_repeatable in valid_values_for_false:
                 self.repeatable = False
-            elif self.repeatable not in valid_values:
+            elif local_repeatable not in valid_values:
                 self.statement_warnings['repeatable'] = (
-                    f"{repr(self.repeatable)} is not a supported Boolean value; "
-                    "value defaults to 'false'."
+                    f"{repr(self.repeatable)} is not a supported Boolean value."
                 )
-                self.repeatable = None
         return self
 
     def _warn_if_propertyID_and_valueShape_are_not_IRIs(self):

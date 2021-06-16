@@ -34,18 +34,6 @@ def test_mandatory_and_repeatable_are_true_given_numerical_boolean_value():
     assert sc.repeatable is True
 
 
-def test_mandatory_and_repeatable_raise_warnings_given_unsupported_boolean_value():
-    """@@@"""
-    sc = TAPStatementConstraint()
-    sc.propertyID = "wdt:P31"
-    sc.mandatory = "WAHR"
-    sc.repeatable = "WAHR"
-    sc._mandatory_and_repeatable_have_supported_boolean_value()
-    assert len(sc.statement_warnings) == 2
-    assert sc.mandatory is None
-    assert sc.repeatable is None
-
-
 def test_mandatory_and_repeatable_are_none_in_absence_of_any_declared_value():
     """@@@"""
     sc = TAPStatementConstraint()

@@ -92,3 +92,5 @@ def test_shape_initialized_with_no_shapeid_field_should_pass_for_now():
             {"propertyID": "dct:date", "valueNodeType": "String"},
         ],
     )
+
+

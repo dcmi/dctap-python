@@ -18,8 +18,8 @@ class TAPStatementConstraint:
 
     propertyID: str = ""
     propertyLabel: str = ""
-    mandatory: str = False
-    repeatable: str = False
+    mandatory: str = None
+    repeatable: str = None
     valueNodeType: str = ""
     valueDataType: str = ""
     valueConstraint: str = ""
@@ -44,6 +44,7 @@ class TAPStatementConstraint:
         """Validates values of certain fields."""
         self._value_uri_should_not_have_nodetype_literal()
         self._value_node_type_is_from_enumerated_list()
+        self._mandatory_and_repeatable_have_supported_boolean_value()
         return self
 
     def _value_uri_should_not_have_nodetype_literal(self):
@@ -66,6 +67,38 @@ class TAPStatementConstraint:
                     f"{repr(self.valueNodeType)} is not a valid node type."
                 )
         return self
+
+    def _mandatory_and_repeatable_have_supported_boolean_value(self):
+        """mandatory or repeatable has value of "true" or "false" or "1" or "0"."""
+        valid_values_for_true = [ "true", "1" ]
+        valid_values_for_false = [ "false", "0" ]
+        valid_values = valid_values_for_true + valid_values_for_false
+        if self.mandatory:
+            self.mandatory = self.mandatory.lower() # normalize to lowercase
+            if self.mandatory in valid_values_for_true:
+                self.mandatory = True
+            elif self.mandatory in valid_values_for_false:
+                self.mandatory = False
+            elif self.mandatory not in valid_values:
+                self.statement_warnings['mandatory'] = (
+                    f"{repr(self.mandatory)} is not a supported Boolean value; "
+                    "value defaults to 'false'."
+                )
+                self.mandatory = None
+        if self.repeatable:
+            self.repeatable = self.repeatable.lower() # normalize to lowercase
+            if self.repeatable in valid_values_for_true:
+                self.repeatable = True
+            elif self.repeatable in valid_values_for_false:
+                self.repeatable = False
+            elif self.repeatable not in valid_values:
+                self.statement_warnings['repeatable'] = (
+                    f"{repr(self.repeatable)} is not a supported Boolean value; "
+                    "value defaults to 'false'."
+                )
+                self.repeatable = None
+        return self
+
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPStatementConstraint.

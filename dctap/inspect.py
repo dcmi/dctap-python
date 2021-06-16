@@ -18,18 +18,24 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
         tapshape_dict = asdict(tapshape_obj)
         pprint_output.append("    Shape")
         for key in shape_elements:
+            indent08 = (8 * " " + key + ": ")
+            while len(indent08) < 33:
+                indent08 = indent08 + " "
             if not verbose and tapshape_dict[key]:
-                pprint_output.append(8 * " " + key + ": " + str(tapshape_dict[key]))
+                pprint_output.append(indent08 + str(tapshape_dict[key]))
             if verbose:
-                pprint_output.append(8 * " " + key + ": " + str(tapshape_dict[key]))
+                pprint_output.append(indent08 + str(tapshape_dict[key]))
 
         for tc_dict in tapshape_dict.get("sc_list"):
             pprint_output.append("        Statement Constraint")
             for key in tconstraint_elements:
+                indent12 = (12 * " " + key + ": ")
+                while len(indent12) < 33:
+                    indent12 = indent12 + " "
                 if not verbose and tc_dict[key]:
-                    pprint_output.append(12 * " " + str(key) + ": " + str(tc_dict[key]))
+                    pprint_output.append(indent12 + str(tc_dict[key]))
                 if verbose:
-                    pprint_output.append(12 * " " + str(key) + ": " + str(tc_dict[key]))
+                    pprint_output.append(indent12 + str(tc_dict[key]))
 
     return pprint_output
 

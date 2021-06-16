@@ -1,5 +1,0 @@
-.. _valueConstraint
-
-valueConstraint
-^^^^^^^^^^^^^^^
-

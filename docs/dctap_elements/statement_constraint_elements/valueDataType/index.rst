@@ -1,5 +1,0 @@
-.. _valueDataType
-
-valueDataType
-^^^^^^^^^^^^^
-

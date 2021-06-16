@@ -1,5 +1,0 @@
-.. _valueNodeType
-
-valueNodeType
-^^^^^^^^^^^^^
-

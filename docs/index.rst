@@ -9,10 +9,8 @@ This project has been undertaken in parallel to, and in support of, a DCMI worki
    :maxdepth: 3
 
    about/index
-   install/index
    cli/index
-   dctap_model/index
-   dctap_elements/statement_constraint_elements/index
-   dctap_elements/shape_elements/index
+   model/index
+   elements/index
 
 .. [#dcapig] https://www.dublincore.org/groups/application_profiles_ig/

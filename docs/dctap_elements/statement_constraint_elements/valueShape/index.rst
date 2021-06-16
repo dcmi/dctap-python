@@ -1,5 +1,0 @@
-.. _valueShape
-
-valueShape
-^^^^^^^^^^
-

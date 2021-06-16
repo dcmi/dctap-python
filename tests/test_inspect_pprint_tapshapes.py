@@ -66,15 +66,15 @@ def test_pprint_tapshapes_two_shapes():
         """\
     DCTAP instance
         Shape
-            shapeID: :a
+            shapeID:                 :a
             Statement Constraint
-                propertyID: dct:creator
+                propertyID:          dct:creator
             Statement Constraint
-                propertyID: dct:date
+                propertyID:          dct:date
         Shape
-            shapeID: :b
+            shapeID:                 :b
             Statement Constraint
-                propertyID: foaf:name
+                propertyID:          foaf:name
     """
     )
     assert pprint_tapshapes(SHAPES_LIST) == expected_output_dedented.splitlines()
@@ -86,44 +86,44 @@ def test_pprint_tapshapes_two_shapes_verbose():
         """\
     DCTAP instance
         Shape
-            shapeID: :a
-            shapeLabel: None
+            shapeID:                 :a
+            shapeLabel:              None
             Statement Constraint
-                propertyID: dct:creator
-                propertyLabel: None
-                mandatory: False
-                repeatable: False
-                valueNodeType: None
-                valueDataType: None
-                valueConstraint: None
+                propertyID:          dct:creator
+                propertyLabel:       None
+                mandatory:           False
+                repeatable:          False
+                valueNodeType:       None
+                valueDataType:       None
+                valueConstraint:     None
                 valueConstraintType: None
-                valueShape: None
-                note: None
+                valueShape:          None
+                note:                None
             Statement Constraint
-                propertyID: dct:date
-                propertyLabel: None
-                mandatory: False
-                repeatable: False
-                valueNodeType: None
-                valueDataType: None
-                valueConstraint: None
+                propertyID:          dct:date
+                propertyLabel:       None
+                mandatory:           False
+                repeatable:          False
+                valueNodeType:       None
+                valueDataType:       None
+                valueConstraint:     None
                 valueConstraintType: None
-                valueShape: None
-                note: None
+                valueShape:          None
+                note:                None
         Shape
-            shapeID: :b
-            shapeLabel: None
+            shapeID:                 :b
+            shapeLabel:              None
             Statement Constraint
-                propertyID: foaf:name
-                propertyLabel: None
-                mandatory: False
-                repeatable: False
-                valueNodeType: None
-                valueDataType: None
-                valueConstraint: None
+                propertyID:          foaf:name
+                propertyLabel:       None
+                mandatory:           False
+                repeatable:          False
+                valueNodeType:       None
+                valueDataType:       None
+                valueConstraint:     None
                 valueConstraintType: None
-                valueShape: None
-                note: None
+                valueShape:          None
+                note:                None
     """
     )
     assert (

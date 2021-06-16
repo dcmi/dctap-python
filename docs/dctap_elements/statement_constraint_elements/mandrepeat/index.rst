@@ -1,5 +1,0 @@
-.. _mandrepeat
-
-mandatory / repeatable
-^^^^^^^^^^^^^^^^^^^^^^
-

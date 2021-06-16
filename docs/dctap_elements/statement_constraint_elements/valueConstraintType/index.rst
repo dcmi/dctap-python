@@ -1,5 +1,0 @@
-.. _valueConstraintType
-
-valueConstraintType
-^^^^^^^^^^^^^^^^^^^
-

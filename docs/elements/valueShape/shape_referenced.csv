@@ -1,0 +1,3 @@
+shapeID,propertyID,valueShape
+:book,dct:creator,:person
+:person,foaf:name,

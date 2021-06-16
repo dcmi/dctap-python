@@ -45,14 +45,15 @@ class TAPStatementConstraint:
         self._value_uri_should_not_have_nodetype_literal()
         self._value_node_type_is_from_enumerated_list()
         self._mandatory_and_repeatable_have_supported_boolean_value()
+        self._warn_if_propertyID_and_valueShape_are_not_IRIs()
         return self
 
     def _value_uri_should_not_have_nodetype_literal(self):
-        """URI values should usually not have a valueNodeType of Literal."""
+        """IRI values should usually not have a valueNodeType of Literal."""
         if is_uri_or_prefixed_uri(self.valueConstraint):
             if "Literal" in self.valueNodeType:
                 self.statement_warnings['valueNodeType'] = (
-                    f"{repr(self.valueConstraint)} looks like URI, but "
+                    f"{repr(self.valueConstraint)} looks like an IRI, but "
                     f"valueNodeType is {repr(self.valueNodeType)}."
                 )
         return self
@@ -99,6 +100,18 @@ class TAPStatementConstraint:
                 self.repeatable = None
         return self
 
+    def _warn_if_propertyID_and_valueShape_are_not_IRIs(self):
+        """@@@"""
+        if not is_uri_or_prefixed_uri(self.propertyID):
+            self.statement_warnings['propertyID'] = (
+                f"{repr(self.propertyID)} is not an IRI or Compact IRI."
+            )
+        if self.valueShape:
+            if not is_uri_or_prefixed_uri(self.valueShape):
+                self.statement_warnings['valueShape'] = (
+                    f"{repr(self.valueShape)} is not an IRI or Compact IRI."
+                )
+
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPStatementConstraint.
@@ -123,16 +136,24 @@ class TAPShape:
     for field in list(shape_warnings):
         shape_warnings[field] = list()
 
-#    def validate(self, config_dict=None):
-#        """Normalize values where required."""
-#        self._normalize_default_shapeID(config_dict)
-#        return True
+    def validate(self, config_dict=None):
+        """Normalize values where required."""
+        self._normalize_default_shapeID(config_dict)
+        self._warn_if_shapeID_is_not_an_IRI()
+        return True
 
     def _normalize_default_shapeID(self, config_dict=None):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
             self.shapeID = config_dict['default_shape_name']
         return self
+
+    def _warn_if_shapeID_is_not_an_IRI(self):
+        """@@@"""
+        if not is_uri_or_prefixed_uri(self.shapeID):
+            self.shape_warnings['shapeID'] = (
+                f"{repr(self.shapeID)} is not an IRI or Compact IRI."
+            )
 
 #    def get_shape_warnings(self):
 #        """Emit shape_warnings for this instance of TAPStatementConstraint."""

@@ -49,7 +49,7 @@ serves as a header for a column in a tabular
 application profile.
 
 .. csv-table:: 
-   :file: dctap_model.csv
+   :file: DCTAP_Model.csv
    :header-rows: 1
 
 .. glossary::

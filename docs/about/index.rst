@@ -13,7 +13,7 @@ As of June 2021, our medium-term plan is:
 - to move the command-line utility off into a separate project
 - to leave the module as a pip-installable basis for utlities that implement more specific features, such as transforming a DCTAP instance into ShEx.
 
-This project has been undertaken in parallel to, and in support of, a [DCMI working group](https://www.dublincore.org/groups/application_profiles_ig/) that is creating the DCTAP model.
+This project has been undertaken in parallel to, and in support of, a `DCMI working group <https://www.dublincore.org/groups/application_profiles_ig/>`_ that is creating the DCTAP model.
 
 The code in this project tries to anticipate messy or incomplete CSV inputs and to fill gaps and normalize inconsistencies. For example, the code allows users to enter URIs either as full URIs (with or without enclosing angle brackets) or as abbreviated URIs written with namespace prefixes (e.g., 'dcterms:creator'), or to enter the datatypes of literal values without using an extra column to specify that the value is a Literal (since this can be inferred).
 

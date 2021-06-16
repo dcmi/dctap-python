@@ -1,5 +1,7 @@
-Shapes
-------
+.. _shape_elements
+
+Shape elements
+--------------
 
 .. toctree::
 

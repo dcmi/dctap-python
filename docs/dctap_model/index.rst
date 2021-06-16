@@ -48,6 +48,13 @@ Constraints. Concretely, a :term:`DCTAP Element`
 serves as a header for a column in a tabular 
 application profile.
 
+Because the DCTAP Model was designed for
+compatibility with RDF and Linked Data,
+property constraints, shapes, and some value
+constraints are represented in a DCTAP
+Instance with an :term:`IRI` (or
+:term:`Compact IRI`).
+
 .. csv-table:: 
    :file: DCTAP_Model.csv
    :header-rows: 1
@@ -63,10 +70,10 @@ application profile.
        a label associated with a namespace (the prefix) is
        followed by a colon and by a local name which, taken
        together, can be expanded into a full IRI. For
-       example, if the prefix `dcterms:` is associated with
-       the namespace `http://purl.org/dc/terms/`, then the
-       prefixed name `dcterms:creator` can be expanded into
-       `http://purl.org/dc/terms/creator`.
+       example, if the prefix ``dcterms:`` is associated with
+       the namespace ``http://purl.org/dc/terms/``, then the
+       prefixed name ``dcterms:creator`` can be expanded into
+       ``http://purl.org/dc/terms/creator``.
    
    DCTAP Element
        One of a dozen or so labels defined in the DCTAP Model,

@@ -42,8 +42,9 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
-        tapshape_keys.remove("start")               # remove start and sc_list,
-        tapshape_keys.remove("sc_list")             # as both are set elsewhere.
+        tapshape_keys.remove("start")               # remove start, sc_list, and
+        tapshape_keys.remove("sc_list")             # statement_warnings - not
+        tapshape_keys.remove("shape_warnings")      # shape fields.
         for key in tapshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate tapshape fields 
                 setattr(shape, key, row[key])       # with values from row dict.

@@ -28,6 +28,8 @@ def test_warn_if_valueShape_not_URI():
 def test_mandatory_and_repeatable_raise_warnings_given_unsupported_boolean_value():
     """@@@"""
     sc = TAPStatementConstraint()
+    print(f"Instance: {sc}")
+    print(f"Statement warnings at start of test: {sc.statement_warnings}")
     sc.propertyID = "dc:creator"
     sc.mandatory = "WAHR"
     sc.repeatable = "WAHR"

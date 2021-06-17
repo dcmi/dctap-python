@@ -26,8 +26,7 @@ class TAPStatementConstraint:
     valueConstraintType: str = ""
     valueShape: str = ""
     note: str = ""
-
-    statement_warnings = defaultdict(list)
+    statement_warnings: dict = field(default_factory=dict)
 
     config_dict = get_config_dict()
 
@@ -126,11 +125,7 @@ class TAPShape:
     shapeLabel: str = ""
     start: bool = False
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
-
-    # Initialize shape_warnings: TAPStatementConstraint as keys, blank list as values.
-    shape_warnings = defaultdict(list)
-    for field in list(shape_warnings):
-        shape_warnings[field] = list()
+    shape_warnings: dict = field(default_factory=dict)
 
     def validate(self, config_dict=None):
         """Normalize values where required."""

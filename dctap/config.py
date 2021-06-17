@@ -27,6 +27,7 @@ prefixes:
     wdt: http://www.wikidata.org/prop/direct/
 
 value_node_types:
+- IRI
 - URI
 - BNode
 - Literal

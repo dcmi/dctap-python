@@ -70,8 +70,8 @@ class TAPStatementConstraint:
 
     def _mandatory_and_repeatable_have_supported_boolean_value(self):
         """mandatory or repeatable has value of "true" or "false" or "1" or "0"."""
-        valid_values_for_true = [ "true", "1" ]
-        valid_values_for_false = [ "false", "0" ]
+        valid_values_for_true = [ "true", "1", None ]
+        valid_values_for_false = [ "false", "0", None ]
         valid_values = valid_values_for_true + valid_values_for_false
         if self.mandatory is not None:
             local_mandatory = self.mandatory.lower() # normalize to lowercase

@@ -6,7 +6,7 @@ def test_warn_if_propertyID_not_URI():
     """@@@"""
     sc = TAPStatementConstraint()
     sc.propertyID = "P31"
-    sc._warn_if_propertyID_and_valueShape_are_not_IRIs()
+    sc._warn_if_propertyID_valueShape_valueDataType_not_IRIs()
     print(sc.sc_warnings)
     print(dict(sc.sc_warnings))
     print(len(dict(sc.sc_warnings)))
@@ -18,7 +18,7 @@ def test_warn_if_valueShape_not_URI():
     sc = TAPStatementConstraint()
     sc.propertyID = "wdt:P31"
     sc.valueShape = "Person"
-    sc._warn_if_propertyID_and_valueShape_are_not_IRIs()
+    sc._warn_if_propertyID_valueShape_valueDataType_not_IRIs()
     print(sc.sc_warnings)
     print(dict(sc.sc_warnings))
     print(len(dict(sc.sc_warnings)))

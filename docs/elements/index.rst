@@ -16,7 +16,7 @@ application, this default shape identifier
 can simply be ignored.
 
 .. csv-table:: 
-   :file: ../test_csvs/propertyID_only.csv
+   :file: propertyID_only.csv
    :header-rows: 1
 
 Interpreted as::

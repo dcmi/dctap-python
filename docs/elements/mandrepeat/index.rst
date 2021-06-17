@@ -1,7 +1,7 @@
 .. _elem_mandrepeat:
 
-``mandatory`` and ``repeatable``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+mandatory and repeatable
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the basic DCTAP model, the expected
 cardinality of a property can be expressed

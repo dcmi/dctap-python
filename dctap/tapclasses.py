@@ -44,7 +44,8 @@ class TAPStatementConstraint:
         self._value_uri_should_not_have_nodetype_literal()
         self._value_node_type_is_from_enumerated_list()
         self._mandatory_and_repeatable_have_supported_boolean_value()
-        self._warn_if_propertyID_and_valueShape_are_not_IRIs()
+        self._warn_if_propertyID_valueShape_valueDataType_not_IRIs()
+        self._warn_if_valueDataType_used_with_valueNodeType_IRI()
         return self
 
     def _value_uri_should_not_have_nodetype_literal(self):
@@ -95,7 +96,7 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _warn_if_propertyID_and_valueShape_are_not_IRIs(self):
+    def _warn_if_propertyID_valueShape_valueDataType_not_IRIs(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
             self.sc_warnings['propertyID'] = (
@@ -106,7 +107,20 @@ class TAPStatementConstraint:
                 self.sc_warnings['valueShape'] = (
                     f"{repr(self.valueShape)} is not an IRI or Compact IRI."
                 )
+        if self.valueDataType:
+            if not is_uri_or_prefixed_uri(self.valueDataType):
+                self.sc_warnings['valueDataType'] = (
+                    f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
+                )
 
+    def _warn_if_valueDataType_used_with_valueNodeType_IRI(self):
+        """@@@"""
+        if self.valueNodeType == "iri" or self.valueNodeType == "uri":
+            if self.valueDataType:
+                self.sc_warnings['valueDataType'] = (
+                    f"Datatypes are for literals only, "
+                    f"and node type provided is {repr(self.valueNodeType)}."
+                )
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPStatementConstraint.

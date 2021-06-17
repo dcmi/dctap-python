@@ -63,3 +63,37 @@ if __name__ == "__main__":
         new_row = dict()
         for dictkey in row.keys():
             fake_dictkey = normalize_dictkey(dictkey)
+>>> from dctap import TAPShape, TAPStatementConstraint
+... all_elements = list(asdict(TAPShape())) + list(asdict(TAPStatementConstraint()))
+>>> abbrev_dict = dict()
+>>> for elem in all_elements:
+...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem if l.isupper()])
+...     abbrev_dict[dict_key] = elem
+...
+>>> abbrev_dict
+{'sid': 'shapeID', 'sl': 'shapeLabel', 's': 'sc_list', 'pid': 'propertyID', 'pl': 'propertyLabel', 'm': 'mandatory', 'r': 'repeatable', 'vnt': 'valueNodeType', 'vdt': 'valueDataType', 'vc': 'valueConstraint', 'vct': 'valueConstraintType', 'vs': 'valueShape', 'n': 'note'}
+>>> abbrev_dict = dict()
+>>> for elem in all_elements:
+...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem.lower() if l.isupper()])
+...     abbrev_dict[dict_key] = elem
+...
+>>> abbrev_dict = dict()
+>>> for elem in all_elements:
+...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem.lower() if l.isupper()])
+...     abbrev_dict[dict_key] = elem
+...
+>>> abbrev_dict
+{'s': 'sc_list', 'p': 'propertyLabel', 'm': 'mandatory', 'r': 'repeatable', 'v': 'valueShape', 'n': 'note'}
+>>> abbrev_dict = dict()
+>>> for elem in all_elements:
+...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem if l.isupper()])
+...     abbrev_dict[dict_key] = elem
+...
+>>> abbrev_dict
+{'sid': 'shapeID', 'sl': 'shapeLabel', 's': 'sc_list', 'pid': 'propertyID', 'pl': 'propertyLabel', 'm': 'mandatory', 'r': 'repeatable', 'vnt': 'valueNodeType', 'vdt': 'valueDataType', 'vc': 'valueConstraint', 'vct': 'valueConstraintType', 'vs': 'valueShape', 'n': 'note'}
+>>> elem_dict = dict()
+>>> for elem in all_elements:
+...     elem_dict[elem.lower()] = elem
+...
+>>> elem_dict
+{'shapeid': 'shapeID', 'shapelabel': 'shapeLabel', 'start': 'start', 'sc_list': 'sc_list', 'propertyid': 'propertyID', 'propertylabel': 'propertyLabel', 'mandatory': 'mandatory', 'repeatable': 'repeatable', 'valuenodetype': 'valueNodeType', 'valuedatatype': 'valueDataType', 'valueconstraint': 'valueConstraint', 'valueconstrainttype': 'valueConstraintType', 'valueshape': 'valueShape', 'note': 'note'}

@@ -1,7 +1,7 @@
-About ``dctap``
----------------
+About this project
+------------------
 
-This project is creating:
+This project is about creating:
 
 - a Python module for parsing, normalizing, and converting CSV files formatted according to the `DC Application Profiles (DCTAP) model <https://github.com/dcmi/dctap/blob/main/TAPprimer.md>`_.
 - a command-line utility usable for viewing the normalized contents of a DCTAP/CSV file on screen as an aid for debugging, and generating machine-processable output in JSON and YAML for use in application pipelines.

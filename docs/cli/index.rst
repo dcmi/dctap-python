@@ -38,7 +38,18 @@ on the filesystem.
 The subcommand ``inspect`` reads and outputs the contents of a given CSV file::
 
     $ dctap inspect example.csv
+    DCTAP instance
+        Shape
+            shapeID:                 :book
+            Statement Constraint
+                propertyID:          dcterms:creator
+                valueShape:          author
+        Shape
+            shapeID:                 :author
+            Statement Constraint
+                propertyID:          foaf:name
 
-The subcommend 'model' displays program built-ins for the DCTAP model::
+
+The subcommand 'model' displays program built-ins for the DCTAP model::
 
     $ dctap model

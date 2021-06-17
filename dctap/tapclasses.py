@@ -26,7 +26,7 @@ class TAPStatementConstraint:
     valueConstraintType: str = ""
     valueShape: str = ""
     note: str = ""
-    statement_warnings: dict = field(default_factory=dict)
+    sc_warnings: dict = field(default_factory=dict)
 
     config_dict = get_config_dict()
 
@@ -51,7 +51,7 @@ class TAPStatementConstraint:
         """IRI values should usually not have a valueNodeType of Literal."""
         if is_uri_or_prefixed_uri(self.valueConstraint):
             if "Literal" in self.valueNodeType:
-                self.statement_warnings['valueNodeType'] = (
+                self.sc_warnings['valueNodeType'] = (
                     f"{repr(self.valueConstraint)} looks like an IRI, but "
                     f"valueNodeType is {repr(self.valueNodeType)}."
                 )
@@ -63,7 +63,7 @@ class TAPStatementConstraint:
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower() # normalize to lowercase
             if self.valueNodeType not in valid_types:
-                self.statement_warnings['valueNodeType'] = (
+                self.sc_warnings['valueNodeType'] = (
                     f"{repr(self.valueNodeType)} is not a valid node type."
                 )
         return self
@@ -80,7 +80,7 @@ class TAPStatementConstraint:
             elif local_mandatory in valid_values_for_false:
                 self.mandatory = False
             elif local_mandatory not in valid_values:
-                self.statement_warnings['mandatory'] = (
+                self.sc_warnings['mandatory'] = (
                     f"{repr(self.mandatory)} is not a supported Boolean value."
                 )
         if self.repeatable is not None:
@@ -90,7 +90,7 @@ class TAPStatementConstraint:
             elif local_repeatable in valid_values_for_false:
                 self.repeatable = False
             elif local_repeatable not in valid_values:
-                self.statement_warnings['repeatable'] = (
+                self.sc_warnings['repeatable'] = (
                     f"{repr(self.repeatable)} is not a supported Boolean value."
                 )
         return self
@@ -98,12 +98,12 @@ class TAPStatementConstraint:
     def _warn_if_propertyID_and_valueShape_are_not_IRIs(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
-            self.statement_warnings['propertyID'] = (
+            self.sc_warnings['propertyID'] = (
                 f"{repr(self.propertyID)} is not an IRI or Compact IRI."
             )
         if self.valueShape:
             if not is_uri_or_prefixed_uri(self.valueShape):
-                self.statement_warnings['valueShape'] = (
+                self.sc_warnings['valueShape'] = (
                     f"{repr(self.valueShape)} is not an IRI or Compact IRI."
                 )
 
@@ -111,7 +111,7 @@ class TAPStatementConstraint:
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPStatementConstraint.
         -- Dictionary is populated by invoking validate() mathod."""
-        return dict(self.statement_warnings)
+        return dict(self.sc_warnings)
 
 
 @dataclass
@@ -125,7 +125,7 @@ class TAPShape:
     shapeLabel: str = ""
     start: bool = False
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
-    shape_warnings: dict = field(default_factory=dict)
+    sh_warnings: dict = field(default_factory=dict)
 
     def validate(self, config_dict=None):
         """Normalize values where required."""
@@ -142,12 +142,12 @@ class TAPShape:
     def _warn_if_shapeID_is_not_an_IRI(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.shapeID):
-            self.shape_warnings['shapeID'] = (
+            self.sh_warnings['shapeID'] = (
                 f"{repr(self.shapeID)} is not an IRI or Compact IRI."
             )
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPShape.
         -- Dictionary is populated by invoking validate() mathod."""
-        return dict(self.shape_warnings)
+        return dict(self.sh_warnings)
 

@@ -146,13 +146,8 @@ class TAPShape:
                 f"{repr(self.shapeID)} is not an IRI or Compact IRI."
             )
 
-#    def get_shape_warnings(self):
-#        """Emit shape_warnings for this instance of TAPStatementConstraint."""
-#        return dict(shape_warnings)
-#
+    def get_warnings(self):
+        """Emit warnings dictionary for this instance of TAPShape.
+        -- Dictionary is populated by invoking validate() mathod."""
+        return dict(self.shape_warnings)
 
-# #         if not is_uri_or_prefixed_uri(sh_id):       # If shape key resembles not URI,
-# #             warn_ddict["shapeID"] = (           # Warn that shape identifiers
-# #                 f"{repr(sh_id)} should ideally "    # should ideally be URIs.
-# #                 "be a URI."
-# #             )

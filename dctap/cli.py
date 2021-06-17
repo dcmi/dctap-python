@@ -33,7 +33,7 @@ def cli(context):
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yaml):
-    """Inspect CSV file contents, normalized, maybe with expanded prefixes."""
+    """Output CSV contents to text, JSON, or YAML, with warnings"""
     csvreader_output = csvreader(csvfile_name)
     tapshapes_list = csvreader_output[0]
     warnings_dict = csvreader_output[1]
@@ -85,13 +85,3 @@ def model(context):
     print("        Statement Constraints")
     for element in tconstraint_elements:
         print(f"            {element}")
-
-
-@cli.command()
-@click.help_option(help="For testing")
-@click.pass_context
-def tester(context):
-    """Temporary sub-command for testing."""
-    echo = stderr_logger()
-    echo.info('This is an info message')
-    echo.warning('This is a warning message')

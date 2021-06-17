@@ -1,22 +1,7 @@
 Command-line tool
 -----------------
 
-To get basic help, run the command with no arguments or with the '--help' option::
-
-    $ dctap
-    $ dctap --help
-
-The subcommand 'generate' reads and displays the contents of a given CSV file (here: 'example.csv')::
-
-    $ dctap inspect example.csv
-
-The subcommend 'model' displays program built-ins for the DCTAP model::
-
-    $ dctap model
-Installation
-------------
-
-The following commands install 'dctap' in editable mode.
+One can install 'dctap' in editable mode as follows:
 
 .. code-block:: bash
 
@@ -36,16 +21,24 @@ on the filesystem.
 
     $ cd dctap-python
     dctap-python$ source .venv/bin/activate
-    dctap-python$ dctap
+    dctap-python$ cd ../../anywhere
+    anywhere$ dctap
     Usage: dctap [OPTIONS] COMMAND [ARGS]...
-
-    DC Tabular Application Profiles (DCTAP) - base module
-
+    
+      DC Tabular Application Profiles (DCTAP) - base module
+    
     Options:
       --version  Show version and exit
       --help     Show help and exit
-
+    
     Commands:
-      inspect  Inspect CSV file contents, normalized, maybe with expanded...
+      inspect  Output CSV contents to text, JSON, or YAML, with warnings
       model    Show DCTAP model built-ins for ready reference
+    
+The subcommand ``inspect`` reads and outputs the contents of a given CSV file::
 
+    $ dctap inspect example.csv
+
+The subcommend 'model' displays program built-ins for the DCTAP model::
+
+    $ dctap model

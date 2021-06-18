@@ -33,23 +33,62 @@ from pathlib import Path
 import pytest
 from dataclasses import asdict
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
-from .csvreader import csvreader, _get_rows
+from .csvreader import csvreader
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
 def _new_get_rows(csvfile):
-    """In csvreader.py, this plus _new_get_rows is called _get_rows now."""
+    """@@"""
+    csv_elements_list = _make_csv_elements_list()
+    element_aliases_dict = _make_element_aliases(csv_elements_list)
     tmp_buffer = StringBuffer(Path(csvfile).open().read())
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(',')
     new_header_line_list = list()
     for header in raw_header_line_list:
-        # INSERT PROCESSING OF 'header' here - normalization, etc
+        header = _shorten_and_lowercase(header)
+        header = _canonicalize_string(header, element_aliases_dict)
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     new_buffer = StringBuffer("".join([line + '\n' for line in csvlines_stripped]))
     return list(DictReader(new_buffer))
+
+def test_new_get_rows_correct_shapeID(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shape ID,property-ID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = [
+            {'shapeID': ':book', 
+             'propertyID': 'dcterms:creator'
+            }
+    ]
+    assert _new_get_rows(csvfile_name) == expected_output
+
+
+def test_new_get_rows_correct_a_real_mess(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "S ID,pr-opertyID___,valueShape     ,wildCard    \n"
+            ":book,dcterms:creator,:author,Yeah yeah yeah\n"
+    )
+    expected_output = [
+            {'shapeID': ':book', 
+             'propertyID': 'dcterms:creator',
+             'valueShape': ':author',
+             'wildcard': 'Yeah yeah yeah',
+            }
+    ]
+    assert _new_get_rows(csvfile_name) == expected_output
+
+#####################################################################
+
 
 def test_new_get_rows(tmp_path):
     """@@@"""
@@ -64,12 +103,12 @@ def test_new_get_rows(tmp_path):
             {'shapeID': ':book', 
              'propertyID': 'dcterms:creator', 
              'valueShape': ':author', 
-             'wildCard': 'Yeah yeah yeah'
+             'wildcard': 'Yeah yeah yeah'
             }, {
               'shapeID': ':author', 
               'propertyID': 'foaf:name', 
               'valueShape': '', 
-              'wildCard': ''}
+              'wildcard': ''}
     ]
     assert _new_get_rows(csvfile_name) == expected_output
 
@@ -171,7 +210,7 @@ def test_shorten_and_lowercase():
     assert _shorten_and_lowercase("Property-ID") == "propertyid"
 
 
-def test_get_rows(tmp_path):
+def test_new_get_rows(tmp_path):
     """@@@"""
     os.chdir(tmp_path)
     csvfile_name = Path(tmp_path).joinpath("some.csv")
@@ -184,17 +223,18 @@ def test_get_rows(tmp_path):
             {'shapeID': ':book', 
              'propertyID': 'dcterms:creator', 
              'valueShape': ':author', 
-             'wildCard': 'Yeah yeah yeah'
+             'wildcard': 'Yeah yeah yeah'
             }, {
               'shapeID': ':author', 
               'propertyID': 'foaf:name', 
               'valueShape': '', 
-              'wildCard': ''}
+              'wildcard': ''
+            }
     ]
-    assert _get_rows(csvfile_name) == expected_output
+    assert _new_get_rows(csvfile_name) == expected_output
 
 
-def test_get_rows_even_if_incorrect(tmp_path):
+def test_new_get_rows_even_if_incorrect(tmp_path):
     """@@@"""
     os.chdir(tmp_path)
     csvfile_name = Path(tmp_path).joinpath("some.csv")
@@ -203,11 +243,11 @@ def test_get_rows_even_if_incorrect(tmp_path):
             ":book,dcterms:creator\n"
     )
     expected_output = [
-            {'SID': ':book', 
-             'property ID': 'dcterms:creator'
+            {'shapeID': ':book', 
+             'propertyID': 'dcterms:creator'
             }
     ]
-    assert _get_rows(csvfile_name) == expected_output
+    assert _new_get_rows(csvfile_name) == expected_output
 
 
 #####################################################################

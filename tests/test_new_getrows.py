@@ -32,9 +32,9 @@ from io import StringIO as StringBuffer
 from pathlib import Path
 import pytest
 from dataclasses import asdict
-from .inspect import pprint_tapshapes, tapshapes_to_dicts
-from .csvreader import csvreader
-from .tapclasses import TAPShape, TAPStatementConstraint
+from dctap.inspect import pprint_tapshapes, tapshapes_to_dicts
+from dctap.csvreader import csvreader
+from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 
 def _new_get_rows(csvfile):

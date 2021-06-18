@@ -37,10 +37,52 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 
 def _preprocess_csvfile(csvfile):
     """@@@"""
+    tmp_buffer = StringBuffer(Path(csvfile).open().read())
+#    csvlines_stripped = [line for line in tmp_buffer]
+#    new_header_line_list = list()
+#    for enumerated_header in enumerate(list(tmp_buffer)[0].split(',')):
+#        enum, header = enumerated_header
+#        print(enum)
+#        print(enum)
+#        print(enum)
+#        print(enum)
+#        print(header)
+#        print(header)
+#        print(header)
+#        print(header)
+#        print(header)
+    return "".join(list(tmp_buffer))
+
+def test_preprocess_csvfile_fail():
+    """@@"""
+    #assert False
+
+#####################################################################
+
+def _preprocess_csvfile_thisworks(csvfile):
+    """@@@"""
+    tmp_buffer = StringBuffer(Path(csvfile).open().read())
+    return "".join(list(tmp_buffer))
+
+def test_preprocess_csvfile_thisworks(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = (
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    assert _preprocess_csvfile(csvfile_name) == expected_output
+
+#####################################################################
 
 def _fix_rows(rows, element_aliases_dict):
     """@@"""
-    valid_values = element_aliases_dict.values():
+    valid_values = element_aliases_dict.values()
     fixed_rows = dict()
     for row in rows:
         for dictkey in row.keys():

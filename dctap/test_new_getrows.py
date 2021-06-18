@@ -51,6 +51,8 @@ def _new_get_rows(csvfile):
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
+    if "propertyID" not in csvlines_stripped[0]:
+        raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
     new_buffer = StringBuffer("".join([line + '\n' for line in csvlines_stripped]))
     return list(DictReader(new_buffer))
 

@@ -27,6 +27,7 @@ first of two items with identical keys.
 """
 
 import os
+from csv import DictReader
 from io import StringIO as StringBuffer
 from pathlib import Path
 import pytest
@@ -35,8 +36,9 @@ from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader, _get_rows
 from .tapclasses import TAPShape, TAPStatementConstraint
 
-def _preprocess_csvfile_thisworks_best(csvfile):
-    """@@@"""
+
+def _new_get_rows(csvfile):
+    """In csvreader.py, this plus _new_get_rows is called _get_rows now."""
     tmp_buffer = StringBuffer(Path(csvfile).open().read())
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(',')
@@ -46,22 +48,31 @@ def _preprocess_csvfile_thisworks_best(csvfile):
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
-    return "".join([line + '\n' for line in csvlines_stripped])
+    new_buffer = StringBuffer("".join([line + '\n' for line in csvlines_stripped]))
+    return list(DictReader(new_buffer))
 
-
-def test_preprocess_csvfile_thisworks_best(tmp_path):
+def test_new_get_rows(tmp_path):
     """@@@"""
     os.chdir(tmp_path)
     csvfile_name = Path(tmp_path).joinpath("some.csv")
     csvfile_name.write_text(
-            "shapeID,propertyID\n"
-            ":book,dcterms:creator\n"
+            "shapeID,propertyID,valueShape,wildCard\n"
+            ":book,dcterms:creator,:author,Yeah yeah yeah\n"
+            ":author,foaf:name,,\n"
     )
-    expected_output = (
-            "shapeID,propertyID\n"
-            ":book,dcterms:creator\n"
-    )
-    assert _preprocess_csvfile_thisworks_best(csvfile_name) == expected_output
+    expected_output = [
+            {'shapeID': ':book', 
+             'propertyID': 'dcterms:creator', 
+             'valueShape': ':author', 
+             'wildCard': 'Yeah yeah yeah'
+            }, {
+              'shapeID': ':author', 
+              'propertyID': 'foaf:name', 
+              'valueShape': '', 
+              'wildCard': ''}
+    ]
+    assert _new_get_rows(csvfile_name) == expected_output
+
 
 #####################################################################
 
@@ -214,8 +225,23 @@ def _preprocess_csvfile_thisworks_better(csvfile):
     return "".join([line + '\n' for line in csvlines_stripped])
 
 
+def test_preprocess_csvfile_thisworks_better_too(tmp_path):
+    """Is this identical to the one below?"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = (
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    assert _preprocess_csvfile_thisworks_better(csvfile_name) == expected_output
+
+
 def test_preprocess_csvfile_thisworks_better(tmp_path):
-    """@@@"""
+    """Is this identical to the one above?"""
     os.chdir(tmp_path)
     csvfile_name = Path(tmp_path).joinpath("some.csv")
     csvfile_name.write_text(

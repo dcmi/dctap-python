@@ -2,6 +2,8 @@
 
 from collections import defaultdict
 from csv import DictReader
+from io import StringIO as StringBuffer
+from pathlib import Path
 from dataclasses import asdict
 from typing import Dict, List
 from pathlib import Path
@@ -20,13 +22,28 @@ def csvreader(csvfile):
 
 
 def _get_rows(csvfile):
-    """Return list of row dicts from CSV file."""
-    try:
-        reader = DictReader(Path(csvfile).open(newline="", encoding="utf-8-sig"))
-    except IsADirectoryError:
-        raise CsvError("Must be a CSV file.")
-    return list(reader)
+    """@@@"""
+    tmp_buffer = StringBuffer(Path(csvfile).open().read())
+    csvlines_stripped = [line.strip() for line in tmp_buffer]
+    raw_header_line_list = csvlines_stripped[0].split(',')
+    new_header_line_list = list()
+    for header in raw_header_line_list:
+        # INSERT PROCESSING OF 'header' here - normalization, etc
+        new_header_line_list.append(header)
+    new_header_line_str = ",".join(new_header_line_list)
+    csvlines_stripped[0] = new_header_line_str
+    new_buffer = StringBuffer("".join([line + '\n' for line in csvlines_stripped]))
+    return list(DictReader(new_buffer))
 
+
+# def _get_rows(csvfile):
+#     """Return list of row dicts from CSV file."""
+#     try:
+#         reader = DictReader(Path(csvfile).open(newline="", encoding="utf-8-sig"))
+#     except IsADirectoryError:
+#         raise CsvError("Must be a CSV file.")
+#     return list(reader)
+# 
 
 def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
     """Return tuple: list of TAPShape objects and list of any warnings."""

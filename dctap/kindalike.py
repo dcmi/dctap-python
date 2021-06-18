@@ -35,6 +35,9 @@ from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader, _get_rows
 from .tapclasses import TAPShape, TAPStatementConstraint
 
+def _preprocess_csvfile(csvfile):
+    """@@@"""
+
 def _fix_rows(rows, element_aliases_dict):
     """@@"""
     valid_values = element_aliases_dict.values():

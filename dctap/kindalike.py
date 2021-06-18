@@ -35,20 +35,21 @@ from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader, _get_rows
 from .tapclasses import TAPShape, TAPStatementConstraint
 
-def _preprocess_csvfile(csvfile):
+def _preprocess_csvfile_thisworks_best(csvfile):
     """@@@"""
     tmp_buffer = StringBuffer(Path(csvfile).open().read())
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(',')
     new_header_line_list = list()
     for header in raw_header_line_list:
+        # INSERT PROCESSING OF 'header' here - normalization, etc
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     return "".join([line + '\n' for line in csvlines_stripped])
 
 
-def test_preprocess_csvfile(tmp_path):
+def test_preprocess_csvfile_thisworks_best(tmp_path):
     """@@@"""
     os.chdir(tmp_path)
     csvfile_name = Path(tmp_path).joinpath("some.csv")
@@ -60,49 +61,7 @@ def test_preprocess_csvfile(tmp_path):
             "shapeID,propertyID\n"
             ":book,dcterms:creator\n"
     )
-    assert _preprocess_csvfile(csvfile_name) == expected_output
-
-#####################################################################
-
-def _preprocess_csvfile_thisworks(csvfile):
-    """@@@"""
-    tmp_buffer = StringBuffer(Path(csvfile).open().read())
-    some_list = list(tmp_buffer)
-    # some_list: ['shapeID,propertyID\n', ':book,dcterms:creator\n']
-    return "".join(some_list)
-
-def test_preprocess_csvfile_thisworks(tmp_path):
-    """@@@"""
-    os.chdir(tmp_path)
-    csvfile_name = Path(tmp_path).joinpath("some.csv")
-    csvfile_name.write_text(
-            "shapeID,propertyID\n"
-            ":book,dcterms:creator\n"
-    )
-    expected_output = (
-            "shapeID,propertyID\n"
-            ":book,dcterms:creator\n"
-    )
-    assert _preprocess_csvfile_thisworks(csvfile_name) == expected_output
-
-#####################################################################
-
-def _fix_rows(rows, element_aliases_dict):
-    """@@"""
-    valid_values = element_aliases_dict.values()
-    fixed_rows = dict()
-    for row in rows:
-        for dictkey in row.keys():
-            if dictkey not in valid_values:
-                new_dictkey = _canonicalize_string(dictkey, element_aliases_dict)
-    # if "propertyID" not in reader.fieldnames:
-    #     raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
-
-def test_fix_rows():
-    """@@"""
-
-#            fake_dictkey = normalize_dictkey(dictkey)
-
+    assert _preprocess_csvfile_thisworks_best(csvfile_name) == expected_output
 
 #####################################################################
 
@@ -114,16 +73,6 @@ def _canonicalize_string(some_str, element_aliases_dict):
         if key == some_str:
             some_str = element_aliases_dict[key]
     return some_str
-
-
-def test_canonicalize_string():
-    """@@@"""
-    csv_elements_list = _make_csv_elements_list()
-    element_aliases_dict = _make_element_aliases(csv_elements_list)
-    assert _canonicalize_string("sid", element_aliases_dict) == "shapeID"
-    assert _canonicalize_string("SHAPE ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_string("SHAPE___ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_string("rid", element_aliases_dict) == "rid"
 
 
 def _shorten_and_lowercase(some_str=None):
@@ -156,6 +105,20 @@ def _make_element_aliases(csv_elements_list=None):
         element_aliases_dict[shortkey] = csv_elem     # { shortkey: camelcasedValue }
         element_aliases_dict[lowerkey] = csv_elem     # { lowerkey: camelcasedValue }
     return element_aliases_dict
+
+
+#####################################################################
+#####################################################################
+
+
+def test_canonicalize_string():
+    """@@@"""
+    csv_elements_list = _make_csv_elements_list()
+    element_aliases_dict = _make_element_aliases(csv_elements_list)
+    assert _canonicalize_string("sid", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("SHAPE ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("SHAPE___ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("rid", element_aliases_dict) == "rid"
 
 
 def test_make_element_aliases():
@@ -236,6 +199,55 @@ def test_get_rows_even_if_incorrect(tmp_path):
     assert _get_rows(csvfile_name) == expected_output
 
 
+#####################################################################
 
-#    for enumerated_header in enumerate(list(tmp_buffer)[0].split(',')):
-#        enum, header = enumerated_header
+def _preprocess_csvfile_thisworks_better(csvfile):
+    """@@@"""
+    tmp_buffer = StringBuffer(Path(csvfile).open().read())
+    csvlines_stripped = [line.strip() for line in tmp_buffer]
+    raw_header_line_list = csvlines_stripped[0].split(',')
+    new_header_line_list = list()
+    for header in raw_header_line_list:
+        new_header_line_list.append(header)
+    new_header_line_str = ",".join(new_header_line_list)
+    csvlines_stripped[0] = new_header_line_str
+    return "".join([line + '\n' for line in csvlines_stripped])
+
+
+def test_preprocess_csvfile_thisworks_better(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = (
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    assert _preprocess_csvfile_thisworks_better(csvfile_name) == expected_output
+
+#####################################################################
+
+def _preprocess_csvfile_thisworks(csvfile):
+    """@@@"""
+    tmp_buffer = StringBuffer(Path(csvfile).open().read())
+    some_list = list(tmp_buffer)
+    # some_list: ['shapeID,propertyID\n', ':book,dcterms:creator\n']
+    return "".join(some_list)
+
+def test_preprocess_csvfile_thisworks(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = (
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    assert _preprocess_csvfile_thisworks(csvfile_name) == expected_output
+

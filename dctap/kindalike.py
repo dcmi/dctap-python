@@ -1,99 +1,177 @@
-"""DC Tabular Application Profiles (DCTAP) - base module"""
+"""Corrective lens for headers:
 
-import sys
-import json as j
-from ruamel.yaml import YAML
+Under development:
+*   _canonicalize_string(canonical_str, given_str)
+
+Done:
+*   _normalize_csvelement_given(csvelement)          
+     Deletes underscores, dashes, spaces, then lowercases.
+
+*   _make_csv_elements_list(dclasses=[TAPShape, TAPStatementConstraint])
+     Derives list of CSV row elements from the TAP dataclasses.
+     csv_elements_list is passed to _make_element_aliases.
+
+*   _make_element_aliases(csv_elements_list)
+     From list of CSV row elements: { shortkey/lowerkey: element }.
+     Returns dictionary of element aliases.
+
+"""
+
+import os
+from pathlib import Path
+import pytest
 from dataclasses import asdict
-import click
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader, _get_rows
 from .tapclasses import TAPShape, TAPStatementConstraint
-from .loggers import stderr_logger, warning_logger, debug_logger
 
-## This will take _get_rows() output: list of dictionaries, 
-## where each row is a dictionary - shape elements and statement 
-## constraint elements together
-#     expected_csvrow_dicts_list = [
-#         {
-#             'shapeID': ':book',
-#             'propertyID': 'dc:creator',
-#             'valueConstraint': '',
-#             'valueShape': ':author'
-#         }, {
-#             'shapeID': '',
-#             'propertyID': 'dc:type',
-#             'valueConstraint': 'so:Book',
-#             'valueShape': ''
-#         }, {
-#             'shapeID': ':author',
-#             'propertyID': 'foaf:name',
-#             'valueConstraint': '',
-#             'valueShape': ''
-#         }
-#     ]
-
-#     shape_elements = list(asdict(TAPShape()))
-#     shape_elements.remove('sc_list')
-#     shape_elements.remove('start')
-#     shape_elements.remove('sh_warnings')
-#     tconstraint_elements = list(asdict(TAPStatementConstraint()))
-#     tconstraint_elements.remove('sc_warnings')
-#     all_elements = shape_elements + tconstraint_elements
-
-# Will use csvreader._get_rows()
-# - note: would need to normalize "if propertyID not in..."
-
-def normalize_dictkey(dictkey=None):
-    """@@@"""
-    dictkey = dictkey.replace(" ", "")
-    dictkey = dictkey.replace("_", "")
-    dictkey = dictkey.lower()
-
-def string_kindalike(canonical_str=None, given_str=None):
+def _canonicalize_string(given_str=None):
     """Tests whether given string matches canonical as per fuzzy criteria."""
-    line_number = 1
-    for line in csvfile:
-        if line_number == 1:
-        output.append(line)
-    print(output)
+    canonical_string = given_str
+    return canonical_string
 
-if __name__ == "__main__": 
-    new_rowlist = list()
-    for row in rows:
-        new_row = dict()
-        for dictkey in row.keys():
-            fake_dictkey = normalize_dictkey(dictkey)
->>> from dctap import TAPShape, TAPStatementConstraint
-... all_elements = list(asdict(TAPShape())) + list(asdict(TAPStatementConstraint()))
->>> abbrev_dict = dict()
->>> for elem in all_elements:
-...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem if l.isupper()])
-...     abbrev_dict[dict_key] = elem
-...
->>> abbrev_dict
-{'sid': 'shapeID', 'sl': 'shapeLabel', 's': 'sc_list', 'pid': 'propertyID', 'pl': 'propertyLabel', 'm': 'mandatory', 'r': 'repeatable', 'vnt': 'valueNodeType', 'vdt': 'valueDataType', 'vc': 'valueConstraint', 'vct': 'valueConstraintType', 'vs': 'valueShape', 'n': 'note'}
->>> abbrev_dict = dict()
->>> for elem in all_elements:
-...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem.lower() if l.isupper()])
-...     abbrev_dict[dict_key] = elem
-...
->>> abbrev_dict = dict()
->>> for elem in all_elements:
-...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem.lower() if l.isupper()])
-...     abbrev_dict[dict_key] = elem
-...
->>> abbrev_dict
-{'s': 'sc_list', 'p': 'propertyLabel', 'm': 'mandatory', 'r': 'repeatable', 'v': 'valueShape', 'n': 'note'}
->>> abbrev_dict = dict()
->>> for elem in all_elements:
-...     dict_key = "".join([ elem[0] ] + [l.lower() for l in elem if l.isupper()])
-...     abbrev_dict[dict_key] = elem
-...
->>> abbrev_dict
-{'sid': 'shapeID', 'sl': 'shapeLabel', 's': 'sc_list', 'pid': 'propertyID', 'pl': 'propertyLabel', 'm': 'mandatory', 'r': 'repeatable', 'vnt': 'valueNodeType', 'vdt': 'valueDataType', 'vc': 'valueConstraint', 'vct': 'valueConstraintType', 'vs': 'valueShape', 'n': 'note'}
->>> elem_dict = dict()
->>> for elem in all_elements:
-...     elem_dict[elem.lower()] = elem
-...
->>> elem_dict
-{'shapeid': 'shapeID', 'shapelabel': 'shapeLabel', 'start': 'start', 'sc_list': 'sc_list', 'propertyid': 'propertyID', 'propertylabel': 'propertyLabel', 'mandatory': 'mandatory', 'repeatable': 'repeatable', 'valuenodetype': 'valueNodeType', 'valuedatatype': 'valueDataType', 'valueconstraint': 'valueConstraint', 'valueconstrainttype': 'valueConstraintType', 'valueshape': 'valueShape', 'note': 'note'}
+
+def test_canonicalize_string():
+    """@@@"""
+    given_str = "propertyID"
+    canonical_str = "propertyID"
+    assert _canonicalize_string(given_str) == canonical_str
+
+#    new_rowlist = list()
+#    for row in rows:
+#        new_row = dict()
+#        for dictkey in row.keys():
+#            fake_dictkey = normalize_dictkey(dictkey)
+
+
+@pytest.mark.skip
+def test_correct_header(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "SID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = [
+            {'shapeID': ':book', 
+             'propertyID': 'dcterms:creator'
+            }
+    ]
+    assert _corrective_lens(csvfile_name) == expected_output
+
+
+def _normalize_csvelement_given(csvelement=None):
+    """Deletes underscores, dashes, spaces, then lowercases."""
+    csvelement = csvelement.replace(" ", "")
+    csvelement = csvelement.replace("_", "")
+    csvelement = csvelement.replace("-", "")
+    csvelement = csvelement.lower()
+    return csvelement
+
+
+#####################################################################
+
+def _make_csv_elements_list(dclasses=[TAPShape, TAPStatementConstraint]):
+    """Derives list of CSV row elements from the TAP dataclasses."""
+    shape_elements = list(asdict(TAPShape()))
+    shape_elements.remove('sc_list')
+    shape_elements.remove('start')
+    shape_elements.remove('sh_warnings')
+    tconstraint_elements = list(asdict(TAPStatementConstraint()))
+    tconstraint_elements.remove('sc_warnings')
+    return shape_elements + tconstraint_elements
+
+
+def _make_element_aliases(csv_elements_list=None):
+    """From list of CSV row elements: { shortkey/lowerkey: element }."""
+    element_aliases_dict = dict()
+    for csv_elem in csv_elements_list:
+        # shortkey: initial letter (lowercase) + each uppercase letter, lowercased
+        shortkey = "".join([ csv_elem[0] ] + [l.lower() for l in csv_elem if l.isupper()])
+        lowerkey = csv_elem.lower()
+        element_aliases_dict[shortkey] = csv_elem     # { shortkey: camelcasedValue }
+        element_aliases_dict[lowerkey] = csv_elem     # { lowerkey: camelcasedValue }
+    return element_aliases_dict
+
+
+def test_make_element_aliases():
+    """@@@"""
+    expected_element_aliases_dict = {
+        'sid': 'shapeID', 
+        'sl': 'shapeLabel', 
+        'pid': 'propertyID', 
+        'pl': 'propertyLabel', 
+        'm': 'mandatory', 
+        'r': 'repeatable', 
+        'vnt': 'valueNodeType', 
+        'vdt': 'valueDataType', 
+        'vc': 'valueConstraint', 
+        'vct': 'valueConstraintType', 
+        'vs': 'valueShape', 
+        'n': 'note',
+        'shapeid': 'shapeID', 
+        'shapelabel': 'shapeLabel', 
+        'propertyid': 'propertyID', 
+        'propertylabel': 'propertyLabel', 
+        'mandatory': 'mandatory', 
+        'repeatable': 'repeatable', 
+        'valuenodetype': 'valueNodeType', 
+        'valuedatatype': 'valueDataType', 
+        'valueconstraint': 'valueConstraint', 
+        'valueconstrainttype': 'valueConstraintType', 
+        'valueshape': 'valueShape', 
+        'note': 'note',
+    }
+    csv_elements_list = _make_csv_elements_list()
+    assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
+
+def test_normalize_csvelement_given():
+    """@@@"""
+    given    = "Property ID"
+    expected = "propertyid"
+    assert _normalize_csvelement_given(given) == expected
+
+
+def test_normalize_csvelement_given_underscores():
+    """@@@"""
+    given    = "Property___ID"
+    expected = "propertyid"
+    assert _normalize_csvelement_given(given) == expected
+
+
+def test_normalize_csvelement_given_spaces():
+    """@@@"""
+    given    = "P rop erty   ID"
+    expected = "propertyid"
+    assert _normalize_csvelement_given(given) == expected
+
+
+def test_normalize_csvelement_given_dashes():
+    """@@@"""
+    given    = "P-rop-erty---ID"
+    expected = "propertyid"
+    assert _normalize_csvelement_given(given) == expected
+
+
+def test_get_rows(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shapeID,propertyID,valueShape,wildCard\n"
+            ":book,dcterms:creator,:author,Yeah yeah yeah\n"
+            ":author,foaf:name,,\n"
+    )
+    expected_output = [
+            {'shapeID': ':book', 
+             'propertyID': 'dcterms:creator', 
+             'valueShape': ':author', 
+             'wildCard': 'Yeah yeah yeah'
+            }, {
+              'shapeID': ':author', 
+              'propertyID': 'foaf:name', 
+              'valueShape': '', 
+              'wildCard': ''}
+    ]
+    assert _get_rows(csvfile_name) == expected_output

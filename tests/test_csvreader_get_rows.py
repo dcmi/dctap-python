@@ -11,9 +11,8 @@ def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     os.chdir(tmp_path)
     csvfile_name = Path(tmp_path).joinpath("some.csv")
     csvfile_name.write_text(
-        (
             "shapeID,propertyID,\n" 
-            ":a,dct:creator,URI,comment,comment two\n")
+            ":a,dct:creator,URI,comment,comment two\n"
         )
     expected_output = [
         {

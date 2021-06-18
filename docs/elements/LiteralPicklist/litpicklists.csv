@@ -1,0 +1,3 @@
+shapeID,propertyID,valueConstraint,valueConstraintType
+:book,:color,red green yellow,LiteralPicklist
+:book,:color,red,LiteralPicklist

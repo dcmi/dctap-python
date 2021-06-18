@@ -32,12 +32,13 @@ Interpreted, with a warning, as::
 
     WARNING Shape :default => valueDataType: 'Date' is not an IRI or Compact IRI.
 
-If the node type is given as "URI" or "IRI", the 
-datatype element should be blank because datatypes 
-are only used with literal values.
+Datatypes are used only with literal values, so 
+if a node is of type "URI", "IRI", or "BNode" and 
+any datatype is provided, this will trigger a 
+warning.
 
-If a URI is meant to be processed as a string, the 
-node type should be provided as Literal.
+Note that if a URI is meant to be processed as a 
+string, the node type should be "Literal".
 
 .. csv-table:: 
    :file: valueDataType_with_valueNodeType_URI.csv
@@ -49,8 +50,13 @@ Interpreted, with a warning, as::
         Shape
             shapeID:                 :default
             Statement Constraint
-                propertyID:          dct:creator
+                propertyID:          dcterms:creator
                 valueNodeType:       iri
+                valueDataType:       xsd:string
+            Statement Constraint
+                propertyID:          dcterms:subject
+                valueNodeType:       bnode
                 valueDataType:       xsd:string
 
     WARNING Shape :default => valueDataType: Datatypes are for literals only, and node type provided is 'iri'.
+    WARNING Shape :default => valueDataType: Datatypes are for literals only, and node type provided is 'bnode'.

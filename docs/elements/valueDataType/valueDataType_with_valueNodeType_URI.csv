@@ -1,2 +1,3 @@
 propertyID,valueNodeType,valueDataType
-dct:creator,IRI,xsd:string
+dcterms:creator,IRI,xsd:string
+dcterms:subject,BNODE,xsd:string

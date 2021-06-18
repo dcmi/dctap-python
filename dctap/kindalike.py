@@ -1,19 +1,24 @@
 """Corrective lens for headers:
 
 Under development:
-*   _canonicalize_string(canonical_str, given_str)
+*   _canonicalize_string(some_str, element_aliases_dict)
+     Takes 
 
 Done:
-*   _normalize_csvelement_given(csvelement)          
+*   _shorten_and_lowercase(csvelement)          
      Deletes underscores, dashes, spaces, then lowercases.
 
-*   _make_csv_elements_list(dclasses=[TAPShape, TAPStatementConstraint])
+*   _make_csv_elements_list()
      Derives list of CSV row elements from the TAP dataclasses.
+     No arguments are passed
+     csv_elements_list is returned
      csv_elements_list is passed to _make_element_aliases.
 
 *   _make_element_aliases(csv_elements_list)
      From list of CSV row elements: { shortkey/lowerkey: element }.
-     Returns dictionary of element aliases.
+     csv_elements_list is passed
+     element_aliases_dict is returned
+     element_aliases_dict is passed to _canonicalize_string
 
 """
 
@@ -25,17 +30,14 @@ from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader, _get_rows
 from .tapclasses import TAPShape, TAPStatementConstraint
 
-def _canonicalize_string(given_str=None):
-    """Tests whether given string matches canonical as per fuzzy criteria."""
-    canonical_string = given_str
-    return canonical_string
+def _canonicalize_string(some_str, element_aliases_dict):
+    """Given some string, returns canonical string or actual string."""
+    some_str = _shorten_and_lowercase(some_str)
+    for key in element_aliases_dict.keys():
+        if key == some_str:
+            some_str = element_aliases_dict[key]
+    return some_str
 
-
-def test_canonicalize_string():
-    """@@@"""
-    given_str = "propertyID"
-    canonical_str = "propertyID"
-    assert _canonicalize_string(given_str) == canonical_str
 
 #    new_rowlist = list()
 #    for row in rows:
@@ -61,18 +63,27 @@ def test_correct_header(tmp_path):
     assert _corrective_lens(csvfile_name) == expected_output
 
 
-def _normalize_csvelement_given(csvelement=None):
-    """Deletes underscores, dashes, spaces, then lowercases."""
-    csvelement = csvelement.replace(" ", "")
-    csvelement = csvelement.replace("_", "")
-    csvelement = csvelement.replace("-", "")
-    csvelement = csvelement.lower()
-    return csvelement
-
-
 #####################################################################
 
-def _make_csv_elements_list(dclasses=[TAPShape, TAPStatementConstraint]):
+def test_canonicalize_string():
+    """@@@"""
+    csv_elements_list = _make_csv_elements_list()
+    element_aliases_dict = _make_element_aliases(csv_elements_list)
+    assert _canonicalize_string("sid", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("SHAPE ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("SHAPE___ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("rid", element_aliases_dict) == "rid"
+
+
+def _shorten_and_lowercase(some_str=None):
+    """Deletes underscores, dashes, spaces, then lowercases."""
+    some_str = some_str.replace(" ", "")
+    some_str = some_str.replace("_", "")
+    some_str = some_str.replace("-", "")
+    some_str = some_str.lower()
+    return some_str
+
+def _make_csv_elements_list():
     """Derives list of CSV row elements from the TAP dataclasses."""
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove('sc_list')
@@ -126,32 +137,32 @@ def test_make_element_aliases():
     csv_elements_list = _make_csv_elements_list()
     assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
 
-def test_normalize_csvelement_given():
+def test_shorten_and_lowercase():
     """@@@"""
     given    = "Property ID"
     expected = "propertyid"
-    assert _normalize_csvelement_given(given) == expected
+    assert _shorten_and_lowercase(given) == expected
 
 
-def test_normalize_csvelement_given_underscores():
+def test_shorten_and_lowercase_underscores():
     """@@@"""
     given    = "Property___ID"
     expected = "propertyid"
-    assert _normalize_csvelement_given(given) == expected
+    assert _shorten_and_lowercase(given) == expected
 
 
-def test_normalize_csvelement_given_spaces():
+def test_shorten_and_lowercase_spaces():
     """@@@"""
     given    = "P rop erty   ID"
     expected = "propertyid"
-    assert _normalize_csvelement_given(given) == expected
+    assert _shorten_and_lowercase(given) == expected
 
 
-def test_normalize_csvelement_given_dashes():
+def test_shorten_and_lowercase_dashes():
     """@@@"""
     given    = "P-rop-erty---ID"
     expected = "propertyid"
-    assert _normalize_csvelement_given(given) == expected
+    assert _shorten_and_lowercase(given) == expected
 
 
 def test_get_rows(tmp_path):

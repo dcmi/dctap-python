@@ -25,10 +25,7 @@ def _get_rows(csvfile):
         reader = DictReader(Path(csvfile).open(newline="", encoding="utf-8-sig"))
     except IsADirectoryError:
         raise CsvError("Must be a CSV file.")
-    rows = list(reader)
-    if "propertyID" not in reader.fieldnames:
-        raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
-    return rows
+    return list(reader)
 
 
 def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:

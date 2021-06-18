@@ -20,15 +20,40 @@ Done:
      element_aliases_dict is returned
      element_aliases_dict is passed to _canonicalize_string
 
+Note: If a dictionary is declared with two identical keys, 
+the second key/value declared will clobber the first.
+The CSV DictReader will also clobber the key/value pair of the 
+first of two items with identical keys.
 """
 
 import os
+from io import StringIO as StringBuffer
 from pathlib import Path
 import pytest
 from dataclasses import asdict
 from .inspect import pprint_tapshapes, tapshapes_to_dicts
 from .csvreader import csvreader, _get_rows
 from .tapclasses import TAPShape, TAPStatementConstraint
+
+def _fix_rows(rows, element_aliases_dict):
+    """@@"""
+    valid_values = element_aliases_dict.values():
+    fixed_rows = dict()
+    for row in rows:
+        for dictkey in row.keys():
+            if dictkey not in valid_values:
+                new_dictkey = _canonicalize_string(dictkey, element_aliases_dict)
+    # if "propertyID" not in reader.fieldnames:
+    #     raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
+
+def test_fix_rows():
+    """@@"""
+
+#            fake_dictkey = normalize_dictkey(dictkey)
+
+
+#####################################################################
+
 
 def _canonicalize_string(some_str, element_aliases_dict):
     """Given some string, returns canonical string or actual string."""
@@ -38,32 +63,6 @@ def _canonicalize_string(some_str, element_aliases_dict):
             some_str = element_aliases_dict[key]
     return some_str
 
-
-#    new_rowlist = list()
-#    for row in rows:
-#        new_row = dict()
-#        for dictkey in row.keys():
-#            fake_dictkey = normalize_dictkey(dictkey)
-
-
-@pytest.mark.skip
-def test_correct_header(tmp_path):
-    """@@@"""
-    os.chdir(tmp_path)
-    csvfile_name = Path(tmp_path).joinpath("some.csv")
-    csvfile_name.write_text(
-            "SID,propertyID\n"
-            ":book,dcterms:creator\n"
-    )
-    expected_output = [
-            {'shapeID': ':book', 
-             'propertyID': 'dcterms:creator'
-            }
-    ]
-    assert _corrective_lens(csvfile_name) == expected_output
-
-
-#####################################################################
 
 def test_canonicalize_string():
     """@@@"""
@@ -82,6 +81,7 @@ def _shorten_and_lowercase(some_str=None):
     some_str = some_str.replace("-", "")
     some_str = some_str.lower()
     return some_str
+
 
 def _make_csv_elements_list():
     """Derives list of CSV row elements from the TAP dataclasses."""
@@ -137,32 +137,12 @@ def test_make_element_aliases():
     csv_elements_list = _make_csv_elements_list()
     assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
 
+
 def test_shorten_and_lowercase():
     """@@@"""
-    given    = "Property ID"
-    expected = "propertyid"
-    assert _shorten_and_lowercase(given) == expected
-
-
-def test_shorten_and_lowercase_underscores():
-    """@@@"""
-    given    = "Property___ID"
-    expected = "propertyid"
-    assert _shorten_and_lowercase(given) == expected
-
-
-def test_shorten_and_lowercase_spaces():
-    """@@@"""
-    given    = "P rop erty   ID"
-    expected = "propertyid"
-    assert _shorten_and_lowercase(given) == expected
-
-
-def test_shorten_and_lowercase_dashes():
-    """@@@"""
-    given    = "P-rop-erty---ID"
-    expected = "propertyid"
-    assert _shorten_and_lowercase(given) == expected
+    assert _shorten_and_lowercase("Property ID") == "propertyid"
+    assert _shorten_and_lowercase("Property__ID") == "propertyid"
+    assert _shorten_and_lowercase("Property-ID") == "propertyid"
 
 
 def test_get_rows(tmp_path):
@@ -184,5 +164,21 @@ def test_get_rows(tmp_path):
               'propertyID': 'foaf:name', 
               'valueShape': '', 
               'wildCard': ''}
+    ]
+    assert _get_rows(csvfile_name) == expected_output
+
+
+def test_get_rows_even_if_incorrect(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "SID,property ID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = [
+            {'SID': ':book', 
+             'property ID': 'dcterms:creator'
+            }
     ]
     assert _get_rows(csvfile_name) == expected_output

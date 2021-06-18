@@ -1,0 +1,3 @@
+shapeID,propertyID,valueShape,wildCard
+:book,dcterms:creator,:author,Yeah yeah yeah
+:author,foaf:name,,

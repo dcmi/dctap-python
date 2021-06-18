@@ -38,31 +38,38 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 def _preprocess_csvfile(csvfile):
     """@@@"""
     tmp_buffer = StringBuffer(Path(csvfile).open().read())
-#    csvlines_stripped = [line for line in tmp_buffer]
-#    new_header_line_list = list()
-#    for enumerated_header in enumerate(list(tmp_buffer)[0].split(',')):
-#        enum, header = enumerated_header
-#        print(enum)
-#        print(enum)
-#        print(enum)
-#        print(enum)
-#        print(header)
-#        print(header)
-#        print(header)
-#        print(header)
-#        print(header)
-    return "".join(list(tmp_buffer))
+    csvlines_stripped = [line.strip() for line in tmp_buffer]
+    raw_header_line_list = csvlines_stripped[0].split(',')
+    new_header_line_list = list()
+    for header in raw_header_line_list:
+        new_header_line_list.append(header)
+    new_header_line_str = ",".join(new_header_line_list)
+    csvlines_stripped[0] = new_header_line_str
+    return "".join([line + '\n' for line in csvlines_stripped])
 
-def test_preprocess_csvfile_fail():
-    """@@"""
-    #assert False
+
+def test_preprocess_csvfile(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    csvfile_name = Path(tmp_path).joinpath("some.csv")
+    csvfile_name.write_text(
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    expected_output = (
+            "shapeID,propertyID\n"
+            ":book,dcterms:creator\n"
+    )
+    assert _preprocess_csvfile(csvfile_name) == expected_output
 
 #####################################################################
 
 def _preprocess_csvfile_thisworks(csvfile):
     """@@@"""
     tmp_buffer = StringBuffer(Path(csvfile).open().read())
-    return "".join(list(tmp_buffer))
+    some_list = list(tmp_buffer)
+    # some_list: ['shapeID,propertyID\n', ':book,dcterms:creator\n']
+    return "".join(some_list)
 
 def test_preprocess_csvfile_thisworks(tmp_path):
     """@@@"""
@@ -76,7 +83,7 @@ def test_preprocess_csvfile_thisworks(tmp_path):
             "shapeID,propertyID\n"
             ":book,dcterms:creator\n"
     )
-    assert _preprocess_csvfile(csvfile_name) == expected_output
+    assert _preprocess_csvfile_thisworks(csvfile_name) == expected_output
 
 #####################################################################
 
@@ -227,3 +234,8 @@ def test_get_rows_even_if_incorrect(tmp_path):
             }
     ]
     assert _get_rows(csvfile_name) == expected_output
+
+
+
+#    for enumerated_header in enumerate(list(tmp_buffer)[0].split(',')):
+#        enum, header = enumerated_header

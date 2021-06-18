@@ -1,5 +1,3 @@
->>> from io import StringIO as StringBuffer
->>> from pathlib import Path
 >>> tmp_buffer = StringBuffer()
 >>> type(tmp_buffer)
 <class '_io.StringIO'>

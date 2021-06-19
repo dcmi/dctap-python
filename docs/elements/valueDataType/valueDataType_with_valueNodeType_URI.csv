@@ -1,0 +1,3 @@
+propertyID,valueNodeType,valueDataType
+dcterms:creator,IRI,xsd:string
+dcterms:subject,BNODE,xsd:string

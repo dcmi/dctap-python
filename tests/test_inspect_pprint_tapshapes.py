@@ -5,7 +5,6 @@ from dataclasses import asdict
 from textwrap import dedent
 from dctap.tapclasses import TAPShape, TAPStatementConstraint
 from dctap.inspect import pprint_tapshapes
-from dctap.csvreader import _get_tapshapes
 
 SHAPES_LIST = [
     TAPShape(

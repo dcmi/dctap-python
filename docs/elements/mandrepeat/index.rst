@@ -58,11 +58,10 @@ This is displayed as::
             shapeID:                 :default
             Statement Constraint
                 propertyID:          dc:creator
-                mandatory:           True
-                repeatable:          False
+                repeatable:          N
             Statement Constraint
                 propertyID:          dc:date
-                mandatory:           False
+                mandatory:           Y
 
     WARNING Shape :default => repeatable: 'N' is not a supported Boolean value.
     WARNING Shape :default => mandatory: 'Y' is not a supported Boolean value.
@@ -86,4 +85,3 @@ True        True        1     -1
 Users of DCTAP in areas such as biology, where more
 expressive cardinality is required, may want to extend
 the model with such ranges.
-

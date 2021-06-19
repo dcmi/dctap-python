@@ -1,4 +1,4 @@
-.. _elements
+.. _elements:
 
 Statement Constraint elements
 -----------------------------
@@ -38,7 +38,6 @@ Interpreted as::
    propertyID/index
    propertyLabel/index
    mandrepeat/index
-   valueConstraint/index
    valueConstraintType/index
    valueDataType/index
    valueNodeType/index

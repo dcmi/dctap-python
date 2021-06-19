@@ -6,6 +6,7 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 
 def pprint_tapshapes(tapshapes_list, verbose=False):
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
+
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove('sc_list')
     # 2021-06-09 Removing 'start' for now, not yet part of official DCTAP spec.
@@ -34,6 +35,10 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
                 indent12 = (12 * " " + key + ": ")
                 while len(indent12) < 33:
                     indent12 = indent12 + " "
+                if tc_dict[key] == True:
+                    tc_dict[key] = "True"
+                if tc_dict[key] == False:
+                    tc_dict[key] = "False"
                 if not verbose and tc_dict[key]:
                     pprint_output.append(indent12 + str(tc_dict[key]))
                 if verbose:

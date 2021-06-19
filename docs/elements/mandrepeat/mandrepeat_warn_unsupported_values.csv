@@ -1,2 +1,3 @@
 propertyID,mandatory,repeatable
-dc:subject,Y,N
+dc:creator,,N
+dc:date,Y,

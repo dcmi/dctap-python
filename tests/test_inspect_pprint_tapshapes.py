@@ -18,7 +18,7 @@ SHAPES_LIST = [
                 mandatory=False,
                 note=None,
                 propertyLabel=None,
-                repeatable=False,
+                repeatable=True,
                 valueConstraint=None,
                 valueConstraintType=None,
                 valueDataType=None,
@@ -29,7 +29,7 @@ SHAPES_LIST = [
                 mandatory=False,
                 note=None,
                 propertyLabel=None,
-                repeatable=False,
+                repeatable=True,
                 valueConstraint=None,
                 valueConstraintType=None,
                 valueDataType=None,
@@ -45,10 +45,8 @@ SHAPES_LIST = [
         sc_list=[
             TAPStatementConstraint(
                 propertyID="foaf:name",
-                mandatory=False,
                 note=None,
                 propertyLabel=None,
-                repeatable=False,
                 valueConstraint=None,
                 valueConstraintType=None,
                 valueDataType=None,
@@ -69,8 +67,12 @@ def test_pprint_tapshapes_two_shapes():
             shapeID:                 :a
             Statement Constraint
                 propertyID:          dct:creator
+                mandatory:           False
+                repeatable:          True
             Statement Constraint
                 propertyID:          dct:date
+                mandatory:           False
+                repeatable:          True
         Shape
             shapeID:                 :b
             Statement Constraint
@@ -92,7 +94,7 @@ def test_pprint_tapshapes_two_shapes_verbose():
                 propertyID:          dct:creator
                 propertyLabel:       None
                 mandatory:           False
-                repeatable:          False
+                repeatable:          True
                 valueNodeType:       None
                 valueDataType:       None
                 valueConstraint:     None
@@ -103,7 +105,7 @@ def test_pprint_tapshapes_two_shapes_verbose():
                 propertyID:          dct:date
                 propertyLabel:       None
                 mandatory:           False
-                repeatable:          False
+                repeatable:          True
                 valueNodeType:       None
                 valueDataType:       None
                 valueConstraint:     None
@@ -116,8 +118,8 @@ def test_pprint_tapshapes_two_shapes_verbose():
             Statement Constraint
                 propertyID:          foaf:name
                 propertyLabel:       None
-                mandatory:           False
-                repeatable:          False
+                mandatory:           None
+                repeatable:          None
                 valueNodeType:       None
                 valueDataType:       None
                 valueConstraint:     None

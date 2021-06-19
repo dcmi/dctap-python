@@ -1,3 +1,3 @@
 propertyID,mandatory,repeatable
-dc:creator,,X
-dc:date,Y,
+dc:creator,1,0
+dc:date,0,

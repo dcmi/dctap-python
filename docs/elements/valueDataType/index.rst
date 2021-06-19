@@ -18,7 +18,7 @@ ignore such a warning.
    :file: valueDataType.csv
    :header-rows: 1
 
-Interpreted, with a warning, as::
+Interpreted as::
 
     DCTAP instance
         Shape

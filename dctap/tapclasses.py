@@ -46,7 +46,18 @@ class TAPStatementConstraint:
         self._mandatory_and_repeatable_have_supported_boolean_value()
         self._warn_if_propertyID_valueShape_valueDataType_not_IRIs()
         self._warn_if_valueDataType_used_with_valueNodeType_IRI()
+        self._warn_if_valueConstraintType_used_without_valueConstraint()
+        self._warn_if_valueConstraintType_pattern_used_with_bad_regex()
         return self
+
+
+    def _warn_if_valueConstraintType_used_without_valueConstraint(self):
+        """Warns if valueConstraintType used without valueConstraint."""
+
+
+    def _warn_if_valueConstraintType_pattern_used_with_bad_regex(self):
+        """Warns if valueConstraintType 'pattern' does not compile."""
+
 
     def _value_uri_should_not_have_nodetype_literal(self):
         """IRI values should usually not have a valueNodeType of Literal."""
@@ -70,30 +81,36 @@ class TAPStatementConstraint:
         return self
 
     def _mandatory_and_repeatable_have_supported_boolean_value(self):
-        """mandatory or repeatable has value of "true" or "false" or "1" or "0"."""
-        valid_values_for_true = [ "true", "1", None ]
-        valid_values_for_false = [ "false", "0", None ]
-        valid_values = valid_values_for_true + valid_values_for_false
-        if self.mandatory is not None:
-            local_mandatory = self.mandatory.lower() # normalize to lowercase
-            if local_mandatory in valid_values_for_true:
-                self.mandatory = True
-            elif local_mandatory in valid_values_for_false:
-                self.mandatory = False
-            elif local_mandatory not in valid_values:
+        """Booleans take true/false (case-insensitive) or 1/0, default None."""
+
+        valid_values_for_true = [ "true", "1" ]
+        valid_values_for_false = [ "false", "0" ]
+        valid_values = valid_values_for_true + valid_values_for_false + [ None ]
+
+        if self.mandatory != None:
+            # breakpoint(context=5) 
+            mand = self.mandatory.lower()
+            if mand not in valid_values and mand != "":
                 self.sc_warnings['mandatory'] = (
                     f"{repr(self.mandatory)} is not a supported Boolean value."
                 )
-        if self.repeatable is not None:
-            local_repeatable = self.repeatable.lower() # normalize to lowercase
-            if local_repeatable in valid_values_for_true:
-                self.repeatable = True
-            elif local_repeatable in valid_values_for_false:
-                self.repeatable = False
-            elif local_repeatable not in valid_values:
+            if mand in valid_values_for_true:
+                self.mandatory = True
+            elif mand in valid_values_for_false:
+                self.mandatory = False
+
+        if self.repeatable != None:
+            # breakpoint(context=5) 
+            repeat = self.repeatable.lower()
+            if repeat not in valid_values and repeat != "":
                 self.sc_warnings['repeatable'] = (
                     f"{repr(self.repeatable)} is not a supported Boolean value."
                 )
+            if repeat in valid_values_for_true:
+                self.repeatable = True
+            elif repeat in valid_values_for_false:
+                self.repeatable = False
+
         return self
 
     def _warn_if_propertyID_valueShape_valueDataType_not_IRIs(self):

@@ -33,12 +33,6 @@ class TAPStatementConstraint:
     def reset_config_dict(self, external_config_dict=None):
         self.config_dict = external_config_dict
 
-    def normalize(self):
-        """Normalizes values of certain fields."""
-        # self._normalize_value_node_type(config_dict)
-        # self._warn_about_literal_datatype_used_with_uri()
-        return True
-
     def validate(self):
         """Validates values of certain fields."""
         self._value_uri_should_not_have_nodetype_literal()

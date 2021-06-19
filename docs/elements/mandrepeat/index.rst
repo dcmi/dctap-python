@@ -20,19 +20,11 @@ following ways:
 - normalized as true and false in the JSON and YAML outputs, 
 - displayed as True and False in the compact text output.
 
-Any other value for either element --- including an empty
-string for when the element is present but left blank ---
-has no effect on the default of ``None`` for each element
-and will be passed through as a string (or empty string)
-to the JSON and YAML output.
-
-An empty string value will result in an element not being 
-displayed at all in the compact text output; in the verbose
-text format, the value will be displayed as the default "None".
-
 .. csv-table:: 
    :file: mandrepeat.csv
    :header-rows: 1
+
+This is interpreted as::
 
     DCTAP instance
         Shape
@@ -45,13 +37,21 @@ text format, the value will be displayed as the default "None".
                 propertyID:          dc:date
                 mandatory:           False
 
-This is interpreted as::
+Any other value for either element --- including an empty
+string for when the element is present but left blank ---
+has no effect on the default of ``None`` for each element
+and will be passed through as a string (or empty string)
+to the JSON and YAML output.
+
+An empty string value will result in an element not being 
+displayed at all in the compact text output; in the verbose
+text format, the value will be displayed as the default "None".
 
 .. csv-table:: 
    :file: mandrepeat_warn_unsupported_values.csv
    :header-rows: 1
 
-This is interpreted as::
+This is displayed as::
 
     DCTAP instance
         Shape

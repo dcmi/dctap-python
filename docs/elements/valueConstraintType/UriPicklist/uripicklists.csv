@@ -1,3 +1,0 @@
-shapeID,propertyID,valueConstraint,valueConstraintType
-:book,:color,:red :green :yellow,UriPicklist
-:book,:color,https://example.org/red,UriPicklist

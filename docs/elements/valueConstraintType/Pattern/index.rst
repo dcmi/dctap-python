@@ -1,5 +1,7 @@
-Regular expressions
-^^^^^^^^^^^^^^^^^^^
+.. _elem_valueConstraintType_pattern:
+
+Pattern
+^^^^^^^
 
 When a constraint type of Regex is specified, the corresponding constraint value is normalized as follows:
 
@@ -8,7 +10,7 @@ When a constraint type of Regex is specified, the corresponding constraint value
 - If no constraint constraint value is specified, dctap will leave it unspecified.
 
 .. csv-table:: 
-   :file: ../normalizations/regex.csv
+   :file: pattern.csv
    :header-rows: 1
 
 This is interpreted as::

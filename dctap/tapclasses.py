@@ -1,5 +1,6 @@
 """Classes for Python objects derived from CSV files."""
 
+import re
 from collections import defaultdict
 from dataclasses import dataclass, field, asdict
 from typing import List
@@ -37,7 +38,7 @@ class TAPStatementConstraint:
         """Validates specific fields."""
         self._elements_taking_IRIs_warn_if_not_IRIs()
         self._mandatory_repeatable_have_supported_boolean_values()
-        self._valueConstraintType_pattern_warn_if_regex_bad()
+        self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_picklist_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
@@ -97,12 +98,23 @@ class TAPStatementConstraint:
         return self
 
 
-    def _valueConstraintType_pattern_warn_if_regex_bad(self):
-        """Warns if valueConstraintType 'pattern' does not compile."""
+    def  _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
+        """If valueConstraintType pattern, warn if valueConstraint not valid regex."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "pattern":
+            try:
+                re.compile(self.valueConstraint)
+            except (re.error, TypeError):
+                self.sc_warnings['valueConstraint'] = (
+                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
+                    f"{repr(self.valueConstraint)} is not a valid regular expression."
+                )
+        return self
 
 
     def _valueConstraintType_picklist_parse(self):
-        """@@@"""
+        """If valueConstraintType picklists, splits valueConstraint on whitespace."""
+        self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "picklist":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split()
@@ -115,7 +127,7 @@ class TAPStatementConstraint:
 
     def _valueNodeType_is_from_enumerated_list(self):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        valid_types = [nt.lower() for nt in self.config_dict['value_node_types']]
+        valid_types = [vnt.lower() for vnt in self.config_dict['value_node_types']]
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower() # normalize to lowercase
             if self.valueNodeType not in valid_types:

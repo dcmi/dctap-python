@@ -124,15 +124,17 @@ class TAPStatementConstraint:
                 )
         return self
 
+
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """@@@"""
-        node_type = self.valueNodeType
+        node_type = self.valueNodeType.lower()
         if node_type == "iri" or node_type == "uri" or node_type == "bnode":
             if self.valueDataType:
                 self.sc_warnings['valueDataType'] = (
                     f"Datatypes are for literals only, "
                     f"and node type provided is {repr(self.valueNodeType)}."
                 )
+
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPStatementConstraint.

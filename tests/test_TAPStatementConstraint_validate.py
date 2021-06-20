@@ -14,7 +14,6 @@ def test_valueConstraintType_picklist_parse():
     assert sc.valueConstraint == ["one", "two", "three"]
 
 
-@pytest.mark.xfail
 def test_valueConstraintType_picklist_parse_case_insensitive():
     """Value constraint types are processed as case-insensitive."""
     sc = TAPStatementConstraint()

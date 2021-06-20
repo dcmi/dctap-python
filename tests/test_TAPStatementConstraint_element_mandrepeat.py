@@ -11,7 +11,7 @@ def test_mandatory_repeatable_true_given_supported_boolean_values():
     sc.propertyID = "wdt:P31"
     sc.mandatory = "true"
     sc.repeatable = "TRUE"
-    sc._mandatory_and_repeatable_have_supported_boolean_value()
+    sc._mandatory_repeatable_have_supported_boolean_values()
     assert sc.mandatory is True
     assert sc.repeatable is True
 
@@ -22,7 +22,7 @@ def test_mandatory_and_repeatable_one_zero_normalized_to_true_false():
     sc.propertyID = "wdt:P31"
     sc.mandatory = "1"
     sc.repeatable = "0"
-    sc._mandatory_and_repeatable_have_supported_boolean_value()
+    sc._mandatory_repeatable_have_supported_boolean_values()
     assert sc.mandatory is True
     assert sc.repeatable is False
 
@@ -31,7 +31,7 @@ def test_mandatory_and_repeatable_default_to_none():
     """The Boolean elements default to None if no value is declared."""
     sc = TAPStatementConstraint()
     sc.propertyID = "wdt:P31"
-    sc._mandatory_and_repeatable_have_supported_boolean_value()
+    sc._mandatory_repeatable_have_supported_boolean_values()
     assert sc.mandatory is None
     assert sc.repeatable is None
 

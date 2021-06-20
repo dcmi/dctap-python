@@ -72,7 +72,7 @@ def test_karen_valueNodeTypeLowercase_PASSES():
     assert _get_tapshapes(rows_list)
     for shape in shapes_list:
         for sc in shape.sc_list:
-            sc._value_node_type_is_from_enumerated_list()
+            sc._valueNodeType_is_from_enumerated_list()
             if sc.valueNodeType:
                 assert sc.valueNodeType
 
@@ -87,7 +87,7 @@ def test_karen_valueNodeTypeLowercase_PASSES():
 #     assert _get_tapshapes(rows_list)
 #     for shape in shapes_list:
 #         for sc in shape.sc_list:
-#             sc._value_node_type_is_from_enumerated_list()
+#             sc._valueNodeType_is_from_enumerated_list()
 #             if sc.valueNodeType:
 #                 assert sc.valueNodeType == "uri"
 #             else:

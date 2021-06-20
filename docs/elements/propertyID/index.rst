@@ -3,13 +3,13 @@
 propertyID
 ^^^^^^^^^^
 
-The DCTAP model was designed for compatability with the
+The DCTAP model was designed for compatibility with the
 RDF model. In the RDF model, properties are identified
 with IRIs, and this module will issues a warning if a
 property identifier, based on a superficial inspection,
 does not look like an IRI. 
 
-Users not interested in compatability with RDF, or users
+Users not interested in compatibility with RDF, or users
 who are brainstorming a draft application profile and
 simply need a placeholder, can safely ignore such a
 warning.

@@ -3,7 +3,7 @@
 valueDataType
 ^^^^^^^^^^^^^
 
-The DCTAP model was designed for compatability with the
+The DCTAP model was designed for compatibility with the
 RDF model. In the RDF model, literal values can be tagged
 with a datatype that marks the value as a date, string,
 decimal number, and the like. The most commonly used
@@ -11,7 +11,7 @@ datatypes are defined in the `W3C XML Schema Definition Language (XSD) 1.1 Part 
 
 Because datatypes are identified by IRI, this module
 issues a warning if a non-IRI keyword is encountered.
-Users not interested in compatability with RDF can safely
+Users not interested in compatibility with RDF can safely
 ignore such a warning.
 
 .. csv-table:: 

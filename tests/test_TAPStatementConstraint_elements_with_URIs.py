@@ -6,7 +6,7 @@ def test_warn_if_propertyID_not_URI():
     """@@@"""
     sc = TAPStatementConstraint()
     sc.propertyID = "P31"
-    sc._warn_if_propertyID_valueShape_valueDataType_not_IRIs()
+    sc._elements_taking_IRIs_warn_if_not_IRIs()
     print(sc.sc_warnings)
     print(dict(sc.sc_warnings))
     print(len(dict(sc.sc_warnings)))
@@ -18,7 +18,7 @@ def test_warn_if_valueShape_not_URI():
     sc = TAPStatementConstraint()
     sc.propertyID = "wdt:P31"
     sc.valueShape = "Person"
-    sc._warn_if_propertyID_valueShape_valueDataType_not_IRIs()
+    sc._elements_taking_IRIs_warn_if_not_IRIs()
     print(sc.sc_warnings)
     print(dict(sc.sc_warnings))
     print(len(dict(sc.sc_warnings)))
@@ -33,7 +33,7 @@ def test_mandatory_and_repeatable_raise_warnings_given_unsupported_boolean_value
     sc.propertyID = "dc:creator"
     sc.mandatory = "WAHR"
     sc.repeatable = "WAHR"
-    sc._mandatory_and_repeatable_have_supported_boolean_value()
+    sc._mandatory_repeatable_have_supported_boolean_values()
     print(sc.sc_warnings)
     print(dict(sc.sc_warnings))
     print(len(dict(sc.sc_warnings)))

@@ -3,11 +3,11 @@
 valueNodeType
 ^^^^^^^^^^^^^
 
-The DCTAP model was designed for compatability with 
+The DCTAP model was designed for compatibility with 
 the RDF model. In the RDF model, there are three types 
 of node: an :term:`IRI` (or URI), a BNode, and a Literal.
 
-Users not interested in compatability with RDF can 
+Users not interested in compatibility with RDF can 
 safely ignore this element.
 
 ``dctap`` issues a warning if an unsupported value is 

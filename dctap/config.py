@@ -6,8 +6,6 @@ import ruamel.yaml as yaml
 from .exceptions import ConfigError
 
 
-DEFAULT_CONFIGFILE_NAME = ".dctaprc"
-
 DEFAULT_CONFIG_YAML = """\
 default_shape_name: ":default"
 
@@ -25,34 +23,19 @@ prefixes:
     xsd: http://www.w3.org/2001/XMLSchema#
     wd: https://www.wikidata.org/wiki/
     wdt: http://www.wikidata.org/prop/direct/
-
-value_node_types:
-- IRI
-- URI
-- BNode
-- Literal
-
-value_constraint_types:
-- Datatype
-- UriStem
-- UriPicklist
-- LitPicklist
-- LangTag
-- LangTagPicklist
-- Regex
 """
 
 
 def get_config_dict(
-    rootdir_path=None,
-    default_configfile_name=DEFAULT_CONFIGFILE_NAME,
+    configfile_dir=None,
+    configfile_name=".dctaprc",
     default_config_yaml=DEFAULT_CONFIG_YAML,
     verbose=False,
 ):
-    """Returns config dict from config file, if found, or from built-in defaults."""
-    if not rootdir_path:
-        rootdir_path = Path.cwd()
-    configfile_pathname = Path(rootdir_path) / default_configfile_name
+    """Returns config dict from config file; if not found, defaults to built-ins."""
+    if not configfile_dir:
+        configfile_dir = Path.cwd()
+    configfile_pathname = Path(configfile_dir) / default_configfile_name
 
     try:
         configfile_contents = Path(configfile_pathname).read_text()
@@ -74,14 +57,14 @@ def get_config_dict(
 
 
 def write_starter_configfile(
-    basedir=None,
-    default_configfile_name=DEFAULT_CONFIGFILE_NAME,
+    configfile_dir=None,
+    default_configfile_name=".dctaprc",
     default_config_yaml=DEFAULT_CONFIG_YAML,
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
-    if not basedir:
-        basedir = Path.cwd()
-    configfile_pathname = Path(basedir) / default_configfile_name
+    if not configfile_dir:
+        configfile_dir = Path.cwd()
+    configfile_pathname = Path(configfile_dir) / default_configfile_name
     if os.path.exists(configfile_pathname):
         raise ConfigError(
             f"Found existing {str(configfile_pathname)} - delete to re-generate."

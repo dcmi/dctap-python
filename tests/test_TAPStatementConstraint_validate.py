@@ -51,3 +51,11 @@ def test_valueConstraintType_pattern_warn_if_not_valid_regex():
     sc.valueConstraint="approved_(*"
     sc._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
     assert len(sc.sc_warnings) == 1
+
+
+def test_valueConstraintType_warn_if_used_without_valueConstraint():
+    sc = TAPStatementConstraint()
+    sc.propertyID = ":status"
+    sc.valueConstraintType = "pattern"
+    sc._valueConstraintType_warn_if_used_without_valueConstraint()
+    assert len(sc.sc_warnings) == 1

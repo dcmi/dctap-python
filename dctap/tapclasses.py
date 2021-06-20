@@ -123,6 +123,13 @@ class TAPStatementConstraint:
 
     def _valueConstraintType_warn_if_used_without_valueConstraint(self):
         """Warns if valueConstraintType used without valueConstraint."""
+        if self.valueConstraintType:
+            if not self.valueConstraint:
+                self.sc_warnings['valueConstraint'] = (
+                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
+                    f"value constraint is empty."
+                )
+        return self
 
 
     def _valueNodeType_is_from_enumerated_list(self):

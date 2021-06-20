@@ -34,7 +34,7 @@ class TAPStatementConstraint:
         self.config_dict = external_config_dict
 
     def validate(self):
-        """Validates values of certain fields."""
+        """Validates specific fields."""
         self._value_uri_should_not_have_nodetype_literal()
         self._value_node_type_is_from_enumerated_list()
         self._mandatory_and_repeatable_have_supported_boolean_value()
@@ -42,8 +42,14 @@ class TAPStatementConstraint:
         self._warn_if_valueDataType_used_with_valueNodeType_IRI()
         self._warn_if_valueConstraintType_used_without_valueConstraint()
         self._warn_if_valueConstraintType_pattern_used_with_bad_regex()
+        self._parse_valueConstraintType_picklist()
         return self
 
+    def _parse_valueConstraintType_picklist(self):
+        """@@@"""
+        if self.valueConstraintType == "picklist":
+            self.valueConstraint = self.valueConstraint.split()
+        return self
 
     def _warn_if_valueConstraintType_used_without_valueConstraint(self):
         """Warns if valueConstraintType used without valueConstraint."""

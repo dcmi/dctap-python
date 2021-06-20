@@ -28,4 +28,4 @@ Interpreted as::
             Statement Constraint
                 propertyID:          height
 
-    WARNING Shape :default => propertyID: 'height' is not an IRI or Compact IRI.
+    WARNING [:default/propertyID] 'height' is not an IRI or Compact IRI.

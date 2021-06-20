@@ -32,4 +32,4 @@ Interpreted, with a warning, as::
 		propertyID:          dcterms:subject
 		valueNodeType:       concept
 
-    WARNING Shape :default => valueNodeType: 'concept' is not a valid node type.
+    WARNING [:default/valueNodeType] 'concept' is not a valid node type.

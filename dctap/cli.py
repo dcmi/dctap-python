@@ -63,7 +63,7 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
             for (shapeid,warnings) in warnings_dict.items():
                 for (elem,warn_list) in warnings.items():
                     for warning in warn_list:
-                        echo.warning(f"Shape {shapeid} => {elem}: {warning}")
+                        echo.warning(f"[{shapeid}/{elem}] {warning}")
 
 
 

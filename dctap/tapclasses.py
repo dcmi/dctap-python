@@ -150,8 +150,8 @@ class TAPStatementConstraint:
         if node_type == "iri" or node_type == "uri" or node_type == "bnode":
             if self.valueDataType:
                 self.sc_warnings['valueDataType'] = (
-                    f"Datatypes are for literals only, "
-                    f"and node type provided is {repr(self.valueNodeType)}."
+                    f"Datatypes are only for literals, "
+                    f"so node type should not be {repr(self.valueNodeType)}."
                 )
 
 

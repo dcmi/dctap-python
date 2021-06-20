@@ -63,8 +63,8 @@ This is displayed as::
                 propertyID:          dc:date
                 mandatory:           Y
 
-    WARNING Shape :default => repeatable: 'N' is not a supported Boolean value.
-    WARNING Shape :default => mandatory: 'Y' is not a supported Boolean value.
+    WARNING [:default/repeatable] 'N' is not a supported Boolean value.
+    WARNING [:default/mandatory] 'Y' is not a supported Boolean value.
 
 The four possible combinations of ``mandatory`` with
 ``repeatable`` translate into the following minimum and

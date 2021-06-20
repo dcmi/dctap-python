@@ -30,7 +30,7 @@ Interpreted as::
                 propertyID:          dct:date
                 valueDataType:       Date
 
-    WARNING Shape :default => valueDataType: 'Date' is not an IRI or Compact IRI.
+    WARNING [:default/valueDataType] 'Date' is not an IRI or Compact IRI.
 
 Datatypes are used only with literal values, so 
 if a node is of type "URI", "IRI", or "BNode" and 
@@ -58,5 +58,5 @@ Interpreted, with a warning, as::
                 valueNodeType:       bnode
                 valueDataType:       xsd:string
 
-    WARNING Shape :default => valueDataType: Datatypes are for literals only, and node type provided is 'iri'.
-    WARNING Shape :default => valueDataType: Datatypes are for literals only, and node type provided is 'bnode'.
+    WARNING [:default/valueDataType] Datatypes are only for literals, so node type should not be 'iri'.
+    WARNING [:default/valueDataType] Datatypes are only for literals, so node type should not be 'bnode'.

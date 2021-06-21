@@ -66,8 +66,6 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
                         echo.warning(f"[{shapeid}/{elem}] {warning}")
 
 
-
-
 @cli.command()
 @click.help_option(help="Show help and exit")
 @click.pass_context

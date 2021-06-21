@@ -1,4 +1,4 @@
-"""Read DCTAP/CSV (expand prefixes?). Write and read config file."""
+"""Parse DCTAP/CSV, return two-item tuple: list of shape objects, list of warnings."""
 
 from collections import defaultdict
 from csv import DictReader
@@ -82,21 +82,6 @@ def _make_element_aliases(csv_elements_list=None):
         element_aliases_dict[shortkey] = csv_elem     # { shortkey: camelcasedValue }
         element_aliases_dict[lowerkey] = csv_elem     # { lowerkey: camelcasedValue }
     return element_aliases_dict
-
-
-# def _get_rows(csvfile):
-#     """@@@"""
-#     tmp_buffer = StringBuffer(Path(csvfile).open().read())
-#     csvlines_stripped = [line.strip() for line in tmp_buffer]
-#     raw_header_line_list = csvlines_stripped[0].split(',')
-#     new_header_line_list = list()
-#     for header in raw_header_line_list:
-#         # INSERT PROCESSING OF 'header' here - normalization, etc
-#         new_header_line_list.append(header)
-#     new_header_line_str = ",".join(new_header_line_list)
-#     csvlines_stripped[0] = new_header_line_str
-#     new_buffer = StringBuffer("".join([line + '\n' for line in csvlines_stripped]))
-#     return list(DictReader(new_buffer))
 
 
 def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:

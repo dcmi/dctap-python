@@ -13,19 +13,21 @@ from .utils import is_uri_or_prefixed_uri
 
 DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
 
-def csvreader(csvfile):
-    """Return list of TAPShape objects from CSV file."""
-    rows = _get_rows(csvfile)
+def csvreader(csvfile_obj):
+    """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
+    rows = _get_rows(csvfile_obj)
     tapshapes = _get_tapshapes(rows)[0]
     tapwarnings = _get_tapshapes(rows)[1]
     return (tapshapes, tapwarnings)
 
 
-def _get_rows(csvfile):
-    """@@"""
+def _get_rows(csvfile_obj):
+    """Passed _io.TextIOWrapper object, return list of CSV file rows as dicts."""
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
-    tmp_buffer = StringBuffer(Path(csvfile).open().read())
+    csvfile_str = csvfile_obj.read()
+    # tmp_buffer = StringBuffer(Path(csvfile).open().read())
+    tmp_buffer = StringBuffer(csvfile_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(',')
     new_header_line_list = list()

@@ -24,7 +24,7 @@ def cli(context):
 
 
 @cli.command()
-@click.argument("csvfile_name", type=click.Path(exists=True))
+@click.argument("csvfile_name", type=click.File(mode='r', encoding='utf-8-sig'))
 @click.option("--expand-prefixes", is_flag=True)
 @click.option("--warnings", is_flag=True)
 @click.option("--verbose", is_flag=True)

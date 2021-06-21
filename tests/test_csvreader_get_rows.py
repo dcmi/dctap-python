@@ -3,7 +3,13 @@
 import os
 from pathlib import Path
 import pytest
-from dctap.csvreader import _get_rows
+from dctap.csvreader import (
+    _get_rows,
+    _make_element_aliases,
+    _make_csv_elements_list,
+    _shorten_and_lowercase,
+    _canonicalize_string,
+)
 
 def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     """Where headers shorter than rows, extra values collected under header None."""
@@ -66,13 +72,13 @@ def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
         _get_rows(csvfile_obj)
 
 
-def test_get_rows_with_minimal_csvfile(tmp_path):
-    """Minimal CSV with three columns."""
+def test_get_rows_with_unknown_column(tmp_path):
+    """Columns not in DCTAP model passed through, lowercased, minus punctuation."""
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
-            "shapeID,propertyID,valueConstraint,valueShape\n"
+            "shapeID,propertyID,valueConstraint,value Gestalt\n"
             ":book,dc:creator,,:author\n"
             ",dc:type,so:Book,\n"
             ":author,foaf:name,,\n"
@@ -84,20 +90,45 @@ def test_get_rows_with_minimal_csvfile(tmp_path):
             'shapeID': ':book',
             'propertyID': 'dc:creator',
             'valueConstraint': '',
-            'valueShape': ':author'
+            'valuegestalt': ':author'
         }, {
             'shapeID': '',
             'propertyID': 'dc:type',
             'valueConstraint': 'so:Book',
-            'valueShape': ''
+            'valuegestalt': ''
         }, {
             'shapeID': ':author',
             'propertyID': 'foaf:name',
             'valueConstraint': '',
-            'valueShape': ''
+            'valuegestalt': ''
         }
     ]
     assert _get_rows(csvfile_obj) == expected_csvrow_dicts_list
+
+
+def test_get_rows_with_unknown_column2(tmp_path):
+    """Passes thru unknown header, lowercased."""
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+            "shapeID,propertyID,valueShape,wildCard\n"
+            ":book,dcterms:creator,:author,Yeah yeah yeah\n"
+            ":author,foaf:name,,\n"
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_output = [
+            {
+             'shapeID': ':book', 
+             'propertyID': 'dcterms:creator', 
+             'valueShape': ':author', 
+             'wildcard': 'Yeah yeah yeah'
+            }, {
+              'shapeID': ':author', 
+              'propertyID': 'foaf:name', 
+              'valueShape': '', 
+              'wildcard': ''}
+    ]
+    assert _get_rows(csvfile_obj) == expected_output
 
 
 def test_get_rows_with_simple_csvfile(tmp_path):
@@ -136,6 +167,93 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
         {"shapeID": ":a", "propertyID": "dct:subject", "confidential": "True"},
     ]
     assert _get_rows(csvfile_obj) == expected_csvrow_dicts_list
+
+
+def test_get_rows_correct_shapeID(tmp_path):
+    """Corrects DCTAP headers - redundant to "real mess" test?"""
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+            "SID,property-ID\n"
+            ":book,dcterms:creator\n"
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_output = [
+            {
+             'shapeID': ':book', 
+             'propertyID': 'dcterms:creator'
+            }
+    ]
+    assert _get_rows(csvfile_obj) == expected_output
+
+
+def test_get_rows_correct_a_real_mess(tmp_path):
+    """Messiness in headers (extra spaces, punctuation, wrong case) is corrected."""
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+            "S ID,pr-opertyID___,valueShape     ,wildCard    \n"
+            ":book,dcterms:creator,:author,Yeah yeah yeah\n"
+    )
+    csvfile_obj = open (csvfile_path)
+    expected_output = [
+            { 
+             'shapeID': ':book', 
+             'propertyID': 'dcterms:creator',
+             'valueShape': ':author',
+             'wildcard': 'Yeah yeah yeah',
+            }
+    ]
+    assert _get_rows(csvfile_obj) == expected_output
+
+
+def test_get_rows_make_element_aliases():
+    """Test of _make_element_aliases - reads elements from TAP classes."""
+    expected_element_aliases_dict = {
+        'sid': 'shapeID', 
+        'sl': 'shapeLabel', 
+        'pid': 'propertyID', 
+        'pl': 'propertyLabel', 
+        'm': 'mandatory', 
+        'r': 'repeatable', 
+        'vnt': 'valueNodeType', 
+        'vdt': 'valueDataType', 
+        'vc': 'valueConstraint', 
+        'vct': 'valueConstraintType', 
+        'vs': 'valueShape', 
+        'n': 'note',
+        'shapeid': 'shapeID', 
+        'shapelabel': 'shapeLabel', 
+        'propertyid': 'propertyID', 
+        'propertylabel': 'propertyLabel', 
+        'mandatory': 'mandatory', 
+        'repeatable': 'repeatable', 
+        'valuenodetype': 'valueNodeType', 
+        'valuedatatype': 'valueDataType', 
+        'valueconstraint': 'valueConstraint', 
+        'valueconstrainttype': 'valueConstraintType', 
+        'valueshape': 'valueShape', 
+        'note': 'note',
+    }
+    csv_elements_list = _make_csv_elements_list()
+    assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
+
+
+def test_canonicalize_string():
+    """@@@"""
+    csv_elements_list = _make_csv_elements_list()
+    element_aliases_dict = _make_element_aliases(csv_elements_list)
+    assert _canonicalize_string("sid", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("SHAPE ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("SHAPE___ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_string("rid", element_aliases_dict) == "rid"
+
+
+def test_shorten_and_lowercase():
+    """@@@"""
+    assert _shorten_and_lowercase("Property ID") == "propertyid"
+    assert _shorten_and_lowercase("Property__ID") == "propertyid"
+    assert _shorten_and_lowercase("Property-ID") == "propertyid"
 
 
 def test_get_rows_with_complete_csvfile(tmp_path):
@@ -182,9 +300,10 @@ def test_get_rows_with_complete_csvfile(tmp_path):
             "note": "",
         },
     ]
-    # assert _get_rows(csvfile_obj) == expected_csvrow_dicts_list
-    assert isinstance(_get_rows(csvfile_obj), list)
+    real_output = _get_rows(csvfile_obj)
+    assert isinstance(real_output, list)
     assert isinstance(expected_csvrow_dicts_list, list)
-    # assert _get_rows(csvfile_obj)[0]["mandatory"]
-    # assert len(_get_rows(csvfile_obj)) == 2
-    # assert len(expected_csvrow_dicts_list) == 2
+    assert real_output == expected_csvrow_dicts_list
+    assert real_output[0]["mandatory"]
+    assert len(real_output) == 2
+    assert len(expected_csvrow_dicts_list) == 2

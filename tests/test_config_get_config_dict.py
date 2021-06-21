@@ -16,18 +16,37 @@ prefixes:
 """
 
 
-def test_get_config_dict_from_default_config_file_if_present(dir_with_dctaprc):
-    """Get config dict from config file .dctaprc (if present)."""
-    os.chdir(Path(dir_with_dctaprc))
-    assert get_config_dict()["prefixes"] == {
-        ":": "http://example.org/",
-        "dct:": "http://purl.org/dc/terms/",
-    }
-    assert get_config_dict() == {
-        "prefixes": {":": "http://example.org/", "dct:": "http://purl.org/dc/terms/"},
-        "valueNodeType": ["URI", "BNode", "Nonliteral"],
-        "valueConstraintType": ["UriStem", "LitPicklist"],
-    }
+# def test_get_config_dict_from_default_config_file_if_present(tmp_path):
+#     """Get config dict from config file .dctaprc if present."""
+#     os.chdir(tmp_path)
+#     assert get_config_dict()["prefixes"] == {
+#         ":": "http://example.org/",
+#         "dct:": "http://purl.org/dc/terms/",
+#     }
+#     assert get_config_dict() == {
+#         "prefixes": {":": "http://example.org/", "dct:": "http://purl.org/dc/terms/"},
+#         "valueNodeType": ["URI", "BNode", "Nonliteral"],
+#         "valueConstraintType": ["UriStem", "LitPicklist"],
+#     }
+# TEST_CONFIGFILE_NAME = ".dctaprc"
+# 
+# TEST_DEFAULT_CONFIG_SETTINGS_YAML = """\
+# prefixes:
+#     ":": "http://example.org/"
+#     "dct:": "http://purl.org/dc/terms/"
+# 
+# valueConstraintType:
+# - UriStem
+# - LitPicklist
+# """
+# 
+
+@pytest.fixture()
+def dir_with_dctaprc(tmp_path):
+    """Set up directory with simple config file for use as pytest fixture."""
+    os.chdir(tmp_path)
+    Path(TEST_CONFIGFILE_NAME).write_text(TEST_DEFAULT_CONFIG_SETTINGS_YAML)
+    return Path.cwd()
 
 
 def test_get_default_config_settings_if_configfile_not_found(tmp_path):

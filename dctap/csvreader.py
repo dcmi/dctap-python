@@ -13,6 +13,7 @@ from .utils import is_uri_or_prefixed_uri
 
 DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
 
+
 def csvreader(csvfile_obj):
     """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
     rows = _get_rows(csvfile_obj)
@@ -29,7 +30,7 @@ def _get_rows(csvfile_obj):
     # tmp_buffer = StringBuffer(Path(csvfile).open().read())
     tmp_buffer = StringBuffer(csvfile_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
-    raw_header_line_list = csvlines_stripped[0].split(',')
+    raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = list()
     for header in raw_header_line_list:
         header = _shorten_and_lowercase(header)
@@ -39,7 +40,7 @@ def _get_rows(csvfile_obj):
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:
         raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
-    new_buffer = StringBuffer("".join([line + '\n' for line in csvlines_stripped]))
+    new_buffer = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
     return list(DictReader(new_buffer))
 
 
@@ -64,11 +65,11 @@ def _shorten_and_lowercase(some_str=None):
 def _make_csv_elements_list():
     """Derives list of CSV row elements from the TAP dataclasses."""
     shape_elements = list(asdict(TAPShape()))
-    shape_elements.remove('sc_list')
-    shape_elements.remove('start')
-    shape_elements.remove('sh_warnings')
+    shape_elements.remove("sc_list")
+    shape_elements.remove("start")
+    shape_elements.remove("sh_warnings")
     tconstraint_elements = list(asdict(TAPStatementConstraint()))
-    tconstraint_elements.remove('sc_warnings')
+    tconstraint_elements.remove("sc_warnings")
     return shape_elements + tconstraint_elements
 
 
@@ -77,10 +78,10 @@ def _make_element_aliases(csv_elements_list=None):
     element_aliases_dict = dict()
     for csv_elem in csv_elements_list:
         # shortkey: initial letter (lowercase) + each uppercase letter, lowercased
-        shortkey = "".join([ csv_elem[0] ] + [l.lower() for l in csv_elem if l.isupper()])
+        shortkey = "".join([csv_elem[0]] + [l.lower() for l in csv_elem if l.isupper()])
         lowerkey = csv_elem.lower()
-        element_aliases_dict[shortkey] = csv_elem     # { shortkey: camelcasedValue }
-        element_aliases_dict[lowerkey] = csv_elem     # { lowerkey: camelcasedValue }
+        element_aliases_dict[shortkey] = csv_elem  # { shortkey: camelcasedValue }
+        element_aliases_dict[lowerkey] = csv_elem  # { lowerkey: camelcasedValue }
     return element_aliases_dict
 
 

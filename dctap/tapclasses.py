@@ -45,51 +45,49 @@ class TAPStatementConstraint:
         self._valueNodeType_is_from_enumerated_list()
         return self
 
-
     def _elements_taking_IRIs_warn_if_not_IRIs(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
-            self.sc_warnings['propertyID'] = (
-                f"{repr(self.propertyID)} is not an IRI or Compact IRI."
-            )
+            self.sc_warnings[
+                "propertyID"
+            ] = f"{repr(self.propertyID)} is not an IRI or Compact IRI."
         if self.valueShape:
             if not is_uri_or_prefixed_uri(self.valueShape):
-                self.sc_warnings['valueShape'] = (
-                    f"{repr(self.valueShape)} is not an IRI or Compact IRI."
-                )
+                self.sc_warnings[
+                    "valueShape"
+                ] = f"{repr(self.valueShape)} is not an IRI or Compact IRI."
         if self.valueDataType:
             if not is_uri_or_prefixed_uri(self.valueDataType):
-                self.sc_warnings['valueDataType'] = (
-                    f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
-                )
-
+                self.sc_warnings[
+                    "valueDataType"
+                ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
 
     def _mandatory_repeatable_have_supported_boolean_values(self):
         """Booleans take true/false (case-insensitive) or 1/0, default None."""
 
-        valid_values_for_true = [ "true", "1" ]
-        valid_values_for_false = [ "false", "0" ]
-        valid_values = valid_values_for_true + valid_values_for_false + [ None ]
+        valid_values_for_true = ["true", "1"]
+        valid_values_for_false = ["false", "0"]
+        valid_values = valid_values_for_true + valid_values_for_false + [None]
 
         if self.mandatory != None:
-            # breakpoint(context=5) 
+            # breakpoint(context=5)
             mand = self.mandatory.lower()
             if mand not in valid_values and mand != "":
-                self.sc_warnings['mandatory'] = (
-                    f"{repr(self.mandatory)} is not a supported Boolean value."
-                )
+                self.sc_warnings[
+                    "mandatory"
+                ] = f"{repr(self.mandatory)} is not a supported Boolean value."
             if mand in valid_values_for_true:
                 self.mandatory = True
             elif mand in valid_values_for_false:
                 self.mandatory = False
 
         if self.repeatable != None:
-            # breakpoint(context=5) 
+            # breakpoint(context=5)
             repeat = self.repeatable.lower()
             if repeat not in valid_values and repeat != "":
-                self.sc_warnings['repeatable'] = (
-                    f"{repr(self.repeatable)} is not a supported Boolean value."
-                )
+                self.sc_warnings[
+                    "repeatable"
+                ] = f"{repr(self.repeatable)} is not a supported Boolean value."
             if repeat in valid_values_for_true:
                 self.repeatable = True
             elif repeat in valid_values_for_false:
@@ -97,20 +95,18 @@ class TAPStatementConstraint:
 
         return self
 
-
-    def  _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
+    def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
         """If valueConstraintType pattern, warn if valueConstraint not valid regex."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "pattern":
             try:
                 re.compile(self.valueConstraint)
             except (re.error, TypeError):
-                self.sc_warnings['valueConstraint'] = (
+                self.sc_warnings["valueConstraint"] = (
                     f"Value constraint type is {repr(self.valueConstraintType)}, but "
                     f"{repr(self.valueConstraint)} is not a valid regular expression."
                 )
         return self
-
 
     def _valueConstraintType_picklist_parse(self):
         """If valueConstraintType picklists, splits valueConstraint on whitespace."""
@@ -120,17 +116,15 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-
     def _valueConstraintType_warn_if_used_without_valueConstraint(self):
         """Warns if valueConstraintType used without valueConstraint."""
         if self.valueConstraintType:
             if not self.valueConstraint:
-                self.sc_warnings['valueConstraint'] = (
+                self.sc_warnings["valueConstraint"] = (
                     f"Value constraint type is {repr(self.valueConstraintType)}, but "
                     f"value constraint is empty."
                 )
         return self
-
 
     def _valueNodeType_is_from_enumerated_list(self):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
@@ -138,24 +132,22 @@ class TAPStatementConstraint:
         # valid_types = [vnt.lower() for vnt in self.config_dict['value_node_types']]
         valid_types = ["uri", "iri", "bnode", "literal"]
         if self.valueNodeType:
-            self.valueNodeType = self.valueNodeType.lower() # normalize to lowercase
+            self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
             if self.valueNodeType not in valid_types:
-                self.sc_warnings['valueNodeType'] = (
-                    f"{repr(self.valueNodeType)} is not a valid node type."
-                )
+                self.sc_warnings[
+                    "valueNodeType"
+                ] = f"{repr(self.valueNodeType)} is not a valid node type."
         return self
-
 
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """@@@"""
         node_type = self.valueNodeType.lower()
         if node_type == "iri" or node_type == "uri" or node_type == "bnode":
             if self.valueDataType:
-                self.sc_warnings['valueDataType'] = (
+                self.sc_warnings["valueDataType"] = (
                     f"Datatypes are only for literals, "
                     f"so node type should not be {repr(self.valueNodeType)}."
                 )
-
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPStatementConstraint.
@@ -185,18 +177,17 @@ class TAPShape:
     def _normalize_default_shapeID(self, config_dict=None):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
-            self.shapeID = config_dict['default_shape_name']
+            self.shapeID = config_dict["default_shape_name"]
         return self
 
     def _warn_if_shapeID_is_not_an_IRI(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.shapeID):
-            self.sh_warnings['shapeID'] = (
-                f"{repr(self.shapeID)} is not an IRI or Compact IRI."
-            )
+            self.sh_warnings[
+                "shapeID"
+            ] = f"{repr(self.shapeID)} is not an IRI or Compact IRI."
 
     def get_warnings(self):
         """Emit warnings dictionary for this instance of TAPShape.
         -- Dictionary is populated by invoking validate() mathod."""
         return dict(self.sh_warnings)
-

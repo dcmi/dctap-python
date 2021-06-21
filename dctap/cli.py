@@ -24,7 +24,7 @@ def cli(context):
 
 
 @cli.command()
-@click.argument("csvfile_name", type=click.File(mode='r', encoding='utf-8-sig'))
+@click.argument("csvfile_name", type=click.File(mode="r", encoding="utf-8-sig"))
 @click.option("--expand-prefixes", is_flag=True)
 @click.option("--warnings", is_flag=True)
 @click.option("--verbose", is_flag=True)
@@ -38,10 +38,10 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
     tapshapes_list = csvreader_output[0]
     warnings_dict = csvreader_output[1]
 
-    if (json and yaml):
-        # Quick fix for mutually exclusive options, a better fix in future. 
+    if json and yaml:
+        # Quick fix for mutually exclusive options, a better fix in future.
         echo = stderr_logger()
-        echo.warning('Please use either --json or --yaml')
+        echo.warning("Please use either --json or --yaml")
         click.Context.exit(0)
 
     if json:
@@ -60,8 +60,8 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
         if warnings:
             print("", file=sys.stderr)
             echo = stderr_logger()
-            for (shapeid,warnings) in warnings_dict.items():
-                for (elem,warn_list) in warnings.items():
+            for (shapeid, warnings) in warnings_dict.items():
+                for (elem, warn_list) in warnings.items():
                     for warning in warn_list:
                         echo.warning(f"[{shapeid}/{elem}] {warning}")
 
@@ -73,8 +73,8 @@ def model(context):
     """Show DCTAP model built-ins for ready reference"""
 
     shape_elements = list(asdict(TAPShape()))
-    shape_elements.remove('sc_list')
-    shape_elements.remove('start')
+    shape_elements.remove("sc_list")
+    shape_elements.remove("start")
     tconstraint_elements = list(asdict(TAPStatementConstraint()))
     print("DCTAP instance")
     print("    Shape")

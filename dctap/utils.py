@@ -21,7 +21,7 @@ def is_uri(url_string):
 
 def is_uri_or_prefixed_uri(uri):
     """True if string is URI or superficially looks like a prefixed URI."""
-    if is_uri(uri):                                   # URI sensu stricto
+    if is_uri(uri):
         return True
     if re.match("[A-Za-z0-9_]*:[A-Za-z0-9_]*", uri):  # looks like prefixed URI
         return True

@@ -32,20 +32,20 @@ def get_config_dict(
     default_config_yaml=DEFAULT_CONFIG_YAML,
     verbose=False,
 ):
-    """Returns config dict from config file; if not found, defaults to built-ins."""
-    if not configfile_dir:
+    """Reads config file or, if not found, defaults to built-ins."""
+    if not Path(configfile_dir).is_dir():
         configfile_dir = Path.cwd()
-    configfile_pathname = Path(configfile_dir) / configfile_name
+    configfile_path = Path(configfile_dir) / configfile_name
 
     try:
-        configfile_contents = Path(configfile_pathname).read_text()
+        configfile_contents = Path(configfile_path).read_text()
         if verbose:
-            print(f"Reading config file {repr(configfile_pathname)}.")
+            print(f"Reading config file {repr(configfile_path)}.")
         return yaml.safe_load(configfile_contents)
     except FileNotFoundError:
         if verbose:
             print(
-                f"Config file {repr(configfile_pathname)} not found - using defaults."
+                f"Config file {repr(configfile_path)} not found - using defaults."
             )
         return yaml.safe_load(default_config_yaml)
     except (yaml.YAMLError, yaml.scanner.ScannerError):
@@ -64,11 +64,11 @@ def write_starter_configfile(
     """Write initial config file, by default to CWD, or exit if already exists."""
     if not configfile_dir:
         configfile_dir = Path.cwd()
-    configfile_pathname = Path(configfile_dir) / configfile_name
-    if os.path.exists(configfile_pathname):
+    configfile_path = Path(configfile_dir) / configfile_name
+    if Path(configfile_path).exists():
         raise ConfigError(
-            f"Found existing {str(configfile_pathname)} - delete to re-generate."
+            f"Found existing {str(configfile_path)} - delete to re-generate."
         )
-    with open(configfile_pathname, "w", encoding="utf-8") as outfile:
+    with open(configfile_path, "w", encoding="utf-8") as outfile:
         outfile.write(default_config_yaml)
-        print(f"Wrote config defaults (for editing) to: {str(configfile_pathname)}")
+        print(f"Wrote config defaults (for editing) to: {str(configfile_path)}")

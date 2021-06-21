@@ -3,8 +3,10 @@
 import os
 import pytest
 from pathlib import Path
-from dctap.config import DEFAULT_CONFIG_YAML, DEFAULT_CONFIGFILE_NAME, write_starter_configfile
+from dctap.config import DEFAULT_CONFIG_YAML, write_starter_configfile
 
+
+DEFAULT_CONFIGFILE_NAME = ".dctaprc"
 
 def test_write_starter_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIG_YAML to DEFAULT_CONFIGFILE_NAME and read back as text."""
@@ -27,6 +29,6 @@ def test_write_starter_configfile_specifying_basedir(tmp_path):
     abc = Path.cwd() / "some_basedir"
     abc.mkdir()
     os.chdir(abc)
-    write_starter_configfile(basedir=abc)
+    write_starter_configfile(configfile_dir=abc)
     expected_configfile_pathname = Path(abc) / DEFAULT_CONFIGFILE_NAME
     assert open(expected_configfile_pathname).read() == DEFAULT_CONFIG_YAML

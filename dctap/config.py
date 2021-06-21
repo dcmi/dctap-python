@@ -35,7 +35,7 @@ def get_config_dict(
     """Returns config dict from config file; if not found, defaults to built-ins."""
     if not configfile_dir:
         configfile_dir = Path.cwd()
-    configfile_pathname = Path(configfile_dir) / default_configfile_name
+    configfile_pathname = Path(configfile_dir) / configfile_name
 
     try:
         configfile_contents = Path(configfile_pathname).read_text()
@@ -50,7 +50,7 @@ def get_config_dict(
         return yaml.safe_load(default_config_yaml)
     except (yaml.YAMLError, yaml.scanner.ScannerError):
         print(
-            f"Ignoring badly formed config file {repr(default_configfile_name)}"
+            f"Ignoring badly formed config file {repr(configfile_name)}"
             " - using defaults."
         )
         return yaml.safe_load(default_config_yaml)
@@ -58,13 +58,13 @@ def get_config_dict(
 
 def write_starter_configfile(
     configfile_dir=None,
-    default_configfile_name=".dctaprc",
+    configfile_name=".dctaprc",
     default_config_yaml=DEFAULT_CONFIG_YAML,
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
     if not configfile_dir:
         configfile_dir = Path.cwd()
-    configfile_pathname = Path(configfile_dir) / default_configfile_name
+    configfile_pathname = Path(configfile_dir) / configfile_name
     if os.path.exists(configfile_pathname):
         raise ConfigError(
             f"Found existing {str(configfile_pathname)} - delete to re-generate."

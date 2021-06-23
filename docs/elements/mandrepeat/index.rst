@@ -20,6 +20,10 @@ following ways:
 - normalized as true and false in the JSON and YAML outputs, 
 - displayed as True and False in the compact text output.
 
+Note that empty values (ie, strings of length zero) are simply 
+interpreted as unspecified and are not assigned an explicit Boolean 
+value.
+
 .. csv-table:: 
    :file: mandrepeat.csv
    :header-rows: 1

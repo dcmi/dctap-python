@@ -31,11 +31,11 @@ This is interpreted as::
 Providing a constraint value of "picklist", however, 
 tells the processor that the value constraint is to be 
 treated in a specific way --- in this case, to parse
-the value a list of literal values as delimited by 
+the value as a list of literal values as delimited by 
 whitespace.
 
 .. csv-table:: 
-   :file: valueConstraint.csv
+   :file: valueConstraint_with_type.csv
    :header-rows: 1
 
 This is interpreted as::

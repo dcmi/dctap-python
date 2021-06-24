@@ -17,13 +17,3 @@ def compare_csvfile_to_inspectoutput(csvfile_basename=None):
     output_ondisk = [j for j in Path(inspectfile_fullname).read_text().split('\n') if j]
     assert output_computed == output_ondisk
 
-
-#def test_good_example():
-#    compare_csvfile_to_inspectoutput('absolute_minimal_profile')
-
-
-def test_good_examples():
-    for basename in INSPECTFILE_BASENAMES:
-        compare_csvfile_to_inspectoutput(basename)
-
-

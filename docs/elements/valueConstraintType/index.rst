@@ -3,17 +3,21 @@
 valueConstraint / valueConstraintType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A value constraint (``valueConstraint``) can constrain
-the value associated with a property in various ways
+A value constraint (``valueConstraint``) constrains
+the value associated with a property in specific ways
 according to its type (``valueConstraintType``).
+A value constraint type may define a specific
+interpretation of a value constraint or trigger specific 
+techniques for processing the value constraint in an 
+application downstream.
 
-If a value constraint is a literal, and no type is
-provided, the constraint value closes the set of possible
-values to that specific literal and no others. In the
-following example, the value expected to be found with
-the property ``:securityLevel`` is "Confidential", and no
-other literal value would match the :term:`Statement
-Constraint`.
+When a value constraint is provided without a value
+constraint type, it is treated as a plain literal (unless
+``valueNodeType`` is "IRI" or "BNode"). Typically, this is
+intended to close the set of possible values to one
+specific value and no others. In the following example,
+the value expected to be found with the property
+``:securityLevel`` is "Confidential" (and no other).
 
 .. csv-table:: 
    :file: valueConstraint.csv
@@ -65,7 +69,17 @@ This is interpreted as::
                 propertyID:          :creator
                 valueConstraint:     one, two, three
 
-Four value constraint types are currently supported:
+Because the value constraint type is intended to provide
+a context for interpreting a value constraint, the value
+constraint type means nothing in the absence of a value
+constraint. If a value is provided for
+``valueConstraintType`` but not for ``valueConstraint``,
+a warning will be emitted.
+
+The ``valueConstraintType`` element is intended to serve
+as a sort of extension point for implementers of the
+DCTAP model. As proof of concept, four commonly used
+value constraint types are supported here:
 
 .. toctree::
    :maxdepth: 1

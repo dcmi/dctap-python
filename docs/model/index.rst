@@ -89,7 +89,7 @@ Instance with an :term:`IRI` (or
    
    Description
        A set of Statements **in Instance Data** used to
-       describe just one real-world Entity.
+       describe just one real-world :term:`Entity`.
    
    Entity
        Something, typically **in the real world**, that is

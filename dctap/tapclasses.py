@@ -39,6 +39,7 @@ class TAPStatementConstraint:
         self._elements_taking_IRIs_warn_if_not_IRIs()
         self._mandatory_repeatable_have_supported_boolean_values()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
+        self._valueConstraintType_iristem_warn_if_valueConstraint_not_is_not_an_IRI()
         self._valueConstraintType_picklist_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
@@ -95,8 +96,20 @@ class TAPStatementConstraint:
 
         return self
 
+    def _valueConstraintType_iristem_warn_if_valueConstraint_not_is_not_an_IRI(self):
+        """If valueConstraintType IRIStem, warn if valueConstraint not an IRI."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "iristem":
+            if not is_uri_or_prefixed_uri(self.valueConstraint):
+                self.sc_warnings["valueConstraint"] = (
+                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
+                    f"{repr(self.valueConstraint)} does not look like an IRI or "
+                    "Compact IRI."
+                )
+        return self
+
     def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
-        """If valueConstraintType pattern, warn if valueConstraint not valid regex."""
+        """If valueConstraintType Pattern, warn if valueConstraint not valid regex."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "pattern":
             try:

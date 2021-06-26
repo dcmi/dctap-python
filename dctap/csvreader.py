@@ -132,6 +132,15 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
             set_shape_fields(shape, row)            # set its shape-related fields, and
             warnings[sh_id] = dict()                # give it key in warnings dict.
 
+        shape.validate()
+        shape_warnings = shape.get_warnings()
+        for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
+            try:                                    # Try to add each warning to dict
+                warnings[sh_id][elem].append(warn)  # of all warnings by shape,
+            except KeyError:                        # but if needed key not found,
+                warnings[sh_id][elem] = list()      # set new key with value list,
+                warnings[sh_id][elem].append(warn)  # and warning can now be added.
+
         sc = TAPStatementConstraint()               # Instantiate SC for this row.
 
         for key in list(asdict(sc)):                # Iterate SC fields, to

@@ -1,7 +1,7 @@
 .. _elem_propertyID:
 
-propertyID
-^^^^^^^^^^
+propertyID / propertyLabel
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The DCTAP model was designed for compatibility with the
 RDF model. In the RDF model, properties are identified
@@ -29,3 +29,18 @@ Interpreted as::
                 propertyID:          height
 
     WARNING [:default/propertyID] 'height' is not an IRI or Compact IRI.
+
+Properties can have natural-language labels for use in displays and documentation.
+
+.. csv-table:: 
+   :file: propertyID_plus_label.csv
+   :header-rows: 1
+
+Interpreted as::
+
+    DCTAP instance
+        Shape
+            shapeID:                 :default
+            Statement Constraint
+                propertyID:          dct:creator
+                propertyLabel:       Author or Creator

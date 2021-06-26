@@ -36,11 +36,10 @@ Interpreted as::
 .. toctree::
 
    propertyID/index
-   propertyLabel/index
    mandrepeat/index
-   valueConstraintType/index
-   valueDataType/index
    valueNodeType/index
+   valueDataType/index
+   valueConstraintType/index
    valueShape/index
 
 Shape elements
@@ -49,7 +48,6 @@ Shape elements
 .. toctree::
 
    shapeID/index
-   shapeLabel/index
 
 Annotation element
 ------------------

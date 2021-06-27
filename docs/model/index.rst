@@ -66,6 +66,8 @@ Instance with an :term:`IRI` (or
    Application Profile
        A description of the structures and terms, and their 
        usages, expected to be found **in Instance Data**.
+       An application profile that follows the DCTAP model 
+       is called a :term:`DCTAP Instance`.
    
    Compact IRI
        An IRI represented by an abbreviated syntax in which

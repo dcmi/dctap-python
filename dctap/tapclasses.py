@@ -41,6 +41,7 @@ class TAPStatementConstraint:
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_iristem_warn_if_valueConstraint_not_is_not_an_IRI()
         self._valueConstraintType_picklist_parse()
+        self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
         self._valueNodeType_is_from_enumerated_list()
@@ -121,8 +122,16 @@ class TAPStatementConstraint:
                 )
         return self
 
+    def _valueConstraintType_languageTag_parse(self):
+        """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "languagetag":
+            if self.valueConstraint:
+                self.valueConstraint = self.valueConstraint.split()
+        return self
+
     def _valueConstraintType_picklist_parse(self):
-        """If valueConstraintType picklists, splits valueConstraint on whitespace."""
+        """If valueConstraintType is Picklist, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "picklist":
             if self.valueConstraint:

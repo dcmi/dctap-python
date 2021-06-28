@@ -1,3 +1,5 @@
+.. _cli:
+
 Command-line tool
 -----------------
 
@@ -12,10 +14,8 @@ One can install 'dctap' in editable mode as follows:
     dctap-python$ python3 -m pip install flit Pygments
     dctap-python$ flit install -s
 
-Once installed, the script can be run by first activating 
-the virtual environment. Once the virtual environment is 
-activated, the script will run within any working directory 
-on the filesystem.
+Once installed, the script can be run by first activating the virtual environment. Once the virtual environment is 
+activated, the script will run within any working directory on the filesystem.
 
 .. code-block:: bash
 

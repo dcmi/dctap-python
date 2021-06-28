@@ -3,14 +3,7 @@
 Pattern
 ^^^^^^^
 
-A value constraint type of Pattern means that the
-corresponding value constraint is to be interpreted as a
-(Python) regular expression. If value constraints are
-empty or malformed as regular expressions they will be
-passed through, untouched, to the text, JSON, and YAML
-outputs. If a pattern does not correctly compile as a
-Python regular expression (or is empty), a warning will
-be emitted.
+A value constraint type of Pattern means that the corresponding value constraint is to be interpreted as a (Python) regular expression. If value constraints are empty or malformed as regular expressions they will be passed through, untouched, to the text, JSON, and YAML outputs. If a pattern does not correctly compile as a Python regular expression (or is empty), a warning will be emitted.
 
 .. csv-table:: 
    :file: pattern.csv

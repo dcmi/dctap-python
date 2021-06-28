@@ -6,7 +6,6 @@ from pathlib import Path
 from dctap.config import get_config_dict
 from dctap.exceptions import BadYamlError, ConfigWarning
 
-
 DEFAULT_CONFIGFILE_NAME = ".dctaprc"
 
 ALT_CONFIG_YAML = """\

@@ -7,7 +7,7 @@ from pathlib import Path
 from dataclasses import asdict
 from typing import Dict, List
 from pathlib import Path
-from .exceptions import CsvError
+from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import is_uri_or_prefixed_uri
 
@@ -39,7 +39,7 @@ def _get_rows(csvfile_obj):
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:
-        raise CsvError("Valid DCTAP CSV must have a 'propertyID' column.")
+        raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     new_buffer = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
     return list(DictReader(new_buffer))
 

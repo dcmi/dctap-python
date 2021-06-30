@@ -4,7 +4,7 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass, field, asdict
 from typing import List
-from .config import get_config_dict
+from .config import get_config
 from .utils import is_uri_or_prefixed_uri
 
 
@@ -29,7 +29,7 @@ class TAPStatementConstraint:
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
 
-    config_dict = get_config_dict()
+    config_dict = get_config()
 
     def reset_config_dict(self, external_config_dict=None):
         self.config_dict = external_config_dict
@@ -172,8 +172,7 @@ class TAPStatementConstraint:
                 )
 
     def get_warnings(self):
-        """Emit warnings dictionary for this instance of TAPStatementConstraint.
-        -- Dictionary is populated by invoking validate() mathod."""
+        """Emit warnings dictionary self.sc_warnings, populated by validate() method."""
         return dict(self.sc_warnings)
 
 
@@ -210,6 +209,5 @@ class TAPShape:
             ] = f"{repr(self.shapeID)} is not an IRI or Compact IRI."
 
     def get_warnings(self):
-        """Emit warnings dictionary for this instance of TAPShape.
-        -- Dictionary is populated by invoking validate() mathod."""
+        """Emit warnings dictionary self.sh_warnings, populated by validate() method."""
         return dict(self.sh_warnings)

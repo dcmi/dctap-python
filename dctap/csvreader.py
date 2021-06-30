@@ -160,7 +160,7 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
                 warnings[sh_id][elem] = list()      # set new key with value list,
                 warnings[sh_id][elem].append(warn)  # and warning can now be added.
 
-        tapshapes_dict = tapshapes_to_dicts(list(shapes.values()))
+        tapshapes_dict = _tapshapes_to_dicts(list(shapes.values()))
         warnings_dict = dict(warnings)
 
     return (                                        # Return tuple:
@@ -170,7 +170,7 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
     # fmt: on
 
 
-def tapshapes_to_dicts(tapshapes_list, verbose=False):
+def _tapshapes_to_dicts(tapshapes_list, verbose=False):
     """Converting TAPShape objects to dicts for generating JSON and YAML."""
     dict_output = {}
     shape_list = []

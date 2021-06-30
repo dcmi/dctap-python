@@ -45,7 +45,7 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
         click.Context.exit(0)
 
     if json:
-        json_output = j.dumps(tapshapes_dict), indent=4)
+        json_output = j.dumps(tapshapes_dict, indent=4)
         print(json_output)
 
     if yaml:
@@ -54,7 +54,7 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
         y.dump(tapshapes_dict, sys.stdout)
 
     if not (json or yaml):
-        pprint_output = pprint_tapshapes(tapshapes_list)
+        pprint_output = pprint_tapshapes(tapshapes_dict)
         for line in pprint_output:
             print(line, file=sys.stderr)
         if warnings:

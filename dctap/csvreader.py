@@ -160,8 +160,26 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
                 warnings[sh_id][elem] = list()      # set new key with value list,
                 warnings[sh_id][elem].append(warn)  # and warning can now be added.
 
+        tapshapes_dict = tapshapes_to_dicts(list(shapes.values()))
+        warnings_dict = dict(warnings)
+
     return (                                        # Return tuple:
-        list(shapes.values()),                      #   List of shapes
-        dict(warnings)                              #   Dict of warnings, by shape
+        tapshapes_dict,                             #   Shapes dictionary
+        warnings_dict                               #   Dict of warnings, by shape
     )
     # fmt: on
+
+
+def tapshapes_to_dicts(tapshapes_list, verbose=False):
+    """Converting TAPShape objects to dicts for generating JSON and YAML."""
+    dict_output = {}
+    shape_list = []
+    dict_output["shapes"] = shape_list
+    for tapshape_obj in tapshapes_list:
+        tapshape_dict = asdict(tapshape_obj)
+        # Removing 'start' for now, not yet part of official DCTAP spec.
+        tapshape_dict.pop("start")
+        tapshape_dict["statement_constraints"] = tapshape_dict.pop("sc_list")
+        shape_list.append(tapshape_dict)
+
+    return dict_output

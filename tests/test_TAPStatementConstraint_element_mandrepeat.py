@@ -38,18 +38,20 @@ def test_mandatory_and_repeatable_default_to_none():
 
 def test_booleans_shown_as_True_False_in_text_display():
     """@@@"""
-    some_input = [
-        TAPShape(
-            shapeID=":default",
-            sc_list = [
-                TAPStatementConstraint(
-                    propertyID=":creator",
-                    mandatory=1,
-                    repeatable=0,
-                ),
-            ]
-        )
-    ]
+    some_input = {'shapes': [{'sh_warnings': {},
+             'shapeID': ':default',
+             'shapeLabel': '',
+             'statement_constraints': [{'mandatory': 1,
+                                        'note': '',
+                                        'propertyID': ':creator',
+                                        'propertyLabel': '',
+                                        'repeatable': 0,
+                                        'sc_warnings': {},
+                                        'valueConstraint': '',
+                                        'valueConstraintType': '',
+                                        'valueDataType': '',
+                                        'valueNodeType': '',
+                                        'valueShape': ''}]}]}
     expected_output_dedented = dedent(
         """\
     DCTAP instance

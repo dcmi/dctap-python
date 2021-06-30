@@ -4,10 +4,8 @@ from dataclasses import asdict
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
-def pprint_tapshapes(tapshapes_list, verbose=False):
+def pprint_tapshapes(tapshapes_dict, verbose=False):
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
-
-    tapshapes_dict = tapshapes_to_dicts(tapshapes_list)
 
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove("sc_list")
@@ -19,7 +17,6 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
 
     pprint_output = []
     pprint_output.append("DCTAP instance")
-    tapshapes_dict = tapshapes_to_dicts(tapshapes_list)
     for tapshape_dict in tapshapes_dict["shapes"]:
         pprint_output.append("    Shape")
         for key in shape_elements:
@@ -48,17 +45,3 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
 
     return pprint_output
 
-
-def tapshapes_to_dicts(tapshapes_list, verbose=False):
-    """Converting TAPShape objects to dicts for generating JSON and YAML."""
-    dict_output = {}
-    shape_list = []
-    dict_output["shapes"] = shape_list
-    for tapshape_obj in tapshapes_list:
-        tapshape_dict = asdict(tapshape_obj)
-        # Removing 'start' for now, not yet part of official DCTAP spec.
-        tapshape_dict.pop("start")
-        tapshape_dict["statement_constraints"] = tapshape_dict.pop("sc_list")
-        shape_list.append(tapshape_dict)
-
-    return dict_output

@@ -15,8 +15,8 @@ def test_get_tapshapes_one_default_shape():
     tapshapes_output = _get_tapshapes(rows)
     expected_shapes = tapshapes_output[0]
     assert len(expected_shapes) == 1
-    assert expected_shapes[0].shapeID == ":default"
-    assert len(expected_shapes[0].sc_list) == 3
+    assert expected_shapes["shapes"][0]["shapeID"] == ":default"
+    assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 3
 
 
 # def test_get_tapshapes_one_default_shape_shapeID_not_specified():

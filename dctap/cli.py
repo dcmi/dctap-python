@@ -5,7 +5,7 @@ import json as j
 from ruamel.yaml import YAML
 from dataclasses import asdict
 import click
-from .inspect import pprint_tapshapes, tapshapes_to_dicts
+from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .loggers import stderr_logger, warning_logger, debug_logger
@@ -35,7 +35,7 @@ def cli(context):
 def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yaml):
     """Output CSV contents to text, JSON, or YAML, with warnings"""
     csvreader_output = csvreader(csvfile_name)
-    tapshapes_list = csvreader_output[0]
+    tapshapes_dict = csvreader_output[0]
     warnings_dict = csvreader_output[1]
 
     if json and yaml:
@@ -45,13 +45,13 @@ def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yam
         click.Context.exit(0)
 
     if json:
-        json_output = j.dumps(tapshapes_to_dicts(tapshapes_list), indent=4)
+        json_output = j.dumps(tapshapes_dict), indent=4)
         print(json_output)
 
     if yaml:
         y = YAML()
         y.indent(mapping=2, sequence=4, offset=2)
-        y.dump(tapshapes_to_dicts(tapshapes_list), sys.stdout)
+        y.dump(tapshapes_dict, sys.stdout)
 
     if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_list)

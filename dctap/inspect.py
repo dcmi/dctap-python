@@ -7,6 +7,8 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 def pprint_tapshapes(tapshapes_list, verbose=False):
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
 
+    tapshapes_dict = tapshapes_to_dicts(tapshapes_list)
+
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove("sc_list")
     # 2021-06-09 Removing 'start' for now, not yet part of official DCTAP spec.
@@ -17,8 +19,8 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
 
     pprint_output = []
     pprint_output.append("DCTAP instance")
-    for tapshape_obj in tapshapes_list:
-        tapshape_dict = asdict(tapshape_obj)
+    tapshapes_dict = tapshapes_to_dicts(tapshapes_list)
+    for tapshape_dict in tapshapes_dict["shapes"]:
         pprint_output.append("    Shape")
         for key in shape_elements:
             indent08 = 8 * " " + key + ": "
@@ -29,26 +31,26 @@ def pprint_tapshapes(tapshapes_list, verbose=False):
             if verbose:
                 pprint_output.append(indent08 + str(tapshape_dict[key]))
 
-        for tc_dict in tapshape_dict.get("sc_list"):
+        for sc_dict in tapshape_dict.get("statement_constraints"):
             pprint_output.append("        Statement Constraint")
             for key in tconstraint_elements:
                 indent12 = 12 * " " + key + ": "
                 while len(indent12) < 33:
                     indent12 = indent12 + " "
-                if tc_dict[key] == True:
-                    tc_dict[key] = "True"
-                if tc_dict[key] == False:
-                    tc_dict[key] = "False"
-                if not verbose and tc_dict[key]:
-                    pprint_output.append(indent12 + str(tc_dict[key]))
+                if sc_dict[key] == True:
+                    sc_dict[key] = "True"
+                if sc_dict[key] == False:
+                    sc_dict[key] = "False"
+                if not verbose and sc_dict[key]:
+                    pprint_output.append(indent12 + str(sc_dict[key]))
                 if verbose:
-                    pprint_output.append(indent12 + str(tc_dict[key]))
+                    pprint_output.append(indent12 + str(sc_dict[key]))
 
     return pprint_output
 
 
 def tapshapes_to_dicts(tapshapes_list, verbose=False):
-    """Converting TAPShape objects to dictionaries, ready for generating JSON and YAML."""
+    """Converting TAPShape objects to dicts for generating JSON and YAML."""
     dict_output = {}
     shape_list = []
     dict_output["shapes"] = shape_list

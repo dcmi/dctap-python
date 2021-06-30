@@ -27,7 +27,6 @@ def _get_rows(csvfile_obj):
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
     csvfile_str = csvfile_obj.read()
-    # tmp_buffer = StringBuffer(Path(csvfile).open().read())
     tmp_buffer = StringBuffer(csvfile_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(",")

@@ -83,3 +83,11 @@ def model(context):
     print("        Statement Constraints")
     for element in tconstraint_elements:
         print(f"            {element}")
+
+
+@cli.command()
+@click.argument("configfile", type=click.File(mode="w", encoding="utf-8"))
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def config(context, configfile):
+    """Write built-in settings to editable file [default: .dctaprc]"""

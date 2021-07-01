@@ -39,7 +39,7 @@ def cli(context):
 def generate(context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml):
     """Given CSV, generate text, JSON, or YAML, with warnings"""
     config_dict = get_config(configfile)
-    csvreader_output = csvreader(csvfile_name)
+    csvreader_output = csvreader(csvfile_name, config_dict)
     tapshapes_dict = csvreader_output[0]
     if expand_prefixes:
         tapshapes_dict = expand_uri_prefixes(tapshapes_dict, config_dict)

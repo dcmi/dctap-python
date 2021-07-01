@@ -12,14 +12,11 @@ from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import is_uri_or_prefixed_uri
 
-DEFAULT_SHAPE_NAME = get_config()['default_shape_name']
-
-
-def csvreader(csvfile_obj):
+def csvreader(csvfile_obj, config_dict):
     """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
     rows_list = _get_rows(csvfile_obj)
-    tapshapes = _get_tapshapes(rows_list)[0]
-    tapwarnings = _get_tapshapes(rows_list)[1]
+    tapshapes = _get_tapshapes(rows_list, config_dict)[0]
+    tapwarnings = _get_tapshapes(rows_list, config_dict)[1]
     return (tapshapes, tapwarnings)
 
 
@@ -85,8 +82,12 @@ def _make_element_aliases(csv_elements_list=None):
     return element_aliases_dict
 
 
-def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
+def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
     """Return tuple: list of TAPShape objects and list of any warnings."""
+    try:
+        dshape = config_dict.get('default_shape_name')
+    except KeyError:
+        dshape = ":default"
 
     # fmt: off
     shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
@@ -114,7 +115,7 @@ def _get_tapshapes(rows=None, default=DEFAULT_SHAPE_NAME) -> List[TAPShape]:
             if row.get("shapeID"):                  # if truthy shapeID be found,
                 sh_id = row.get("shapeID")          # use it as a key for shapes dict.
             else:                                   # If no truthy shapeID be found,
-                sh_id = row["shapeID"] = default    # use default as shapeID and key.
+                sh_id = row["shapeID"] = dshape     # use default as shapeID and key.
             shape = shapes[sh_id] = TAPShape()      # Add a TAPShape to the dict and
             set_shape_fields(shape, row)            # set its shape-related fields, and
             shapes[sh_id].start = True              # set it as the "start" shape,

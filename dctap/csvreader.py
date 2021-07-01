@@ -134,7 +134,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
             set_shape_fields(shape, row)            # set its shape-related fields, and
             warnings[sh_id] = dict()                # give it key in warnings dict.
 
-        shape.validate()
+        shape.validate(config_dict)
         shape_warnings = shape.get_warnings()
         for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
             try:                                    # Try to add each warning to dict
@@ -153,7 +153,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
-        sc.validate()                               # SC validates itself, and
+        sc.validate(config_dict)                    # SC validates itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
 
         for (elem,warn) in sc_warnings.items():     # Iterate SC instance warnings.

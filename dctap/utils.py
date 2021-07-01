@@ -3,6 +3,7 @@
 import re
 import sys
 from urllib.parse import urlparse
+from .exceptions import ConfigError
 
 
 def strip_enclosing_angle_brackets(url):
@@ -31,6 +32,8 @@ def is_uri_or_prefixed_uri(uri):
 
 def expand_uri_prefixes(shapes_dict=None, config_dict=None):
     """@@@"""
+    if not config_dict.get('prefixes'):
+        raise ConfigError("No 'prefixes' section found in configfile.")
     for shape in shapes_dict["shapes"]:
         for prefix in config_dict["prefixes"]:
             if re.match(prefix, shape["shapeID"]):

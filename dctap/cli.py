@@ -74,31 +74,10 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, verbo
 
 
 @cli.command()
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def model(context):
-    """Show DCTAP model built-ins for ready reference"""
-
-    shape_elements = list(asdict(TAPShape()))
-    shape_elements.remove("sc_list")
-    shape_elements.remove("start")
-    tconstraint_elements = list(asdict(TAPStatementConstraint()))
-    print("DCTAP instance")
-    print("    Shape")
-    for element in shape_elements:
-        print(f"        {element}")
-    print("        Statement Constraints")
-    for element in tconstraint_elements:
-        print(f"            {element}")
-
-
-@cli.command()
 @click.argument("configfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(context, configfile):
     """Write built-in settings to file [default: ".dctaprc"]"""
-#    if not configfile:
-#        configfile = Path.cwd() / DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile)
 

@@ -1,7 +1,6 @@
 """Utilities."""
 
 import re
-import sys
 from urllib.parse import urlparse
 from .exceptions import ConfigError
 
@@ -26,12 +25,11 @@ def is_uri_or_prefixed_uri(uri):
         return True
     if re.match("[A-Za-z0-9_]*:[A-Za-z0-9_]*", uri):  # looks like prefixed URI
         return True
-    else:
-        return False
 
 
 def expand_uri_prefixes(shapes_dict=None, config_dict=None):
     """@@@"""
+    # pylint: disable=too-many-nested-blocks
     if not config_dict.get("prefixes"):
         raise ConfigError("No 'prefixes' section found in configfile.")
     for shape in shapes_dict["shapes"]:

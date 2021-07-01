@@ -25,6 +25,7 @@ def is_uri_or_prefixed_uri(uri):
         return True
     if re.match("[A-Za-z0-9_]*:[A-Za-z0-9_]*", uri):  # looks like prefixed URI
         return True
+    return False
 
 
 def expand_uri_prefixes(shapes_dict=None, config_dict=None):

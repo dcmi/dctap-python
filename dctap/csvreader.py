@@ -12,6 +12,7 @@ from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import is_uri_or_prefixed_uri
 
+
 def csvreader(csvfile_obj, config_dict):
     """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
     rows_list = _get_rows(csvfile_obj)
@@ -85,7 +86,7 @@ def _make_element_aliases(csv_elements_list=None):
 def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
     """Return tuple: list of TAPShape objects and list of any warnings."""
     try:
-        dshape = config_dict.get('default_shape_name')
+        dshape = config_dict.get("default_shape_name")
     except KeyError:
         dshape = ":default"
 

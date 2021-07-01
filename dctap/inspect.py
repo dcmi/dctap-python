@@ -44,4 +44,3 @@ def pprint_tapshapes(tapshapes_dict, verbose=False):
                     pprint_output.append(indent12 + str(sc_dict[key]))
 
     return pprint_output
-

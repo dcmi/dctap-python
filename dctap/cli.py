@@ -6,7 +6,12 @@ from ruamel.yaml import YAML
 from dataclasses import asdict
 from pathlib import Path
 import click
-from .config import get_config, write_configfile, DEFAULT_CONFIG_YAML, DEFAULT_CONFIGFILE_NAME
+from .config import (
+    get_config,
+    write_configfile,
+    DEFAULT_CONFIG_YAML,
+    DEFAULT_CONFIGFILE_NAME,
+)
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .tapclasses import TAPShape, TAPStatementConstraint
@@ -36,7 +41,9 @@ def cli(context):
 @click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def generate(context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml):
+def generate(
+    context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml
+):
     """Given CSV, generate text, JSON, or YAML, with warnings"""
     config_dict = get_config(configfile)
     csvreader_output = csvreader(csvfile_name, config_dict)
@@ -80,4 +87,3 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, verbo
 def init(context, configfile):
     """Write built-in settings to file [default: ".dctaprc"]"""
     write_configfile(configfile)
-

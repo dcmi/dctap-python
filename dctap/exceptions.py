@@ -7,4 +7,3 @@ class DctapError(SystemExit):
 
 class ConfigError(DctapError):
     """Exceptions related to configuration."""
-

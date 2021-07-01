@@ -34,6 +34,7 @@ def pprint_tapshapes(tapshapes_dict, verbose=False):
                 indent12 = 12 * " " + key + ": "
                 while len(indent12) < 33:
                     indent12 = indent12 + " "
+                # pylint: disable=singleton-comparison
                 if sc_dict[key] == True:
                     sc_dict[key] = "True"
                 if sc_dict[key] == False:

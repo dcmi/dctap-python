@@ -1,10 +1,8 @@
 """Classes for Python objects derived from CSV files."""
 
 import re
-from collections import defaultdict
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from typing import List
-from .config import get_config
 from .utils import is_uri_or_prefixed_uri
 
 
@@ -29,13 +27,10 @@ class TAPStatementConstraint:
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
 
-    config_dict = get_config()
-
-    def reset_config_dict(self, external_config_dict=None):
-        self.config_dict = external_config_dict
-
-    def validate(self):
+    def validate(self, config_dict):
         """Validates specific fields."""
+        # pylint: disable=attribute-defined-outside-init
+        self.config_dict = config_dict
         self._elements_taking_IRIs_warn_if_not_IRIs()
         self._mandatory_repeatable_have_supported_boolean_values()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
@@ -71,6 +66,7 @@ class TAPStatementConstraint:
         valid_values_for_false = ["false", "0"]
         valid_values = valid_values_for_true + valid_values_for_false + [None]
 
+        # pylint: disable=singleton-comparison
         if self.mandatory != None:
             # breakpoint(context=5)
             mand = self.mandatory.lower()
@@ -150,9 +146,10 @@ class TAPStatementConstraint:
 
     def _valueNodeType_is_from_enumerated_list(self):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        # 2021-07-21: Make value node types configurable? For now, hard-wired
-        # valid_types = [vnt.lower() for vnt in self.config_dict['value_node_types']]
-        valid_types = ["uri", "iri", "bnode", "literal"]
+        if self.config_dict["value_node_types"]:
+            valid_types = [vnt.lower() for vnt in self.config_dict["value_node_types"]]
+        else:
+            valid_types = ["iri", "bnode", "literal"]
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
             if self.valueNodeType not in valid_types:
@@ -164,7 +161,7 @@ class TAPStatementConstraint:
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """@@@"""
         node_type = self.valueNodeType.lower()
-        if node_type == "iri" or node_type == "uri" or node_type == "bnode":
+        if node_type in ('iri', 'uri', 'bnode'):
             if self.valueDataType:
                 self.sc_warnings["valueDataType"] = (
                     f"Datatypes are only for literals, "

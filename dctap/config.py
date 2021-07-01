@@ -8,10 +8,8 @@ from .exceptions import ConfigError
 from .loggers import stderr_logger, warning_logger, debug_logger
 
 
-DEFAULT_CONFIG_YAML = """\
+DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
 default_shape_name: ":default"
-
-configfile_name: ".dctaprc"
 
 prefixes:
     ":":        "http://example.org/"
@@ -36,6 +34,8 @@ def get_config(configfile=None):
     """Get config dict from file if found, else get built-in defaults."""
     if not configfile:
         file_to_try = DEFAULT_CONFIGFILE_NAME
+    else:
+        file_to_try = configfile
     bad_form = f"{repr(file_to_try)} is badly formed: fix, re-generate, or delete."
     not_found = f"{repr(file_to_try)} not found or not readable."
     try:

@@ -4,8 +4,9 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 from dataclasses import asdict
+from pathlib import Path
 import click
-from .config import get_config, DEFAULT_CONFIG_YAML
+from .config import get_config, write_configfile, DEFAULT_CONFIG_YAML, DEFAULT_CONFIGFILE_NAME
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .tapclasses import TAPShape, TAPStatementConstraint
@@ -92,11 +93,12 @@ def model(context):
 
 
 @cli.command()
-@click.argument("configfile", type=click.Path())
+@click.argument("configfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def mkconfig(context, configfile):
-    """Write built-in settings to editable file [default: .dctaprc]"""
-    if not configfile:
-        configfile = Path.cwd() / DEFAULT_CONFIGFILE_NAME
+def init(context, configfile):
+    """Write built-in settings to file [default: ".dctaprc"]"""
+#    if not configfile:
+#        configfile = Path.cwd() / DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile)
+

@@ -7,18 +7,19 @@ from pathlib import Path
 from dataclasses import asdict
 from typing import Dict, List
 from pathlib import Path
+from .config import get_config
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import is_uri_or_prefixed_uri
 
-DEFAULT_SHAPE_NAME = ":default"  # replace with call to config reader
+DEFAULT_SHAPE_NAME = get_config()['default_shape_name']
 
 
 def csvreader(csvfile_obj):
     """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
-    rows = _get_rows(csvfile_obj)
-    tapshapes = _get_tapshapes(rows)[0]
-    tapwarnings = _get_tapshapes(rows)[1]
+    rows_list = _get_rows(csvfile_obj)
+    tapshapes = _get_tapshapes(rows_list)[0]
+    tapwarnings = _get_tapshapes(rows_list)[1]
     return (tapshapes, tapwarnings)
 
 

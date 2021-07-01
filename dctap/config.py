@@ -9,6 +9,11 @@ from .exceptions import ConfigError
 DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
 default_shape_name: ":default"
 
+value_node_types:
+- iri
+- literal
+- bnode
+
 prefixes:
     ":":        "http://example.org/"
     "dc:":      "http://purl.org/dc/elements/1.1/"

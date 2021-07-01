@@ -25,7 +25,6 @@ prefixes:
     "schema:":  "http://schema.org/"
     "skos:":    "http://www.w3.org/2004/02/skos/core#"
     "skosxl:":  "http://www.w3.org/2008/05/skos-xl#"
-    "wd:":      "http://www.wikidata.org/entity/"
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 """

@@ -29,7 +29,7 @@ def is_uri_or_prefixed_uri(uri):
         return False
 
 
-def expand_prefixes(shapes_dict=None, config_dict=None):
+def expand_uri_prefixes(shapes_dict=None, config_dict=None):
     """@@@"""
     for shape in shapes_dict["shapes"]:
         for prefix in config_dict["prefixes"]:
@@ -37,10 +37,10 @@ def expand_prefixes(shapes_dict=None, config_dict=None):
                 prefix_expanded = config_dict["prefixes"][prefix]
                 shape["shapeID"] = re.sub(prefix, prefix_expanded, shape["shapeID"])
         for sc in shape["statement_constraints"]:
-            for prop in ['propertyID', 'valueShape']:
-                for prefix in config_dict["prefixes"]:
-                    if sc.get(prop):
-                        if re.match(prefix, sc[prop]):
+            for element in ['propertyID', 'valueDataType', 'valueShape']:
+                if sc.get(element):
+                    for prefix in config_dict["prefixes"]:
+                        if re.match(prefix, sc.get(element)):
                             prefix_expanded = config_dict["prefixes"][prefix]
-                            sc[prop] = re.sub(prefix, prefix_expanded, sc[prop])
+                            sc[element] = re.sub(prefix, prefix_expanded, sc[element])
     return shapes_dict

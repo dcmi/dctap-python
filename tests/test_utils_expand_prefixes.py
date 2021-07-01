@@ -2,10 +2,10 @@
 
 import os
 import pytest
-from dctap.utils import expand_prefixes
+from dctap.utils import expand_uri_prefixes
 
 
-def test_utils_expand_prefixes(tmp_path):
+def test_utils_expand_uri_prefixes(tmp_path):
     """Expands prefixes in shapes dictionary according as per config settings."""
     config_dict = {
     "default_shape_name": ":default",
@@ -33,7 +33,8 @@ def test_utils_expand_prefixes(tmp_path):
               'shapeID': ':author',
               'statement_constraints': [
                     {
-                      'propertyID': 'foaf:name'
+                      'propertyID': 'foaf:name',
+                      'valueDataType': 'xsd:string'
                     }
                ]
             }
@@ -57,10 +58,11 @@ def test_utils_expand_prefixes(tmp_path):
               'shapeID': 'http://example.org/author',
               'statement_constraints': [
                     {
-                        'propertyID': 'http://xmlns.com/foaf/0.1/name'
+                      'propertyID': 'http://xmlns.com/foaf/0.1/name',
+                      'valueDataType': 'xsd:string'
                     }
                 ]
             }
         ]
     }
-    assert expand_prefixes(shapes_dict, config_dict) == expected_output
+    assert expand_uri_prefixes(shapes_dict, config_dict) == expected_output

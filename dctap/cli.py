@@ -5,10 +5,12 @@ import json as j
 from ruamel.yaml import YAML
 from dataclasses import asdict
 import click
+from .config import get_config, DEFAULT_CONFIG_YAML
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .loggers import stderr_logger, warning_logger, debug_logger
+from .utils import expand_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
 # => unused-argument: Allows placeholders for now.
@@ -25,17 +27,21 @@ def cli(context):
 
 @cli.command()
 @click.argument("csvfile_name", type=click.File(mode="r", encoding="utf-8-sig"))
-@click.option("--expand-prefixes", is_flag=True)
+@click.option("--configfile", type=click.Path(exists=True))
+@click.option("--prefixes", is_flag=True)
 @click.option("--warnings", is_flag=True)
 @click.option("--verbose", is_flag=True)
 @click.option("--json", is_flag=True)
 @click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def inspect(context, csvfile_name, expand_prefixes, warnings, verbose, json, yaml):
-    """Output CSV contents to text, JSON, or YAML, with warnings"""
+def inspect(context, csvfile_name, configfile, prefixes, warnings, verbose, json, yaml):
+    """Output CSV contents to text, JSON, or YAML, with warnings."""
+    config_dict = get_config(configfile)
     csvreader_output = csvreader(csvfile_name)
     tapshapes_dict = csvreader_output[0]
+    if prefixes:
+        tapshapes_dict = expand_prefixes(tapshapes_dict, config_dict)
     warnings_dict = csvreader_output[1]
 
     if json and yaml:
@@ -86,8 +92,11 @@ def model(context):
 
 
 @cli.command()
-@click.argument("configfile", type=click.File(mode="w", encoding="utf-8"))
+@click.argument("configfile", type=click.Path())
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def config(context, configfile):
+def mkconfig(context, configfile):
     """Write built-in settings to editable file [default: .dctaprc]"""
+    if not configfile:
+        configfile = Path.cwd() / DEFAULT_CONFIGFILE_NAME
+    write_configfile(configfile)

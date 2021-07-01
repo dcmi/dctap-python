@@ -33,10 +33,7 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
 def test_get_default_config_settings_if_configfile_not_found(tmp_path):
     """Get default config settings if no default config file is found."""
     os.chdir(tmp_path)
-    assert get_config()["prefixes"] == {
-        ":": "http://example.org/",
-        "dcterms:": "http://purl.org/dc/terms/",
-    }
+    assert get_config()["prefixes"]
 
 
 def test_exit_if_configfile_has_bad_yaml(tmp_path):

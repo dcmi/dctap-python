@@ -32,12 +32,12 @@ activated, the script will run within any working directory on the filesystem.
       --help     Show help and exit
     
     Commands:
-      inspect  Output CSV contents to text, JSON, or YAML, with warnings
+      generate Output CSV contents to text, JSON, or YAML, with warnings
       model    Show DCTAP model built-ins for ready reference
     
-The subcommand ``inspect`` reads and outputs the contents of a given CSV file::
+The subcommand ``generate`` reads and outputs the contents of a given CSV file::
 
-    $ dctap inspect example.csv
+    $ dctap generate example.csv
     DCTAP instance
         Shape
             shapeID:                 :book

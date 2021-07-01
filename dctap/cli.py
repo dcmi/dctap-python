@@ -35,8 +35,8 @@ def cli(context):
 @click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def inspect(context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml):
-    """Output CSV contents to text, JSON, or YAML, with warnings."""
+def generate(context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml):
+    """Given CSV, generate text, JSON, or YAML, with warnings"""
     config_dict = get_config(configfile)
     csvreader_output = csvreader(csvfile_name)
     tapshapes_dict = csvreader_output[0]

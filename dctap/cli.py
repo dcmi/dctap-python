@@ -3,19 +3,11 @@
 import sys
 import json as j
 from ruamel.yaml import YAML
-from dataclasses import asdict
-from pathlib import Path
 import click
-from .config import (
-    get_config,
-    write_configfile,
-    DEFAULT_CONFIG_YAML,
-    DEFAULT_CONFIGFILE_NAME,
-)
+from .config import get_config, write_configfile
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
-from .tapclasses import TAPShape, TAPStatementConstraint
-from .loggers import stderr_logger, warning_logger, debug_logger
+from .loggers import stderr_logger
 from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
@@ -45,6 +37,8 @@ def generate(
     context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml
 ):
     """Given CSV, generate text, JSON, or YAML, with warnings"""
+    # pylint: disable=too-many-locals,too-many-arguments
+
     config_dict = get_config(configfile)
     csvreader_output = csvreader(csvfile_name, config_dict)
     tapshapes_dict = csvreader_output[0]
@@ -67,6 +61,7 @@ def generate(
         y.indent(mapping=2, sequence=4, offset=2)
         y.dump(tapshapes_dict, sys.stdout)
 
+    # pylint: disable=logging-fstring-interpolation
     if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_dict)
         for line in pprint_output:
@@ -74,8 +69,8 @@ def generate(
         if warnings:
             print("", file=sys.stderr)
             echo = stderr_logger()
-            for (shapeid, warnings) in warnings_dict.items():
-                for (elem, warn_list) in warnings.items():
+            for (shapeid, warns) in warnings_dict.items():
+                for (elem, warn_list) in warns.items():
                     for warning in warn_list:
                         echo.warning(f"[{shapeid}/{elem}] {warning}")
 

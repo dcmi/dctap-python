@@ -3,14 +3,10 @@
 from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
-from pathlib import Path
 from dataclasses import asdict
 from typing import Dict, List
-from pathlib import Path
-from .config import get_config
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
-from .utils import is_uri_or_prefixed_uri
 
 
 def csvreader(csvfile_obj, config_dict):
@@ -85,6 +81,10 @@ def _make_element_aliases(csv_elements_list=None):
 
 def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
     """Return tuple: list of TAPShape objects and list of any warnings."""
+    # pylint: disable=too-many-locals
+    # pylint: disable=too-many-branches
+    # pylint: disable=too-many-statements
+
     try:
         dshape = config_dict.get("default_shape_name")
     except KeyError:
@@ -102,7 +102,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
         tapshape_keys.remove("sc_list")             # sh_warnings - not
         tapshape_keys.remove("sh_warnings")         # shape fields.
         for key in tapshape_keys:                   # Iterate remaining keys, to
-            try:                                    # populate tapshape fields 
+            try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from row dict.
             except KeyError:                        # Keys not found in dict,
                 pass                                # are simply skipped.
@@ -153,7 +153,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
-        sc.validate()                               # SC validates itself, and 
+        sc.validate()                               # SC validates itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
 
         for (elem,warn) in sc_warnings.items():     # Iterate SC instance warnings.
@@ -173,7 +173,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
     # fmt: on
 
 
-def _tapshapes_to_dicts(tapshapes_list, verbose=False):
+def _tapshapes_to_dicts(tapshapes_list):
     """Converting TAPShape objects to dicts for generating JSON and YAML."""
     dict_output = {}
     shape_list = []

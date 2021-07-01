@@ -1,11 +1,9 @@
 """Default settings."""
 
-import os
 import sys
 from pathlib import Path
-import ruamel.yaml as yaml
+from ruamel import yaml
 from .exceptions import ConfigError
-from .loggers import stderr_logger, warning_logger, debug_logger
 
 
 DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
@@ -32,6 +30,7 @@ DEFAULT_CONFIGFILE_NAME = ".dctaprc"
 
 def get_config(configfile=None):
     """Get config dict from file if found, else get built-in defaults."""
+    # pylint: disable=raise-missing-from
     if not configfile:
         file_to_try = DEFAULT_CONFIGFILE_NAME
     else:
@@ -43,8 +42,6 @@ def get_config(configfile=None):
     except (FileNotFoundError, PermissionError):
         if configfile:  # if one was specified as an argument
             raise ConfigError(not_found)
-        else:
-            pass
     except (yaml.YAMLError, yaml.scanner.ScannerError):
         raise ConfigError(bad_form)
     return yaml.safe_load(DEFAULT_CONFIG_YAML)
@@ -64,4 +61,5 @@ def write_configfile(configfile=None):
                 file=sys.stderr,
             )
     except FileNotFoundError:
+        # pylint: disable=raise-missing-from
         raise ConfigError(f"{repr(configfile)} is not writeable - try different name.")

@@ -34,8 +34,8 @@ def _get_rows(csvfile_obj):
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
-    new_buffer = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
-    return list(DictReader(new_buffer))
+    tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
+    return list(DictReader(tmp_buffer2))
 
 
 def _canonicalize_string(some_str, element_aliases_dict):

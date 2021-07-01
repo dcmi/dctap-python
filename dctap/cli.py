@@ -28,13 +28,12 @@ def cli(context):
 @click.option("--configfile", type=click.Path(exists=True))
 @click.option("--expand-prefixes", is_flag=True)
 @click.option("--warnings", is_flag=True)
-@click.option("--verbose", is_flag=True)
 @click.option("--json", is_flag=True)
 @click.option("--yaml", is_flag=True)
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def generate(
-    context, csvfile_name, configfile, expand_prefixes, warnings, verbose, json, yaml
+    context, csvfile_name, configfile, expand_prefixes, warnings, json, yaml
 ):
     """Given CSV, generate text, JSON, or YAML, with warnings"""
     # pylint: disable=too-many-locals,too-many-arguments
@@ -65,7 +64,7 @@ def generate(
     if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_dict)
         for line in pprint_output:
-            print(line, file=sys.stderr)
+            print(line, file=sys.stdout)
         if warnings:
             print("", file=sys.stderr)
             echo = stderr_logger()
@@ -80,5 +79,5 @@ def generate(
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(context, configfile):
-    """Write built-in settings to file [default: ".dctaprc"]"""
+    """Write out a starter config file [default: ".dctaprc"]"""
     write_configfile(configfile)

@@ -24,7 +24,7 @@ Minimal application profile
 
 In the DCTAP model, the simplest possible application profile consists of just one :term:`Statement Constraint` in the context of one :term:`Shape`.
 
-A Statement Constraint has, at a minimum, one ``propertyID`` element, and the existence of a Shape can be inferred, so in practical terms, the simplest possible application profile is a list of just one property.
+A Statement Constraint has, at a minimum, one **propertyID** element, and the existence of a Shape can be inferred, so in practical terms, the simplest possible application profile is a list of just one property.
 
 Note that if a shape identifier is not explicitly assigned in a CSV, a default identifier will be assigned. (This is discussed in the the section :ref:`elem_shapeID`.) In "shape-less" applications, this shape identifier can simply be ignored.
 

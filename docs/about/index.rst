@@ -45,5 +45,5 @@ As of July 2021, our medium-term plan is:
 
 - To move the command-line interface into a separate project.
 
-- To leave this module as a ``pip``-installable basis for utlities that implement more specific features, such as transforming a DCTAP instance into ShEx or SHACL.
+- To leave this module as a **pip**-installable basis for utlities that implement more specific features, such as transforming a DCTAP instance into ShEx or SHACL.
 

@@ -3,10 +3,10 @@
 mandatory / repeatable
 ^^^^^^^^^^^^^^^^^^^^^^
 
-In the DCTAP model, the expected cardinality of a property can be expressed with the elements ``mandatory`` and ``repeatable``. These elements take Boolean values that express "true" or "false" in one of two supported ways:
+In the DCTAP model, the expected cardinality of a property can be expressed with the elements **mandatory** and **repeatable**. These elements take Boolean values that express "true" or "false" in one of two supported ways:
 
-- The keywords ``true`` and ``false`` (case-insensitive).
-- The integers ``0`` and ``1``.
+- The keywords **true** and **false** (case-insensitive).
+- The integers **0** and **1**.
 
 These supported Boolean values are handled in the following ways:
 
@@ -33,7 +33,7 @@ This is interpreted as::
                 propertyID:          dc:date
                 mandatory:           False
 
-Any other value for either element --- including an empty string for when the element is present but left blank --- has no effect on the default of ``None`` for each element and will be passed through as a string (or empty string) to the JSON and YAML output.
+Any other value for either element --- including an empty string for when the element is present but left blank --- has no effect on the default of **None** for each element and will be passed through as a string (or empty string) to the JSON and YAML output.
 
 An empty string value will result in an element not being displayed at all in the compact text output; in the verbose text format, the value will be displayed as the default "None".
 
@@ -56,7 +56,7 @@ This is displayed as::
     WARNING [:default/repeatable] 'N' is not a supported Boolean value.
     WARNING [:default/mandatory] 'Y' is not a supported Boolean value.
 
-The four possible combinations of ``mandatory`` with ``repeatable`` translate into the following minimum and maximum values when cardinality is expressed as a range (where "-1" means "many").
+The four possible combinations of **mandatory** with **repeatable** translate into the following minimum and maximum values when cardinality is expressed as a range (where "-1" means "many").
 
 =========== =========== ===== =====
  mandatory/repeatable     min/max

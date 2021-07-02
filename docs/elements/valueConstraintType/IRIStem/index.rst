@@ -6,7 +6,7 @@ IRIStem
 A value of type IRIStem is an IRI that can be
 matched with longer IRIs. For example, "http://lod.nal.usda.gov/nalt/"
 is an IRIStem that matches "http://lod.nal.usda.gov/nalt/10129".
-The following example says that values of the ``dcterms:subject``
+The following example says that values of the "dcterms:subject"
 property are expected to be values of the NAL Thesaurus.
 
 .. csv-table::

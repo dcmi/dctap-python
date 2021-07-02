@@ -17,4 +17,4 @@ Interpreted as::
             Statement Constraint
                 propertyID:          dcterms:creator
 
-Users wishing to extend the DCTAP model, for example with elements to specify that a shape is "closed" or to provide severity levels for validation errors, can import ``dctap`` into their own projects and add any elements required. The developers of ``dctap`` would like to facilitate the sharing of such extensions, or even to incorporate popular elements into a future extension of the base model. Additional elements can be proposed by opening an issue on the main `DCTAP repository <https://github.com/dcmi/dctap/issues>`_.
+Users wishing to extend the DCTAP model, for example with elements to specify that a shape is "closed" or to provide severity levels for validation errors, can import **dctap** into their own projects and add any elements required. The developers of **dctap** would like to facilitate the sharing of such extensions, or even to incorporate popular elements into a future extension of the base model. Additional elements can be proposed by opening an issue on the main `DCTAP repository <https://github.com/dcmi/dctap/issues>`_.

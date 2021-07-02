@@ -10,8 +10,8 @@ of node: an :term:`IRI` (or URI), a BNode, and a Literal.
 Users not interested in compatibility with RDF can 
 safely ignore this element.
 
-``dctap`` issues a warning if an unsupported value is 
-provided (here: ``Concept``).
+**dctap** issues a warning if an unsupported value is 
+provided (here: "Concept").
 
 .. csv-table:: 
    :file: valueNodeType.csv

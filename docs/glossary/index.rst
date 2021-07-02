@@ -16,10 +16,10 @@ Glossary
        a label associated with a namespace (the prefix) is
        followed by a colon and by a local name which, taken
        together, can be expanded into a full IRI. For
-       example, if the prefix ``dcterms:`` is associated with
-       the namespace ``http://purl.org/dc/terms/``, then the
-       prefixed name ``dcterms:creator`` can be expanded into
-       ``http://purl.org/dc/terms/creator``.
+       example, if the prefix "dcterms:" is associated with
+       the namespace "http://purl.org/dc/terms/", then the
+       prefixed name "dcterms:creator" can be expanded into
+       "http://purl.org/dc/terms/creator".
    
    DCTAP Element
        One of a dozen or so labels defined in the DCTAP Model,

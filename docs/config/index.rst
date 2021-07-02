@@ -3,7 +3,7 @@
 Configuration
 -------------
 
-``dctap`` has built-in defaults for configuration settings that are customizable by users by generating and editing configuration file as explained in the section :ref:`cli_init`.
+**dctap** has built-in defaults for configuration settings that are customizable by users by generating and editing configuration file as explained in the section :ref:`cli_init`.
 
 Default shape name
 ..................
@@ -44,7 +44,7 @@ Is interpreted as::
 Built-in configuration defaults
 ...............................
 
-The latest built-in settings can be found in the the YAML string variable ``DEFAULT_CONFIG_YAML`` in the source code file `config.py <https://github.com/dcmi/dctap-python/blob/main/dctap/config.py>`_.
+The latest built-in settings can be found in the the YAML string variable **DEFAULT_CONFIG_YAML** in the source code file `config.py <https://github.com/dcmi/dctap-python/blob/main/dctap/config.py>`_.
 
 .. code-block:: yaml
 

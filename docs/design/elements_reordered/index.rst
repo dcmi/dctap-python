@@ -1,9 +1,9 @@
 .. _design_element_reordered:
 
-The order of elements is normalized in output.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The sequence of elements is normalized.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Regardless of how elements (columns) are ordered in a CSV, their order will be normalized in the text, JSON, and YAML outputs.
+In order to improve the consistency and readability of results, he order of :term:`DCTAP Element`\s will be normalized in text, JSON, and YAML outputs irrespective of their sequence in a CSV, 
 
 .. csv-table:: 
    :file: elementOrder.csv

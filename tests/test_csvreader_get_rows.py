@@ -8,8 +8,87 @@ from dctap.csvreader import (
     _make_element_aliases,
     _make_csv_elements_list,
     _shorten_and_lowercase,
-    _canonicalize_element_string,
+    _canonicalize_element_name,
+    _add_element_aliases_from_config,
 )
+
+CONFIG_DICT = {
+        "default_shape_name": ":default",
+        "prefixes": { 
+                      ":": "http://example.org/",
+                      "dcterms:": "http://purl.org/dc/terms/",
+                    },
+        "element_aliases": {
+                      "PropID": "propertyID",
+                      "Mand": "mandatory",
+                      "Rep": "repeatable",
+                      "Node Type": "valueNodeType",
+                      "Datatype": "valueDataType",
+                      "VC": "valueConstraint",
+                      "VCType": "valueConstraintType",
+                      "VShape": "valueConstraintType",
+                    }
+    }
+
+def test_canonicalize_element_name():
+    """Element names not recognized as aliases are left unchanged."""
+    csv_elements_list = _make_csv_elements_list()
+    element_aliases_dict = _make_element_aliases(csv_elements_list)
+    assert _canonicalize_element_name("sid", element_aliases_dict) == "shapeID"
+    assert _canonicalize_element_name("SHAPE ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_element_name("rid", element_aliases_dict) == "rid"
+
+
+def test_canonicalize_element_name_customized():
+    """Uses customized element name aliases taken from configuration file."""
+    element_aliases_dict = { 
+        'propertyid': 'propertyID',  
+        'eigenschaftsidentifikator': 'propertyID',  
+    }
+    assert _canonicalize_element_name("propertyid", element_aliases_dict) == "propertyID"
+    assert _canonicalize_element_name("eigenschaftsidentifikator", element_aliases_dict) == "propertyID"
+
+
+def test_add_element_aliases_from_config():
+    config_dict = { "element_aliases": { "Eigenschaftsidentifikator": "propertyID" }}
+    input_element_aliases_dict = { 'propertyid': 'propertyID' }
+    output_element_aliases_dict = { 
+        'propertyid': 'propertyID',  
+        'eigenschaftsidentifikator': 'propertyID',  
+    }
+    assert _add_element_aliases_from_config(input_element_aliases_dict, config_dict) == output_element_aliases_dict
+
+
+def test_get_rows_given_customized_element_alias(tmp_path):
+    """Using customized element alias."""
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "PropID\n"
+            "http://purl.org/dc/terms/creator\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_csvrow_dicts_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
+
+
+def test_get_rows_given_customized_element_alias_case_insensitive(tmp_path):
+    """Using customized element alias, normalized for case, dashes, underscores."""
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "Prop_ID\n"
+            "http://purl.org/dc/terms/creator\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_csvrow_dicts_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
+
 
 def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     """Where headers shorter than rows, extra values collected under header None."""
@@ -27,7 +106,7 @@ def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
             '': 'URI', 
             None: ['comment', 'comment two']}
     ]
-    assert _get_rows(csvfile_obj) == expected_output
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
 
 def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
@@ -43,7 +122,7 @@ def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
     expected_output = [
         {'shapeID': ':a', 'propertyID': 'dct:creator', '': 'URI'}
     ]
-    assert _get_rows(csvfile_obj) == expected_output
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
 
 def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
@@ -59,21 +138,21 @@ def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
     expected_output = [
         {'shapeID': ':a', 'propertyID': 'dct:creator', 'valueNodeType': None}
     ]
-    assert _get_rows(csvfile_obj) == expected_output
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
 
 def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     """Raises exception if first line of CSV has no propertyID."""
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(("shapeID,propID,valueNodeType\n" ":a,dct:creator,URI\n"))
+    csvfile_path.write_text(("shapeID,propertyIdentifier,valueNodeType\n" ":a,dct:creator,URI\n"))
     csvfile_obj = open(csvfile_path)
     with pytest.raises(SystemExit):
-        _get_rows(csvfile_obj)
+        _get_rows(csvfile_obj, CONFIG_DICT)
 
 
 def test_get_rows_with_unknown_column(tmp_path):
-    """Columns not in DCTAP model passed through, lowercased, minus punctuation."""
+    """Non-DCTAP elements kept by _get_rows (but dropped by _get_shapes)."""
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
@@ -103,7 +182,7 @@ def test_get_rows_with_unknown_column(tmp_path):
             'valuegestalt': ''
         }
     ]
-    assert _get_rows(csvfile_obj) == expected_csvrow_dicts_list
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
 
 
 def test_get_rows_with_unknown_column2(tmp_path):
@@ -128,7 +207,7 @@ def test_get_rows_with_unknown_column2(tmp_path):
               'valueShape': '', 
               'wildcard': ''}
     ]
-    assert _get_rows(csvfile_obj) == expected_output
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
 
 def test_get_rows_with_simple_csvfile(tmp_path):
@@ -149,7 +228,7 @@ def test_get_rows_with_simple_csvfile(tmp_path):
         {'shapeID': ':a', 'propertyID': 'dct:subject', 'valueNodeType': 'URI'},
         {'shapeID': ':a', 'propertyID': 'dct:date', 'valueNodeType': 'String'}
     ]
-    assert _get_rows(csvfile_obj) == expected_csvrow_dicts_list
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
 
 
 def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path):
@@ -166,7 +245,7 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
     expected_csvrow_dicts_list = [
         {"shapeID": ":a", "propertyID": "dct:subject", "confidential": "True"},
     ]
-    assert _get_rows(csvfile_obj) == expected_csvrow_dicts_list
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
 
 
 def test_get_rows_correct_shapeID(tmp_path):
@@ -184,7 +263,7 @@ def test_get_rows_correct_shapeID(tmp_path):
              'propertyID': 'dcterms:creator'
             }
     ]
-    assert _get_rows(csvfile_obj) == expected_output
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
 
 def test_get_rows_correct_a_real_mess(tmp_path):
@@ -204,7 +283,7 @@ def test_get_rows_correct_a_real_mess(tmp_path):
              'wildcard': 'Yeah yeah yeah',
             }
     ]
-    assert _get_rows(csvfile_obj) == expected_output
+    assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
 
 def test_get_rows_make_element_aliases():
@@ -238,23 +317,11 @@ def test_get_rows_make_element_aliases():
     csv_elements_list = _make_csv_elements_list()
     assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
 
-
-def test_canonicalize_element_string():
-    """@@@"""
-    csv_elements_list = _make_csv_elements_list()
-    element_aliases_dict = _make_element_aliases(csv_elements_list)
-    assert _canonicalize_element_string("sid", element_aliases_dict) == "shapeID"
-    assert _canonicalize_element_string("SHAPE ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_element_string("SHAPE___ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_element_string("rid", element_aliases_dict) == "rid"
-
-
 def test_shorten_and_lowercase():
-    """@@@"""
+    """Removes spaces, dashes, and underscores, returns in lowercase."""
     assert _shorten_and_lowercase("Property ID") == "propertyid"
     assert _shorten_and_lowercase("Property__ID") == "propertyid"
     assert _shorten_and_lowercase("Property-ID") == "propertyid"
-
 
 def test_get_rows_with_complete_csvfile(tmp_path):
     """Simple CSV with all columns."""
@@ -300,7 +367,7 @@ def test_get_rows_with_complete_csvfile(tmp_path):
             "note": "",
         },
     ]
-    real_output = _get_rows(csvfile_obj)
+    real_output = _get_rows(csvfile_obj, CONFIG_DICT)
     assert isinstance(real_output, list)
     assert isinstance(expected_csvrow_dicts_list, list)
     assert real_output == expected_csvrow_dicts_list

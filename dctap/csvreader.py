@@ -11,16 +11,17 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 
 def csvreader(csvfile_obj, config_dict):
     """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
-    rows_list = _get_rows(csvfile_obj)
+    rows_list = _get_rows(csvfile_obj, config_dict)
     tapshapes = _get_tapshapes(rows_list, config_dict)[0]
     tapwarnings = _get_tapshapes(rows_list, config_dict)[1]
     return (tapshapes, tapwarnings)
 
 
-def _get_rows(csvfile_obj):
+def _get_rows(csvfile_obj, config_dict):
     """Passed _io.TextIOWrapper object, return list of CSV file rows as dicts."""
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
+    element_aliases_dict_plus = _add_element_aliases_from_config(element_aliases_dict, config_dict)
     csvfile_str = csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
@@ -28,7 +29,7 @@ def _get_rows(csvfile_obj):
     new_header_line_list = list()
     for header in raw_header_line_list:
         header = _shorten_and_lowercase(header)
-        header = _canonicalize_element_string(header, element_aliases_dict)
+        header = _canonicalize_element_name(header, element_aliases_dict_plus)
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
@@ -38,7 +39,7 @@ def _get_rows(csvfile_obj):
     return list(DictReader(tmp_buffer2))
 
 
-def _canonicalize_element_string(some_str, element_aliases_dict):
+def _canonicalize_element_name(some_str, element_aliases_dict):
     """Given some string, returns canonical string or actual string."""
     some_str = _shorten_and_lowercase(some_str)
     for key in element_aliases_dict.keys():
@@ -76,6 +77,17 @@ def _make_element_aliases(csv_elements_list=None):
         lowerkey = csv_elem.lower()
         element_aliases_dict[shortkey] = csv_elem  # { shortkey: camelcasedValue }
         element_aliases_dict[lowerkey] = csv_elem  # { lowerkey: camelcasedValue }
+    return element_aliases_dict
+
+
+def _add_element_aliases_from_config(element_aliases_dict, config_dict):
+    """Given list of element aliases, adds aliases from config dictionary."""
+    element_aliases_dict_plus = dict()
+    if config_dict.get("element_aliases"):
+        for (key,value) in config_dict.get("element_aliases").items():
+            lowerkey = _shorten_and_lowercase(key)
+            element_aliases_dict_plus[lowerkey] = value
+        element_aliases_dict.update(element_aliases_dict_plus)
     return element_aliases_dict
 
 

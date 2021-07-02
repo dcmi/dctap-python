@@ -8,7 +8,7 @@ from dctap.csvreader import (
     _make_element_aliases,
     _make_csv_elements_list,
     _shorten_and_lowercase,
-    _canonicalize_string,
+    _canonicalize_element_string,
 )
 
 def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
@@ -239,14 +239,14 @@ def test_get_rows_make_element_aliases():
     assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
 
 
-def test_canonicalize_string():
+def test_canonicalize_element_string():
     """@@@"""
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
-    assert _canonicalize_string("sid", element_aliases_dict) == "shapeID"
-    assert _canonicalize_string("SHAPE ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_string("SHAPE___ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_string("rid", element_aliases_dict) == "rid"
+    assert _canonicalize_element_string("sid", element_aliases_dict) == "shapeID"
+    assert _canonicalize_element_string("SHAPE ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_element_string("SHAPE___ID", element_aliases_dict) == "shapeID"
+    assert _canonicalize_element_string("rid", element_aliases_dict) == "rid"
 
 
 def test_shorten_and_lowercase():

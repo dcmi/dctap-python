@@ -28,7 +28,7 @@ def _get_rows(csvfile_obj):
     new_header_line_list = list()
     for header in raw_header_line_list:
         header = _shorten_and_lowercase(header)
-        header = _canonicalize_string(header, element_aliases_dict)
+        header = _canonicalize_element_string(header, element_aliases_dict)
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
@@ -38,7 +38,7 @@ def _get_rows(csvfile_obj):
     return list(DictReader(tmp_buffer2))
 
 
-def _canonicalize_string(some_str, element_aliases_dict):
+def _canonicalize_element_string(some_str, element_aliases_dict):
     """Given some string, returns canonical string or actual string."""
     some_str = _shorten_and_lowercase(some_str)
     for key in element_aliases_dict.keys():

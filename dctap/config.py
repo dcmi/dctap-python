@@ -28,6 +28,17 @@ prefixes:
     "skosxl:":  "http://www.w3.org/2008/05/skos-xl#"
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
+
+# Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
+element_aliases:
+    "Prop ID": "propertyID"
+    "Mand": "mandatory"
+    "Rep": "repeatable"
+    "Node Type": "valueNodeType"
+    "Datatype": "valueDataType"
+    "VC": "valueConstraint"
+    "VCType": "valueConstraintType"
+    "VShape": "valueConstraintType"
 """
 
 DEFAULT_CONFIGFILE_NAME = ".dctaprc"

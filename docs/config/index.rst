@@ -3,7 +3,11 @@
 Configuration
 -------------
 
-`dctap` has built-in defaults for configuration settings that are customizable by users. For example:
+`dctap` has built-in defaults for configuration settings that are customizable by users by generating and editing configuration file as explained in the section :ref:`cli_init`. These editable defaults are:
+
+- **Default shape name**. When shape identifiers are not provided in a CSV, a configurable default shape name is used (see section :ref:`elem_shapeID`).
+- **Value node types**. Out of the box, DCTAP supports the three node types of the graph-based data model as defined in `RDF 1.1 Concepts and Abstract Syntax <https://www.w3.org/TR/rdf11-concepts/#data-model>`_: IRI, literal, and blank node. These are represented in a :term:`DCTAP Instance` with ``IRI``, ``Literal``, and ``BNode`` as keywords for the element :ref:`elem_valudNodeType`. Users can extend this list of supported keywords with aliases for supported node types, such as ``URI`` (for ``IRI``) or with combinations of node types that will be understood by their own applications downstream, such as ``Nonliteral`` or ``BlankNodeOrIRI``.
+- **Namespace prefix mappings**. As explained in the section :ref:`cli_generate`, the :term:`Compact IRI`\s can be expanded into full :term:`IRI`\s by replacing the short prefix with the full IRI of the namespace. The default configuration settings provide a starter set of prefix mappings for frequently used namespaces. This list can be customized with locally defined namespaces or with namespaces listed in services such as `prefix.cc <http://prefix.cc/'_ or `Linked Open Vocabularies <https://lov.linkeddata.es/dataset/lov/vocabs>`_.
 
 .. code-block:: yaml
 
@@ -30,6 +34,5 @@ Configuration
         "wdt:":     "http://www.wikidata.org/prop/direct/"
         "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 
-The latest settings can be found in [config.py](https://github.com/dcmi/dctap-python/blob/main/dctap/config.py) in the variable ``DEFAULT_CONFIG_YAML``. 
+The latest built-in settings can be found in the the YAML string variable ``DEFAULT_CONFIG_YAML`` in the source code file `config.py <https://github.com/dcmi/dctap-python/blob/main/dctap/config.py>`_.
 
-As explained in the section :ref:`cli_init`, the default settings can be written to a file and customized there.

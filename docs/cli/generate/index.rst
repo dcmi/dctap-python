@@ -1,7 +1,7 @@
 .. _cli_generate:
 
-Parsing to text, JSON, or YAML
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Generate text, JSON, or YAML
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The subcommand **dctap generate**:
 

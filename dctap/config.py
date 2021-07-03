@@ -2,7 +2,7 @@
 
 import sys
 from pathlib import Path
-from ruamel import yaml
+import ruamel.yaml as yaml
 from .exceptions import ConfigError
 
 

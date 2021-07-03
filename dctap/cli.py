@@ -25,17 +25,21 @@ def cli(context):
 
 @cli.command()
 @click.argument("csvfile_name", type=click.File(mode="r", encoding="utf-8-sig"))
-@click.option("--configfile", type=click.Path(exists=True))
-@click.option("--expand-prefixes", is_flag=True)
-@click.option("--warnings", is_flag=True)
-@click.option("--json", is_flag=True)
-@click.option("--yaml", is_flag=True)
+@click.option(
+    "--configfile", type=click.Path(exists=True), help="Pathname of configuration file."
+)
+@click.option(
+    "--expand-prefixes",
+    is_flag=True,
+    help="Compact to full IRI with prefixes mapped to namespaces.",
+)
+@click.option("--warnings", is_flag=True, help="Print warnings to stderr.")
+@click.option("--json", is_flag=True, help="Print JSON to stdout.")
+@click.option("--yaml", is_flag=True, help="Print YAML to stdout.")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def generate(
-    context, csvfile_name, configfile, expand_prefixes, warnings, json, yaml
-):
-    """Given CSV, generate text, JSON, or YAML, with warnings"""
+def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json, yaml):
+    """Given CSV, generate text, JSON, or YAML, with warnings."""
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile)

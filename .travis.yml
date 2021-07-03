@@ -5,7 +5,6 @@ python:
   - "3.8"
   - "3.9"
 # command to install dependencies
-#  - flit install -s
 install:
   - pip install -r requirements.txt
 # command to run tests

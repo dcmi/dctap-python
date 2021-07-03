@@ -37,7 +37,7 @@ def test_mandatory_and_repeatable_default_to_none():
 
 
 def test_booleans_shown_as_True_False_in_text_display():
-    """@@@"""
+    """Booleans display in text output as "True" and "False"."""
     some_input = {'shapes': [{'sh_warnings': {},
              'shapeID': ':default',
              'shapeLabel': '',
@@ -64,3 +64,21 @@ def test_booleans_shown_as_True_False_in_text_display():
     """
     )
     assert pprint_tapshapes(some_input) == expected_output_dedented.splitlines()
+
+def test_mandatory_and_repeatable_raise_warnings_given_unsupported_boolean_value():
+    """@@@"""
+    sc = TAPStatementConstraint()
+    print(f"Instance: {sc}")
+    print(f"Statement warnings at start of test: {sc.sc_warnings}")
+    sc.propertyID = "dc:creator"
+    sc.mandatory = "WAHR"
+    sc.repeatable = "WAHR"
+    sc._mandatory_repeatable_have_supported_boolean_values()
+    print(sc.sc_warnings)
+    print(dict(sc.sc_warnings))
+    print(len(dict(sc.sc_warnings)))
+    print(f"Mandatory: {sc.mandatory}")
+    print(f"Repeatable: {sc.repeatable}")
+    assert len(sc.sc_warnings) == 2
+    assert sc.mandatory is "WAHR"
+    assert sc.repeatable is "WAHR"

@@ -4,26 +4,6 @@ import pytest
 from dctap.tapclasses import TAPStatementConstraint
 
 
-def test_valueConstraintType_picklist_parse():
-    """If valueConstraintType picklist, valueConstraint parsed on whitespace."""
-    sc = TAPStatementConstraint()
-    sc.propertyID = "dcterms:creator"
-    sc.valueConstraintType = "picklist"
-    sc.valueConstraint = "one two three"
-    sc._valueConstraintType_picklist_parse()
-    assert sc.valueConstraint == ["one", "two", "three"]
-
-
-def test_valueConstraintType_picklist_parse_case_insensitive():
-    """Value constraint types are processed as case-insensitive."""
-    sc = TAPStatementConstraint()
-    sc.propertyID = "dcterms:creator"
-    sc.valueConstraintType = "PICKLIST"
-    sc.valueConstraint = "one two          three" # extra whitespace
-    sc._valueConstraintType_picklist_parse()
-    assert sc.valueConstraint == ["one", "two", "three"]
-
-
 def test_valueConstraintType_pattern_is_valid_regex():
     """For valueConstraintType pattern, valueConstraint must be valid regex."""
     sc = TAPStatementConstraint()
@@ -53,9 +33,3 @@ def test_valueConstraintType_pattern_warn_if_not_valid_regex():
     assert len(sc.sc_warnings) == 1
 
 
-def test_valueConstraintType_warn_if_used_without_valueConstraint():
-    sc = TAPStatementConstraint()
-    sc.propertyID = ":status"
-    sc.valueConstraintType = "pattern"
-    sc._valueConstraintType_warn_if_used_without_valueConstraint()
-    assert len(sc.sc_warnings) == 1

@@ -2,7 +2,8 @@
 
 import sys
 from pathlib import Path
-from ruamel import yaml
+# pylint: disable=consider-using-from-import
+import ruamel.yaml as yaml
 from .exceptions import ConfigError
 
 

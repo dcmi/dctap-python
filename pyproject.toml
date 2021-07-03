@@ -16,10 +16,12 @@ requires = [
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
 ]
 description-file = 'README.rst'
-requires-python = '>=3.9'
+requires-python = '>=3.7'
 
 [tool.flit.metadata.requires-extra]
 test = [

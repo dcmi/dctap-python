@@ -19,7 +19,7 @@ def csvreader(csvfile_obj, config_dict):
 
 def _get_rows(csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
-    csv_elements_list = _make_csv_elements_list()
+    csv_elements_list = shape_elements() + statement_constraint_elements()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
     element_aliases_dict_plus = _add_element_aliases_from_config(element_aliases_dict, config_dict)
     csvfile_contents_str = csvfile_obj.read()
@@ -56,15 +56,6 @@ def _shorten_and_lowercase(some_str=None):
     some_str = some_str.lower()
     return some_str
 
-
-def _make_csv_elements_list():
-    """Derive list of supported CSV columns from TAP dataclasses."""
-    shape_elements = list(asdict(TAPShape()))
-    shape_elements.remove("sc_list")
-    shape_elements.remove("sh_warnings")
-    tconstraint_elements = list(asdict(TAPStatementConstraint()))
-    tconstraint_elements.remove("sc_warnings")
-    return shape_elements + tconstraint_elements
 
 
 def _make_element_aliases(csv_elements_list=None):
@@ -193,3 +184,18 @@ def _tapshapes_to_dicts(tapshapes_list):
         shape_list.append(tapshape_dict)
 
     return dict_output
+
+
+def shape_elements(shape_class=TAPShape):
+    """List DCTAP elements supported by given shape class."""
+    sh_elements = list(asdict(shape_class()))
+    sh_elements.remove("sc_list")
+    sh_elements.remove("sh_warnings")
+    return sh_elements
+
+
+def statement_constraint_elements(sc_class=TAPStatementConstraint):
+    """List DCTAP elements supported by given statement constraint class."""
+    sc_elements = list(asdict(sc_class()))
+    sc_elements.remove("sc_warnings")
+    return sc_elements

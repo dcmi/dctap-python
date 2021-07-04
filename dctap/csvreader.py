@@ -10,7 +10,7 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 
 
 def csvreader(csvfile_obj, config_dict):
-    """Passed _io.TextIOWrapper object, return list of TAPShape objects."""
+    """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
     rows_list = _get_rows(csvfile_obj, config_dict)
     tapshapes = _get_tapshapes(rows_list, config_dict)[0]
     tapwarnings = _get_tapshapes(rows_list, config_dict)[1]
@@ -22,8 +22,8 @@ def _get_rows(csvfile_obj, config_dict):
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
     element_aliases_dict_plus = _add_element_aliases_from_config(element_aliases_dict, config_dict)
-    csvfile_str = csvfile_obj.read()
-    tmp_buffer = StringBuffer(csvfile_str)
+    csvfile_contents_str = csvfile_obj.read()
+    tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = list()
@@ -40,7 +40,7 @@ def _get_rows(csvfile_obj, config_dict):
 
 
 def _canonicalize_element_name(some_str, element_aliases_dict):
-    """Given some string, returns canonical string or actual string."""
+    """Given some string, returns string canonicalized (if needed) or unchanged."""
     some_str = _shorten_and_lowercase(some_str)
     for key in element_aliases_dict.keys():
         if key == some_str:
@@ -49,7 +49,7 @@ def _canonicalize_element_name(some_str, element_aliases_dict):
 
 
 def _shorten_and_lowercase(some_str=None):
-    """Deletes underscores, dashes, spaces, then lowercases."""
+    """For given string, delete underscores, dashes, spaces, then lowercase."""
     some_str = some_str.replace(" ", "")
     some_str = some_str.replace("_", "")
     some_str = some_str.replace("-", "")
@@ -58,7 +58,7 @@ def _shorten_and_lowercase(some_str=None):
 
 
 def _make_csv_elements_list():
-    """Derives list of CSV row elements from the TAP dataclasses."""
+    """Derive list of supported CSV columns from TAP dataclasses."""
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove("sc_list")
     shape_elements.remove("start")

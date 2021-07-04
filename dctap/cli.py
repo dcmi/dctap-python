@@ -83,5 +83,5 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(context, configfile):
-    """Write out a starter config file [default: ".dctaprc"]"""
+    """Write out starter config file [default: dctap.yml]"""
     write_configfile(configfile)

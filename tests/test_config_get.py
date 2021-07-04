@@ -15,7 +15,7 @@ prefixes:
 """
 
 def test_get_config_from_default_config_file_if_present(tmp_path):
-    """Get config dict from config file .dctaprc if present."""
+    """Get config dict from config file dctap.yml if present."""
     os.chdir(tmp_path)
     Path(DEFAULT_CONFIGFILE_NAME).write_text(YAML_CONFIGFILE_CONTENTS)
     assert get_config()["prefixes"] == {

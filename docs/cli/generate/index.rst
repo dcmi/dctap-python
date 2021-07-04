@@ -44,7 +44,7 @@ As an aid for debugging, the `dctap generate` subcommand performs various consis
 Expand prefixes
 ...............
 
-The option **--expand-prefixes** triggers the expansion of namespace prefixes used in :term:`Compact IRI`\s to be expanded, by checking the prefix mappings defined in a configuration file --- by default ".dctaprc" in the working directory, or any other file specified with the **--configfile** option. If no configuration file is found, it will check the prefixes against a dozen or so mappings defined as built-in configuration defaults.
+The option **--expand-prefixes** triggers the expansion of namespace prefixes used in :term:`Compact IRI`\s to be expanded, by checking the prefix mappings defined in a configuration file --- by default "dctap.yml" in the working directory, or any other file specified with the **--configfile** option. If no configuration file is found, it will check the prefixes against a dozen or so mappings defined as built-in configuration defaults.
 
 .. code-block:: bash
 
@@ -59,7 +59,7 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
 Use a custom config file
 ........................
 
-The option **--configfile** triggers use of a configuration file other than the default ".dctaprc". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the next section.
+The option **--configfile** triggers use of a configuration file other than the default "dctap.yml". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the next section.
 
 .. code-block:: bash
 

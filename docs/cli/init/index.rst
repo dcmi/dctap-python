@@ -8,14 +8,14 @@ The command **dctap generate** works out of the box, with no options, but its be
 Per-directory config files
 ..........................
 
-The subcommand **dctap init** generates a starter configuration file by writing built-in defaults to a file, by default ".dctaprc" in the working directory. These settings can be hand-edited, for example to add namespace prefix mappings. Thereafter, whenever **dctap generate...** is run in that directory, its settings will be used instead of the built-in defaults.
+The subcommand **dctap init** generates a starter configuration file by writing built-in defaults to a file, by default "dctap.yml" in the working directory. These settings can be hand-edited, for example to add namespace prefix mappings. Thereafter, whenever **dctap generate...** is run in that directory, its settings will be used instead of the built-in defaults.
 
 .. code-block:: bash
 
     $ cd /home/tombaker/myproject/data/
 
     data$ dctap init
-    Built-in settings written to .dctaprc - edit as needed.
+    Built-in settings written to dctap.yml - edit as needed.
 
     data$ dctap generate example.csv
     ...

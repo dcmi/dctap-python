@@ -42,7 +42,7 @@ element_aliases:
     "VShape": "valueConstraintType"
 """
 
-DEFAULT_CONFIGFILE_NAME = ".dctaprc"
+DEFAULT_CONFIGFILE_NAME = "dctap.yml"
 
 
 def get_config(configfile=DEFAULT_CONFIGFILE_NAME, defaults_yaml=DEFAULT_CONFIG_YAML):

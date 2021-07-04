@@ -30,6 +30,23 @@ CONFIG_DICT = {
                     }
     }
 
+def test_make_csv_elements_list():
+    """@@@"""
+    csv_elements_list_expected = ['shapeID',
+        'shapeLabel',
+        'propertyID',
+        'propertyLabel',
+        'mandatory',
+        'repeatable',
+        'valueNodeType',
+        'valueDataType',
+        'valueConstraint',
+        'valueConstraintType',
+        'valueShape',
+        'note']
+    csv_elements_list_actual = _make_csv_elements_list()
+    assert csv_elements_list_actual == csv_elements_list_expected
+
 def test_canonicalize_element_name():
     """Element names not recognized as aliases are left unchanged."""
     csv_elements_list = _make_csv_elements_list()

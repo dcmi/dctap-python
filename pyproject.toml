@@ -12,7 +12,6 @@ requires = [
     "dataclasses",
     "ruamel.base",
     "ruamel.yaml",
-    "rdflib",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",

@@ -4,7 +4,7 @@ from dataclasses import asdict
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
-def pprint_tapshapes(tapshapes_dict, verbose=False):
+def pprint_tapshapes(tapshapes_dict):
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
 
     shape_elements = list(asdict(TAPShape()))
@@ -21,9 +21,7 @@ def pprint_tapshapes(tapshapes_dict, verbose=False):
             indent08 = 8 * " " + key + ": "
             while len(indent08) < 33:
                 indent08 = indent08 + " "
-            if not verbose and tapshape_dict[key]:
-                pprint_output.append(indent08 + str(tapshape_dict[key]))
-            if verbose:
+            if tapshape_dict[key]:
                 pprint_output.append(indent08 + str(tapshape_dict[key]))
 
         for sc_dict in tapshape_dict.get("statement_constraints"):
@@ -37,9 +35,7 @@ def pprint_tapshapes(tapshapes_dict, verbose=False):
                     sc_dict[key] = "True"
                 if sc_dict[key] == False:
                     sc_dict[key] = "False"
-                if not verbose and sc_dict[key]:
-                    pprint_output.append(indent12 + str(sc_dict[key]))
-                if verbose:
+                if sc_dict[key]:
                     pprint_output.append(indent12 + str(sc_dict[key]))
 
     return pprint_output

@@ -128,7 +128,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
             else:                                   # If no truthy shapeID be found,
                 sh_id = row["shapeID"] = dshape     # use default as shapeID and key.
             shape = shapes[sh_id] = TAPShape()      # Add a TAPShape to the dict and
-            set_shape_fields(shape, row)            # set its shape-related fields, 
+            set_shape_fields(shape, row)            # set its shape-related fields,
             first_valid_row_encountered = False     # but in first valid row only.
 
         if not first_valid_row_encountered:         # In every valid row thereafter,

@@ -188,18 +188,14 @@ def _tapshapes_to_dicts(tapshapes_list):
 
 def shape_elements(shape_class=TAPShape):
     """List DCTAP elements supported by given shape class."""
-    shape_elements = list(asdict(shape_class()))
-    shape_elements.remove("sc_list")
-    shape_elements.remove("sh_warnings")
-    return shape_elements
+    sh_elements = list(asdict(shape_class()))
+    sh_elements.remove("sc_list")
+    sh_elements.remove("sh_warnings")
+    return sh_elements
 
 
 def statement_constraint_elements(sc_class=TAPStatementConstraint):
     """List DCTAP elements supported by given statement constraint class."""
-    statement_constraint_elements = list(asdict(sc_class()))
-    statement_constraint_elements.remove("sc_warnings")
-    return statement_constraint_elements
-
-
-
-
+    sc_elements = list(asdict(sc_class()))
+    sc_elements.remove("sc_warnings")
+    return sc_elements

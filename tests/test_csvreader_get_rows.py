@@ -6,10 +6,11 @@ import pytest
 from dctap.csvreader import (
     _get_rows,
     _make_element_aliases,
-    _make_csv_elements_list,
     _shorten_and_lowercase,
     _normalize_element_name,
     _add_element_aliases_from_config,
+    shape_elements,
+    statement_constraint_elements,
 )
 
 CONFIG_DICT = {
@@ -44,13 +45,13 @@ def test_make_csv_elements_list():
         'valueConstraintType',
         'valueShape',
         'note']
-    csv_elements_list_actual = _make_csv_elements_list()
+    csv_elements_list_actual = shape_elements() + statement_constraint_elements()
     assert csv_elements_list_actual == csv_elements_list_expected
 
 def test_normalize_element_name():
     """Element names not recognized as aliases are left unchanged."""
-    csv_elements_list = _make_csv_elements_list()
-    element_aliases_dict = _make_element_aliases(csv_elements_list)
+    csv_elements_list_actual = shape_elements() + statement_constraint_elements()
+    element_aliases_dict = _make_element_aliases(csv_elements_list_actual)
     assert _normalize_element_name("sid", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("SHAPE ID", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
@@ -331,8 +332,8 @@ def test_get_rows_make_element_aliases():
         'valueshape': 'valueShape', 
         'note': 'note',
     }
-    csv_elements_list = _make_csv_elements_list()
-    assert _make_element_aliases(csv_elements_list) == expected_element_aliases_dict
+    csv_elements_list_actual = shape_elements() + statement_constraint_elements()
+    assert _make_element_aliases(csv_elements_list_actual) == expected_element_aliases_dict
 
 def test_shorten_and_lowercase():
     """Removes spaces, dashes, and underscores, returns in lowercase."""

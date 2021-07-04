@@ -18,7 +18,7 @@ def csvreader(csvfile_obj, config_dict):
 
 
 def _get_rows(csvfile_obj, config_dict):
-    """Passed _io.TextIOWrapper object, return list of CSV file rows as dicts."""
+    """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
     element_aliases_dict_plus = _add_element_aliases_from_config(element_aliases_dict, config_dict)
@@ -40,7 +40,7 @@ def _get_rows(csvfile_obj, config_dict):
 
 
 def _normalize_element_name(some_str, element_aliases_dict):
-    """Given some string, returns string normalized (if needed) or unchanged."""
+    """Normalize a given string (or leave unchanged)."""
     some_str = _shorten_and_lowercase(some_str)
     for key in element_aliases_dict.keys():
         if key == some_str:

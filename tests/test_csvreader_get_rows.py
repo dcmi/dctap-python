@@ -8,7 +8,7 @@ from dctap.csvreader import (
     _make_element_aliases,
     _make_csv_elements_list,
     _shorten_and_lowercase,
-    _canonicalize_element_name,
+    _normalize_element_name,
     _add_element_aliases_from_config,
 )
 
@@ -47,24 +47,24 @@ def test_make_csv_elements_list():
     csv_elements_list_actual = _make_csv_elements_list()
     assert csv_elements_list_actual == csv_elements_list_expected
 
-def test_canonicalize_element_name():
+def test_normalize_element_name():
     """Element names not recognized as aliases are left unchanged."""
     csv_elements_list = _make_csv_elements_list()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
-    assert _canonicalize_element_name("sid", element_aliases_dict) == "shapeID"
-    assert _canonicalize_element_name("SHAPE ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
-    assert _canonicalize_element_name("rid", element_aliases_dict) == "rid"
+    assert _normalize_element_name("sid", element_aliases_dict) == "shapeID"
+    assert _normalize_element_name("SHAPE ID", element_aliases_dict) == "shapeID"
+    assert _normalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
+    assert _normalize_element_name("rid", element_aliases_dict) == "rid"
 
 
-def test_canonicalize_element_name_customized():
+def test_normalize_element_name_customized():
     """Uses customized element name aliases taken from configuration file."""
     element_aliases_dict = { 
         'propertyid': 'propertyID',  
         'eigenschaftsidentifikator': 'propertyID',  
     }
-    assert _canonicalize_element_name("propertyid", element_aliases_dict) == "propertyID"
-    assert _canonicalize_element_name("eigenschaftsidentifikator", element_aliases_dict) == "propertyID"
+    assert _normalize_element_name("propertyid", element_aliases_dict) == "propertyID"
+    assert _normalize_element_name("eigenschaftsidentifikator", element_aliases_dict) == "propertyID"
 
 
 def test_add_element_aliases_from_config():

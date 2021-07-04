@@ -61,7 +61,6 @@ def _make_csv_elements_list():
     """Derive list of supported CSV columns from TAP dataclasses."""
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove("sc_list")
-    shape_elements.remove("start")
     shape_elements.remove("sh_warnings")
     tconstraint_elements = list(asdict(TAPStatementConstraint()))
     tconstraint_elements.remove("sc_warnings")
@@ -110,7 +109,6 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
-        tapshape_keys.remove("start")               # remove start, sc_list, and
         tapshape_keys.remove("sc_list")             # sh_warnings - not
         tapshape_keys.remove("sh_warnings")         # shape fields.
         for key in tapshape_keys:                   # Iterate remaining keys, to
@@ -130,9 +128,8 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
             else:                                   # If no truthy shapeID be found,
                 sh_id = row["shapeID"] = dshape     # use default as shapeID and key.
             shape = shapes[sh_id] = TAPShape()      # Add a TAPShape to the dict and
-            set_shape_fields(shape, row)            # set its shape-related fields, and
-            shapes[sh_id].start = True              # set it as the "start" shape,
-            first_valid_row_encountered = False     # the one and only.
+            set_shape_fields(shape, row)            # set its shape-related fields, 
+            first_valid_row_encountered = False     # but in first valid row only.
 
         if not first_valid_row_encountered:         # In every valid row thereafter,
             if row.get("shapeID"):                  # if truthy shapeID be found,
@@ -192,8 +189,6 @@ def _tapshapes_to_dicts(tapshapes_list):
     dict_output["shapes"] = shape_list
     for tapshape_obj in tapshapes_list:
         tapshape_dict = asdict(tapshape_obj)
-        # Removing 'start' for now, not yet part of official DCTAP spec.
-        tapshape_dict.pop("start")
         tapshape_dict["statement_constraints"] = tapshape_dict.pop("sc_list")
         shape_list.append(tapshape_dict)
 

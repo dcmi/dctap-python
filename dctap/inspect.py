@@ -9,8 +9,6 @@ def pprint_tapshapes(tapshapes_dict, verbose=False):
 
     shape_elements = list(asdict(TAPShape()))
     shape_elements.remove("sc_list")
-    # 2021-06-09 Removing 'start' for now, not yet part of official DCTAP spec.
-    shape_elements.remove("start")
     shape_elements.remove("sh_warnings")
     tconstraint_elements = list(asdict(TAPStatementConstraint()))
     tconstraint_elements.remove("sc_warnings")

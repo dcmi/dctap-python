@@ -3,6 +3,8 @@ dctap-python
 
 Basic validation of a DCTAP instance.
 
+|Tests Badge|
+
 Documentation
 -------------
 
@@ -27,3 +29,8 @@ Installation
        :alt: Documentation Status
        :scale: 100%
        :target: https://dctap-python.readthedocs.io
+       
+.. |Tests Badge| image:: https://github.com/dcmi/dctap-python/actions/workflows/python-tests.yaml/badge.svg
+       :alt: Test Status
+       :scale: 100%
+       :target: https://github.com/dcmi/dctap-python/actions/workflows/python-tests.yaml

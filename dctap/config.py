@@ -45,34 +45,28 @@ element_aliases:
 DEFAULT_CONFIGFILE_NAME = ".dctaprc"
 
 
-def get_config(configfile=None):
+def get_config(configfile=DEFAULT_CONFIGFILE_NAME, defaults_yaml=DEFAULT_CONFIG_YAML):
     """Get config dict from file if found, else get built-in defaults."""
     # pylint: disable=raise-missing-from
-    if not configfile:
-        file_to_try = DEFAULT_CONFIGFILE_NAME
-    else:
-        file_to_try = configfile
-    bad_form = f"{repr(file_to_try)} is badly formed: fix, re-generate, or delete."
-    not_found = f"{repr(file_to_try)} not found or not readable."
+    bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
+    not_found = f"{repr(configfile)} not found or not readable."
     try:
-        return yaml.safe_load(Path(file_to_try).read_text())
+        return yaml.safe_load(Path(configfile).read_text())
     except (FileNotFoundError, PermissionError):
-        if configfile:  # if one was specified as an argument
+        if configfile != DEFAULT_CONFIGFILE_NAME:
             raise ConfigError(not_found)
     except (yaml.YAMLError, yaml.scanner.ScannerError):
         raise ConfigError(bad_form)
-    return yaml.safe_load(DEFAULT_CONFIG_YAML)
+    return yaml.safe_load(defaults_yaml)
 
 
-def write_configfile(configfile=None):
+def write_configfile(configfile=DEFAULT_CONFIGFILE_NAME, defaults_yaml=DEFAULT_CONFIG_YAML):
     """Write initial config file, by default to CWD, or exit if already exists."""
-    if not configfile:
-        configfile = DEFAULT_CONFIGFILE_NAME
     if Path(configfile).exists():
         raise ConfigError(f"{repr(configfile)} already exists - will not overwrite.")
     try:
         with open(configfile, "w", encoding="utf-8") as outfile:
-            outfile.write(DEFAULT_CONFIG_YAML)
+            outfile.write(defaults_yaml)
             print(
                 f"Built-in settings written to {str(configfile)} - edit as needed.",
                 file=sys.stderr,

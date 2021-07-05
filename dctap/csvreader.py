@@ -1,4 +1,4 @@
-"""Parse DCTAP/CSV, return two-item tuple: list of shape objects, list of warnings."""
+"""Parse DCTAP/CSV, return two-item tuple: (list of shape objects, list of warnings)."""
 
 from collections import defaultdict
 from csv import DictReader

@@ -57,7 +57,6 @@ def test_normalize_element_name():
     assert _normalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("rid", element_aliases_dict) == "rid"
 
-
 def test_normalize_element_name_customized():
     """Uses customized element name aliases taken from configuration file."""
     element_aliases_dict = { 
@@ -67,7 +66,6 @@ def test_normalize_element_name_customized():
     assert _normalize_element_name("propertyid", element_aliases_dict) == "propertyID"
     assert _normalize_element_name("eigenschaftsidentifikator", element_aliases_dict) == "propertyID"
 
-
 def test_add_element_aliases_from_config():
     config_dict = { "element_aliases": { "Eigenschaftsidentifikator": "propertyID" }}
     input_element_aliases_dict = { 'propertyid': 'propertyID' }
@@ -76,7 +74,6 @@ def test_add_element_aliases_from_config():
         'eigenschaftsidentifikator': 'propertyID',  
     }
     assert _add_element_aliases_from_config(input_element_aliases_dict, config_dict) == output_element_aliases_dict
-
 
 def test_get_rows_given_customized_element_alias(tmp_path):
     """Using customized element alias."""
@@ -92,7 +89,6 @@ def test_get_rows_given_customized_element_alias(tmp_path):
     expected_csvrow_dicts_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
 
-
 def test_get_rows_given_customized_element_alias_case_insensitive(tmp_path):
     """Using customized element alias, normalized for case, dashes, underscores."""
     os.chdir(tmp_path)
@@ -106,7 +102,6 @@ def test_get_rows_given_customized_element_alias_case_insensitive(tmp_path):
     csvfile_obj = open(csvfile_path)
     expected_csvrow_dicts_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
-
 
 def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     """Where headers shorter than rows, extra values collected under header None."""
@@ -126,7 +121,6 @@ def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
-
 def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
     """Where headers shorter than rows, adds one empty header."""
     os.chdir(tmp_path)
@@ -141,7 +135,6 @@ def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
         {'shapeID': ':a', 'propertyID': 'dct:creator', '': 'URI'}
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
-
 
 def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
     """Fills in short rows with None values."""
@@ -158,7 +151,6 @@ def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
-
 def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     """Raises exception if first line of CSV has no propertyID."""
     os.chdir(tmp_path)
@@ -167,7 +159,6 @@ def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     csvfile_obj = open(csvfile_path)
     with pytest.raises(SystemExit):
         _get_rows(csvfile_obj, CONFIG_DICT)
-
 
 def test_get_rows_with_unknown_column(tmp_path):
     """Non-DCTAP elements kept by _get_rows (but dropped by _get_shapes)."""
@@ -202,7 +193,6 @@ def test_get_rows_with_unknown_column(tmp_path):
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
 
-
 def test_get_rows_with_unknown_column2(tmp_path):
     """Passes thru unknown header, lowercased."""
     os.chdir(tmp_path)
@@ -227,7 +217,6 @@ def test_get_rows_with_unknown_column2(tmp_path):
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
 
-
 def test_get_rows_with_simple_csvfile(tmp_path):
     """Another simple CSV with three columns."""
     os.chdir(tmp_path)
@@ -248,7 +237,6 @@ def test_get_rows_with_simple_csvfile(tmp_path):
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
 
-
 def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path):
     """CSV columns not part of the DC TAP model are simply ignored."""
     os.chdir(tmp_path)
@@ -264,7 +252,6 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
         {"shapeID": ":a", "propertyID": "dct:subject", "confidential": "True"},
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_csvrow_dicts_list
-
 
 def test_get_rows_correct_shapeID(tmp_path):
     """Corrects DCTAP headers - redundant to "real mess" test?"""
@@ -282,7 +269,6 @@ def test_get_rows_correct_shapeID(tmp_path):
             }
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
-
 
 def test_get_rows_correct_a_real_mess(tmp_path):
     """Messiness in headers (extra spaces, punctuation, wrong case) is corrected."""
@@ -302,7 +288,6 @@ def test_get_rows_correct_a_real_mess(tmp_path):
             }
     ]
     assert _get_rows(csvfile_obj, CONFIG_DICT) == expected_output
-
 
 def test_get_rows_make_element_aliases():
     """Test of _make_element_aliases - reads elements from TAP classes."""

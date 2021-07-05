@@ -21,7 +21,9 @@ def _get_rows(csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
     csv_elements_list = shape_elements() + statement_constraint_elements()
     element_aliases_dict = _make_element_aliases(csv_elements_list)
-    element_aliases_dict_plus = _add_element_aliases_from_config(element_aliases_dict, config_dict)
+    element_aliases_dict_plus = _add_element_aliases_from_config(
+        element_aliases_dict, config_dict
+    )
     csvfile_contents_str = csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
@@ -57,7 +59,6 @@ def _shorten_and_lowercase(some_str=None):
     return some_str
 
 
-
 def _make_element_aliases(csv_elements_list=None):
     """From list of CSV row elements: { shortkey/lowerkey: element }."""
     element_aliases_dict = dict()
@@ -74,7 +75,7 @@ def _add_element_aliases_from_config(element_aliases_dict, config_dict):
     """Given list of element aliases, adds aliases from config dictionary."""
     element_aliases_dict_plus = dict()
     if config_dict.get("element_aliases"):
-        for (key,value) in config_dict.get("element_aliases").items():
+        for (key, value) in config_dict.get("element_aliases").items():
             lowerkey = _shorten_and_lowercase(key)
             element_aliases_dict_plus[lowerkey] = value
         element_aliases_dict.update(element_aliases_dict_plus)

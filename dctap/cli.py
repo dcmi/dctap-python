@@ -4,7 +4,7 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .config import get_config, write_configfile
+from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .loggers import stderr_logger
@@ -83,4 +83,6 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 @click.pass_context
 def init(context, configfile):
     """Write out starter config file [default: dctap.yml]"""
+    if not configfile:
+        configfile = DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile)

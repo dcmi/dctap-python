@@ -16,7 +16,7 @@ from .utils import expand_uri_prefixes
 
 
 @click.group()
-@click.version_option("0.2.1", help="Show version and exit")
+@click.version_option("0.2.2", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(context):

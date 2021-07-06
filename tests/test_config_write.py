@@ -3,9 +3,9 @@
 import os
 import pytest
 from pathlib import Path
-from dctap.config import write_configfile
+from dctap.config import write_configfile, DEFAULT_CONFIGFILE_NAME
 
-DEFAULT_CONFIGFILE_YAML = """\
+NONDEFAULT_CONFIG_YAML = """\
 default_shape_name: ":default"
 
 prefixes:
@@ -13,40 +13,52 @@ prefixes:
     "dcterms:": "http://purl.org/dc/terms/"
 """
 
-DEFAULT_CONFIGFILE_NAME = "tapshex.yml"
-
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIG_YAML to DEFAULT_CONFIGFILE_NAME and read back as text."""
     os.chdir(tmp_path)
-    write_configfile(DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIGFILE_YAML)
-    assert open(DEFAULT_CONFIGFILE_NAME).read() == DEFAULT_CONFIGFILE_YAML
+    write_configfile(
+        config_file=DEFAULT_CONFIGFILE_NAME, 
+        config_yaml=NONDEFAULT_CONFIG_YAML)
+    assert open(DEFAULT_CONFIGFILE_NAME).read() == NONDEFAULT_CONFIG_YAML
 
 def test_write_specified_configfile_and_read_back(tmp_path):
     """Write specified configfile and read back as text."""
     os.chdir(tmp_path)
-    specified_configfile = "dctap.yaml"
-    write_configfile(specified_configfile, DEFAULT_CONFIGFILE_YAML)
-    assert open(specified_configfile).read() == DEFAULT_CONFIGFILE_YAML
+    specified_config_file = "dctap.yaml"
+    write_configfile(
+        config_file=specified_config_file, 
+        config_yaml=NONDEFAULT_CONFIG_YAML
+    )
+    assert open(specified_config_file).read() == NONDEFAULT_CONFIG_YAML
 
 def test_not_write_default_configfile_if_already_exists(tmp_path):
-    """Exits with error if DEFAULT_CONFIGFILE_NAME already exists."""
+    """Exits if config file not specified and DEFAULT_CONFIGFILE_NAME already exists."""
     os.chdir(tmp_path)
     Path(DEFAULT_CONFIGFILE_NAME).write_text("Config stuff")
     with pytest.raises(SystemExit):
-        write_configfile(DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIGFILE_YAML)
+        write_configfile(
+            config_file=DEFAULT_CONFIGFILE_NAME, 
+            config_yaml=NONDEFAULT_CONFIG_YAML
+        )
 
 def test_not_write_specified_configfile_if_already_exists(tmp_path):
-    """Exits with error if specified configfile already exists."""
+    """Exits if config file specified and already exists."""
     os.chdir(tmp_path)
     os.mkdir("config")
-    configfile = "config/dctap.yaml"
-    Path(configfile).write_text("Config stuff")
+    config_file = "config/dctap.yaml"
+    Path(config_file).write_text("Config stuff")
     with pytest.raises(SystemExit):
-        write_configfile("config/dctap.yaml", DEFAULT_CONFIGFILE_YAML)
+        write_configfile(
+            config_file="config/dctap.yaml", 
+            config_yaml=NONDEFAULT_CONFIG_YAML
+        )
 
-def test_not_write_specified_configfile_if_not_writeable(tmp_path):
+def test_exits_if_specified_configfile_writeable(tmp_path):
     """Exits with error if specified configfile cannot be written."""
     os.chdir(tmp_path)
-    configfile = "config/dctap.yaml"
+    config_file = "config/dctap.yaml"
     with pytest.raises(SystemExit):
-        write_configfile("config/dctap.yaml", DEFAULT_CONFIGFILE_YAML)
+        write_configfile(
+            config_file="config/dctap.yaml", 
+            config_yaml=NONDEFAULT_CONFIG_YAML
+        )

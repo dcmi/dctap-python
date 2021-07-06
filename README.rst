@@ -18,11 +18,12 @@ Installation
 
 To work correctly, "dctap" requires Python 3.7 or higher. Executing the command ``python3`` should show you if Python 3 is installed on your machine and in which version.
 
+As explained below, the command-line utility can be installed either from the online PyPI repository, using the ``pip`` command, or from a local copy of the project on your own machine.
+
 Installation from pip
 ^^^^^^^^^^^^^^^^^^^^^
 
 Installing with "pip" pulls the most recently published version of the project from the `PyPI repository <https://pypi.org/project/dctap/>`_. Before installing, it is good practice to create and activate a virtual environment so that "dctap" is not installed into the global Python environment on your machine. The virtual environment is held in a directory of your choice; in the example below, a hidden directory ``.venv`` is created in ``some_directory`` (your current working directory), and the virtual environment is activated by executing ``source .venv/bin/activate``.
-
 
 .. code-block:: bash
     
@@ -44,9 +45,34 @@ Cloning the "dctap-python" repository to your machine and installing it from the
     dctap-python$ python3 -m pip install flit Pygments
     dctap-python$ flit install -s
 
-        566  pip list
-          567  python3 -m pip install --upgrade pip
-            568  python3 -m pip install dctap
+Quick start
+-----------
+
+Run without arguments, "dctap" shows what options and commands are available.
+
+.. code-block:: bash
+
+    $ dctap
+    Usage: dctap [OPTIONS] COMMAND [ARGS]...
+    
+      DC Tabular Application Profiles (DCTAP) - base module
+    
+    Options:
+      --version  Show version and exit
+      --help     Show help and exit
+    
+    Commands:
+      generate  Given CSV, generate text, JSON, or YAML, with warnings.
+      init      Write out starter config file [default: dctap.yml]
+
+To examine a CSV file formatted according to the DCTAP model (here: "some_dctap.csv"), use the ``dctap generate`` command.
+
+.. code-block:: bash
+    
+    $ dctap generate some_dctap.csv
+
+For more information, see the documentation `on readthedocs.io <https://dctap-python.readthedocs.io/en/latest/>`_.
+
 
 .. |Docs Badge| image:: https://readthedocs.org/projects/dctap-python/badge/
        :alt: Documentation Status

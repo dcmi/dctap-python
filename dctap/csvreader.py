@@ -19,11 +19,6 @@ def csvreader(csvfile_obj, config_dict):
 
 def _get_rows(csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
-    csv_elements_list = shape_elements() + statement_constraint_elements()
-    element_aliases_dict = _make_element_aliases(csv_elements_list)
-    element_aliases_dict_plus = _add_element_aliases_from_config(
-        element_aliases_dict, config_dict
-    )
     csvfile_contents_str = csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
@@ -31,7 +26,7 @@ def _get_rows(csvfile_obj, config_dict):
     new_header_line_list = list()
     for header in raw_header_line_list:
         header = _shorten_and_lowercase(header)
-        header = _normalize_element_name(header, element_aliases_dict_plus)
+        header = _normalize_element_name(header, config_dict.get("element_aliases"))
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
@@ -59,19 +54,8 @@ def _shorten_and_lowercase(some_str=None):
     return some_str
 
 
-def _make_element_aliases(csv_elements_list=None):
-    """From list of CSV row elements: { shortkey/lowerkey: element }."""
-    element_aliases_dict = dict()
-    for csv_elem in csv_elements_list:
-        # shortkey: initial letter (lowercase) + each uppercase letter, lowercased
-        shortkey = "".join([csv_elem[0]] + [l.lower() for l in csv_elem if l.isupper()])
-        lowerkey = csv_elem.lower()
-        element_aliases_dict[shortkey] = csv_elem  # { shortkey: camelcasedValue }
-        element_aliases_dict[lowerkey] = csv_elem  # { lowerkey: camelcasedValue }
-    return element_aliases_dict
 
-
-def _add_element_aliases_from_config(element_aliases_dict, config_dict):
+def _get_customized_element_aliases_from_config_dict(element_aliases_dict, config_dict):
     """Given list of element aliases, adds aliases from config dictionary."""
     element_aliases_dict_plus = dict()
     if config_dict.get("element_aliases"):
@@ -82,8 +66,9 @@ def _add_element_aliases_from_config(element_aliases_dict, config_dict):
     return element_aliases_dict
 
 
-def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
+def _get_tapshapes(rows, config_dict):
     """Return tuple: list of TAPShape objects and list of any warnings."""
+    # TODO: Type hint for output (two-item tuple of dicts)
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
@@ -153,6 +138,7 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
                 pass                                # are simply skipped (yes?).
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
+#                      statement_constraints.append(sc)
 
         sc.validate(config_dict)                    # SC validates itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
@@ -181,18 +167,3 @@ def _get_tapshapes(rows, config_dict) -> List[TAPShape]:
         warnings_dict                               #   Dict of warnings, by shape
     )
     # fmt: on
-
-
-def shape_elements(shape_class=TAPShape):
-    """List DCTAP elements supported by given shape class."""
-    sh_elements = list(asdict(shape_class()))
-    sh_elements.remove("sc_list")
-    sh_elements.remove("sh_warnings")
-    return sh_elements
-
-
-def statement_constraint_elements(sc_class=TAPStatementConstraint):
-    """List DCTAP elements supported by given statement constraint class."""
-    sc_elements = list(asdict(sc_class()))
-    sc_elements.remove("sc_warnings")
-    return sc_elements

@@ -34,7 +34,8 @@ class TAPStatementConstraint:
         self._elements_taking_IRIs_warn_if_not_IRIs()
         self._mandatory_repeatable_have_supported_boolean_values()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
-        self._valueConstraintType_iristem_warn_if_valueConstraint_not_is_not_an_IRI()
+        self._valueConstraintType_iristem_parse()
+        self._valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs()
         self._valueConstraintType_picklist_parse()
         self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
@@ -93,15 +94,24 @@ class TAPStatementConstraint:
 
         return self
 
-    def _valueConstraintType_iristem_warn_if_valueConstraint_not_is_not_an_IRI(self):
-        """If valueConstraintType IRIStem, warn if valueConstraint not an IRI."""
+    def _valueConstraintType_iristem_parse(self):
+        """If valueConstraintType is Iristem, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
-            if not is_uri_or_prefixed_uri(self.valueConstraint):
-                self.sc_warnings["valueConstraint"] = (
-                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
-                    f"{repr(self.valueConstraint)} does not look like an IRI or "
-                    "Compact IRI."
+            if self.valueConstraint:
+                self.valueConstraint = self.valueConstraint.split()
+        return self
+
+    def _valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs(self):
+        """If IRIStem, warn if valueConstraint list items do not look like IRIs."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "iristem":
+            for list_item in self.valueConstraint:
+                if not is_uri_or_prefixed_uri(list_item):
+                    self.sc_warnings["valueConstraint"] = (
+                        f"Value constraint type is {repr(self.valueConstraintType)}, "
+                        f"but {repr(list_item)} does not look like an IRI or "
+                        "Compact IRI."
                 )
         return self
 
@@ -127,7 +137,7 @@ class TAPStatementConstraint:
         return self
 
     def _valueConstraintType_picklist_parse(self):
-        """If valueConstraintType is Picklist, splits valueConstraint on whitespace."""
+        """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "picklist":
             if self.valueConstraint:

@@ -85,19 +85,3 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 def init(context, configfile):
     """Write out starter config file [default: dctap.yml]"""
     write_configfile(configfile)
-
-
-@cli.command()
-@click.option(
-    "--configfile", type=click.Path(exists=True), help="Pathname of configuration file."
-)
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def configtest(context, configfile):
-    """Print out config dictionary - for testing only."""
-    if configfile:
-        print(f"Got argument: {configfile}")
-    else:
-        configfile = DEFAULT_CONFIGFILE_NAME
-    config_dict = get_config()
-    pprint(config_dict)

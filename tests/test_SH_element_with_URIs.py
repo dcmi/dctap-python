@@ -4,7 +4,7 @@ from dctap.tapclasses import TAPShape
 
 
 def test_warn_if_shapeID_not_URI():
-    """@@@."""
+    """Shape ID should be an IRI."""
     shap = TAPShape()
     shap.shapeID = "book"
     shap.sc_list = []

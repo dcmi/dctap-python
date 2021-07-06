@@ -3,7 +3,7 @@
 from dctap.tapclasses import TAPStatementConstraint
 
 def test_warn_if_propertyID_not_URI():
-    """@@@"""
+    """In DCTAP, propertyID _should_ be an IRI."""
     sc = TAPStatementConstraint()
     sc.propertyID = "P31"
     sc._elements_taking_IRIs_warn_if_not_IRIs()
@@ -14,7 +14,7 @@ def test_warn_if_propertyID_not_URI():
 
 
 def test_warn_if_valueShape_not_URI():
-    """@@@"""
+    """In DCTAP, valueShape _should_ be an IRI."""
     sc = TAPStatementConstraint()
     sc.propertyID = "wdt:P31"
     sc.valueShape = "Person"

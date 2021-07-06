@@ -51,8 +51,6 @@ DEFAULT_CONFIGFILE_NAME = "dctap.yml"
 def write_configfile(
     config_file=DEFAULT_CONFIGFILE_NAME,
     config_yaml=DEFAULT_CONFIG_YAML,
-    shape_class=TAPShape,
-    statement_constraint_class=TAPStatementConstraint,
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
     if Path(config_file).exists():

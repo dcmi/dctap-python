@@ -4,7 +4,7 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from typing import Dict, List
+from typing import Dict
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
@@ -54,7 +54,6 @@ def _shorten_and_lowercase(some_str=None):
     return some_str
 
 
-
 def _get_customized_element_aliases_from_config_dict(element_aliases_dict, config_dict):
     """Given list of element aliases, adds aliases from config dictionary."""
     element_aliases_dict_plus = dict()
@@ -68,7 +67,6 @@ def _get_customized_element_aliases_from_config_dict(element_aliases_dict, confi
 
 def _get_tapshapes(rows, config_dict):
     """Return tuple: list of TAPShape objects and list of any warnings."""
-    # TODO: Type hint for output (two-item tuple of dicts)
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
@@ -156,7 +154,7 @@ def _get_tapshapes(rows, config_dict):
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
             tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
             tapshape_dict[                          # - rename its field "sc_list" to
-                "statement_constraints"             #   "statement_constraints" 
+                "statement_constraints"             #   "statement_constraints"
             ] = tapshape_dict.pop("sc_list")        # - add that shape dict to mutable
             shape_list.append(tapshape_dict)        #   tapshapes_dict["shapes"]
 

@@ -2,13 +2,13 @@
 
 import sys
 import json as j
+from pprint import pprint
 from ruamel.yaml import YAML
 import click
-from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
+from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .loggers import stderr_logger
-from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
@@ -98,11 +98,6 @@ def configtest(context, configfile):
     if configfile:
         print(f"Got argument: {configfile}")
     else:
-        configfile = DEFAULT_CONFIGFILE_NAME,
-    config_dict = get_config(
-        defaults_yaml=DEFAULT_CONFIG_YAML,
-        shape_class=TAPShape,
-        statement_constraint_class=TAPStatementConstraint,
-    )
-    from pprint import pprint
+        configfile = DEFAULT_CONFIGFILE_NAME
+    config_dict = get_config()
     pprint(config_dict)

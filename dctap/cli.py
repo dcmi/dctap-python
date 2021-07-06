@@ -4,10 +4,11 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .config import get_config, write_configfile
+from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
 from .inspect import pprint_tapshapes
 from .csvreader import csvreader
 from .loggers import stderr_logger
+from .tapclasses import TAPShape, TAPStatementConstraint
 from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
@@ -77,7 +78,6 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
                     for warning in warn_list:
                         echo.warning(f"[{shapeid}/{elem}] {warning}")
 
-
 @cli.command()
 @click.argument("configfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")
@@ -85,3 +85,24 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 def init(context, configfile):
     """Write out starter config file [default: dctap.yml]"""
     write_configfile(configfile)
+
+
+@cli.command()
+@click.option(
+    "--configfile", type=click.Path(exists=True), help="Pathname of configuration file."
+)
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def configtest(context, configfile):
+    """Print out config dictionary - for testing only."""
+    if configfile:
+        print(f"Got argument: {configfile}")
+    else:
+        configfile = DEFAULT_CONFIGFILE_NAME,
+    config_dict = get_config(
+        defaults_yaml=DEFAULT_CONFIG_YAML,
+        shape_class=TAPShape,
+        statement_constraint_class=TAPStatementConstraint,
+    )
+    from pprint import pprint
+    pprint(config_dict)

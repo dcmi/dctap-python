@@ -25,7 +25,7 @@ def _get_rows(csvfile_obj, config_dict):
     raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = list()
     for header in raw_header_line_list:
-        header = _shorten_and_lowercase(header)
+        header = _lowercase_despace_depunctuate(header)
         header = _normalize_element_name(header, config_dict.get("element_aliases"))
         new_header_line_list.append(header)
     new_header_line_str = ",".join(new_header_line_list)
@@ -38,14 +38,14 @@ def _get_rows(csvfile_obj, config_dict):
 
 def _normalize_element_name(some_str, element_aliases_dict):
     """Normalize a given string (or leave unchanged)."""
-    some_str = _shorten_and_lowercase(some_str)
+    some_str = _lowercase_despace_depunctuate(some_str)
     for key in element_aliases_dict.keys():
         if key == some_str:
             some_str = element_aliases_dict[key]
     return some_str
 
 
-def _shorten_and_lowercase(some_str=None):
+def _lowercase_despace_depunctuate(some_str=None):
     """For given string, delete underscores, dashes, spaces, then lowercase."""
     some_str = some_str.replace(" ", "")
     some_str = some_str.replace("_", "")
@@ -59,7 +59,7 @@ def _get_customized_element_aliases_from_config_dict(element_aliases_dict, confi
     element_aliases_dict_plus = dict()
     if config_dict.get("element_aliases"):
         for (key, value) in config_dict.get("element_aliases").items():
-            lowerkey = _shorten_and_lowercase(key)
+            lowerkey = _lowercase_despace_depunctuate(key)
             element_aliases_dict_plus[lowerkey] = value
         element_aliases_dict.update(element_aliases_dict_plus)
     return element_aliases_dict
@@ -80,7 +80,6 @@ def _get_tapshapes(rows, config_dict):
     shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
     warnings = defaultdict(dict)                    # Make defaultdict for warnings.
-    # or just dict()?
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
@@ -97,32 +96,32 @@ def _get_tapshapes(rows, config_dict):
         if not row["propertyID"]:                   # where no propertyID be found,
             continue                                # ignore and move to next.
 
-        if first_valid_row_encountered:             # In first valid row,
+        if first_valid_row_encountered:             # In very "first" valid row,
             if row.get("shapeID"):                  # if truthy shapeID be found,
-                sh_id = row.get("shapeID")          # use it as a key for shapes dict.
+                sh_id = row.get("shapeID")          # use as a key for shapes dict.
             else:                                   # If no truthy shapeID be found,
-                sh_id = row["shapeID"] = dshape     # use default as shapeID and key.
-            shape = shapes[sh_id] = TAPShape()      # Add a TAPShape to the dict and
-            set_shape_fields(shape, row)            # set its shape-related fields,
-            first_valid_row_encountered = False     # but in first valid row only.
+                sh_id = row["shapeID"] = dshape     # use default shapeID as key.
+            shape = shapes[sh_id] = TAPShape()      # Add TAPShape obj to shapes dict,
+            set_shape_fields(shape, row)            # populate its shape elements, and
+            first_valid_row_encountered = False     # may future rows be not "first".
 
-        if not first_valid_row_encountered:         # In every valid row thereafter,
+        if not first_valid_row_encountered:         # In each valid row thereafter,
             if row.get("shapeID"):                  # if truthy shapeID be found,
-                sh_id = row["shapeID"]              # use it as a key for shapes dict.
+                sh_id = row["shapeID"]              # use as a key for shapes dict.
             else:                                   # If no truthy shapeID be found,
                 so_far = list(shapes)               # see list of shapeIDs used so far,
-                sh_id = so_far[-1]                  # and may the latest one be key.
+                sh_id = so_far[-1]                  # and may most recent one be key.
 
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
             shape = shapes[sh_id] = TAPShape()      # add it with value TAPShape, and
-            set_shape_fields(shape, row)            # set its shape-related fields, and
-            warnings[sh_id] = dict()                # give it key in warnings dict.
+            set_shape_fields(shape, row)            # populate its shape elements, and
+            warnings[sh_id] = dict()                # use as a key in warnings dict.
 
         shape.validate(config_dict)
         shape_warnings = shape.get_warnings()
         for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
             try:                                    # Try to add each warning to dict
-                warnings[sh_id][elem].append(warn)  # of all warnings by shape,
+                warnings[sh_id][elem].append(warn)  # of all warnings, by shape,
             except KeyError:                        # but if needed key not found,
                 warnings[sh_id][elem] = list()      # set new key with value list,
                 warnings[sh_id][elem].append(warn)  # and warning can now be added.
@@ -158,7 +157,7 @@ def _get_tapshapes(rows, config_dict):
             ] = tapshape_dict.pop("sc_list")        # - add that shape dict to mutable
             shape_list.append(tapshape_dict)        #   tapshapes_dict["shapes"]
 
-        warnings_dict = dict(warnings)              # Save warnings as dict.
+        warnings_dict = dict(warnings)              # Save defaultdict warnings as dict.
 
     return (                                        # Return tuple:
         tapshapes_dict,                             #   Shapes dictionary

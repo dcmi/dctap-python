@@ -1,4 +1,4 @@
-"""In getting rows: get customized element aliases from config dict."""
+"""In getting rows: compute alias-to-element aliases from config dict."""
 
 from dctap.config import _compute_alias2element_mappings
 

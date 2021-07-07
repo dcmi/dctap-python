@@ -73,13 +73,14 @@ def _get_tapshapes(rows, config_dict):
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
         tapshape_keys.remove("sc_list")             # sh_warnings - not
+        # tapshape_keys.remove("statement_constraints") # sh_warnings - not
         tapshape_keys.remove("sh_warnings")         # shape fields.
         for key in tapshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from row dict.
             except KeyError:                        # Keys not found in dict,
                 pass                                # are simply skipped.
-                # TODO if extra element listed in extra_shape_elements 
+                # TODO if extra element listed in extra_shape_elements
                 # setattr
         return shape                                # Return shape with fields set.
 

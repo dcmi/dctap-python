@@ -65,6 +65,11 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = ":default"
 
+    if config_dict["extra_shape_elements"]:
+        shape_extras = config_dict["extra_shape_elements"]
+    if config_dict["extra_statement_constraint_elements"]:
+        sc_extras = config_dict["extra_statement_constraint_elements"]
+
     # fmt: off
     shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.

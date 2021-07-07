@@ -68,7 +68,7 @@ def _get_tapshapes(rows, config_dict):
     # fmt: off
     shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
-    warnings = defaultdict(dict)                    # Make defaultdict for warnings.
+    warnings = defaultdict(dict)                    # Init defaultdict for warnings.
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
@@ -79,6 +79,8 @@ def _get_tapshapes(rows, config_dict):
                 setattr(shape, key, row[key])       # with values from row dict.
             except KeyError:                        # Keys not found in dict,
                 pass                                # are simply skipped.
+                # TODO if extra element listed in extra_shape_elements 
+                # setattr
         return shape                                # Return shape with fields set.
 
     for row in rows:                                # For each row
@@ -122,8 +124,11 @@ def _get_tapshapes(rows, config_dict):
                 setattr(sc, key, row[key])          # with values from the row dict,
             except KeyError:                        # while fields not found in SC
                 pass                                # are simply skipped (yes?).
+                # TODO if extra element listed in extra_statement_constraint_elements
+                # setattr
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
+# TODO sc_list => statement_constraints
 #                      statement_constraints.append(sc)
 
         sc.validate(config_dict)                    # SC validates itself, and

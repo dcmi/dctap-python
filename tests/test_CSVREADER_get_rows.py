@@ -6,6 +6,27 @@ import pytest
 from dctap.config import get_config
 from dctap.csvreader import _get_rows
 
+
+def test_get_rows_including_header_not_in_DCTAP(tmp_path):
+    """Get rows where one header is not part of the DCTAP model."""
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "PropertyID,Ricearoni\n"
+            "dc:creator,SFO treat\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    config_dict = get_config()
+    expected_csvrow_dicts_list = [ 
+        {
+            'propertyID': 'dc:creator',
+            'ricearoni': 'SFO treat',
+        }
+    ]
+    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+
 def test_get_rows_minimal(tmp_path):
     """Get list of rows, as dicts, from one-row, one-column CSV."""
     os.chdir(tmp_path)

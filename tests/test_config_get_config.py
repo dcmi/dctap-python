@@ -19,6 +19,19 @@ prefixes:
 """
 
 
+def test_get_config_from_builtins(tmp_path):
+    """Get config dict from built-in settings."""
+    config_dict = get_config()
+    assert config_dict.get("prefixes")                            # built-in/asserted
+    assert config_dict.get("default_shape_name")                  # built-in/asserted
+    assert config_dict.get("csv_elements")                        # computed from dataclasses
+    assert config_dict.get("shape_elements")                      # computed from dataclasses
+    assert config_dict.get("statement_constraint_elements")       # computed from dataclasses
+    assert config_dict.get("element_aliases")                     # asserted/computed
+    assert config_dict.get("extra_shape_elements")                # asserted
+    assert config_dict.get("extra_statement_constraint_elements") # asserted
+    assert config_dict.get("value_node_types")                    # built-in/asserted
+
 def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""
     os.chdir(tmp_path)
@@ -26,11 +39,17 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     config_dict = get_config()
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_name")
-    assert config_dict.get("csv_elements")
-    assert config_dict.get("shape_elements")
-    assert config_dict.get("statement_constraint_elements")
-    assert config_dict.get("element_aliases")
+    assert config_dict.get("csv_elements")                       # computed
+    assert config_dict.get("shape_elements")                     # computed
+    assert config_dict.get("statement_constraint_elements")      # computed
+    assert config_dict.get("element_aliases")                    # asserted/computed
     assert config_dict.get("value_node_types") is None
+
+def test_get_config_from_nondefault_yaml(tmp_path):
+    """Get config dict when passed non-default YAML."""
+    config_dict = get_config(nondefault_config_yaml=DEFAULT_CONFIG_YAML)
+    assert config_dict.get("prefixes")
+    assert config_dict.get("default_shape_name")
 
 def test_exit_with_ConfigError_if_configfile_specified_but_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""

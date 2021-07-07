@@ -43,6 +43,19 @@ element_aliases:
     "vc": "valueConstraint"
     "vctype": "valueConstraintType"
     "vshape": "valueShape"
+
+# If elements (column headers) are encountered that are not part of the 
+# base DCTAP model, they will be ignored - unless they are entered here as
+# "extra" elements.
+# "Extra" elements must either be "shape" elements or "statement constraint" elements.
+# The following "shape" and "statement constraint" elements are merely examples...
+extra_shape_elements:
+- closed
+- start
+
+extra_statement_constraint_elements:
+- min
+- max
 """
 
 DEFAULT_CONFIGFILE_NAME = "dctap.yml"

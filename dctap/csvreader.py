@@ -54,17 +54,6 @@ def _lowercase_despace_depunctuate(some_str=None):
     return some_str
 
 
-def _get_customized_element_aliases_from_config_dict(element_aliases_dict, config_dict):
-    """Given list of element aliases, adds aliases from config dictionary."""
-    element_aliases_dict_plus = dict()
-    if config_dict.get("element_aliases"):
-        for (key, value) in config_dict.get("element_aliases").items():
-            lowerkey = _lowercase_despace_depunctuate(key)
-            element_aliases_dict_plus[lowerkey] = value
-        element_aliases_dict.update(element_aliases_dict_plus)
-    return element_aliases_dict
-
-
 def _get_tapshapes(rows, config_dict):
     """Return tuple: list of TAPShape objects and list of any warnings."""
     # pylint: disable=too-many-locals

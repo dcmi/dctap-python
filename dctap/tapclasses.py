@@ -193,6 +193,7 @@ class TAPShape:
     shapeID: str = ""
     shapeLabel: str = ""
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
+# TODO sc_list => statement_constraints
 #    statement_constraints: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
 

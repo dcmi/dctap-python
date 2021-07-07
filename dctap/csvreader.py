@@ -80,6 +80,7 @@ def _get_tapshapes(rows, config_dict):
         tapshape_keys.remove("sc_list")             # sh_warnings - not
         # TODO tapshape_keys.remove("statement_constraints") # sh_warnings - not
         tapshape_keys.remove("sh_warnings")         # shape fields.
+        tapshape_keys += shape_extras
         for key in tapshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from row dict.
@@ -114,6 +115,7 @@ def _get_tapshapes(rows, config_dict):
 
         shape.validate(config_dict)
         shape_warnings = shape.get_warnings()
+
         for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings, by shape,

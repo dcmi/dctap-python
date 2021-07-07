@@ -2,6 +2,7 @@
 
 import sys
 import json as j
+from pprint import pprint
 from ruamel.yaml import YAML
 import click
 from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME
@@ -86,3 +87,13 @@ def init(context, configfile):
     if not configfile:
         configfile = DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile)
+
+
+@cli.command()
+@click.argument("csvfile", type=click.Path(), required=False)
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def get_dict(context, csvfile):
+    """Get dictionary."""
+    config_dict = get_config()
+    pprint(csvreader(open(csvfile), config_dict))

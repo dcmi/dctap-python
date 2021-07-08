@@ -9,17 +9,17 @@ from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
-def csvreader(csvfile_obj, config_dict):
+def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
-    rows_list = _get_rows(csvfile_obj, config_dict)
+    rows_list = _get_rows(open_csvfile_obj, config_dict)
     tapshapes = _get_tapshapes(rows_list, config_dict)[0]
     tapwarnings = _get_tapshapes(rows_list, config_dict)[1]
     return (tapshapes, tapwarnings)
 
 
-def _get_rows(csvfile_obj, config_dict):
+def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
-    csvfile_contents_str = csvfile_obj.read()
+    csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(",")
@@ -36,12 +36,13 @@ def _get_rows(csvfile_obj, config_dict):
     return list(DictReader(tmp_buffer2))
 
 
-def _normalize_element_name(some_str, element_aliases_dict):
+def _normalize_element_name(some_str, element_aliases_dict=None):
     """Normalize a given string (or leave unchanged)."""
     some_str = _lowercase_despace_depunctuate(some_str)
-    for key in element_aliases_dict.keys():
-        if key == some_str:
-            some_str = element_aliases_dict[key]
+    if element_aliases_dict:
+        for key in element_aliases_dict.keys():
+            if key == some_str:
+                some_str = element_aliases_dict[key]
     return some_str
 
 
@@ -80,7 +81,6 @@ def _get_tapshapes(rows, config_dict):
         tapshape_keys.remove("sc_list")             # sh_warnings - not
         # TODO tapshape_keys.remove("statement_constraints") # sh_warnings - not
         tapshape_keys.remove("sh_warnings")         # shape fields.
-        tapshape_keys += shape_extras
         for key in tapshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from row dict.
@@ -111,7 +111,7 @@ def _get_tapshapes(rows, config_dict):
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
             shape = shapes[sh_id] = TAPShape()      # add it with value TAPShape, and
             set_shape_fields(shape, row)            # populate its shape elements, and
-            warnings[sh_id] = dict()                # use as a key in warnings dict.
+            warnings[sh_id] = dict()                # use as key in warnings dict.
 
         shape.validate(config_dict)
         shape_warnings = shape.get_warnings()

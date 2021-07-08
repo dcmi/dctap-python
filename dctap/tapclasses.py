@@ -156,7 +156,7 @@ class TAPStatementConstraint:
 
     def _valueNodeType_is_from_enumerated_list(self):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        if self.config_dict["value_node_types"]:
+        if self.config_dict.get("value_node_types"):
             valid_types = [vnt.lower() for vnt in self.config_dict["value_node_types"]]
         else:
             valid_types = ["iri", "bnode", "literal"]

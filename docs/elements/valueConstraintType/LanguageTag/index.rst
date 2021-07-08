@@ -3,7 +3,8 @@
 LanguageTag
 ^^^^^^^^^^^
 
-Language tags --- abbreviated names for natural languages such as ``fr`` for French or ``fr-CA`` for Canadian French --- are used to mark the language of text elements in Web documents and commonly serve as a controlled vocabulary of identifiers for languages.
+A :term:`Language Tag` is an abbreviated name for a natural language, such as ``fr`` for French or ``fr-CA`` for Canadian French.
+Language tags are used to identify the language of a :term:`Literal`. Standard sets of language tags serve as a controlled vocabulary of identifiers for languages.
 
 As with the value constraint type :ref:`elem_valueConstraintType_picklist`, a value constraint of type "LanguageTag" is split on whitespace.
 

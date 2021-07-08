@@ -5,6 +5,8 @@ shapeID / shapeLabel
 
 In the DCTAP model, all :term:`Statement Constraint`\s are seen as grouped into :term:`Shape`\s, where a Shape is about a :term:`Description` in :term:`Instance Data` --- a set of statements about just one :term:`Entity` in the real world.
 
+A shape identifier is typically a plain :term:`Literal` or an :term:`IRI`.
+
 If no **shapeID** is provided, a default shape identifier will be assigned (":default"). A different default shape identifier may be configured, as described in the section :ref:`config`. For example:
 
 .. csv-table::

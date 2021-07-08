@@ -31,7 +31,7 @@ class TAPStatementConstraint:
         """Validates specific fields."""
         # pylint: disable=attribute-defined-outside-init
         self.config_dict = config_dict
-        self._elements_taking_IRIs_warn_if_not_IRIs()
+        self._warn_if_propertyID_or_valueDataType_not_IRI()
         self._mandatory_repeatable_have_supported_boolean_values()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_iristem_parse()
@@ -43,17 +43,12 @@ class TAPStatementConstraint:
         self._valueNodeType_is_from_enumerated_list()
         return self
 
-    def _elements_taking_IRIs_warn_if_not_IRIs(self):
+    def _warn_if_propertyID_or_valueDataType_not_IRI(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
             self.sc_warnings[
                 "propertyID"
             ] = f"{repr(self.propertyID)} is not an IRI or Compact IRI."
-        if self.valueShape:
-            if not is_uri_or_prefixed_uri(self.valueShape):
-                self.sc_warnings[
-                    "valueShape"
-                ] = f"{repr(self.valueShape)} is not an IRI or Compact IRI."
         if self.valueDataType:
             if not is_uri_or_prefixed_uri(self.valueDataType):
                 self.sc_warnings[

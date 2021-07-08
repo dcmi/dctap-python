@@ -8,7 +8,7 @@ from dctap.utils import expand_uri_prefixes
 def test_utils_expand_uri_prefixes(tmp_path):
     """Expands prefixes in shapes dictionary according as per config settings."""
     config_dict = {
-    "default_shape_name": ":default",
+    "default_shape_name": "default",
     "prefixes": { ":": "http://example.org/",
                   "dcterms:": "http://purl.org/dc/terms/",
                   "wdt:": "http://www.wikidata.org/prop/direct/",

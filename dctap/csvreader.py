@@ -64,7 +64,7 @@ def _get_tapshapes(rows, config_dict):
     try:
         dshape = config_dict.get("default_shape_name")
     except KeyError:
-        dshape = ":default"
+        dshape = "default"
 
     if config_dict["extra_shape_elements"]:
         shape_extras = config_dict["extra_shape_elements"]

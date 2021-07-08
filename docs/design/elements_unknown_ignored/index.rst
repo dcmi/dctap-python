@@ -13,7 +13,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dcterms:creator
 

@@ -22,7 +22,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dc:creator
                 valueDataType:       xsd:string
@@ -30,7 +30,7 @@ Interpreted as::
                 propertyID:          dct:date
                 valueDataType:       Date
 
-    WARNING [:default/valueDataType] 'Date' is not an IRI or Compact IRI.
+    WARNING [default/valueDataType] 'Date' is not an IRI or Compact IRI.
 
 Datatypes are used only with literal values, so 
 if a node is of type "URI", "IRI", or "BNode" and 
@@ -48,7 +48,7 @@ Interpreted, with a warning, as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dcterms:creator
                 valueNodeType:       iri
@@ -58,5 +58,5 @@ Interpreted, with a warning, as::
                 valueNodeType:       bnode
                 valueDataType:       xsd:string
 
-    WARNING [:default/valueDataType] Datatypes are only for literals, so node type should not be 'iri'.
-    WARNING [:default/valueDataType] Datatypes are only for literals, so node type should not be 'bnode'.
+    WARNING [default/valueDataType] Datatypes are only for literals, so node type should not be 'iri'.
+    WARNING [default/valueDataType] Datatypes are only for literals, so node type should not be 'bnode'.

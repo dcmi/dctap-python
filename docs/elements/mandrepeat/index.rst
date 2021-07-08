@@ -24,7 +24,7 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dc:creator
                 mandatory:           True
@@ -45,7 +45,7 @@ This is displayed as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dc:creator
                 repeatable:          N
@@ -53,8 +53,8 @@ This is displayed as::
                 propertyID:          dc:date
                 mandatory:           Y
 
-    WARNING [:default/repeatable] 'N' is not a supported Boolean value.
-    WARNING [:default/mandatory] 'Y' is not a supported Boolean value.
+    WARNING [default/repeatable] 'N' is not a supported Boolean value.
+    WARNING [default/mandatory] 'Y' is not a supported Boolean value.
 
 The four possible combinations of **mandatory** with **repeatable** translate into the following minimum and maximum values when cardinality is expressed as a range (where "-1" means "many").
 

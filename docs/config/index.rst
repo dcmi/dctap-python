@@ -49,7 +49,7 @@ The latest built-in settings can be found in the the YAML string variable **DEFA
 .. code-block:: yaml
 
     # dctap configuration file (in YAML format)
-    default_shape_name: ":default"
+    default_shape_name: "default"
 
     value_node_types:
     - iri

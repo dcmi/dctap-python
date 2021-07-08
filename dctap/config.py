@@ -11,7 +11,7 @@ from .tapclasses import TAPShape, TAPStatementConstraint
 
 
 DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
-default_shape_name: ":default"
+default_shape_name: "default"
 
 value_node_types:
 - iri

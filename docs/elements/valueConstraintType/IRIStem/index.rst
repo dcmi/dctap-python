@@ -17,7 +17,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dcterms:subject
                 valueConstraint:     ['http://lod.nal.usda.gov/nalt/']
@@ -34,10 +34,10 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dcterms:subject
                 valueConstraint:     ['nalt']
                 valueConstraintType: iristem
 
-    WARNING [:default/valueConstraint] Value constraint type is 'iristem', but 'nalt' does not look like an IRI or Compact IRI.
+    WARNING [default/valueConstraint] Value constraint type is 'iristem', but 'nalt' does not look like an IRI or Compact IRI.

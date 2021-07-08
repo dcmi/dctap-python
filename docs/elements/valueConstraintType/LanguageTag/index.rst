@@ -18,7 +18,7 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          :status
                 valueConstraint:     ['fr']

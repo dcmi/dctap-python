@@ -21,7 +21,7 @@ Interpreted, with a warning, as::
 
     DCTAP instance
 	Shape
-	    shapeID:                 :default
+	    shapeID:                 default
 	    Statement Constraint
 		propertyID:          dcterms:title
 		valueNodeType:       literal
@@ -32,4 +32,4 @@ Interpreted, with a warning, as::
 		propertyID:          dcterms:subject
 		valueNodeType:       concept
 
-    WARNING [:default/valueNodeType] 'concept' is not a valid node type.
+    WARNING [default/valueNodeType] 'concept' is not a valid node type.

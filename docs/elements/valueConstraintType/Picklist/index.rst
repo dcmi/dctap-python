@@ -17,7 +17,7 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          :color
                 valueConstraint:     ['red', 'blue', 'green']
@@ -39,7 +39,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          :color
                 valueConstraint:     ['reddish', 'brown,', 'greenish', 'yellow,', 'bluish', 'green']

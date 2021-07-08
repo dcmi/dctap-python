@@ -17,7 +17,7 @@ def test_get_tapshapes_one_default_shape():
     tapshapes_output = _get_tapshapes(rows, SETTINGS_DICT)
     expected_shapes = tapshapes_output[0]
     assert len(expected_shapes) == 1
-    assert expected_shapes["shapes"][0]["shapeID"] == ":default"
+    assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 3
 
 
@@ -26,7 +26,7 @@ def test_get_tapshapes_one_default_shape_shapeID_not_specified():
     rows = [{"propertyID": "dc:creator"}]
     tapshapes_output = _get_tapshapes(rows, SETTINGS_DICT)
     expected_shapes = tapshapes_output[0]
-    assert expected_shapes["shapes"][0]["shapeID"] == ":default"
+    assert expected_shapes["shapes"][0]["shapeID"] == "default"
 
 
 def test_get_tapshapes_twoshapes_first_is_default():
@@ -38,7 +38,7 @@ def test_get_tapshapes_twoshapes_first_is_default():
     ]
     tapshapes_output = _get_tapshapes(rows, SETTINGS_DICT)
     expected_shapes = tapshapes_output[0]
-    assert expected_shapes["shapes"][0]["shapeID"] == ":default"
+    assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
     assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 2
 
@@ -65,7 +65,7 @@ def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
         {"shapeID": ":author", "propertyID": "foaf:name"},
     ]
     expected_shapes = {'shapes': [{'sh_warnings': {},
-                 'shapeID': ':default',
+                 'shapeID': 'default',
                  'shapeLabel': '',
                  'statement_constraints': [{'mandatory': None,
                                             'note': '',
@@ -105,7 +105,7 @@ def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
                                             'valueShape': ''}]}]}
     tapshapes_output = _get_tapshapes(rows, SETTINGS_DICT)
     expected_shapes = tapshapes_output[0]
-    assert expected_shapes["shapes"][0]["shapeID"] == ":default"
+    assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
     assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 2
     assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]) == dict

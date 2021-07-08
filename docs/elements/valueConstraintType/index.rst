@@ -15,7 +15,7 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          :securityLevel
                 valueConstraint:     Confidential
@@ -37,7 +37,7 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          :securityLevel
                 valueConstraint:     ['Public', 'Confidential']
@@ -53,7 +53,7 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          :creator
                 valueConstraint:     one, two, three

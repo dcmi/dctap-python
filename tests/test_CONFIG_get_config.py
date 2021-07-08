@@ -11,7 +11,7 @@ from dctap.config import (
 from dctap.exceptions import ConfigError
 
 YAML_CONFIGFILE_CONTENTS = """\
-default_shape_name: ":default"
+default_shape_name: "default"
 
 prefixes:
     ":": "http://example.org/"

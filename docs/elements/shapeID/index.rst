@@ -7,7 +7,7 @@ In the DCTAP model, all :term:`Statement Constraint`\s are seen as grouped into 
 
 A shape identifier is typically a plain :term:`Literal` or an :term:`IRI`.
 
-If no **shapeID** is provided, a default shape identifier will be assigned (":default"). A different default shape identifier may be configured, as described in the section :ref:`config`. For example:
+If no **shapeID** is provided, a default shape identifier will be assigned ("default"). A different default shape identifier may be configured, as described in the section :ref:`config`. For example:
 
 .. csv-table::
    :file: shapeID.csv
@@ -17,7 +17,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dcterms:creator
             Statement Constraint
@@ -51,7 +51,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             Statement Constraint
                 propertyID:          dcterms:creator
             Statement Constraint
@@ -86,7 +86,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :default
+            shapeID:                 default
             shapeLabel:              Book
             Statement Constraint
                 propertyID:          dcterms:creator

@@ -36,7 +36,7 @@ Interpreted as::
 
     DCTAP instance
 	Shape
-	    shapeID: :default
+	    shapeID: default
 	    Statement Constraint
 		propertyID: http://purl.org/dc/terms/title
 	    Statement Constraint

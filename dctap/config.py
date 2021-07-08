@@ -56,6 +56,9 @@ extra_shape_elements:
 extra_statement_constraint_elements:
 - min
 - max
+
+# 
+picklist_item_separator: ' '
 """
 
 DEFAULT_CONFIGFILE_NAME = "dctap.yml"

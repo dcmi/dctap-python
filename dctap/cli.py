@@ -93,7 +93,7 @@ def init(context, configfile):
 @click.argument("csvfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def get_dict(context, csvfile):
-    """Get dictionary."""
+def get_shapesdict(context, csvfile):
+    """Get shapes as dictionary."""
     config_dict = get_config()
-    pprint(csvreader(open(csvfile), config_dict))
+    pprint(csvreader(open(csvfile), config_dict)[0])

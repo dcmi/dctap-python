@@ -200,7 +200,6 @@ class TAPShape:
     def validate(self, config_dict=None):
         """Normalize values where required."""
         self._normalize_default_shapeID(config_dict)
-        self._warn_if_shapeID_is_not_an_IRI()
         return True
 
     def _normalize_default_shapeID(self, config_dict=None):
@@ -208,13 +207,6 @@ class TAPShape:
         if not self.shapeID:
             self.shapeID = config_dict["default_shape_name"]
         return self
-
-    def _warn_if_shapeID_is_not_an_IRI(self):
-        """@@@"""
-        if not is_uri_or_prefixed_uri(self.shapeID):
-            self.sh_warnings[
-                "shapeID"
-            ] = f"{repr(self.shapeID)} is not an IRI or Compact IRI."
 
     def get_warnings(self):
         """Emit warnings dictionary self.sh_warnings, populated by validate() method."""

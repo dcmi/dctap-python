@@ -1,4 +1,4 @@
-"""Tests for private functions called by TAPStatementConstraint.validate()."""
+"""Tests for private functions called by TAPStatementConstraint.normalize()."""
 
 import pytest
 from dctap.config import get_config

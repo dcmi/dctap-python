@@ -113,7 +113,7 @@ def _get_tapshapes(rows, config_dict):
             set_shape_fields(shape, row)            # populate its shape elements, and
             warnings[sh_id] = dict()                # use as key in warnings dict.
 
-        shape.validate(config_dict)
+        shape.normalize(config_dict)
         shape_warnings = shape.get_warnings()
 
         for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
@@ -135,7 +135,7 @@ def _get_tapshapes(rows, config_dict):
 # TODO sc_list => statement_constraints
 #                      statement_constraints.append(sc)
 
-        sc.validate(config_dict)                    # SC validates itself, and
+        sc.normalize(config_dict)                    # SC normalizes itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
 
         for (elem,warn) in sc_warnings.items():     # Iterate SC instance warnings.

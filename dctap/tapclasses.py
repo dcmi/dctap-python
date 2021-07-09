@@ -27,8 +27,8 @@ class TAPStatementConstraint:
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
 
-    def validate(self, config_dict):
-        """Validates specific fields."""
+    def normalize(self, config_dict):
+        """normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
         self.config_dict = config_dict
         self._warn_if_propertyID_or_valueDataType_not_IRIlike()
@@ -174,7 +174,7 @@ class TAPStatementConstraint:
                 )
 
     def get_warnings(self):
-        """Emit warnings dictionary self.sc_warnings, populated by validate() method."""
+        """Emit warnings dictionary self.sc_warnings, populated by normalize() method."""
         return dict(self.sc_warnings)
 
 
@@ -192,7 +192,7 @@ class TAPShape:
 #    statement_constraints: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
 
-    def validate(self, config_dict=None):
+    def normalize(self, config_dict=None):
         """Normalize values where required."""
         self._normalize_default_shapeID(config_dict)
         return True
@@ -204,5 +204,5 @@ class TAPShape:
         return self
 
     def get_warnings(self):
-        """Emit warnings dictionary self.sh_warnings, populated by validate() method."""
+        """Emit warnings dictionary self.sh_warnings, populated by normalize() method."""
         return dict(self.sh_warnings)

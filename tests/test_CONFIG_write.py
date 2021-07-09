@@ -3,7 +3,8 @@
 import os
 import pytest
 from pathlib import Path
-from dctap.config import write_configfile, DEFAULT_CONFIGFILE_NAME
+from dctap.config import write_configfile
+from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 
 NONDEFAULT_CONFIG_YAML = """\
 default_shape_name: "default"

@@ -6,15 +6,13 @@ from dctap.config import _compute_alias2element_mappings
 def test_config_get__compute_alias2element_mappings():
     """Given config_dict["element_aliases"] (asserted), add computed aliases."""
     csv_elements_list = [ "propertyID", "propertyLabel" ]
-    expected_mappings = {'pid': 'propertyID', 'propertyid': 'propertyID', 'pl': 'propertyLabel', 'propertylabel': 'propertyLabel'}
+    expected_mappings = {'propertyid': 'propertyID', 'propertylabel': 'propertyLabel'}
     computed_mappings = _compute_alias2element_mappings(csv_elements_list)
     assert expected_mappings == computed_mappings
     given_config_dict = { "element_aliases": { "Eigenschaftsidentifikator": "propertyID" }}
     expected_config_dict = {
         "element_aliases": {
             'propertyid': 'propertyID',  
-            'pid': 'propertyID',  
-            'pl': 'propertyLabel',  
             'propertylabel': 'propertyLabel',  
             'eigenschaftsidentifikator': 'propertyID',  
         }

@@ -3,11 +3,8 @@
 import os
 import pytest
 from pathlib import Path
-from dctap.config import (
-    get_config,
-    DEFAULT_CONFIGFILE_NAME,
-    DEFAULT_CONFIG_YAML,
-)
+from dctap.config import get_config
+from dctap.defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
 from dctap.exceptions import ConfigError
 
 YAML_CONFIGFILE_CONTENTS = """\

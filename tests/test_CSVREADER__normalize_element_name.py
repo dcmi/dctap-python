@@ -7,7 +7,6 @@ def test_normalize_element_name():
     """Element names not recognized as aliases are left unchanged."""
     config_dict = get_config()
     element_aliases_dict = config_dict.get("element_aliases")
-    assert _normalize_element_name("sid", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("SHAPE ID", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("rid", element_aliases_dict) == "rid"

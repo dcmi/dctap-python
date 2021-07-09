@@ -17,25 +17,6 @@ def csvreader(open_csvfile_obj, config_dict):
     return (tapshapes, tapwarnings)
 
 
-def _get_rows(open_csvfile_obj, config_dict):
-    """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
-    csvfile_contents_str = open_csvfile_obj.read()
-    tmp_buffer = StringBuffer(csvfile_contents_str)
-    csvlines_stripped = [line.strip() for line in tmp_buffer]
-    raw_header_line_list = csvlines_stripped[0].split(",")
-    new_header_line_list = list()
-    for header in raw_header_line_list:
-        header = _lowercase_despace_depunctuate(header)
-        header = _normalize_element_name(header, config_dict.get("element_aliases"))
-        new_header_line_list.append(header)
-    new_header_line_str = ",".join(new_header_line_list)
-    csvlines_stripped[0] = new_header_line_str
-    if "propertyID" not in csvlines_stripped[0]:
-        raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
-    tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
-    return list(DictReader(tmp_buffer2))
-
-
 def _get_tapshapes(rows, config_dict):
     """Return tuple: list of TAPShape objects and list of any warnings."""
     # pylint: disable=too-many-locals
@@ -161,3 +142,22 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
             if key == some_str:
                 some_str = element_aliases_dict[key]
     return some_str
+
+
+def _get_rows(open_csvfile_obj, config_dict):
+    """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
+    csvfile_contents_str = open_csvfile_obj.read()
+    tmp_buffer = StringBuffer(csvfile_contents_str)
+    csvlines_stripped = [line.strip() for line in tmp_buffer]
+    raw_header_line_list = csvlines_stripped[0].split(",")
+    new_header_line_list = list()
+    for header in raw_header_line_list:
+        header = _lowercase_despace_depunctuate(header)
+        header = _normalize_element_name(header, config_dict.get("element_aliases"))
+        new_header_line_list.append(header)
+    new_header_line_str = ",".join(new_header_line_list)
+    csvlines_stripped[0] = new_header_line_str
+    if "propertyID" not in csvlines_stripped[0]:
+        raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
+    tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
+    return list(DictReader(tmp_buffer2))

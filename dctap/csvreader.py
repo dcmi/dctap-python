@@ -36,25 +36,6 @@ def _get_rows(open_csvfile_obj, config_dict):
     return list(DictReader(tmp_buffer2))
 
 
-def _normalize_element_name(some_str, element_aliases_dict=None):
-    """Normalize a given string (or leave unchanged)."""
-    some_str = _lowercase_despace_depunctuate(some_str)
-    if element_aliases_dict:
-        for key in element_aliases_dict.keys():
-            if key == some_str:
-                some_str = element_aliases_dict[key]
-    return some_str
-
-
-def _lowercase_despace_depunctuate(some_str=None):
-    """For given string, delete underscores, dashes, spaces, then lowercase."""
-    some_str = some_str.replace(" ", "")
-    some_str = some_str.replace("_", "")
-    some_str = some_str.replace("-", "")
-    some_str = some_str.lower()
-    return some_str
-
-
 def _get_tapshapes(rows, config_dict):
     """Return tuple: list of TAPShape objects and list of any warnings."""
     # pylint: disable=too-many-locals
@@ -164,3 +145,22 @@ def _get_tapshapes(rows, config_dict):
         warnings_dict                               #   Dict of warnings, by shape
     )
     # fmt: on
+
+
+def _lowercase_despace_depunctuate(some_str=None):
+    """For given string, delete underscores, dashes, spaces, then lowercase."""
+    some_str = some_str.replace(" ", "")
+    some_str = some_str.replace("_", "")
+    some_str = some_str.replace("-", "")
+    some_str = some_str.lower()
+    return some_str
+
+
+def _normalize_element_name(some_str, element_aliases_dict=None):
+    """Normalize a given string (or leave unchanged)."""
+    some_str = _lowercase_despace_depunctuate(some_str)
+    if element_aliases_dict:
+        for key in element_aliases_dict.keys():
+            if key == some_str:
+                some_str = element_aliases_dict[key]
+    return some_str

@@ -5,7 +5,7 @@ from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
 from typing import Dict
-from .config import _shape_elements, _statement_constraint_elements
+from .config import shape_elements, statement_constraint_elements
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
@@ -29,10 +29,14 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    if config_dict["extra_shape_elements"]:
-        shape_extras = config_dict["extra_shape_elements"]
-    if config_dict["extra_statement_constraint_elements"]:
-        sc_extras = config_dict["extra_statement_constraint_elements"]
+    sh_elements, xtra_sh_elements = shape_elements(
+        shape_class=TAPShape, 
+        settings_dict=config_dict
+    )
+    sc_elements, xtra_sc_elements = statement_constraint_elements(
+        statement_constraint_class=TAPStatementConstraint, 
+        settings_dict=config_dict
+    )
 
     # fmt: off
     shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
@@ -40,11 +44,7 @@ def _get_tapshapes(rows, config_dict):
     warnings = defaultdict(dict)                    # Init defaultdict for warnings.
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
-        tapshape_keys = _shape_elements(
-            shape_class=TAPShape,
-            settings_dict=config_dict
-        )                                           # get list of shape elements.
-        for key in tapshape_keys:                   # Iterate remaining keys, to
+        for key in sh_elements:                     # Iterate remaining keys, to
             try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from row dict.
             except KeyError:                        # Values not found in row dict,
@@ -76,7 +76,7 @@ def _get_tapshapes(rows, config_dict):
             set_shape_fields(shape, row)            # populate its shape elements, and
             warnings[sh_id] = dict()                # use as key in warnings dict.
 
-        shape.set_settings(config_dict)
+        shape.settings = config_dict
         shape.normalize()
         shape_warnings = shape.get_warnings()
 
@@ -97,7 +97,7 @@ def _get_tapshapes(rows, config_dict):
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
-        sc.set_settings(config_dict)                # SC normalizes itself, and
+        sc.settings = config_dict                   # 
         sc.normalize()                              # SC normalizes itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
 

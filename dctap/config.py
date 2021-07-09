@@ -6,62 +6,38 @@ from pathlib import Path
 
 # pylint: disable=consider-using-from-import
 import ruamel.yaml as yaml
+from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
-DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
-default_shape_name: "default"
+def shape_elements(shape_class=TAPShape, settings_dict=None):
+    """List DCTAP elements supported by given shape class."""
+    only_shape_elements = list(asdict(shape_class()))
+    only_shape_elements.remove("sc_list")
+    only_shape_elements.remove("sh_warnings")
+    only_shape_elements.remove("settings")
+    only_shape_elements.remove("extra_elements")
+    extra_shape_elements = []
+    if settings_dict:
+        if settings_dict.get("extra_shape_elements"):
+            for extra_element in settings_dict.get("extra_shape_elements"):
+                extra_shape_elements.append(extra_element)
+    return (only_shape_elements, extra_shape_elements)
 
-value_node_types:
-- iri
-- literal
-- bnode
 
-prefixes:
-    ":":        "http://example.org/"
-    "dc:":      "http://purl.org/dc/elements/1.1/"
-    "dcterms:": "http://purl.org/dc/terms/"
-    "dct:":     "http://purl.org/dc/terms/"
-    "foaf:":    "http://xmlns.com/foaf/0.1/"
-    "owl:":     "http://www.w3.org/2002/07/owl#"
-    "rdf:":     "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    "rdfs:":    "http://www.w3.org/2000/01/rdf-schema#"
-    "schema:":  "http://schema.org/"
-    "skos:":    "http://www.w3.org/2004/02/skos/core#"
-    "skosxl:":  "http://www.w3.org/2008/05/skos-xl#"
-    "wdt:":     "http://www.wikidata.org/prop/direct/"
-    "xsd:":     "http://www.w3.org/2001/XMLSchema#"
-
-# Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
-element_aliases:
-    "propid": "propertyID"
-    "mand": "mandatory"
-    "rep": "repeatable"
-    "nodetype": "valueNodeType"
-    "datatype": "valueDataType"
-    "vc": "valueConstraint"
-    "vctype": "valueConstraintType"
-    "vshape": "valueShape"
-
-# If elements (column headers) are encountered that are not part of the 
-# base DCTAP model, they will be ignored - unless they are entered here as
-# "extra" elements.
-# "Extra" elements must either be "shape" elements or "statement constraint" elements.
-# The following "shape" and "statement constraint" elements are merely examples...
-extra_shape_elements:
-- closed
-- start
-
-extra_statement_constraint_elements:
-- min
-- max
-
-# 
-picklist_item_separator: ' '
-"""
-
-DEFAULT_CONFIGFILE_NAME = "dctap.yml"
+def statement_constraint_elements(statement_constraint_class=TAPStatementConstraint, settings_dict=None):
+    """List DCTAP elements supported by given statement constraint class."""
+    only_sc_elements = list(asdict(statement_constraint_class()))
+    only_sc_elements.remove("sc_warnings")
+    only_sc_elements.remove("settings")
+    only_sc_elements.remove("extra_elements")
+    extra_sc_elements = []
+    if settings_dict:
+        if settings_dict.get("extra_statement_constraint_elements"):
+            for extra_element in settings_dict.get("extra_statement_constraint_elements"):
+                extra_sc_elements.append(extra_element)
+    return (only_sc_elements, extra_sc_elements)
 
 
 def write_configfile(
@@ -92,16 +68,16 @@ def get_config(
     """Get config dict from file if found, else get built-in defaults."""
     # pylint: disable=raise-missing-from
     elements_dict = dict()
-    elements_dict["shape_elements"] = _shape_elements(shape_class)
-    elements_dict["statement_constraint_elements"] = _statement_constraint_elements(
+    elements_dict["shape_elements"] = shape_elements(shape_class)[0]
+    elements_dict["statement_constraint_elements"] = statement_constraint_elements(
         statement_constraint_class
-    )
+    )[0]
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_constraint_elements"]
     )
     bad_form = f"{repr(config_file)} is badly formed: fix, re-generate, or delete."
     not_found = f"{repr(config_file)} not found or not readable."
-    if config_file: # if a specific config file was named
+    if config_file:  # if a specific config file was named
         try:
             config_yaml = Path(config_file).read_text()
         except (FileNotFoundError, PermissionError):
@@ -119,7 +95,7 @@ def get_config(
     except (yaml.YAMLError, yaml.scanner.ScannerError):
         raise ConfigError(bad_form)
     config_dict.update(elements_dict)
-    if not config_dict.get("element_aliases"):   # is this necessary?
+    if not config_dict.get("element_aliases"):  # is this necessary?
         config_dict["element_aliases"] = dict()  # is this necessary?
     config_dict["element_aliases"].update(
         _compute_alias2element_mappings(config_dict["csv_elements"])
@@ -131,30 +107,6 @@ def _compute_alias2element_mappings(csv_elements_list=None):
     """Compute shortkey/lowerkey-to-element mappings from list of CSV elements."""
     alias2element_mappings = dict()
     for csv_elem in csv_elements_list:
-        # shortkey: initial letter (lowercase) + each uppercase letter, lowercased
-        shortkey = "".join([csv_elem[0]] + [l.lower() for l in csv_elem if l.isupper()])
         lowerkey = csv_elem.lower()
-        alias2element_mappings[shortkey] = csv_elem  # { shortkey: camelcasedValue }
         alias2element_mappings[lowerkey] = csv_elem  # { lowerkey: camelcasedValue }
     return alias2element_mappings
-
-
-def _shape_elements(shape_class=TAPShape, settings_dict=None):
-    """List DCTAP elements supported by given shape class."""
-    sh_elements = list(asdict(shape_class()))
-    sh_elements.remove("sc_list")
-    sh_elements.remove("sh_warnings")
-    if settings_dict:
-        if settings_dict.get("extra_shape_elements"):
-            sh_elements += settings_dict.get("extra_shape_elements")
-    return sh_elements
-
-
-def _statement_constraint_elements(statement_constraint_class=TAPStatementConstraint, settings_dict=None):
-    """List DCTAP elements supported by given statement constraint class."""
-    sc_elements = list(asdict(statement_constraint_class()))
-    sc_elements.remove("sc_warnings")
-    if settings_dict:
-        if settings_dict.get("extra_statement_constraint_elements"):
-            sc_elements += settings_dict.get("extra_statement_constraint_elements")
-    return sc_elements

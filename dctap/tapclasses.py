@@ -26,11 +26,8 @@ class TAPStatementConstraint:
     valueShape: str = ""
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
-
-    def set_settings(self, config_dict):
-        """Sets self.config_dict."""
-        self.config_dict = config_dict
-        return self
+    settings: dict = field(default_factory=dict)
+    extra_elements: list = field(default_factory=list)
 
     def normalize(self):
         """Normalizes specific fields."""
@@ -155,8 +152,8 @@ class TAPStatementConstraint:
 
     def _valueNodeType_is_from_enumerated_list(self):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        if self.config_dict.get("value_node_types"):
-            valid_types = [vnt.lower() for vnt in self.config_dict["value_node_types"]]
+        if self.settings.get("value_node_types"):
+            valid_types = [vnt.lower() for vnt in self.settings["value_node_types"]]
         else:
             valid_types = ["iri", "bnode", "literal"]
         if self.valueNodeType:
@@ -192,14 +189,9 @@ class TAPShape:
     shapeID: str = ""
     shapeLabel: str = ""
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
-# TODO sc_list => statement_constraints
-#    statement_constraints: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
-
-    def set_settings(self, config_dict):
-        """Sets self.config_dict."""
-        self.config_dict = config_dict
-        return self
+    settings: dict = field(default_factory=dict)
+    extra_elements: list = field(default_factory=list)
 
     def normalize(self):
         """Normalize values where required."""
@@ -209,7 +201,7 @@ class TAPShape:
     def _normalize_default_shapeID(self, config_dict=None):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
-            self.shapeID = self.config_dict["default_shape_name"]
+            self.shapeID = self.settings["default_shape_name"]
         return self
 
     def get_warnings(self):

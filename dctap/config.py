@@ -139,16 +139,22 @@ def _compute_alias2element_mappings(csv_elements_list=None):
     return alias2element_mappings
 
 
-def _shape_elements(shape_class=TAPShape):
+def _shape_elements(shape_class=TAPShape, settings_dict=None):
     """List DCTAP elements supported by given shape class."""
     sh_elements = list(asdict(shape_class()))
     sh_elements.remove("sc_list")
     sh_elements.remove("sh_warnings")
+    if settings_dict:
+        if settings_dict.get("extra_shape_elements"):
+            sh_elements += settings_dict.get("extra_shape_elements")
     return sh_elements
 
 
-def _statement_constraint_elements(statement_constraint_class=TAPStatementConstraint):
+def _statement_constraint_elements(statement_constraint_class=TAPStatementConstraint, settings_dict=None):
     """List DCTAP elements supported by given statement constraint class."""
     sc_elements = list(asdict(statement_constraint_class()))
     sc_elements.remove("sc_warnings")
+    if settings_dict:
+        if settings_dict.get("extra_statement_constraint_elements"):
+            sc_elements += settings_dict.get("extra_statement_constraint_elements")
     return sc_elements

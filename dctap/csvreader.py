@@ -30,12 +30,10 @@ def _get_tapshapes(rows, config_dict):
         dshape = "default"
 
     sh_elements, xtra_sh_elements = shape_elements(
-        shape_class=TAPShape, 
-        settings_dict=config_dict
+        shape_class=TAPShape, settings_dict=config_dict
     )
     sc_elements, xtra_sc_elements = statement_constraint_elements(
-        statement_constraint_class=TAPStatementConstraint, 
-        settings_dict=config_dict
+        statement_constraint_class=TAPStatementConstraint, settings_dict=config_dict
     )
 
     # fmt: off

@@ -5,6 +5,7 @@ from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
 from typing import Dict
+from .config import _shape_elements, _statement_constraint_elements
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
@@ -39,13 +40,14 @@ def _get_tapshapes(rows, config_dict):
     warnings = defaultdict(dict)                    # Init defaultdict for warnings.
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
-        tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
-        tapshape_keys.remove("sc_list")             # sh_warnings - not
-        tapshape_keys.remove("sh_warnings")         # shape fields.
+        tapshape_keys = _shape_elements(
+            shape_class=TAPShape,
+            settings_dict=config_dict
+        )                                           # get list of shape elements.
         for key in tapshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate tapshape fields
                 setattr(shape, key, row[key])       # with values from row dict.
-            except KeyError:                        # Keys not found in row dict,
+            except KeyError:                        # Values not found in row dict,
                 pass                                # are simply skipped.
         return shape                                # Return shape with fields set.
 

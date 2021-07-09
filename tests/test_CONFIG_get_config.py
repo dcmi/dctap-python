@@ -22,15 +22,16 @@ prefixes:
 def test_get_config_from_builtins(tmp_path):
     """Get config dict from built-in settings."""
     config_dict = get_config()
-    assert config_dict.get("prefixes")                            # built-in/asserted
-    assert config_dict.get("default_shape_name")                  # built-in/asserted
+    assert config_dict.get("prefixes")                            # built-in/configurable
+    assert config_dict.get("default_shape_name")                  # built-in/configurable
     assert config_dict.get("csv_elements")                        # computed from dataclasses
     assert config_dict.get("shape_elements")                      # computed from dataclasses
     assert config_dict.get("statement_constraint_elements")       # computed from dataclasses
-    assert config_dict.get("element_aliases")                     # asserted/computed
-    assert config_dict.get("extra_shape_elements")                # asserted
-    assert config_dict.get("extra_statement_constraint_elements") # asserted
-    assert config_dict.get("value_node_types")                    # built-in/asserted
+    assert config_dict.get("element_aliases")                     # computed/configurable
+    assert config_dict.get("extra_shape_elements")                # configurable
+    assert config_dict.get("extra_statement_constraint_elements") # configurable
+    assert config_dict.get("value_node_types")                    # built-in/configurable
+    assert config_dict.get("picklist_item_separator")             # built-in/configurable
 
 def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""

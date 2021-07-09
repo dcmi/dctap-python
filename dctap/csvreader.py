@@ -60,7 +60,6 @@ def _get_tapshapes(rows, config_dict):
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
         tapshape_keys = list(asdict(TAPShape()))    # make a list of those keys,
         tapshape_keys.remove("sc_list")             # sh_warnings - not
-        # TODO tapshape_keys.remove("statement_constraints") # sh_warnings - not
         tapshape_keys.remove("sh_warnings")         # shape fields.
         for key in tapshape_keys:                   # Iterate remaining keys, to
             try:                                    # populate tapshape fields
@@ -114,8 +113,6 @@ def _get_tapshapes(rows, config_dict):
                 pass                                # are simply skipped (yes?).
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
-# TODO sc_list => statement_constraints
-#                      statement_constraints.append(sc)
 
         sc.set_settings(config_dict)                # SC normalizes itself, and
         sc.normalize()                              # SC normalizes itself, and

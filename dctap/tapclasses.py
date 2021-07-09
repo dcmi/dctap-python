@@ -36,7 +36,7 @@ class TAPStatementConstraint:
         """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
         self._warn_if_propertyID_or_valueDataType_not_IRIlike()
-        self._mandatory_repeatable_have_supported_boolean_values()
+        self._normalize_booleans_mandatory_repeatable()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs()
@@ -59,7 +59,7 @@ class TAPStatementConstraint:
                     "valueDataType"
                 ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
 
-    def _mandatory_repeatable_have_supported_boolean_values(self):
+    def _normalize_booleans_mandatory_repeatable(self):
         """Booleans take true/false (case-insensitive) or 1/0, default None."""
 
         valid_values_for_true = ["true", "1"]
@@ -75,9 +75,9 @@ class TAPStatementConstraint:
                     "mandatory"
                 ] = f"{repr(self.mandatory)} is not a supported Boolean value."
             if mand in valid_values_for_true:
-                self.mandatory = True
+                self.mandatory = "True"
             elif mand in valid_values_for_false:
-                self.mandatory = False
+                self.mandatory = "False"
 
         if self.repeatable != None:
             # breakpoint(context=5)
@@ -87,9 +87,9 @@ class TAPStatementConstraint:
                     "repeatable"
                 ] = f"{repr(self.repeatable)} is not a supported Boolean value."
             if repeat in valid_values_for_true:
-                self.repeatable = True
+                self.repeatable = "True"
             elif repeat in valid_values_for_false:
-                self.repeatable = False
+                self.repeatable = "False"
 
         return self
 

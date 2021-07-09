@@ -22,7 +22,7 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
             while len(indent08) < 33:
                 indent08 += " "
             if tapshape_dict.get(key):
-                    pprint_output.append(indent08 + str(tapshape_dict.get(key)))
+                pprint_output.append(indent08 + str(tapshape_dict.get(key)))
 
         for sc_dict in tapshape_dict.get("statement_constraints"):
             pprint_output.append("        Statement Constraint")

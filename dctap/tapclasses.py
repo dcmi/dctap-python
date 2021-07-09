@@ -27,10 +27,14 @@ class TAPStatementConstraint:
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
 
-    def normalize(self, config_dict):
-        """normalizes specific fields."""
-        # pylint: disable=attribute-defined-outside-init
+    def set_settings(self, config_dict):
+        """Sets self.config_dict."""
         self.config_dict = config_dict
+        return self
+
+    def normalize(self):
+        """Normalizes specific fields."""
+        # pylint: disable=attribute-defined-outside-init
         self._warn_if_propertyID_or_valueDataType_not_IRIlike()
         self._mandatory_repeatable_have_supported_boolean_values()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
@@ -192,15 +196,20 @@ class TAPShape:
 #    statement_constraints: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
 
-    def normalize(self, config_dict=None):
+    def set_settings(self, config_dict):
+        """Sets self.config_dict."""
+        self.config_dict = config_dict
+        return self
+
+    def normalize(self):
         """Normalize values where required."""
-        self._normalize_default_shapeID(config_dict)
+        self._normalize_default_shapeID()
         return True
 
     def _normalize_default_shapeID(self, config_dict=None):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
-            self.shapeID = config_dict["default_shape_name"]
+            self.shapeID = self.config_dict["default_shape_name"]
         return self
 
     def get_warnings(self):

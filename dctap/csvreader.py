@@ -70,7 +70,7 @@ def _get_tapshapes(rows, config_dict):
                 sh_id = so_far[-1]                  # use the most recent as key.
 
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
-            shape = shapes[sh_id] = TAPShape()      # give it value TAPShape object, 
+            shape = shapes[sh_id] = TAPShape()      # give it value TAPShape object,
             set_shape_fields(shape, row)            # populate its shape elements, and
             warnings[sh_id] = dict()                # use as key in warnings dict.
 

@@ -95,4 +95,5 @@ def init(context, configfile):
 def get_shapesdict(context, csvfile):
     """Get shapes as dictionary."""
     config_dict = get_config()
+    # pylint: disable=consider-using-with
     pprint(csvreader(open(csvfile), config_dict)[0])

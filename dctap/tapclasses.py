@@ -144,8 +144,9 @@ class TAPStatementConstraint:
         if self.valueConstraintType:
             if not self.valueConstraint:
                 self.sc_warnings["valueConstraint"] = (
-                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
-                    f"value constraint is empty."
+                    f"Value constraint type "
+                    f"({repr(self.valueConstraintType)}) "
+                    "but no value constraint."
                 )
         return self
 

@@ -36,10 +36,10 @@ class TAPStatementConstraint:
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
-        self._valueConstraintType_picklist_parse()
         self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
+        self._valueConstraintType_picklist_parse(settings)
         self._valueNodeType_is_from_enumerated_list(settings)
         return self
 
@@ -131,14 +131,6 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_picklist_parse(self):
-        """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
-        self.valueConstraintType = self.valueConstraintType.lower()
-        if self.valueConstraintType == "picklist":
-            if self.valueConstraint:
-                self.valueConstraint = self.valueConstraint.split()
-        return self
-
     def _valueConstraintType_warn_if_used_without_valueConstraint(self):
         """Warns if valueConstraintType used without valueConstraint."""
         if self.valueConstraintType:
@@ -148,6 +140,19 @@ class TAPStatementConstraint:
                     f"({repr(self.valueConstraintType)}) "
                     "but no value constraint."
                 )
+        return self
+
+    def _valueConstraintType_picklist_parse(self, settings):
+        """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if settings.get("picklist_item_separator"):
+            sep = settings.get("picklist_item_separator")
+        else:
+            sep = " "
+        if self.valueConstraintType == "picklist":
+            if self.valueConstraint:
+                self.valueConstraint = self.valueConstraint.split(sep)
+                self.valueConstraint = [x.strip() for x in self.valueConstraint if x]
         return self
 
     def _valueNodeType_is_from_enumerated_list(self, settings):

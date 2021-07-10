@@ -126,7 +126,7 @@ def _get_tapshapes(rows, config_dict):
         warnings_dict = dict(warnings)              # Save defaultdict warnings as dict.
 
     return (                                        # Return tuple:
-        tapshapes_dict,                             #   Shapes dictionary
+	_reduce_shapesdict(tapshapes_dict),         #   Shapes dict, empties removed
         warnings_dict                               #   Dict of warnings, by shape
     )
     # fmt: on
@@ -150,6 +150,28 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
                 some_str = element_aliases_dict[key]
     return some_str
 
+
+def _reduce_shapesdict(shapes_dict):
+    """Iteratively remove elements from shapes dictionary with falsy values."""
+    for shape in shapes_dict["shapes"]:
+        for sc in shape["statement_constraints"]:
+            if sc.get("extra_elements"):
+                for (k,v) in sc["extra_elements"].items():
+                    sc[k] = v
+                    del sc["extra_elements"]
+            if sc.get("sc_warnings"):
+                del sc["sc_warnings"]
+            for empty_element in [key for key in sc if not sc[key]]:
+                del sc[empty_element]
+        if shape.get("extra_elements"):
+            for (k,v) in shape["extra_elements"].items():
+                shape[k] = v
+                del shape["extra_elements"]
+        if shape.get("sh_warnings"):
+            del sc["sh_warnings"]
+        for empty_element in [key for key in shape if not shape[key]]:
+            del shape[empty_element]
+    return shapes_dict
 
 def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""

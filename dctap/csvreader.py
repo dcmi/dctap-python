@@ -19,7 +19,7 @@ def csvreader(open_csvfile_obj, config_dict):
 
 
 def _get_tapshapes(rows, config_dict):
-    """Return tuple: list of TAPShape objects and list of any warnings."""
+    """Return tuple: { shape objects as dicts : warnings as dicts }."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
@@ -66,11 +66,11 @@ def _get_tapshapes(rows, config_dict):
             if row.get("shapeID"):                  # if truthy shapeID be found,
                 sh_id = row["shapeID"]              # use as a key for shapes dict.
             else:                                   # If no truthy shapeID be found,
-                so_far = list(shapes)               # see list of shapeIDs used so far,
-                sh_id = so_far[-1]                  # and may most recent one be key.
+                so_far = list(shapes)               # from shapeIDs used so far,
+                sh_id = so_far[-1]                  # use the most recent as key.
 
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
-            shape = shapes[sh_id] = TAPShape()      # add it with value TAPShape, and
+            shape = shapes[sh_id] = TAPShape()      # give it value TAPShape object, 
             set_shape_fields(shape, row)            # populate its shape elements, and
             warnings[sh_id] = dict()                # use as key in warnings dict.
 
@@ -82,8 +82,8 @@ def _get_tapshapes(rows, config_dict):
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings, by shape,
             except KeyError:                        # but if needed key not found,
-                warnings[sh_id][elem] = list()      # set new key with value list,
-                warnings[sh_id][elem].append(warn)  # and warning can now be added.
+                warnings[sh_id][elem] = list()      # set value of empty list,
+                warnings[sh_id][elem].append(warn)  # and add the warning.
 
         sc = TAPStatementConstraint()               # Instantiate SC for this row.
 
@@ -99,18 +99,22 @@ def _get_tapshapes(rows, config_dict):
         sc.normalize()                              # SC normalizes itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
 
-        for (elem,warn) in sc_warnings.items():     # Iterate SC instance warnings.
+        for (elem, warn) in sc_warnings.items():    # Iterate SC instance warnings.
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings by shape,
             except KeyError:                        # but if needed key not found,
-                warnings[sh_id][elem] = list()      # set new key with value list,
-                warnings[sh_id][elem].append(warn)  # and warning can now be added.
+                warnings[sh_id][elem] = list()      # set value of empty list,
+                warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        tapshapes_dict = dict()                     # New dict to hold shapes as dicts.
-        shape_list = list()                         # New list for TAPShapes objs, as
-        tapshapes_dict["shapes"] = shape_list       # mutable value for key "shapes".
+        tapshapes_dict = dict()                     # Dict will hold shapes as dicts.
+
+        shape_list = list()                         # New list for TAPShapes objs, to
+        tapshapes_dict["shapes"] = shape_list       # hold on tapshapes_dict["shapes"].
+
+        # breakpoint(context=5)
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
             tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
+            tapshape_dict.pop("settings")
             tapshape_dict[                          # - rename its field "sc_list" to
                 "statement_constraints"             #   "statement_constraints"
             ] = tapshape_dict.pop("sc_list")        # - add that shape dict to mutable

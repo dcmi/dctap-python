@@ -26,13 +26,12 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
                 indent08 += " "
             if tapshape_dict.get(key):
                 pprint_output.append(indent08 + str(tapshape_dict.get(key)))
-        # breakpoint(context=5)
         for key in xtra_shape_elements:
             indent08 = 8 * " " + "[" + key + "]: "
             while len(indent08) < 33:
                 indent08 += " "
-            if tapshape_dict["extra_elements"].get(key):
-                pprint_output.append(indent08 + str(tapshape_dict["extra_elements"].get(key)))
+            if tapshape_dict.get(key):
+                pprint_output.append(indent08 + str(tapshape_dict.get(key)))
 
         for sc_dict in tapshape_dict.get("statement_constraints"):
             pprint_output.append("        Statement Constraint")
@@ -46,8 +45,7 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
             indent08 = 12 * " " + "[" + key + "]: "
             while len(indent08) < 33:
                 indent08 += " "
-            # breakpoint(context=5)
-            for extra_element in sc_dict["extra_elements"]:
-                pprint_output.append(indent08 + str(sc_dict["extra_elements"].get(key)))
+            if sc_dict.get(key):
+                pprint_output.append(indent08 + str(sc_dict.get(key)))
 
     return pprint_output

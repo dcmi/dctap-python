@@ -17,8 +17,8 @@ class TAPStatementConstraint:
 
     propertyID: str = ""
     propertyLabel: str = ""
-    mandatory: str = None
-    repeatable: str = None
+    mandatory: str = ""
+    repeatable: str = ""
     valueNodeType: str = ""
     valueDataType: str = ""
     valueConstraint: str = ""
@@ -60,13 +60,13 @@ class TAPStatementConstraint:
 
         valid_values_for_true = ["true", "1"]
         valid_values_for_false = ["false", "0"]
-        valid_values = valid_values_for_true + valid_values_for_false + [None]
+        valid_values = valid_values_for_true + valid_values_for_false
 
         # pylint: disable=singleton-comparison
-        if self.mandatory != None:
+        if self.mandatory:
             # breakpoint(context=5)
             mand = self.mandatory.lower()
-            if mand not in valid_values and mand != "":
+            if mand not in valid_values:
                 self.sc_warnings[
                     "mandatory"
                 ] = f"{repr(self.mandatory)} is not a supported Boolean value."
@@ -75,10 +75,10 @@ class TAPStatementConstraint:
             elif mand in valid_values_for_false:
                 self.mandatory = "False"
 
-        if self.repeatable != None:
+        if self.repeatable:
             # breakpoint(context=5)
             repeat = self.repeatable.lower()
-            if repeat not in valid_values and repeat != "":
+            if repeat not in valid_values:
                 self.sc_warnings[
                     "repeatable"
                 ] = f"{repr(self.repeatable)} is not a supported Boolean value."

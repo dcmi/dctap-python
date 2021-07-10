@@ -30,10 +30,10 @@ def _get_tapshapes(rows, config_dict):
         dshape = "default"
 
     sh_elements, xtra_sh_elements = shape_elements(
-        shape_class=TAPShape, settings_dict=config_dict
+        shape_class=TAPShape, settings=config_dict
     )
     sc_elements, xtra_sc_elements = statement_constraint_elements(
-        statement_constraint_class=TAPStatementConstraint, settings_dict=config_dict
+        statement_constraint_class=TAPStatementConstraint, settings=config_dict
     )
 
     # fmt: off
@@ -74,8 +74,7 @@ def _get_tapshapes(rows, config_dict):
             set_shape_fields(shape, row)            # populate its shape elements, and
             warnings[sh_id] = dict()                # use as key in warnings dict.
 
-        shape.settings = config_dict
-        shape.normalize()
+        shape.normalize(config_dict)
         shape_warnings = shape.get_warnings()
 
         for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
@@ -95,8 +94,7 @@ def _get_tapshapes(rows, config_dict):
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
-        sc.settings = config_dict                   # 
-        sc.normalize()                              # SC normalizes itself, and
+        sc.normalize(config_dict)                   # SC normalizes itself, and
         sc_warnings = sc.get_warnings()             # emits warnings on request.
 
         for (elem, warn) in sc_warnings.items():    # Iterate SC instance warnings.
@@ -114,7 +112,6 @@ def _get_tapshapes(rows, config_dict):
         # breakpoint(context=5)
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
             tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
-            tapshape_dict.pop("settings")
             tapshape_dict[                          # - rename its field "sc_list" to
                 "statement_constraints"             #   "statement_constraints"
             ] = tapshape_dict.pop("sc_list")        # - add that shape dict to mutable

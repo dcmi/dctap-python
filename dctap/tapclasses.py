@@ -26,10 +26,9 @@ class TAPStatementConstraint:
     valueShape: str = ""
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
-    settings: dict = field(default_factory=dict)
     extra_elements: list = field(default_factory=list)
 
-    def normalize(self):
+    def normalize(self, settings):
         """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
         self._warn_if_propertyID_or_valueDataType_not_IRIlike()
@@ -41,10 +40,10 @@ class TAPStatementConstraint:
         self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
-        self._valueNodeType_is_from_enumerated_list()
+        self._valueNodeType_is_from_enumerated_list(settings)
         return self
 
-    def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
+    def _warn_if_propertyID_or_valueDataType_not_IRIlike(self, settings=None):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
             self.sc_warnings[
@@ -56,7 +55,7 @@ class TAPStatementConstraint:
                     "valueDataType"
                 ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
 
-    def _normalize_booleans_mandatory_repeatable(self):
+    def _normalize_booleans_mandatory_repeatable(self, settings=None):
         """Booleans take true/false (case-insensitive) or 1/0, default None."""
 
         valid_values_for_true = ["true", "1"]
@@ -90,7 +89,7 @@ class TAPStatementConstraint:
 
         return self
 
-    def _valueConstraintType_iristem_parse(self):
+    def _valueConstraintType_iristem_parse(self, settings=None):
         """If valueConstraintType is Iristem, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
@@ -98,7 +97,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs(self):
+    def _valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs(self, settings=None):
         """If IRIStem, warn if valueConstraint list items do not look like IRIs."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
@@ -111,7 +110,7 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
+    def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self, settings=None):
         """If valueConstraintType Pattern, warn if valueConstraint not valid regex."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "pattern":
@@ -124,7 +123,7 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _valueConstraintType_languageTag_parse(self):
+    def _valueConstraintType_languageTag_parse(self, settings=None):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "languagetag":
@@ -132,7 +131,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_picklist_parse(self):
+    def _valueConstraintType_picklist_parse(self, settings=None):
         """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "picklist":
@@ -140,7 +139,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_warn_if_used_without_valueConstraint(self):
+    def _valueConstraintType_warn_if_used_without_valueConstraint(self, settings=None):
         """Warns if valueConstraintType used without valueConstraint."""
         if self.valueConstraintType:
             if not self.valueConstraint:
@@ -150,10 +149,10 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _valueNodeType_is_from_enumerated_list(self):
+    def _valueNodeType_is_from_enumerated_list(self, settings=None):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        if self.settings.get("value_node_types"):
-            valid_types = [vnt.lower() for vnt in self.settings["value_node_types"]]
+        if settings.get("value_node_types"):
+            valid_types = [vnt.lower() for vnt in settings["value_node_types"]]
         else:
             valid_types = ["iri", "bnode", "literal"]
         if self.valueNodeType:
@@ -164,7 +163,7 @@ class TAPStatementConstraint:
                 ] = f"{repr(self.valueNodeType)} is not a valid node type."
         return self
 
-    def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
+    def _valueDataType_warn_if_used_with_valueNodeType_IRI(self, settings=None):
         """@@@"""
         node_type = self.valueNodeType.lower()
         if node_type in ('iri', 'uri', 'bnode'):
@@ -190,18 +189,17 @@ class TAPShape:
     shapeLabel: str = ""
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
-    settings: dict = field(default_factory=dict)
     extra_elements: list = field(default_factory=list)
 
-    def normalize(self):
+    def normalize(self, settings):
         """Normalize values where required."""
         self._normalize_default_shapeID()
         return True
 
-    def _normalize_default_shapeID(self, config_dict=None):
+    def _normalize_default_shapeID(self, settings=None):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
-            self.shapeID = self.settings["default_shape_name"]
+            self.shapeID = settings["default_shape_name"]
         return self
 
     def get_warnings(self):

@@ -11,31 +11,29 @@ from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
-def shape_elements(shape_class=TAPShape, settings_dict=None):
+def shape_elements(shape_class=TAPShape, settings=None):
     """List DCTAP elements supported by given shape class."""
     only_shape_elements = list(asdict(shape_class()))
     only_shape_elements.remove("sc_list")
     only_shape_elements.remove("sh_warnings")
-    only_shape_elements.remove("settings")
     only_shape_elements.remove("extra_elements")
     extra_shape_elements = []
-    if settings_dict:
-        if settings_dict.get("extra_shape_elements"):
-            for extra_element in settings_dict.get("extra_shape_elements"):
+    if settings:
+        if settings.get("extra_shape_elements"):
+            for extra_element in settings.get("extra_shape_elements"):
                 extra_shape_elements.append(extra_element)
     return (only_shape_elements, extra_shape_elements)
 
 
-def statement_constraint_elements(statement_constraint_class=TAPStatementConstraint, settings_dict=None):
+def statement_constraint_elements(statement_constraint_class=TAPStatementConstraint, settings=None):
     """List DCTAP elements supported by given statement constraint class."""
     only_sc_elements = list(asdict(statement_constraint_class()))
     only_sc_elements.remove("sc_warnings")
-    only_sc_elements.remove("settings")
     only_sc_elements.remove("extra_elements")
     extra_sc_elements = []
-    if settings_dict:
-        if settings_dict.get("extra_statement_constraint_elements"):
-            for extra_element in settings_dict.get("extra_statement_constraint_elements"):
+    if settings:
+        if settings.get("extra_statement_constraint_elements"):
+            for extra_element in settings.get("extra_statement_constraint_elements"):
                 extra_sc_elements.append(extra_element)
     return (only_sc_elements, extra_sc_elements)
 

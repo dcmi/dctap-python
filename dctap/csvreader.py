@@ -168,7 +168,7 @@ def _reduce_shapesdict(shapes_dict):
                 shape[k] = v
                 del shape["extra_elements"]
         if shape.get("sh_warnings"):
-            del sc["sh_warnings"]
+            del shape["sh_warnings"]
         for empty_element in [key for key in shape if not shape[key]]:
             del shape[empty_element]
     return shapes_dict

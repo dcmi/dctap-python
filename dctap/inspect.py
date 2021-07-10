@@ -41,11 +41,11 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
                     while len(indent12) < 33:
                         indent12 += " "
                     pprint_output.append(indent12 + str(sc_dict.get(key)))
-        for key in xtra_sc_elements:
-            indent08 = 12 * " " + "[" + key + "]: "
-            while len(indent08) < 33:
-                indent08 += " "
-            if sc_dict.get(key):
-                pprint_output.append(indent08 + str(sc_dict.get(key)))
+            for key in xtra_sc_elements:
+                indent08 = 12 * " " + "[" + key + "]: "
+                while len(indent08) < 33:
+                    indent08 += " "
+                if sc_dict.get(key):
+                    pprint_output.append(indent08 + str(sc_dict.get(key)))
 
     return pprint_output

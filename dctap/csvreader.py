@@ -4,7 +4,6 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from typing import Dict
 from .config import shape_elements, statement_constraint_elements
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementConstraint

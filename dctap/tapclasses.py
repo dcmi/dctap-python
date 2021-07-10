@@ -43,7 +43,7 @@ class TAPStatementConstraint:
         self._valueNodeType_is_from_enumerated_list(settings)
         return self
 
-    def _warn_if_propertyID_or_valueDataType_not_IRIlike(self, settings=None):
+    def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
             self.sc_warnings[
@@ -55,7 +55,7 @@ class TAPStatementConstraint:
                     "valueDataType"
                 ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
 
-    def _normalize_booleans_mandatory_repeatable(self, settings=None):
+    def _normalize_booleans_mandatory_repeatable(self):
         """Booleans take true/false (case-insensitive) or 1/0, default None."""
 
         valid_values_for_true = ["true", "1"]
@@ -89,7 +89,7 @@ class TAPStatementConstraint:
 
         return self
 
-    def _valueConstraintType_iristem_parse(self, settings=None):
+    def _valueConstraintType_iristem_parse(self):
         """If valueConstraintType is Iristem, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
@@ -97,7 +97,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs(self, settings=None):
+    def _valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs(self):
         """If IRIStem, warn if valueConstraint list items do not look like IRIs."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
@@ -110,7 +110,7 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self, settings=None):
+    def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
         """If valueConstraintType Pattern, warn if valueConstraint not valid regex."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "pattern":
@@ -123,7 +123,7 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _valueConstraintType_languageTag_parse(self, settings=None):
+    def _valueConstraintType_languageTag_parse(self):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "languagetag":
@@ -131,7 +131,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_picklist_parse(self, settings=None):
+    def _valueConstraintType_picklist_parse(self):
         """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "picklist":
@@ -139,7 +139,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_warn_if_used_without_valueConstraint(self, settings=None):
+    def _valueConstraintType_warn_if_used_without_valueConstraint(self):
         """Warns if valueConstraintType used without valueConstraint."""
         if self.valueConstraintType:
             if not self.valueConstraint:
@@ -149,7 +149,7 @@ class TAPStatementConstraint:
                 )
         return self
 
-    def _valueNodeType_is_from_enumerated_list(self, settings=None):
+    def _valueNodeType_is_from_enumerated_list(self, settings):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
         if settings.get("value_node_types"):
             valid_types = [vnt.lower() for vnt in settings["value_node_types"]]
@@ -163,7 +163,7 @@ class TAPStatementConstraint:
                 ] = f"{repr(self.valueNodeType)} is not a valid node type."
         return self
 
-    def _valueDataType_warn_if_used_with_valueNodeType_IRI(self, settings=None):
+    def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """@@@"""
         node_type = self.valueNodeType.lower()
         if node_type in ('iri', 'uri', 'bnode'):
@@ -193,10 +193,10 @@ class TAPShape:
 
     def normalize(self, settings):
         """Normalize values where required."""
-        self._normalize_default_shapeID()
+        self._normalize_default_shapeID(settings)
         return True
 
-    def _normalize_default_shapeID(self, settings=None):
+    def _normalize_default_shapeID(self, settings):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
             self.shapeID = settings["default_shape_name"]

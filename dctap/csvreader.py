@@ -37,16 +37,19 @@ def _get_tapshapes(rows, config_dict):
     )
 
     # fmt: off
-    shapes: Dict[str, TAPShape] = dict()            # To make dict for TAPShapes,
+    shapes = dict()                                 # Init a dict for TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
     warnings = defaultdict(dict)                    # Init defaultdict for warnings.
 
     def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
-        for key in sh_elements:                     # Iterate remaining keys, to
-            try:                                    # populate tapshape fields
-                setattr(shape, key, row[key])       # with values from row dict.
-            except KeyError:                        # Values not found in row dict,
-                pass                                # are simply skipped.
+        for col in row:                             # Iterate remaining keys, to
+            if col in sh_elements:
+                try:                                    # populate tapshape fields
+                    setattr(shape, col, row[col])       # with values from row dict.
+                except KeyError:                        # Values not found in row dict,
+                    pass                                # are simply skipped.
+            elif col in xtra_sh_elements:
+                shape.extra_elements[col] = row[col]
         return shape                                # Return shape with fields set.
 
     for row in rows:                                # For each row
@@ -84,13 +87,17 @@ def _get_tapshapes(rows, config_dict):
                 warnings[sh_id][elem] = list()      # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
+        # breakpoint(context=5)
         sc = TAPStatementConstraint()               # Instantiate SC for this row.
 
-        for key in list(asdict(sc)):                # Iterate SC fields, to
-            try:                                    # populate the SC instance
-                setattr(sc, key, row[key])          # with values from the row dict,
-            except KeyError:                        # while fields not found in SC
-                pass                                # are simply skipped (yes?).
+        for col in row:
+            if col in sc_elements:
+                try:
+                    setattr(sc, col, row[col])
+                except KeyError:
+                    pass
+            elif col in xtra_sc_elements:
+                sc.extra_elements[col] = row[col]
 
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
@@ -162,3 +169,9 @@ def _get_rows(open_csvfile_obj, config_dict):
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
     return list(DictReader(tmp_buffer2))
+
+##      for key in list(asdict(sc)):                # Iterate SC fields, to
+##          try:                                    # populate the SC instance
+##              setattr(sc, key, row[key])          # with values from the row dict,
+##          except KeyError:                        # while fields not found in SC
+##              pass                                # are simply skipped (yes?).

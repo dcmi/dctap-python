@@ -26,7 +26,7 @@ class TAPStatementConstraint:
     valueShape: str = ""
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
-    extra_elements: list = field(default_factory=list)
+    extra_elements: dict = field(default_factory=dict)
 
     def normalize(self, settings):
         """Normalizes specific fields."""
@@ -189,7 +189,7 @@ class TAPShape:
     shapeLabel: str = ""
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
-    extra_elements: list = field(default_factory=list)
+    extra_elements: dict = field(default_factory=dict)
 
     def normalize(self, settings):
         """Normalize values where required."""

@@ -3,7 +3,7 @@ dctap-python
 
 Basic validation of a DCTAP instance.
 
-|Tests Badge|
+|Tests Badge| |Docs Badge| |Black Badge|
 
 Documentation
 -------------
@@ -11,7 +11,6 @@ Documentation
 - [dctap-python project](https://readthedocs.org/projects/dctap-python/) on readthedocs.org
 - https://dctap-python.readthedocs.io/en/latest/
 
-|Docs Badge|
 
 Installation
 ------------
@@ -99,3 +98,8 @@ For more information, see the documentation `on readthedocs.io <https://dctap-py
        :alt: Test Status
        :scale: 100%
        :target: https://github.com/dcmi/dctap-python/actions/workflows/python-tests.yaml
+
+.. |Black Badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+       :alt: Code style: black
+       :scale: 100%
+       :target: https://github.com/dcmi/dctap-python

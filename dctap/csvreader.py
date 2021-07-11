@@ -156,7 +156,7 @@ def _reduce_shapesdict(shapes_dict):
     for shape in shapes_dict["shapes"]:
         for sc in shape["statement_constraints"]:
             if sc.get("extra_elements"):
-                for (k,v) in sc["extra_elements"].items():
+                for (k, v) in sc["extra_elements"].items():
                     sc[k] = v
                     del sc["extra_elements"]
             if sc.get("sc_warnings"):
@@ -164,7 +164,7 @@ def _reduce_shapesdict(shapes_dict):
             for empty_element in [key for key in sc if not sc[key]]:
                 del sc[empty_element]
         if shape.get("extra_elements"):
-            for (k,v) in shape["extra_elements"].items():
+            for (k, v) in shape["extra_elements"].items():
                 shape[k] = v
                 del shape["extra_elements"]
         if shape.get("sh_warnings"):
@@ -172,6 +172,7 @@ def _reduce_shapesdict(shapes_dict):
         for empty_element in [key for key in shape if not shape[key]]:
             del shape[empty_element]
     return shapes_dict
+
 
 def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
@@ -190,9 +191,3 @@ def _get_rows(open_csvfile_obj, config_dict):
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
     return list(DictReader(tmp_buffer2))
-
-##      for key in list(asdict(sc)):                # Iterate SC fields, to
-##          try:                                    # populate the SC instance
-##              setattr(sc, key, row[key])          # with values from the row dict,
-##          except KeyError:                        # while fields not found in SC
-##              pass                                # are simply skipped (yes?).

@@ -25,7 +25,9 @@ def shape_elements(shape_class=TAPShape, settings=None):
     return (only_shape_elements, extra_shape_elements)
 
 
-def statement_constraint_elements(statement_constraint_class=TAPStatementConstraint, settings=None):
+def statement_constraint_elements(
+    statement_constraint_class=TAPStatementConstraint, settings=None
+):
     """List DCTAP elements supported by given statement constraint class."""
     only_sc_elements = list(asdict(statement_constraint_class()))
     only_sc_elements.remove("sc_warnings")

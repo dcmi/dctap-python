@@ -77,6 +77,7 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
                     for warning in warn_list:
                         echo.warning(f"[{shapeid}/{elem}] {warning}")
 
+
 @cli.command()
 @click.argument("configfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")

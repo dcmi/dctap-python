@@ -17,8 +17,8 @@ class TAPStatementConstraint:
 
     propertyID: str = ""
     propertyLabel: str = ""
-    mandatory: str = None
-    repeatable: str = None
+    mandatory: str = ""
+    repeatable: str = ""
     valueNodeType: str = ""
     valueDataType: str = ""
     valueConstraint: str = ""
@@ -26,21 +26,21 @@ class TAPStatementConstraint:
     valueShape: str = ""
     note: str = ""
     sc_warnings: dict = field(default_factory=dict)
+    extra_elements: dict = field(default_factory=dict)
 
-    def normalize(self, config_dict):
-        """normalizes specific fields."""
+    def normalize(self, settings):
+        """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
-        self.config_dict = config_dict
         self._warn_if_propertyID_or_valueDataType_not_IRIlike()
-        self._mandatory_repeatable_have_supported_boolean_values()
+        self._normalize_booleans_mandatory_repeatable()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_iristem_parse()
-        self._valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs()
-        self._valueConstraintType_picklist_parse()
+        self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
-        self._valueNodeType_is_from_enumerated_list()
+        self._valueConstraintType_picklist_parse(settings)
+        self._valueNodeType_is_from_enumerated_list(settings)
         return self
 
     def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
@@ -55,37 +55,37 @@ class TAPStatementConstraint:
                     "valueDataType"
                 ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
 
-    def _mandatory_repeatable_have_supported_boolean_values(self):
+    def _normalize_booleans_mandatory_repeatable(self):
         """Booleans take true/false (case-insensitive) or 1/0, default None."""
 
         valid_values_for_true = ["true", "1"]
         valid_values_for_false = ["false", "0"]
-        valid_values = valid_values_for_true + valid_values_for_false + [None]
+        valid_values = valid_values_for_true + valid_values_for_false
 
         # pylint: disable=singleton-comparison
-        if self.mandatory != None:
+        if self.mandatory:
             # breakpoint(context=5)
             mand = self.mandatory.lower()
-            if mand not in valid_values and mand != "":
+            if mand not in valid_values:
                 self.sc_warnings[
                     "mandatory"
                 ] = f"{repr(self.mandatory)} is not a supported Boolean value."
             if mand in valid_values_for_true:
-                self.mandatory = True
+                self.mandatory = "True"
             elif mand in valid_values_for_false:
-                self.mandatory = False
+                self.mandatory = "False"
 
-        if self.repeatable != None:
+        if self.repeatable:
             # breakpoint(context=5)
             repeat = self.repeatable.lower()
-            if repeat not in valid_values and repeat != "":
+            if repeat not in valid_values:
                 self.sc_warnings[
                     "repeatable"
                 ] = f"{repr(self.repeatable)} is not a supported Boolean value."
             if repeat in valid_values_for_true:
-                self.repeatable = True
+                self.repeatable = "True"
             elif repeat in valid_values_for_false:
-                self.repeatable = False
+                self.repeatable = "False"
 
         return self
 
@@ -97,7 +97,7 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_iristem_warn_if_valueConstraint_list_items_not_IRIs(self):
+    def _valueConstraintType_iristem_warn_if_list_items_not_IRIs(self):
         """If IRIStem, warn if valueConstraint list items do not look like IRIs."""
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
@@ -107,7 +107,7 @@ class TAPStatementConstraint:
                         f"Value constraint type is {repr(self.valueConstraintType)}, "
                         f"but {repr(list_item)} does not look like an IRI or "
                         "Compact IRI."
-                )
+                    )
         return self
 
     def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):
@@ -131,28 +131,34 @@ class TAPStatementConstraint:
                 self.valueConstraint = self.valueConstraint.split()
         return self
 
-    def _valueConstraintType_picklist_parse(self):
-        """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
-        self.valueConstraintType = self.valueConstraintType.lower()
-        if self.valueConstraintType == "picklist":
-            if self.valueConstraint:
-                self.valueConstraint = self.valueConstraint.split()
-        return self
-
     def _valueConstraintType_warn_if_used_without_valueConstraint(self):
         """Warns if valueConstraintType used without valueConstraint."""
         if self.valueConstraintType:
             if not self.valueConstraint:
                 self.sc_warnings["valueConstraint"] = (
-                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
-                    f"value constraint is empty."
+                    f"Value constraint type "
+                    f"({repr(self.valueConstraintType)}) "
+                    "but no value constraint."
                 )
         return self
 
-    def _valueNodeType_is_from_enumerated_list(self):
+    def _valueConstraintType_picklist_parse(self, settings):
+        """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if settings.get("picklist_item_separator"):
+            sep = settings.get("picklist_item_separator")
+        else:
+            sep = " "
+        if self.valueConstraintType == "picklist":
+            if self.valueConstraint:
+                self.valueConstraint = self.valueConstraint.split(sep)
+                self.valueConstraint = [x.strip() for x in self.valueConstraint if x]
+        return self
+
+    def _valueNodeType_is_from_enumerated_list(self, settings):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        if self.config_dict.get("value_node_types"):
-            valid_types = [vnt.lower() for vnt in self.config_dict["value_node_types"]]
+        if settings.get("value_node_types"):
+            valid_types = [vnt.lower() for vnt in settings["value_node_types"]]
         else:
             valid_types = ["iri", "bnode", "literal"]
         if self.valueNodeType:
@@ -166,7 +172,7 @@ class TAPStatementConstraint:
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """@@@"""
         node_type = self.valueNodeType.lower()
-        if node_type in ('iri', 'uri', 'bnode'):
+        if node_type in ("iri", "uri", "bnode"):
             if self.valueDataType:
                 self.sc_warnings["valueDataType"] = (
                     f"Datatypes are only for literals, "
@@ -188,19 +194,18 @@ class TAPShape:
     shapeID: str = ""
     shapeLabel: str = ""
     sc_list: List[TAPStatementConstraint] = field(default_factory=list)
-# TODO sc_list => statement_constraints
-#    statement_constraints: List[TAPStatementConstraint] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
+    extra_elements: dict = field(default_factory=dict)
 
-    def normalize(self, config_dict=None):
+    def normalize(self, settings):
         """Normalize values where required."""
-        self._normalize_default_shapeID(config_dict)
+        self._normalize_default_shapeID(settings)
         return True
 
-    def _normalize_default_shapeID(self, config_dict=None):
+    def _normalize_default_shapeID(self, settings):
         """If shapeID not specified, sets default value from config."""
         if not self.shapeID:
-            self.shapeID = config_dict["default_shape_name"]
+            self.shapeID = settings["default_shape_name"]
         return self
 
     def get_warnings(self):

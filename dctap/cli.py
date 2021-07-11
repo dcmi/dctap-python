@@ -45,10 +45,9 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 
     config_dict = get_config(configfile)
     csvreader_output = csvreader(csvfile_name, config_dict)
-    tapshapes_dict = csvreader_output[0]
+    tapshapes_dict, warnings_dict = csvreader_output
     if expand_prefixes:
         tapshapes_dict = expand_uri_prefixes(tapshapes_dict, config_dict)
-    warnings_dict = csvreader_output[1]
 
     if json and yaml:
         # Quick fix for mutually exclusive options, a better fix in future.
@@ -67,7 +66,7 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 
     # pylint: disable=logging-fstring-interpolation
     if not (json or yaml):
-        pprint_output = pprint_tapshapes(tapshapes_dict)
+        pprint_output = pprint_tapshapes(tapshapes_dict, config_dict)
         for line in pprint_output:
             print(line, file=sys.stdout)
         if warnings:
@@ -96,4 +95,5 @@ def init(context, configfile):
 def get_shapesdict(context, csvfile):
     """Get shapes as dictionary."""
     config_dict = get_config()
+    # pylint: disable=consider-using-with
     pprint(csvreader(open(csvfile), config_dict)[0])

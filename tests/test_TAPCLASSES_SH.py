@@ -1,5 +1,6 @@
 """TAPShape object holds statements sharing a common shapeID."""
 
+import pytest
 from dctap.tapclasses import TAPShape
 
 SHAPE_OBJECT = TAPShape(
@@ -11,7 +12,6 @@ SHAPE_OBJECT = TAPShape(
         {"propertyID": "dct:date", "valueNodeType": "Literal"},
     ],
 )
-
 
 def test_shape_fields_are_individually_addressable():
     """Fields of TAPShape instance are individually addressable."""
@@ -40,13 +40,13 @@ def test_shape_initialized_by_assignment():
 
 def test_shape_initialized_with_no_shapeid_field_should_pass_for_now():
     """Shape initialized with no shapeID will use default shapeID."""
+    config_dict = dict()
+    config_dict['default_shape_name'] = "default"
     shap = TAPShape()
     shap.sc_list = []
     shap.sc_list.append({"propertyID": "dct:creator", "valueNodeType": "IRI"})
     shap.sc_list.append({"propertyID": "dct:subject", "valueNodeType": "IRI"})
     shap.sc_list.append({"propertyID": "dct:date", "valueNodeType": "Literal"})
-    config_dict = dict()
-    config_dict['default_shape_name'] = "default"
     shap._normalize_default_shapeID(config_dict)
     assert shap == TAPShape(
         shapeID = "default",

@@ -216,31 +216,13 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
     config_dict = get_config()
     assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
 
-def test_get_rows_correct_shapeID(tmp_path):
-    """Corrects DCTAP headers - redundant to "real mess" test?"""
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(
-            "SID,property-ID\n"
-            ":book,dcterms:creator\n"
-    )
-    csvfile_obj = open(csvfile_path)
-    expected_output = [
-            {
-             'shapeID': ':book', 
-             'propertyID': 'dcterms:creator'
-            }
-    ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_output
-
 def test_get_rows_correct_a_real_mess(tmp_path):
     """Messiness in headers (extra spaces, punctuation, wrong case) is corrected."""
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
-            "S ID,pr-opertyID___,valueShape     ,wildCard    \n"
-            ":book,dcterms:creator,:author,Yeah yeah yeah\n"
+        "S hape ID,pr-opertyID___,valueShape     ,wildCard    \n"
+        ":book,dcterms:creator,:author,Yeah yeah yeah\n"
     )
     csvfile_obj = open (csvfile_path)
     expected_output = [

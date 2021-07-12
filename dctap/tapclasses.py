@@ -39,6 +39,7 @@ class TAPStatementConstraint:
         self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
+        self._valueDataType_warn_if_literal_used_with_any_valueShape()
         self._valueConstraintType_picklist_parse(settings)
         self._valueNodeType_is_from_enumerated_list(settings)
         return self
@@ -169,8 +170,17 @@ class TAPStatementConstraint:
                 ] = f"{repr(self.valueNodeType)} is not a valid node type."
         return self
 
+    def _valueDataType_warn_if_literal_used_with_any_valueShape(self):
+        """Value with datatype implies Literal and cannot conform to a value shape."""
+        if self.valueShape:
+            if self.valueDataType:
+                self.sc_warnings["valueDataType"] = (
+                    "Datatypes are only for literals, "
+                    "which cannot conform to a value shape."
+                )
+
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
-        """@@@"""
+        """Value with datatype implies Literal and cannot be node type IRI."""
         node_type = self.valueNodeType.lower()
         if node_type in ("iri", "uri", "bnode"):
             if self.valueDataType:

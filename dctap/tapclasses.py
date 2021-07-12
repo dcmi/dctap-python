@@ -184,7 +184,7 @@ class TAPStatementConstraint:
 
     def _valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape(self):
         """Value with node type Literal cannot conform to a value shape."""
-        node_type = self.valueNodeType.lower()
+        self.valueNodeType = self.valueNodeType.lower()
         if self.valueShape:
             if self.valueNodeType == "literal":
                 self.sc_warnings["valueDataType"] = (

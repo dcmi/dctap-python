@@ -17,6 +17,7 @@ Statement Constraint elements
 There are nine Statement Constraint elements, of which the **propertyID** element alone is required.
 
 .. toctree::
+   :maxdepth: 3
 
    propertyID/index
    mandrepeat/index

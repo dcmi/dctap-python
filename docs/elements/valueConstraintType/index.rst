@@ -30,7 +30,7 @@ Built-in value constraint types
 The **valueConstraintType** element is intended to serve as a sort of extension point for implementers of the DCTAP model. As proof of concept, four commonly used value constraint types are supported here:
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    Picklist/index
    Pattern/index

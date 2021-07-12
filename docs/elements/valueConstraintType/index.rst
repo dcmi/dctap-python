@@ -23,7 +23,15 @@ This is interpreted as::
 Built-in value constraint types
 ...............................
 
-This module supports just four built-in value constraint types, covering four common use cases. These built-in types are intended only as examples. If an application needs to differentiate between different or more precisely defined types, such as types of date or number, or various types of list, implementers are encouraged to define their own value constraint types.
+The **valueConstraintType** element is intended to serve as a sort of extension point for implementers of the DCTAP model. As proof of concept, four commonly used value constraint types are supported here:
+
+.. toctree::
+   :maxdepth: 1
+
+   Picklist/index
+   Pattern/index
+   IRIStem/index
+   LanguageTag/index
 
 In contrast to the :ref:`elem_valueDataType`, which mark the datatype of literals in a form carried by :term:`Instance Data`, the value constraint type is intended to be used to trigger specific algorithms for transforming the values of a CSV cells, which are by definition only ever strings, into lists, regular expressions, or other data structures of the type used in programming.
 
@@ -60,12 +68,7 @@ This is interpreted as::
 
 Because the value constraint type is intended to provide a context for interpreting a value constraint, the value constraint type means nothing in the absence of a value constraint. If a value is provided for **valueConstraintType** but not for **valueConstraint**, a warning will be emitted.
 
-The **valueConstraintType** element is intended to serve as a sort of extension point for implementers of the DCTAP model. As proof of concept, four commonly used value constraint types are supported here:
+Custom value constraint types
+.............................
 
-.. toctree::
-   :maxdepth: 1
-
-   Picklist/index
-   Pattern/index
-   IRIStem/index
-   LanguageTag/index
+The built-in value constraint types are intended only as examples. Implementers are encouraged to define their own types. Given sufficient demand, popular extensions to the set of value constraints may be incorporated into future extensions of DCTAP.

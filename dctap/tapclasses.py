@@ -34,6 +34,7 @@ class TAPStatementConstraint:
         self._warn_if_propertyID_or_valueDataType_not_IRIlike()
         self._normalize_booleans_mandatory_repeatable()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
+        self._valueConstraintType_pattern_warn_if_used_with_value_shape()
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse()
@@ -124,6 +125,17 @@ class TAPStatementConstraint:
                 )
         return self
 
+    def _valueConstraintType_pattern_warn_if_used_with_value_shape(self):
+        """Regular expressions cannot conform to value shapes."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "pattern":
+            if self.valueShape:
+                self.sc_warnings["valueConstraintType"] = (
+                    f"Value constraint type "
+                    f"({repr(self.valueConstraintType)}) "
+                    "cannot conform to a value shape."
+                )
+
     def _valueConstraintType_languageTag_parse(self):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
@@ -170,8 +182,18 @@ class TAPStatementConstraint:
                 ] = f"{repr(self.valueNodeType)} is not a valid node type."
         return self
 
-    def _valueDataType_warn_if_literal_used_with_any_valueShape(self):
-        """Value with datatype implies Literal and cannot conform to a value shape."""
+    def _valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape(self):
+        """Value with node type Literal cannot conform to a value shape."""
+        node_type = self.valueNodeType.lower()
+        if self.valueShape:
+            if self.valueNodeType == "literal":
+                self.sc_warnings["valueDataType"] = (
+                    "Datatypes are only for literals, "
+                    "which cannot conform to a value shape."
+                )
+
+    def _valueDataType_warn_if_used_with_valueShape(self):
+        """Value with any datatype cannot conform to a value shape."""
         if self.valueShape:
             if self.valueDataType:
                 self.sc_warnings["valueDataType"] = (

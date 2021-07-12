@@ -40,7 +40,7 @@ class TAPStatementConstraint:
         self._valueConstraintType_languageTag_parse()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
-        self._valueDataType_warn_if_literal_used_with_any_valueShape()
+        self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
         self._valueConstraintType_picklist_parse(settings)
         self._valueNodeType_is_from_enumerated_list(settings)
         return self

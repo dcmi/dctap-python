@@ -5,6 +5,10 @@ valueConstraint / valueConstraintType
 
 A value constraint (**valueConstraint**) constrains the value associated with a property in specific ways according to its type (**valueConstraintType**). A value constraint type may define a specific interpretation of a value constraint or trigger specific techniques for processing the value constraint in an application downstream.
 
+
+Value constraints with no value constraint types
+................................................
+
 When a value constraint is provided without a value constraint type, it is treated as a plain literal (unless **valueNodeType** is "IRI" or "BNode"). Typically, this is intended to close the set of possible values to one specific value and no others. In the following example, the value expected to be found with the property **:securityLevel** is "Confidential" (and no other).
 
 .. csv-table:: 

@@ -24,7 +24,7 @@ def cli(context):
 
 
 @cli.command()
-@click.argument("csvfile_name", type=click.File(mode="r", encoding="utf-8-sig"))
+@click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
 @click.option(
     "--configfile", type=click.Path(exists=True), help="Pathname of configuration file."
 )
@@ -38,12 +38,12 @@ def cli(context):
 @click.option("--yaml", is_flag=True, help="Print YAML to stdout.")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json, yaml):
+def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml):
     """Generate normalized text, JSON, or YAML of CSV, with warnings."""
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile)
-    csvreader_output = csvreader(csvfile_name, config_dict)
+    csvreader_output = csvreader(csvfile_obj, config_dict)
     tapshapes_dict, warnings_dict = csvreader_output
     if expand_prefixes:
         tapshapes_dict = expand_uri_prefixes(tapshapes_dict, config_dict)

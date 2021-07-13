@@ -93,8 +93,8 @@ def init(context, configfile):
 @click.argument("csvfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def get_shapesdict(context, csvfile):
-    """Get shapes as dictionary."""
+def generate_python(context, csvfile):
+    """Given CSV, generate Python dictionary (for developers)."""
     config_dict = get_config()
     # pylint: disable=consider-using-with
     pprint(csvreader(open(csvfile), config_dict)[0])

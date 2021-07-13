@@ -40,7 +40,7 @@ def cli(context):
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json, yaml):
-    """Given CSV, generate text, JSON, or YAML, with warnings."""
+    """Generate normalized text, JSON, or YAML of CSV, with warnings."""
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile)
@@ -83,18 +83,9 @@ def generate(context, csvfile_name, configfile, expand_prefixes, warnings, json,
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(context, configfile):
-    """Write out starter config file [default: dctap.yml]"""
+    """Generate customizable configuration file [default: dctap.yml]."""
     if not configfile:
         configfile = DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile)
 
 
-@cli.command()
-@click.argument("csvfile", type=click.Path(), required=False)
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def generate_python(context, csvfile):
-    """Given CSV, generate Python dictionary (for developers)."""
-    config_dict = get_config()
-    # pylint: disable=consider-using-with
-    pprint(csvreader(open(csvfile), config_dict)[0])

@@ -59,7 +59,7 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
 Read settings from a custom config file
 ........................................
 
-The option **--configfile** triggers use of a configuration file other than the default "dctap.yml". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the next section.
+The option **--configfile** triggers use of a configuration file other than the default "dctap.yml". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the section :ref:`cli_init`.
 
 .. code-block:: bash
 

@@ -56,8 +56,8 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
                 propertyID:          http://purl.org/dc/terms/creator
                 valueNodeType:       iri
 
-Use a custom config file
-........................
+Read settings from a custom config file
+........................................
 
 The option **--configfile** triggers use of a configuration file other than the default "dctap.yml". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the next section.
 

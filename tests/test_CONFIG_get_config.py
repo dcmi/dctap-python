@@ -25,8 +25,9 @@ def test_get_config_from_builtins(tmp_path):
     assert config_dict.get("shape_elements")                      # computed from dataclasses
     assert config_dict.get("statement_constraint_elements")       # computed from dataclasses
     assert config_dict.get("element_aliases")                     # computed/configurable
-    assert config_dict.get("extra_shape_elements")                # configurable
-    assert config_dict.get("extra_statement_constraint_elements") # configurable
+    # commenting out because there will be no extra elements by default
+    # assert config_dict.get("extra_shape_elements")                # configurable
+    # assert config_dict.get("extra_statement_constraint_elements") # configurable
     assert config_dict.get("value_node_types")                    # built-in/configurable
     assert config_dict.get("picklist_item_separator")             # built-in/configurable
 

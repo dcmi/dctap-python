@@ -28,6 +28,7 @@ prefixes:
 # Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
 element_aliases:
     "propid": "propertyID"
+    "proplabel": "propertyLabel"
     "mand": "mandatory"
     "rep": "repeatable"
     "nodetype": "valueNodeType"
@@ -39,16 +40,22 @@ element_aliases:
 # If elements (column headers) are encountered that are not part of the 
 # base DCTAP model, they will be ignored - unless they are entered here as
 # "extra" elements.
+#
 # "Extra" elements must either be "shape" elements or "statement constraint" elements.
-# The following "shape" and "statement constraint" elements are merely examples...
+# In the following examples, "closed", "start", "min", and "max" could be 
+# configured as extra elements by uncommenting their lines.
+
 extra_shape_elements:
-- closed
-- start
+# - closed
+# - start
 
 extra_statement_constraint_elements:
-- min
-- max
+# - min
+# - max
 
-# 
+# The default separator for items in a picklist is a single blank space
+# but this could be replaced with other common separators, such as commas 
+# or pipes (or-bars). The program routinely strips extra whitespace from 
+# the start and end of picklist items.
 picklist_item_separator: ' '
 """

@@ -4,9 +4,9 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from .config import shape_elements, statement_constraint_elements
-from .exceptions import DctapError
-from .tapclasses import TAPShape, TAPStatementConstraint
+from dctap.config import shape_elements, statement_constraint_elements
+from dctap.exceptions import DctapError
+from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 
 def csvreader(open_csvfile_obj, config_dict):

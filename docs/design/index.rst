@@ -10,4 +10,4 @@ This section explains how some aspects of CSV processing are handled by the modu
    keywords_lowercased/index
    elements_reordered/index
    elements_unknown_ignored/index
-
+   elements_not_repeatable/index

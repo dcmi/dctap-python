@@ -37,7 +37,7 @@ class TAPStatementConstraint:
         self._valueConstraintType_pattern_warn_if_used_with_value_shape()
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
-        self._valueConstraintType_languageTag_parse()
+        self._valueConstraintType_languageTag_parse(settings)
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
@@ -136,12 +136,17 @@ class TAPStatementConstraint:
                     "cannot conform to a value shape."
                 )
 
-    def _valueConstraintType_languageTag_parse(self):
+    def _valueConstraintType_languageTag_parse(self, settings):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
+        if settings.get("picklist_item_separator"):
+            sep = settings.get("picklist_item_separator")
+        else:
+            sep = " "
         if self.valueConstraintType == "languagetag":
             if self.valueConstraint:
-                self.valueConstraint = self.valueConstraint.split()
+                self.valueConstraint = self.valueConstraint.split(sep)
+                self.valueConstraint = [x.strip() for x in self.valueConstraint if x]
         return self
 
     def _valueConstraintType_warn_if_used_without_valueConstraint(self):

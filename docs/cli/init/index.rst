@@ -1,7 +1,7 @@
 .. _cli_init:
 
-Initialize an optional config files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Initialize an optional config file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The command **dctap generate** works out of the box, with no options, but its behavior can be customized by editing an optional configuration file. As explained in the section :ref:`config`.
 

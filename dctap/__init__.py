@@ -3,7 +3,7 @@
 from .tapclasses import TAPShape, TAPStatementConstraint
 from .csvreader import csvreader
 
-__version__ = "0.2.3"
+__version__ = "0.3.0"
 
 # Keep version number in sync with:
 # - https://github.com/dcmi/dctap-python/blob/main/docs/conf.py#L28

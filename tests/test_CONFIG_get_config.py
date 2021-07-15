@@ -28,7 +28,7 @@ def test_get_config_from_builtins(tmp_path):
     # commenting out because there will be no extra elements by default
     # assert config_dict.get("extra_shape_elements")                # configurable
     # assert config_dict.get("extra_statement_constraint_elements") # configurable
-    assert config_dict.get("value_node_types")                    # built-in/configurable
+    assert config_dict.get("extra_value_node_types")              # configurable
     assert config_dict.get("picklist_item_separator")             # built-in/configurable
 
 def test_get_config_from_default_config_file_if_present(tmp_path):

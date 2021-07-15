@@ -3,12 +3,33 @@
 DEFAULT_CONFIGFILE_NAME = "dctap.yml"
 
 DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
-default_shape_name: "default"
 
-value_node_types:
-- iri
-- literal
-- bnode
+# This module ignores elements (column headers) that are not part of the 
+# base DCTAP model unless they are configured here as "extra" elements.
+#
+# Extra elements must be designated either as "shape" elements (eg, "closed 
+# or "start") or as "statement constraint" elements (eg, "min" and "max").
+# As extra elements are not supported by this module, their values are 
+# simply passed through to the text, JSON, and YAML outputs.
+
+extra_shape_elements:
+# - closed
+# - start
+
+extra_statement_constraint_elements:
+# - min
+# - max
+
+# This module has three built-in value node types: "iri", "literal", and "bnode".
+# Extra node types can be added here, for example as aliases, such as "uri" for "iri",
+# or as combinations of node types, such as "shacl:BlankNodeOrLiteral".
+extra_value_node_types:
+- uri
+
+# Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
+element_aliases:
+    "mand": "mandatory"
+    "rep": "repeatable"
 
 prefixes:
     ":":        "http://example.org/"
@@ -25,33 +46,8 @@ prefixes:
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 
-# Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
-element_aliases:
-    "propid": "propertyID"
-    "proplabel": "propertyLabel"
-    "mand": "mandatory"
-    "rep": "repeatable"
-    "nodetype": "valueNodeType"
-    "datatype": "valueDataType"
-    "vc": "valueConstraint"
-    "vctype": "valueConstraintType"
-    "vshape": "valueShape"
+default_shape_name: "default"
 
-# If elements (column headers) are encountered that are not part of the 
-# base DCTAP model, they will be ignored - unless they are entered here as
-# "extra" elements.
-#
-# "Extra" elements must either be "shape" elements or "statement constraint" elements.
-# In the following examples, "closed", "start", "min", and "max" could be 
-# configured as extra elements by uncommenting their lines.
-
-extra_shape_elements:
-# - closed
-# - start
-
-extra_statement_constraint_elements:
-# - min
-# - max
 
 # The default separator for items in a picklist is a single blank space
 # but this could be replaced with other common separators, such as commas 

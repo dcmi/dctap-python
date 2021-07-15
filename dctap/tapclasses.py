@@ -170,10 +170,9 @@ class TAPStatementConstraint:
 
     def _valueNodeType_is_from_enumerated_list(self, settings):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
+        valid_types = ["iri", "bnode", "literal"]
         if settings.get("value_node_types"):
-            valid_types = [vnt.lower() for vnt in settings["value_node_types"]]
-        else:
-            valid_types = ["iri", "bnode", "literal"]
+            valid_types += [vnt.lower() for vnt in settings["value_node_types"]]
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
             if self.valueNodeType not in valid_types:

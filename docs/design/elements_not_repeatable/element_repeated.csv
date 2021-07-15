@@ -1,2 +1,2 @@
-propertyID,propertyID
-foaf:maker,dc:creator
+propertyID,note,note
+dc:creator,Writer of the report.,"Typically, the person listed on the cover page."

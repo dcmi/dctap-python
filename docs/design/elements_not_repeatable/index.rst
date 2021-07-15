@@ -16,3 +16,4 @@ Interpreted as::
             shapeID:                 default
             Statement Constraint
                 propertyID:          dc:creator
+                note:                Typically, the person listed on the cover page.

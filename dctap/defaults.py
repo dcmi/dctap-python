@@ -54,4 +54,5 @@ default_shape_name: "default"
 # or pipes (or-bars). The program routinely strips extra whitespace from 
 # the start and end of picklist items.
 picklist_item_separator: ' '
+
 """

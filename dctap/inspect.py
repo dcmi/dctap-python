@@ -12,10 +12,6 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
     only_sc_elements, xtra_sc_elements = statement_constraint_elements(
         TAPStatementConstraint, config_dict
     )
-    print(f"Extra shape elements: {xtra_shape_elements}")
-    print(f"Extra sc elements: {xtra_sc_elements}")
-    print(f"Tapshapes_dict: {tapshapes_dict}")
-
     pprint_output = []
     pprint_output.append("DCTAP instance")
     for tapshape_dict in tapshapes_dict.get("shapes"):

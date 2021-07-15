@@ -26,6 +26,15 @@ extra_statement_constraint_elements:
 extra_value_node_types:
 - uri
 
+elements_parsed_as_lists:
+- shapeLabel
+- propertyID
+- propertyLabel
+- valueNodeType
+- valueDataType
+- valueShape
+- note
+
 # Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
 element_aliases:
     "mand": "mandatory"

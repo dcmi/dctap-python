@@ -1,12 +1,12 @@
 .. _cli_init:
 
 Initialize an optional config file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..................................
 
 The command **dctap generate** works out of the box, with no options, but its behavior can be customized by editing an optional configuration file. As explained in the section :ref:`config`.
 
 Per-directory config files
-..........................
+::::::::::::::::::::::::::
 
 The subcommand **dctap init** generates a starter configuration file by writing built-in defaults to a file, by default "dctap.yml" in the working directory. These settings can be hand-edited, for example to add namespace prefix mappings. Thereafter, whenever **dctap generate...** is run in that directory, its settings will be used instead of the built-in defaults.
 
@@ -21,7 +21,7 @@ The subcommand **dctap init** generates a starter configuration file by writing 
     ...
 
 Global config files
-...................
+:::::::::::::::::::
 
 Alternatively, a configuration file can be generated at a fixed location using the **dctap init --configfile** option, and referenced using **dctap generate --configfile**, which designates an alternative pathname for the configuration file.
 

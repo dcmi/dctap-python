@@ -24,7 +24,7 @@ def _get_tapshapes(rows, config_dict):
     # pylint: disable=too-many-statements
 
     try:
-        dshape = config_dict.get("default_shape_name")
+        dshape = config_dict.get("default_shape_identifier")
     except KeyError:
         dshape = "default"
 

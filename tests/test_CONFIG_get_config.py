@@ -8,7 +8,7 @@ from dctap.defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
 from dctap.exceptions import ConfigError
 
 YAML_CONFIGFILE_CONTENTS = """\
-default_shape_name: "default"
+default_shape_identifier: "default"
 
 prefixes:
     ":": "http://example.org/"
@@ -20,16 +20,16 @@ def test_get_config_from_builtins(tmp_path):
     """Get config dict from built-in settings."""
     config_dict = get_config()
     assert config_dict.get("prefixes")                            # built-in/configurable
-    assert config_dict.get("default_shape_name")                  # built-in/configurable
     assert config_dict.get("csv_elements")                        # computed from dataclasses
     assert config_dict.get("shape_elements")                      # computed from dataclasses
     assert config_dict.get("statement_constraint_elements")       # computed from dataclasses
     assert config_dict.get("element_aliases")                     # computed/configurable
-    # commenting out because there will be no extra elements by default
+    assert config_dict.get("extra_value_node_types")              # configurable
+    ## The following are commented out in the built-in configuration
     # assert config_dict.get("extra_shape_elements")                # configurable
     # assert config_dict.get("extra_statement_constraint_elements") # configurable
-    assert config_dict.get("extra_value_node_types")              # configurable
-    assert config_dict.get("picklist_item_separator")             # built-in/configurable
+    # assert config_dict.get("default_shape_identifier")            # built-in/configurable
+    # assert config_dict.get("picklist_item_separator")             # built-in/configurable
 
 def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""
@@ -37,7 +37,7 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     Path(DEFAULT_CONFIGFILE_NAME).write_text(YAML_CONFIGFILE_CONTENTS)
     config_dict = get_config()
     assert config_dict.get("prefixes")
-    assert config_dict.get("default_shape_name")
+    assert config_dict.get("default_shape_identifier")
     assert config_dict.get("csv_elements")                       # computed
     assert config_dict.get("shape_elements")                     # computed
     assert config_dict.get("statement_constraint_elements")      # computed
@@ -48,7 +48,7 @@ def test_get_config_from_nondefault_yaml(tmp_path):
     """Get config dict when passed non-default YAML."""
     config_dict = get_config(nondefault_config_yaml=DEFAULT_CONFIG_YAML)
     assert config_dict.get("prefixes")
-    assert config_dict.get("default_shape_name")
+    assert config_dict.get("default_shape_identifier")
 
 def test_exit_with_ConfigError_if_configfile_specified_but_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""

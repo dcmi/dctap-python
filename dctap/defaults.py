@@ -46,13 +46,16 @@ prefixes:
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 
-default_shape_name: "default"
+## There must be a shape identifier in order to ensure consistency 
+## of JSON and YAML output. A different default identifier can be 
+## set here, but the module will not permit the identifier to be a 
+## string of zero length (and will revert to "default").
+# default_shape_identifier: "default"
 
-
-# The default separator for items in a picklist is a single blank space
-# but this could be replaced with other common separators, such as commas 
-# or pipes (or-bars). The program routinely strips extra whitespace from 
-# the start and end of picklist items.
-picklist_item_separator: ' '
+## The default separator for items in a picklist is a single blank space
+## but this could be replaced with other common separators, such as commas 
+## or pipes (or-bars). The program routinely strips extra whitespace from 
+## the start and end of picklist items.
+# picklist_item_separator: ','
 
 """

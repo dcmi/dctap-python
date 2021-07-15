@@ -7,7 +7,7 @@ from dctap.config import write_configfile
 from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 
 NONDEFAULT_CONFIG_YAML = """\
-default_shape_name: "default"
+default_shape_identifier: "default"
 
 prefixes:
     ":": "http://example.org/"

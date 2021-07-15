@@ -41,7 +41,7 @@ def test_shape_initialized_by_assignment():
 def test_shape_initialized_with_no_shapeid_field_should_pass_for_now():
     """Shape initialized with no shapeID will use default shapeID."""
     config_dict = dict()
-    config_dict['default_shape_name'] = "default"
+    config_dict["default_shape_identifier"] = "default"
     shap = TAPShape()
     shap.sc_list = []
     shap.sc_list.append({"propertyID": "dct:creator", "valueNodeType": "IRI"})

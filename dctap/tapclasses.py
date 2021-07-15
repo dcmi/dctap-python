@@ -239,9 +239,12 @@ class TAPShape:
         return True
 
     def _normalize_default_shapeID(self, settings):
-        """If shapeID not specified, sets default value from config."""
+        """If shapeID not specified, looks first in config, else sets "default"."""
         if not self.shapeID:
-            self.shapeID = settings["default_shape_name"]
+            if settings.get("default_shape_identifier"):
+                self.shapeID = settings.get("default_shape_identifier")
+            else:
+                self.shapeID = "default"
         return self
 
     def get_warnings(self):

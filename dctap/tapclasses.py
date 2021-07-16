@@ -139,10 +139,7 @@ class TAPStatementConstraint:
     def _valueConstraintType_languageTag_parse(self, settings):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        if settings.get("picklist_item_separator"):
-            sep = settings.get("picklist_item_separator")
-        else:
-            sep = " "
+        sep = settings.get("picklist_item_separator", " ")
         if self.valueConstraintType == "languagetag":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split(sep)
@@ -163,10 +160,7 @@ class TAPStatementConstraint:
     def _valueConstraintType_picklist_parse(self, settings):
         """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        if settings.get("picklist_item_separator"):
-            sep = settings.get("picklist_item_separator")
-        else:
-            sep = " "
+        sep = settings.get("picklist_item_separator", " ")
         if self.valueConstraintType == "picklist":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split(sep)
@@ -241,10 +235,7 @@ class TAPShape:
     def _normalize_default_shapeID(self, settings):
         """If shapeID not specified, looks first in config, else sets "default"."""
         if not self.shapeID:
-            if settings.get("default_shape_identifier"):
-                self.shapeID = settings.get("default_shape_identifier")
-            else:
-                self.shapeID = "default"
+            self.shapeID = settings.get("default_shape_identifier", "default")
         return self
 
     def get_warnings(self):

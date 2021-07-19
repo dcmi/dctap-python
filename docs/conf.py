@@ -25,7 +25,8 @@ project = "dctap-python"
 copyright = "2021, DCMI"
 
 # The full version, including alpha/beta/rc tags
-release = dctap.__version__
+# See ../dctap/__init__.py
+release = "0.3.0"
 
 # -- General configuration ---------------------------------------------------
 

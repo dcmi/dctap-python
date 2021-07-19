@@ -8,7 +8,6 @@ Basic validation of a DCTAP instance.
 Documentation
 -------------
 
-- [dctap-python project](https://readthedocs.org/projects/dctap-python/) on readthedocs.org
 - https://dctap-python.readthedocs.io/en/latest/
 
 

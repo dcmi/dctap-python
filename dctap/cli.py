@@ -2,6 +2,7 @@
 
 import sys
 import json as j
+from pprint import pprint
 from ruamel.yaml import YAML
 import click
 from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME

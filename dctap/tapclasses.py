@@ -73,9 +73,9 @@ class TAPStatementConstraint:
                     "mandatory"
                 ] = f"{repr(self.mandatory)} is not a supported Boolean value."
             if mand in valid_values_for_true:
-                self.mandatory = "True"
+                self.mandatory = "true"
             elif mand in valid_values_for_false:
-                self.mandatory = "False"
+                self.mandatory = "false"
 
         if self.repeatable:
             # breakpoint(context=5)
@@ -85,9 +85,9 @@ class TAPStatementConstraint:
                     "repeatable"
                 ] = f"{repr(self.repeatable)} is not a supported Boolean value."
             if repeat in valid_values_for_true:
-                self.repeatable = "True"
+                self.repeatable = "true"
             elif repeat in valid_values_for_false:
-                self.repeatable = "False"
+                self.repeatable = "false"
 
         return self
 

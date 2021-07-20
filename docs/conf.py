@@ -26,7 +26,7 @@ copyright = "2021, DCMI"
 
 # The full version, including alpha/beta/rc tags
 # See ../dctap/__init__.py
-release = "0.3.0"
+release = "0.3.1"
 
 # -- General configuration ---------------------------------------------------
 

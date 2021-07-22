@@ -206,7 +206,5 @@ def _get_rows(open_csvfile_obj, config_dict):
     if "propertyID" not in csvlines_stripped[0]:
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
-    return (
-        list(DictReader(tmp_buffer2)),
-        csv_warnings
-    )
+    csv_rows = list(DictReader(tmp_buffer2))
+    return ( csv_rows, csv_warnings )

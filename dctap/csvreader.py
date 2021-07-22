@@ -174,26 +174,32 @@ def _reduce_shapesdict(shapes_dict):
 
 def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
-    # pylint: disable=too-many-locals
     csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = list()
+
+    recognized_elements = config_dict.get("csv_elements")
+    extra_shape_elements = config_dict.get("extra_shape_elements")
+    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
+    if extra_shape_elements:
+        recognized_elements.extend(extra_shape_elements)
+        for element in extra_shape_elements:
+            config_dict["element_aliases"][element.lower()] = element
+    if extra_sc_elements:
+        # breakpoint(context=5)
+        recognized_elements.extend(extra_sc_elements)
+        for element in extra_sc_elements:
+            config_dict["element_aliases"][element.lower()] = element
+    recognized_elements = [elem.lower() for elem in recognized_elements]
+
     for header in raw_header_line_list:
         header = _lowercase_despace_depunctuate(header)
         header = _normalize_element_name(header, config_dict.get("element_aliases"))
         new_header_line_list.append(header)
     csv_warnings = defaultdict(dict)
-    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
-    extra_shape_elements = config_dict.get("extra_shape_elements")
-    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
-    recognized_elements = config_dict.get("csv_elements")
-    if extra_shape_elements:
-        recognized_elements.extend(extra_shape_elements)
-    if extra_sc_elements:
-        recognized_elements.extend(extra_sc_elements)
-    recognized_elements = [elem.lower() for elem in recognized_elements]
+
     for header in new_header_line_list:
         if header.lower() not in recognized_elements:
             warn = (

@@ -11,9 +11,9 @@ from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
-    rows_list = _get_rows(open_csvfile_obj, config_dict)
-    tapshapes = _get_tapshapes(rows_list, config_dict)[0]
-    tapwarnings = _get_tapshapes(rows_list, config_dict)[1]
+    csvrows, csvwarnings = _get_rows(open_csvfile_obj, config_dict)
+    tapshapes, tapwarnings  = _get_tapshapes(csvrows, config_dict)
+    tapwarnings = { **csvwarnings, **tapwarnings }
     return (tapshapes, tapwarnings)
 
 
@@ -185,9 +185,28 @@ def _get_rows(open_csvfile_obj, config_dict):
         header = _lowercase_despace_depunctuate(header)
         header = _normalize_element_name(header, config_dict.get("element_aliases"))
         new_header_line_list.append(header)
+    csv_warnings = dict()
+    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
+    recognized_elements = config_dict.get("csv_elements")
+    if config_dict.get("extra_shape_elements"):
+        recognized_elements.extend(config_dict.get("extra_shape_elements"))
+    if config_dict.get("extra_statement_constraint_elements"):
+        recognized_elements.extend(config_dict.get("extra_statement_constraint_elements"))
+    breakpoint(context=5)
+    for header in new_header_line_list:
+        if header not in config_dict.get("csv_elements"):
+           csv_warnings["csv_warnings"] = list()
+           csv_warnings["csv_warnings"].append(
+                f"{repr(header)} not recognized as DCTAP element "
+                "or configured as 'extra' element"
+           )
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
-    return list(DictReader(tmp_buffer2))
+    return (
+        list(DictReader(tmp_buffer2)),
+        csv_warnings
+    )
+

@@ -193,11 +193,11 @@ def _get_rows(open_csvfile_obj, config_dict):
         recognized_elements.extend(extra_shape_elements)
     if extra_sc_elements:
         recognized_elements.extend(extra_sc_elements)
+    recognized_elements = [elem.lower() for elem in recognized_elements]
     for header in new_header_line_list:
-        if header not in recognized_elements:
+        if header.lower() not in recognized_elements:
             warn = (
-                f"{repr(header)} not recognized as DCTAP element "
-                "or configured as 'extra' element"
+                f"Non-DCTAP element {repr(header)} not configured as extra element."
             )
             csv_warnings["csv"] = dict()
             csv_warnings["csv"]["header"] = list()
@@ -208,6 +208,5 @@ def _get_rows(open_csvfile_obj, config_dict):
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
     csv_rows = list(DictReader(tmp_buffer2))
-    # breakpoint(context=5)
     csv_warnings = dict(csv_warnings)
     return (csv_rows, csv_warnings)

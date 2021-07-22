@@ -67,7 +67,6 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
         if warnings:
             print_warnings(warnings_dict)
 
-    # pylint: disable=logging-fstring-interpolation
     if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_dict, config_dict)
         for line in pprint_output:

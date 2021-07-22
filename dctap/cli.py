@@ -5,7 +5,7 @@ import json as j
 from ruamel.yaml import YAML
 import click
 from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME
-from .inspect import pprint_tapshapes
+from .inspect import pprint_tapshapes, print_warnings
 from .csvreader import csvreader
 from .loggers import stderr_logger
 from .utils import expand_uri_prefixes
@@ -57,11 +57,15 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
     if json:
         json_output = j.dumps(tapshapes_dict, indent=4)
         print(json_output)
+        if warnings:
+            print_warnings(warnings_dict)
 
     if yaml:
         y = YAML()
         y.indent(mapping=2, sequence=4, offset=2)
         y.dump(tapshapes_dict, sys.stdout)
+        if warnings:
+            print_warnings(warnings_dict)
 
     # pylint: disable=logging-fstring-interpolation
     if not (json or yaml):
@@ -69,13 +73,7 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
         for line in pprint_output:
             print(line, file=sys.stdout)
         if warnings:
-            print("", file=sys.stderr)
-            echo = stderr_logger()
-            for (shapeid, warns) in warnings_dict.items():
-                for (elem, warn_list) in warns.items():
-                    for warning in warn_list:
-                        echo.warning(f"[{shapeid}/{elem}] {warning}")
-
+            print_warnings(warnings_dict)
 
 @cli.command()
 @click.argument("configfile", type=click.Path(), required=False)

@@ -9,7 +9,7 @@ Columns in a CSV that are not part of the DCTAP model are not automatically pass
    :file: unknownElement.csv
    :header-rows: 1
 
-Interpreted as::
+Interpreted (with warnings enabled) as::
 
     DCTAP instance
         Shape
@@ -17,15 +17,7 @@ Interpreted as::
             Statement Constraint
                 propertyID:          dcterms:creator
 
-Or interpreting the CSV with warnings enabled::
-
-    DCTAP instance
-        Shape
-            shapeID:                 default
-            Statement Constraint
-                propertyID:          dcterms:creator
-
-    WARNING [csv/header] Non-DCTAP element 'valuefoo' not configured as extra element.
+    WARNING [csv/header] Non-DCTAP element 'Status' not configured as extra element.
 
 Users wishing to use columns in their CSV that are not part of the DCTAP model, for example to specify that a shape is "closed" or to specify "severity" of validation errors, can generate a configuration file (see section :ref:`cli_init`) and list their extra column headers in the configuration file under the sections "extra_shape_elements" or "extra_statement_constraint_elements". This will ensure that the extra columns will be passed through to the text, JSON, and YAML outputs.
 
@@ -34,7 +26,7 @@ For example, if the configuration file includes::
     extra_statement_constraint_elements:
     - Status
 
-The text output will show the extra element in brackets::
+The text output, intended as an aid in debugging, includes the extra element but marks it as "extra" with brackets::
 
     DCTAP instance
         Shape
@@ -43,7 +35,7 @@ The text output will show the extra element in brackets::
                 propertyID:          dcterms:creator
                 [Status]:            ignotus
         
-The extra element is simply passed through to JSON or YAML output::
+The JSON (or YAML) output includes the extra element "as is"::
 
     {
         "shapes": [

@@ -292,10 +292,57 @@ def test_get_rows_with_complete_csvfile(tmp_path):
             "note": "",
         },
     ]
-    actual_rows_list = _get_rows(csvfile_obj, config_dict)
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert isinstance(actual_rows_list, list)
     assert isinstance(expected_rows_list, list)
     assert actual_rows_list == expected_rows_list
     assert actual_rows_list[0]["mandatory"]
     assert len(actual_rows_list) == 2
     assert len(expected_rows_list) == 2
+
+def test_warns_if_header_not_recognized(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    config_dict = get_config()
+    config_dict["default_shape_identifier"] = "default"
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "propertyID,ricearoni\n"
+            "dc:date,SFO treat\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_rows_list = [
+        {
+            'propertyID': 'dc:date', 
+            'ricearoni': 'SFO treat',
+        },
+    ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
+    assert len(actual_warnings) == 1
+
+def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    config_dict = get_config()
+    config_dict["default_shape_identifier"] = "default"
+    config_dict["extra_statement_constraint_elements"] = ["ricearoni"]
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "propertyID,ricearoni\n"
+            "dc:date,SFO treat\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_rows_list = [
+        {
+            'propertyID': 'dc:date', 
+            'ricearoni': 'SFO treat',
+        },
+    ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
+    assert len(actual_warnings) == 0

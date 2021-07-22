@@ -187,19 +187,20 @@ def _get_rows(open_csvfile_obj, config_dict):
         new_header_line_list.append(header)
     csv_warnings = dict()
     extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
+    extra_shape_elements = config_dict.get("extra_shape_elements")
+    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
     recognized_elements = config_dict.get("csv_elements")
-    if config_dict.get("extra_shape_elements"):
-        recognized_elements.extend(config_dict.get("extra_shape_elements"))
-    if config_dict.get("extra_statement_constraint_elements"):
-        recognized_elements.extend(config_dict.get("extra_statement_constraint_elements"))
-    breakpoint(context=5)
+    if extra_shape_elements:
+        recognized_elements.extend(extra_shape_elements)
+    if extra_sc_elements:
+        recognized_elements.extend(extra_sc_elements)
     for header in new_header_line_list:
-        if header not in config_dict.get("csv_elements"):
-           csv_warnings["csv_warnings"] = list()
-           csv_warnings["csv_warnings"].append(
+        if header not in recognized_elements:
+            csv_warnings["csv_warnings"] = list()
+            csv_warnings["csv_warnings"].append(
                 f"{repr(header)} not recognized as DCTAP element "
                 "or configured as 'extra' element"
-           )
+            )
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:

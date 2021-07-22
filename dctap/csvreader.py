@@ -174,6 +174,7 @@ def _reduce_shapesdict(shapes_dict):
 
 def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
+    # pylint: disable=too-many-locals
     csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]

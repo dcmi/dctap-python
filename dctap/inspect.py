@@ -51,6 +51,7 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
 
 def print_warnings(warnings_dict):
     """@@@"""
+    # pylint: disable=logging-fstring-interpolation
     print("", file=sys.stderr)
     echo = stderr_logger()
     for (shapeid, warns) in warnings_dict.items():

@@ -210,4 +210,3 @@ def _get_rows(open_csvfile_obj, config_dict):
         list(DictReader(tmp_buffer2)),
         csv_warnings
     )
-

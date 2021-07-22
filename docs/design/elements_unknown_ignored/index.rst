@@ -17,7 +17,7 @@ Interpreted as::
             Statement Constraint
                 propertyID:          dcterms:creator
 
-Interpreting the CSV with warnings enabled (``dctap generate --warnings``)::
+Or interpreting the CSV with warnings enabled::
 
     DCTAP instance
         Shape
@@ -32,11 +32,29 @@ Users wishing to use columns in their CSV that are not part of the DCTAP model, 
 For example, if the configuration file includes::
     
     extra_statement_constraint_elements:
-    - valueFoo
+    - Status
 
-Then the CSV will be interpreted as::
-    
-    ####
+The text output will show the extra element in brackets::
 
-Users wishing to extend the DCTAP model for re-use by others can do so either by publishing a description of the extra elements or by creating an application in support of the extension. One way to do so would be to import **dctap** into their own Python and extending its functions and classes as needed. The developers of **dctap** would like to facilitate the sharing of such extensions, or even to incorporate popular elements into a future extension of the base model. Extensions can be proposed by opening an issue on the main `DCTAP repository <https://github.com/dcmi/dctap/issues>`_.
+    DCTAP instance
+        Shape
+            shapeID:                 default
+            Statement Constraint
+                propertyID:          dcterms:creator
+                [Status]:            ignotus
+        
+The extra element is simply passed through to JSON or YAML output::
 
+    {
+        "shapes": [
+            {
+                "shapeID": "default",
+                "statement_constraints": [
+                    {
+                        "propertyID": "dcterms:creator",
+                        "Status": "ignotus"
+                    }
+                ]
+            }
+        ]
+    }

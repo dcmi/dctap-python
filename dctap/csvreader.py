@@ -12,8 +12,8 @@ from dctap.tapclasses import TAPShape, TAPStatementConstraint
 def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
     csvrows, csvwarnings = _get_rows(open_csvfile_obj, config_dict)
-    tapshapes, tapwarnings  = _get_tapshapes(csvrows, config_dict)
-    tapwarnings = { **csvwarnings, **tapwarnings }
+    tapshapes, tapwarnings = _get_tapshapes(csvrows, config_dict)
+    tapwarnings = {**csvwarnings, **tapwarnings}
     return (tapshapes, tapwarnings)
 
 
@@ -210,4 +210,4 @@ def _get_rows(open_csvfile_obj, config_dict):
     csv_rows = list(DictReader(tmp_buffer2))
     # breakpoint(context=5)
     csv_warnings = dict(csv_warnings)
-    return ( csv_rows, csv_warnings )
+    return (csv_rows, csv_warnings)

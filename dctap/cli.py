@@ -74,6 +74,7 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
         if warnings:
             print_warnings(warnings_dict)
 
+
 @cli.command()
 @click.argument("configfile", type=click.Path(), required=False)
 @click.help_option(help="Show help and exit")

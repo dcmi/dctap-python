@@ -23,27 +23,8 @@ The module passes input through to output unchanged, possibly with added warning
 
 - Normalized elements not part of the DCTAP model are ignored (see section :ref:`design_elements_unknown_ignored`).
 
-- Boolean values are normalized to "False" and "True" (see section :ref:`elem_mandrepeat`).
+- Boolean values are normalized to the strings "false" and "true" (see section :ref:`elem_mandrepeat`).
 
 - Value constraint strings are converted into other types of data structure, such as lists, according to the value constraint type provided (see section :ref:`elem_valueConstraintType`).
 
 The built-in consistency checks err on the side of tolerance, as it is anticipated that DCTAP CSVs may be used not only to document mature, polished application profiles but also as tools for rapid prototyping. The performance of stricter checks, for example to verify whether values declared to be URIs, dates, or language tags are well-formed, is left to downstream projects that may import and build on this module.
-
-Potential directions for further development include:
-
-- The ability to tweak built-in defaults in local configuration files.
-
-- The ability to expand :term:`Compact IRI` s by reading namespace prefixes from sources on the Web or from local configuration files.
-
-- The ability to round-trip from a messy, first-draft CSV expression of a DCTAP back to a normalized expression in CSV.
-
-- The ability to read from Excel spreadsheets directly, without first converting into plain CSV format.
-
-- The ability to read from Excel spreadsheets with extra tabs for namespace prefixes and controlled sets of values for use in dropdown menus.
-
-As of July 2021, our medium-term plan is:
-
-- To move the command-line interface into a separate project.
-
-- To leave this module as a **pip**-installable basis for utlities that implement more specific features, such as transforming a DCTAP instance into ShEx or SHACL.
-

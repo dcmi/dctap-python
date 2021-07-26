@@ -1,2 +1,2 @@
-Shape ID,Prop ID,Mand,Rep,Node Type,Datatype,VC,VCType,VShape
-:book,dc:creator,1,0,IRI,,,,:author
+Shape ID,PropertyID,Mand,Rep
+:book,dc:creator,1,0

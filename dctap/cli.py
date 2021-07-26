@@ -20,7 +20,22 @@ from .utils import expand_uri_prefixes
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(context):
-    """DC Tabular Application Profiles (DCTAP) - base module"""
+    """DC Tabular Application Profiles (DCTAP) - base module
+
+    Examples:
+
+    \b
+    $ dctap generate my_profile.csv
+    $ dctap generate --json my_profile.csv
+    $ dctap generate --expand-prefixes my_profile.csv
+    $ dctap generate --warnings my_profile.csv
+    $ dctap generate --warnings --expand-prefixes --json my_profile.csv
+    $ dctap init
+    Built-in settings written to dctap.yml - edit as needed.
+    $ dctap init /Users/tbaker/dctap.yml
+    Built-in settings written to /Users/tbaker/dctap.yml - edit as needed.
+    $ dctap generate --configfile /Users/tbaker/dctap.yml
+    """
 
 
 @cli.command()

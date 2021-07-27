@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
 ## [Unreleased]
+- Added improvements to README.rst.
 
 ## [0.3.3] - 2021-07-27
 - Added examples section to default help display when command run without arguments.

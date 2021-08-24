@@ -22,7 +22,7 @@ from .utils import expand_uri_prefixes
 def cli(context):
     """DC Tabular Application Profiles (DCTAP) - base module
 
-    Examples:
+    Examples (see https://dctap-python.rtfd.io):
 
     \b
     $ dctap generate my_profile.csv

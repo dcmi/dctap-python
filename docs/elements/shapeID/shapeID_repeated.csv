@@ -1,5 +1,5 @@
 shapeID,propertyID
 :book,dcterms:creator
-:book,dcterms:date
+,dcterms:date
 :author,foaf:name
 :book,dcterms:language

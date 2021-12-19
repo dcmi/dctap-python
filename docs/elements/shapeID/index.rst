@@ -25,23 +25,29 @@ Interpreted as::
 
 Users with metadata about a single :term:`Entity`, or whose downstream applications do not make use of shapes, can safely ignore this default identifier.
 
-In RDF validation languages that support shapes, shapes are typically identified with IRIs, so a warning will be emitted if a shape identifier, on a superficial inspection, does not look like an IRI.
+A **shapeID**, once declared, will apply to any immediately subsequent rows where the **shapeID** is left blank. However, a shape ID may be declared explicitly for any or for every row. When shape IDs are explicitly declared, they can be presented in any arbitrary sequence without compromising their proper grouping as shapes.
 
 .. csv-table::
-   :file: shapeID_non_iri.csv
+   :file: shapeID_repeated.csv
    :header-rows: 1
 
 Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 book
+            shapeID:                 :book
             Statement Constraint
                 propertyID:          dcterms:creator
+            Statement Constraint
+                propertyID:          dcterms:date
+            Statement Constraint
+                propertyID:          dcterms:language
+        Shape
+            shapeID:                 :author
+            Statement Constraint
+                propertyID:          foaf:name
 
-    WARNING [book/shapeID] 'book' is not an IRI or Compact IRI.
-
-Note that if a shape identifier is not provided for the first rows processed but is provided for rows processed thereafter, only the shape identifier for the first statement constraints will be the default.
+If a shape identifier is not provided for the first rows processed but is provided for rows processed thereafter, only the shape identifier for the first statement constraints will be the default.
 
 .. csv-table::
    :file: shapeID_default_then_named.csv
@@ -92,4 +98,3 @@ Interpreted as::
                 propertyID:          dcterms:creator
             Statement Constraint
                 propertyID:          dcterms:creator
-

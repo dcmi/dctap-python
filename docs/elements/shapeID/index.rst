@@ -25,7 +25,7 @@ Interpreted as::
 
 Users with metadata about a single :term:`Entity`, or whose downstream applications do not make use of shapes, can safely ignore this default identifier.
 
-A **shapeID**, once declared, will apply to any immediately subsequent rows where the **shapeID** is left blank. However, a shape ID may be declared explicitly for any or for every row. When shape IDs are explicitly declared, they can be presented in any arbitrary sequence without compromising their proper grouping as shapes.
+A **shapeID**, once declared, will apply to any immediately subsequent rows where the **shapeID** is left blank. However, a shape ID may be declared explicitly for any or for every row. When shape IDs are explicitly declared, they can be presented in any arbitrary sequence without compromising their proper grouping as shapes. Declaring shape IDs explicitly makes it possible to combine statement constraints from multiple sources without regard for their sequential order.
 
 .. csv-table::
    :file: shapeID_repeated.csv

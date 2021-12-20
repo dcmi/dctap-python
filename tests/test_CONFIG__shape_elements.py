@@ -14,7 +14,7 @@ def test_get_TAPShape_elements_plus_extras_when_config_dict_specified():
     """List TAPShape elements plus extras."""
     expected_shape_elements = ["shapeID", "shapeLabel"]
     expected_xtra_shape_elements = ["closed", "start"]
-    config_dict = { "extra_shape_elements": ["closed", "start"] }
+    config_dict = dict(extra_shape_elements=["closed", "start"])
     assert shape_elements(TAPShape, config_dict)[0] == expected_shape_elements
     assert shape_elements(TAPShape, config_dict)[1] == expected_xtra_shape_elements
 

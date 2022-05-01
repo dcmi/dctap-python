@@ -79,12 +79,12 @@ def get_config(
     not_found = f"{repr(config_file)} not found or not readable."
     if config_file:  # if a specific config file was named
         try:
-            config_yaml = Path(config_file).read_text()
+            config_yaml = Path(config_file).read_text(encoding='UTF-8')
         except (FileNotFoundError, PermissionError):
             raise ConfigError(not_found)
     else:
         try:
-            config_yaml = Path(DEFAULT_CONFIGFILE_NAME).read_text()
+            config_yaml = Path(DEFAULT_CONFIGFILE_NAME).read_text(encoding='UTF-8')
         except (FileNotFoundError, PermissionError):
             if nondefault_config_yaml:
                 config_yaml = nondefault_config_yaml

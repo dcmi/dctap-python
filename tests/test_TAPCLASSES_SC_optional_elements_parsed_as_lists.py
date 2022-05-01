@@ -16,7 +16,7 @@ config_dict["elements_parsed_as_lists"] = [
 ]
 
 def test_elements_parsed_as_lists():
-    """Elements are parsed as lists - as so configured."""
+    """Elements enumerated in config settings are parsed as lists."""
     sc = TAPStatementConstraint()
     sc.propertyID = "dcterms:creator"
     sc.valueNodeType = "iri bnode"
@@ -27,3 +27,12 @@ def test_elements_parsed_as_lists():
     assert sc.valueNodeType == ["iri", "bnode"]
     assert sc.valueDataType == ["xsd:date", "xsd:time"]
     assert sc.valueShape == ["a", "b", "c", "d"]
+
+@pytest.mark.skip
+def test_value_node_type_not_parsed_as_list():
+    """Value Node Type not parsed as list - should raise error if not configured."""
+    config_dict = get_config()
+    sc = TAPStatementConstraint()
+    sc.valueNodeType = "iri bnode"
+    sc._parse_elements_listed_in_configfile_as_lists(config_dict)
+    assert sc.valueNodeType == ["iri", "bnode"]

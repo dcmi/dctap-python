@@ -16,9 +16,10 @@ DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
 # - closed
 # - start
 
-# extra_statement_constraint_elements:
-# - min
-# - max
+# Alternative elements to mandatory and repeatable
+extra_statement_constraint_elements:
+- min
+- max
 
 ## This module has three built-in value node types: "iri", "literal", and "bnode".
 ## Extra node types can be added here, for example as aliases, such as "uri" for "iri",
@@ -26,14 +27,18 @@ DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
 # extra_value_node_types:
 # - uri
 
-elements_parsed_as_lists:
-- shapeLabel
-- propertyID
-- propertyLabel
-- valueNodeType
-- valueDataType
-- valueShape
-- note
+## Some statement constraint elements can be configured to be parsed as lists.
+## - Multiple values are separated by a single space.
+## - Shape elements cannot be repeated.
+## Types of element that cannot be configured for multiple values:
+## - Elements with numeric values: min, max
+## - Elements with Boolean values: closed, start, mandatory, repeatable
+## - Elements used purely for annotation: shapeLabel, propertyLabel, note
+# elements_parsed_as_lists:
+# - propertyID
+# - valueNodeType
+# - valueDataType
+# - valueShape
 
 # Aliases (case-insensitive) mapped to "official" element names (case-sensitive)
 element_aliases:

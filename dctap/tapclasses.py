@@ -208,25 +208,25 @@ class TAPStatementConstraint:
                     f"so node type should not be {repr(self.valueNodeType)}."
                 )
 
-    def _parse_elements_listed_in_configfile_as_lists(self, settings):
+    def _parse_elements_listed_in_configfile_as_lists(
+        self, settings=None, sep=None, elements_to_parse_as_lists=None
+    ):
         """@@@"""
-        if settings.get("picklist_item_separator"):
-            sep = settings.get("picklist_item_separator")
-        else:
-            sep = " "
-        # breakpoint(context=5)
-        if settings.get("elements_parsed_as_lists"):
-            elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
+        if sep is None:
+            set = " "
+        if elements_to_parse_as_lists is None:
+            elements_to_parse_as_lists = []
+        if settings:
+            if settings.get("picklist_item_separator"):
+                sep = settings.get("picklist_item_separator")
+            if settings.get("elements_parsed_as_lists"):
+                elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
 
         for element in elements_to_parse_as_lists:
             if element == "propertyID":
                 if self.propertyID:
                     self.propertyID = self.propertyID.split(sep)
                     self.propertyID = [x.strip() for x in self.propertyID if x]
-            if element == "propertyLabel":
-                if self.propertyLabel:
-                    self.propertyLabel = self.propertyLabel.split(sep)
-                    self.propertyLabel = [x.strip() for x in self.propertyLabel if x]
             if element == "valueNodeType":
                 if self.valueNodeType:
                     self.valueNodeType = self.valueNodeType.split(sep)
@@ -239,10 +239,6 @@ class TAPStatementConstraint:
                 if self.valueShape:
                     self.valueShape = self.valueShape.split(sep)
                     self.valueShape = [x.strip() for x in self.valueShape if x]
-            if element == "note":
-                if self.note:
-                    self.note = self.note.split(sep)
-                    self.note = [x.strip() for x in self.note if x]
         return self
 
     def get_warnings(self):
@@ -266,7 +262,7 @@ class TAPShape:
     def normalize(self, settings):
         """Normalize values where required."""
         self._normalize_default_shapeID(settings)
-#        self._parse_elements_listed_in_configfile_as_lists(settings)
+        #        self._parse_elements_listed_in_configfile_as_lists(settings)
         return True
 
     def _normalize_default_shapeID(self, settings):
@@ -275,23 +271,22 @@ class TAPShape:
             self.shapeID = settings.get("default_shape_identifier", "default")
         return self
 
-#    def _parse_elements_listed_in_configfile_as_lists(self, settings):
-#        """@@@"""
-#        if settings.get("picklist_item_separator"):
-#            sep = settings.get("picklist_item_separator")
-#        else:
-#            sep = " "
-#
-#        if settings.get("elements_parsed_as_lists"):
-#            elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
-#
-#        for element in elements_to_parse_as_lists:
-#            if element == "shapeLabel":
-#                if self.shapeLabel:
-#                    self.shapeLabel = self.shapeLabel.split(sep)
-#                    self.shapeLabel = [x.strip() for x in self.shapeLabel if x]
-#        return self
-
+    #    def _parse_elements_listed_in_configfile_as_lists(self, settings):
+    #        """@@@"""
+    #        if settings.get("picklist_item_separator"):
+    #            sep = settings.get("picklist_item_separator")
+    #        else:
+    #            sep = " "
+    #
+    #        if settings.get("elements_parsed_as_lists"):
+    #            elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
+    #
+    #        for element in elements_to_parse_as_lists:
+    #            if element == "shapeLabel":
+    #                if self.shapeLabel:
+    #                    self.shapeLabel = self.shapeLabel.split(sep)
+    #                    self.shapeLabel = [x.strip() for x in self.shapeLabel if x]
+    #        return self
 
     def get_warnings(self):
         """Emit warnings dictionary self.sh_warnings, populated by normalize() method."""

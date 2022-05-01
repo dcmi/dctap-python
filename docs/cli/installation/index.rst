@@ -3,8 +3,8 @@
 Installation
 ^^^^^^^^^^^^
 
-Install with pip (for ordinary users)
-.....................................
+Install with pip
+................
 
 Installing with "pip" pulls the most recently published version of the project from the `PyPI repository <https://pypi.org/project/dctap/>`_:
 
@@ -13,8 +13,8 @@ Installing with "pip" pulls the most recently published version of the project f
     python3 -m pip install -U https://github.com/dcmi/dctap-python/archive/main.zip
 
 
-Install with pip (for developers)
-.................................
+Install with pip (using virtual environment)
+............................................
 
 For developers who work alot with Python projects, it is good practice to create and activate a virtual environment so that "dctap", and its dependencies, will not be installed into the global Python environment on your machine. The virtual environment is held in a directory of your choice; in the example below, a hidden directory ``.venv`` is created in ``some_directory`` (your current working directory), and the virtual environment is activated by executing ``source .venv/bin/activate``.
 

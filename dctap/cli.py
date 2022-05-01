@@ -5,7 +5,7 @@ import json as j
 from ruamel.yaml import YAML
 import click
 from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME
-from .inspect import pprint_tapshapes
+from .inspect import pprint_tapshapes, print_warnings
 from .csvreader import csvreader
 from .loggers import stderr_logger
 from .utils import expand_uri_prefixes
@@ -16,11 +16,26 @@ from .utils import expand_uri_prefixes
 
 
 @click.group()
-@click.version_option("0.2.3", help="Show version and exit")
+@click.version_option("0.3.3", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(context):
-    """DC Tabular Application Profiles (DCTAP) - base module"""
+    """DC Tabular Application Profiles (DCTAP) - base module
+
+    Examples (see https://dctap-python.rtfd.io):
+
+    \b
+    $ dctap generate my_profile.csv
+    $ dctap generate --json my_profile.csv
+    $ dctap generate --expand-prefixes my_profile.csv
+    $ dctap generate --warnings my_profile.csv
+    $ dctap generate --warnings --expand-prefixes --json my_profile.csv
+    $ dctap init
+    Built-in settings written to dctap.yml - edit as needed.
+    $ dctap init /Users/tbaker/dctap.yml
+    Built-in settings written to /Users/tbaker/dctap.yml - edit as needed.
+    $ dctap generate --configfile /Users/tbaker/dctap.yml
+    """
 
 
 @cli.command()
@@ -57,24 +72,22 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
     if json:
         json_output = j.dumps(tapshapes_dict, indent=4)
         print(json_output)
+        if warnings:
+            print_warnings(warnings_dict)
 
     if yaml:
         y = YAML()
         y.indent(mapping=2, sequence=4, offset=2)
         y.dump(tapshapes_dict, sys.stdout)
+        if warnings:
+            print_warnings(warnings_dict)
 
-    # pylint: disable=logging-fstring-interpolation
     if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_dict, config_dict)
         for line in pprint_output:
             print(line, file=sys.stdout)
         if warnings:
-            print("", file=sys.stderr)
-            echo = stderr_logger()
-            for (shapeid, warns) in warnings_dict.items():
-                for (elem, warn_list) in warns.items():
-                    for warning in warn_list:
-                        echo.warning(f"[{shapeid}/{elem}] {warning}")
+            print_warnings(warnings_dict)
 
 
 @cli.command()

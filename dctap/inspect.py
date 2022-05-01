@@ -1,6 +1,8 @@
-"""Pretty-print CSV contents to screen."""
+"""Print CSV contents and warnings."""
 
+import sys
 from .config import shape_elements, statement_constraint_elements
+from .loggers import stderr_logger
 from .tapclasses import TAPShape, TAPStatementConstraint
 
 
@@ -45,3 +47,14 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
                     pprint_output.append(indent08 + str(sc_dict.get(key)))
 
     return pprint_output
+
+
+def print_warnings(warnings_dict):
+    """@@@"""
+    # pylint: disable=logging-fstring-interpolation
+    print("", file=sys.stderr)
+    echo = stderr_logger()
+    for (shapeid, warns) in warnings_dict.items():
+        for (elem, warn_list) in warns.items():
+            for warning in warn_list:
+                echo.warning(f"[{shapeid}/{elem}] {warning}")

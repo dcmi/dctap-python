@@ -9,7 +9,7 @@ Columns in a CSV that are not part of the DCTAP model are not automatically pass
    :file: unknownElement.csv
    :header-rows: 1
 
-Interpreted as::
+Interpreted (with warnings enabled) as::
 
     DCTAP instance
         Shape
@@ -17,6 +17,36 @@ Interpreted as::
             Statement Constraint
                 propertyID:          dcterms:creator
 
-Users wishing to use columns in their CSV that are not part of the DCTAP model, for example to specify that a shape is "closed" or to specify "severity" of validation errors, can generate a configuration file (see section :ref:`cli_init`) and list their extra column headers in the configuration file under the sections "extra_shape_elements" or "extra_statement_constraint_elements". This will of course not actually extend the DCTAP model itself, but it will ensure that the extra columns will be passed through to the text, JSON, and YAML outputs.
+    WARNING [csv/header] Non-DCTAP element 'Status' not configured as extra element.
 
-Users wishing to extend the DCTAP model for re-use by others can do so either by publishing a description of the extra elements or by creating an application in support of the extension. One way to do so would be to import **dctap** into their own Python and extending its functions and classes as needed. The developers of **dctap** would like to facilitate the sharing of such extensions, or even to incorporate popular elements into a future extension of the base model. Extensions can be proposed by opening an issue on the main `DCTAP repository <https://github.com/dcmi/dctap/issues>`_.
+Users wishing to use columns in their CSV that are not part of the DCTAP model, for example to specify that a shape is "closed" or to specify "severity" of validation errors, can generate a configuration file (see section :ref:`cli_init`) and list their extra column headers in the configuration file under the sections "extra_shape_elements" or "extra_statement_constraint_elements". This will ensure that the extra columns will be passed through to the text, JSON, and YAML outputs.
+
+For example, if the configuration file includes::
+    
+    extra_statement_constraint_elements:
+    - Status
+
+The text output, intended as an aid in debugging, includes the extra element but marks it as "extra" with brackets::
+
+    DCTAP instance
+        Shape
+            shapeID:                 default
+            Statement Constraint
+                propertyID:          dcterms:creator
+                [Status]:            ignotus
+        
+The JSON (or YAML) output includes the extra element "as is"::
+
+    {
+        "shapes": [
+            {
+                "shapeID": "default",
+                "statement_constraints": [
+                    {
+                        "propertyID": "dcterms:creator",
+                        "Status": "ignotus"
+                    }
+                ]
+            }
+        ]
+    }

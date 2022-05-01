@@ -8,7 +8,6 @@ Basic validation of a DCTAP instance.
 Documentation
 -------------
 
-- [dctap-python project](https://readthedocs.org/projects/dctap-python/) on readthedocs.org
 - https://dctap-python.readthedocs.io/en/latest/
 
 
@@ -19,8 +18,8 @@ To work correctly, "dctap" requires Python 3.7 or higher. Executing the command 
 
 As explained below, the command-line utility can be installed either from the online PyPI repository, using the ``pip`` command, or from a local copy of the project on your own machine.
 
-Installation with pip (ordinary users)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Installation with pip
+^^^^^^^^^^^^^^^^^^^^^
 
 Installing with "pip" pulls the most recently published version of the project from the `PyPI repository <https://pypi.org/project/dctap/>`_ with the following command:
 
@@ -28,8 +27,8 @@ Installing with "pip" pulls the most recently published version of the project f
 
     python3 -m pip install -U https://github.com/dcmi/dctap-python/archive/main.zip
 
-Installation with pip (developers)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Installation with pip in virtual environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For developers who work alot with Python projects, it is good practice to create and activate a virtual environment so that "dctap", and its dependencies, will not be installed into the global Python environment on your machine. The virtual environment is held in a directory of your choice; in the example below, a hidden directory ``.venv`` is created in ``some_directory`` (your current working directory), and the virtual environment is activated by executing ``source .venv/bin/activate``.
 
@@ -69,25 +68,31 @@ Run without arguments, "dctap" shows what options and commands are available.
 
     $ dctap
     Usage: dctap [OPTIONS] COMMAND [ARGS]...
-    
+
       DC Tabular Application Profiles (DCTAP) - base module
-    
+
+      Examples:
+
+      $ dctap generate my_profile.csv
+      $ dctap generate --json my_profile.csv
+      $ dctap generate --expand-prefixes my_profile.csv
+      $ dctap generate --warnings my_profile.csv
+      $ dctap generate --warnings --expand-prefixes --json my_profile.csv
+      $ dctap init
+      Built-in settings written to dctap.yml - edit as needed.
+      $ dctap init /Users/tbaker/dctap.yml
+      Built-in settings written to /Users/tbaker/dctap.yml - edit as needed.
+      $ dctap generate --configfile /Users/tbaker/dctap.yml
+
     Options:
       --version  Show version and exit
       --help     Show help and exit
-    
+
     Commands:
-      generate  Given CSV, generate text, JSON, or YAML, with warnings.
-      init      Write out starter config file [default: dctap.yml]
-
-To examine a CSV file formatted according to the DCTAP model (here: "some_dctap.csv"), use the ``dctap generate`` command.
-
-.. code-block:: bash
-    
-    $ dctap generate some_dctap.csv
+      generate  Generate normalized text, JSON, or YAML of CSV, with warnings.
+      init      Generate customizable configuration file [default: dctap.yml].
 
 For more information, see the documentation `on readthedocs.io <https://dctap-python.readthedocs.io/en/latest/>`_.
-
 
 .. |Docs Badge| image:: https://readthedocs.org/projects/dctap-python/badge/
        :alt: Documentation Status

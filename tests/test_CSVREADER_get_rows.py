@@ -10,6 +10,7 @@ from dctap.csvreader import _get_rows
 def test_get_rows_including_header_not_in_DCTAP(tmp_path):
     """Get rows where one header is not part of the DCTAP model."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -18,18 +19,19 @@ def test_get_rows_including_header_not_in_DCTAP(tmp_path):
         )
     )
     csvfile_obj = open(csvfile_path)
-    config_dict = get_config()
-    expected_csvrow_dicts_list = [ 
+    expected_rows_list = [ 
         {
             'propertyID': 'dc:creator',
             'ricearoni': 'SFO treat',
         }
     ]
-    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_minimal(tmp_path):
     """Get list of rows, as dicts, from one-row, one-column CSV."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -38,13 +40,14 @@ def test_get_rows_minimal(tmp_path):
         )
     )
     csvfile_obj = open(csvfile_path)
-    config_dict = get_config()
-    expected_csvrow_dicts_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
-    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+    expected_rows_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_given_customized_element_alias(tmp_path):
     """Using customized element alias, normalized for case, dashes, underscores."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -53,33 +56,35 @@ def test_get_rows_given_customized_element_alias(tmp_path):
         )
     )
     csvfile_obj = open(csvfile_path)
-    config_dict = get_config()
     config_dict["element_aliases"].update({ "propid": "propertyID" })
-    expected_csvrow_dicts_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
-    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+    expected_rows_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     """Where headers shorter than rows, extra values collected under header None."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
             "shapeID,propertyID,\n" 
             ":a,dct:creator,URI,comment,comment two\n"
         )
     csvfile_obj = open(csvfile_path)
-    expected_output = [
+    expected_rows_list = [
         {
             'shapeID': ':a', 
             'propertyID': 'dct:creator', 
             '': 'URI', 
             None: ['comment', 'comment two']}
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_output
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
     """Where headers shorter than rows, adds one empty header."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -87,15 +92,16 @@ def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
             ":a,dct:creator,URI\n")
         )
     csvfile_obj = open(csvfile_path)
-    expected_output = [
+    expected_rows_list = [
         {'shapeID': ':a', 'propertyID': 'dct:creator', '': 'URI'}
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_output
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
     """Fills in short rows with None values."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -103,11 +109,11 @@ def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
             ":a,dct:creator\n")
         )
     csvfile_obj = open(csvfile_path)
-    expected_output = [
+    expected_rows_list = [
         {'shapeID': ':a', 'propertyID': 'dct:creator', 'valueNodeType': None}
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_output
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     """Raises exception if first line of CSV has no propertyID."""
@@ -122,6 +128,7 @@ def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
 def test_get_rows_with_unknown_column(tmp_path):
     """Non-DCTAP elements kept by _get_rows (but dropped by _get_shapes)."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -132,7 +139,7 @@ def test_get_rows_with_unknown_column(tmp_path):
         )
     )
     csvfile_obj = open(csvfile_path)
-    expected_csvrow_dicts_list = [
+    expected_rows_list = [
         {
             'shapeID': ':book',
             'propertyID': 'dc:creator',
@@ -150,12 +157,13 @@ def test_get_rows_with_unknown_column(tmp_path):
             'valuegestalt': ''
         }
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_with_unknown_column2(tmp_path):
     """Passes thru unknown header, lowercased."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
             "shapeID,propertyID,valueShape,wildCard\n"
@@ -163,7 +171,7 @@ def test_get_rows_with_unknown_column2(tmp_path):
             ":author,foaf:name,,\n"
     )
     csvfile_obj = open(csvfile_path)
-    expected_output = [
+    expected_rows_list = [
             {
              'shapeID': ':book', 
              'propertyID': 'dcterms:creator', 
@@ -175,12 +183,13 @@ def test_get_rows_with_unknown_column2(tmp_path):
               'valueShape': '', 
               'wildcard': ''}
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_output
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_with_simple_csvfile(tmp_path):
     """Another simple CSV with three columns."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -191,17 +200,18 @@ def test_get_rows_with_simple_csvfile(tmp_path):
         )
     )
     csvfile_obj = open(csvfile_path)
-    expected_csvrow_dicts_list = [
+    expected_rows_list = [
         {'shapeID': ':a', 'propertyID': 'dct:creator', 'valueNodeType': 'URI'},
         {'shapeID': ':a', 'propertyID': 'dct:subject', 'valueNodeType': 'URI'},
         {'shapeID': ':a', 'propertyID': 'dct:date', 'valueNodeType': 'String'}
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path):
     """CSV columns not part of the DC TAP model are simply ignored."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -210,22 +220,23 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
         )
     )
     csvfile_obj = open(csvfile_path)
-    expected_csvrow_dicts_list = [
+    expected_rows_list = [
         {"shapeID": ":a", "propertyID": "dct:subject", "confidential": "True"},
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_csvrow_dicts_list
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_correct_a_real_mess(tmp_path):
     """Messiness in headers (extra spaces, punctuation, wrong case) is corrected."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         "S hape ID,pr-opertyID___,valueShape     ,wildCard    \n"
         ":book,dcterms:creator,:author,Yeah yeah yeah\n"
     )
     csvfile_obj = open (csvfile_path)
-    expected_output = [
+    expected_rows_list = [
             { 
              'shapeID': ':book', 
              'propertyID': 'dcterms:creator',
@@ -233,12 +244,13 @@ def test_get_rows_correct_a_real_mess(tmp_path):
              'wildcard': 'Yeah yeah yeah',
             }
     ]
-    config_dict = get_config()
-    assert _get_rows(csvfile_obj, config_dict) == expected_output
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
 
 def test_get_rows_with_complete_csvfile(tmp_path):
     """Simple CSV with all columns."""
     os.chdir(tmp_path)
+    config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
@@ -250,7 +262,7 @@ def test_get_rows_with_complete_csvfile(tmp_path):
         )
     )
     csvfile_obj = open(csvfile_path)
-    expected_csvrow_dicts_list = [
+    expected_rows_list = [
         {
             "shapeID": ":a",
             "shapeLabel": "Book",
@@ -280,11 +292,57 @@ def test_get_rows_with_complete_csvfile(tmp_path):
             "note": "",
         },
     ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert isinstance(actual_rows_list, list)
+    assert isinstance(expected_rows_list, list)
+    assert actual_rows_list == expected_rows_list
+    assert actual_rows_list[0]["mandatory"]
+    assert len(actual_rows_list) == 2
+    assert len(expected_rows_list) == 2
+
+def test_warns_if_header_not_recognized(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
     config_dict = get_config()
-    real_output = _get_rows(csvfile_obj, config_dict)
-    assert isinstance(real_output, list)
-    assert isinstance(expected_csvrow_dicts_list, list)
-    assert real_output == expected_csvrow_dicts_list
-    assert real_output[0]["mandatory"]
-    assert len(real_output) == 2
-    assert len(expected_csvrow_dicts_list) == 2
+    config_dict["default_shape_identifier"] = "default"
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "propertyID,ricearoni\n"
+            "dc:date,SFO treat\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_rows_list = [
+        {
+            'propertyID': 'dc:date', 
+            'ricearoni': 'SFO treat',
+        },
+    ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
+    assert len(actual_warnings) == 1
+
+def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
+    """@@@"""
+    os.chdir(tmp_path)
+    config_dict = get_config()
+    config_dict["default_shape_identifier"] = "default"
+    config_dict["extra_statement_constraint_elements"] = ["ricearoni"]
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "propertyID,ricearoni\n"
+            "dc:date,SFO treat\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_rows_list = [
+        {
+            'propertyID': 'dc:date', 
+            'ricearoni': 'SFO treat',
+        },
+    ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
+    assert len(actual_warnings) == 0

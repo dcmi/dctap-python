@@ -1,0 +1,5 @@
+shapeID,propertyID
+:book,dcterms:creator
+,dcterms:date
+:author,foaf:name
+:book,dcterms:language

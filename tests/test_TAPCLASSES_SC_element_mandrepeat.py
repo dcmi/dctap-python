@@ -14,8 +14,8 @@ def test_mandatory_repeatable_true_given_supported_boolean_values():
     sc.mandatory = "true"
     sc.repeatable = "TRUE"
     sc._normalize_booleans_mandatory_repeatable()
-    assert sc.mandatory is "True"
-    assert sc.repeatable is "True"
+    assert sc.mandatory is "true"
+    assert sc.repeatable is "true"
 
 def test_mandatory_and_repeatable_one_zero_normalized_to_true_false():
     """The integers 0 and 1 are supported Boolean values."""
@@ -24,8 +24,8 @@ def test_mandatory_and_repeatable_one_zero_normalized_to_true_false():
     sc.mandatory = "1"
     sc.repeatable = "0"
     sc._normalize_booleans_mandatory_repeatable()
-    assert sc.mandatory is "True"
-    assert sc.repeatable is "False"
+    assert sc.mandatory is "true"
+    assert sc.repeatable is "false"
 
 def test_mandatory_and_repeatable_default_to_empty_strings():
     """The Boolean elements remain empty strings if no value is declared."""

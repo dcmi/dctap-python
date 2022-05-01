@@ -11,9 +11,9 @@ from dctap.tapclasses import TAPShape, TAPStatementConstraint
 
 def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
-    rows_list = _get_rows(open_csvfile_obj, config_dict)
-    tapshapes = _get_tapshapes(rows_list, config_dict)[0]
-    tapwarnings = _get_tapshapes(rows_list, config_dict)[1]
+    csvrows, csvwarnings = _get_rows(open_csvfile_obj, config_dict)
+    tapshapes, tapwarnings = _get_tapshapes(csvrows, config_dict)
+    tapwarnings = {**csvwarnings, **tapwarnings}
     return (tapshapes, tapwarnings)
 
 
@@ -86,7 +86,6 @@ def _get_tapshapes(rows, config_dict):
                 warnings[sh_id][elem] = list()      # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        # breakpoint(context=5)
         sc = TAPStatementConstraint()               # Instantiate SC for this row.
 
         for col in row:
@@ -115,7 +114,6 @@ def _get_tapshapes(rows, config_dict):
         shape_list = list()                         # New list for TAPShapes objs, to
         tapshapes_dict["shapes"] = shape_list       # hold on tapshapes_dict["shapes"].
 
-        # breakpoint(context=5)
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
             tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
             tapshape_dict[                          # - rename its field "sc_list" to
@@ -176,18 +174,46 @@ def _reduce_shapesdict(shapes_dict):
 
 def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
+    # pylint: disable=too-many-locals
     csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = list()
+
+    recognized_elements = config_dict.get("csv_elements")
+    extra_shape_elements = config_dict.get("extra_shape_elements")
+    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
+    if extra_shape_elements:
+        recognized_elements.extend(extra_shape_elements)
+        for element in extra_shape_elements:
+            config_dict["element_aliases"][element.lower()] = element
+    if extra_sc_elements:
+        # breakpoint(context=5)
+        recognized_elements.extend(extra_sc_elements)
+        for element in extra_sc_elements:
+            config_dict["element_aliases"][element.lower()] = element
+    recognized_elements = [elem.lower() for elem in recognized_elements]
+
     for header in raw_header_line_list:
         header = _lowercase_despace_depunctuate(header)
         header = _normalize_element_name(header, config_dict.get("element_aliases"))
         new_header_line_list.append(header)
+    csv_warnings = defaultdict(dict)
+
+    for header in new_header_line_list:
+        if header.lower() not in recognized_elements:
+            warn = (
+                f"Non-DCTAP element {repr(header)} not configured as extra element."
+            )
+            csv_warnings["csv"] = dict()
+            csv_warnings["csv"]["header"] = list()
+            csv_warnings["csv"]["header"].append(warn)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
-    return list(DictReader(tmp_buffer2))
+    csv_rows = list(DictReader(tmp_buffer2))
+    csv_warnings = dict(csv_warnings)
+    return (csv_rows, csv_warnings)

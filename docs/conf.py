@@ -15,7 +15,6 @@
 #
 import os
 import sys
-import dctap
 
 sys.path.insert(0, os.path.abspath("../dctap/"))
 
@@ -26,14 +25,20 @@ project = "dctap-python"
 copyright = "2021, DCMI"
 
 # The full version, including alpha/beta/rc tags
-release = dctap.__version__
+# See ../dctap/__init__.py
+release = "0.3.3"
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx_rtd_theme", "sphinx.ext.autosectionlabel"]
+extensions = [
+    "sphinx.ext.autodoc", 
+    "sphinx.ext.napoleon", 
+    "sphinx_rtd_theme", 
+    "sphinx.ext.autosectionlabel",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -56,3 +61,6 @@ html_theme = "sphinx_rtd_theme"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+# Syntax highlighting not needed in 'dctap' document
+highlight_language = 'none'

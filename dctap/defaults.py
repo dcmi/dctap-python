@@ -4,27 +4,27 @@ DEFAULT_CONFIGFILE_NAME = "dctap.yml"
 
 DEFAULT_CONFIG_YAML = """# dctap configuration file (in YAML format)
 
-# This module ignores elements (column headers) that are not part of the 
-# base DCTAP model unless they are configured here as "extra" elements.
-#
-# Extra elements must be designated either as "shape" elements (eg, "closed 
-# or "start") or as "statement constraint" elements (eg, "min" and "max").
-# As extra elements are not supported by this module, their values are 
-# simply passed through to the text, JSON, and YAML outputs.
+## This module ignores elements (column headers) that are not part of the 
+## base DCTAP model unless they are configured here as "extra" elements.
+##
+## Extra elements must be designated either as "shape" elements (eg, "closed 
+## or "start") or as "statement constraint" elements (eg, "min" and "max").
+## As extra elements are not supported by this module, their values are 
+## simply passed through to the text, JSON, and YAML outputs.
 
-extra_shape_elements:
+# extra_shape_elements:
 # - closed
 # - start
 
-extra_statement_constraint_elements:
+# extra_statement_constraint_elements:
 # - min
 # - max
 
-# This module has three built-in value node types: "iri", "literal", and "bnode".
-# Extra node types can be added here, for example as aliases, such as "uri" for "iri",
-# or as combinations of node types, such as "shacl:BlankNodeOrLiteral".
-extra_value_node_types:
-- uri
+## This module has three built-in value node types: "iri", "literal", and "bnode".
+## Extra node types can be added here, for example as aliases, such as "uri" for "iri",
+## or as combinations of node types, such as "shacl:BlankNodeOrLiteral".
+# extra_value_node_types:
+# - uri
 
 elements_parsed_as_lists:
 - shapeLabel

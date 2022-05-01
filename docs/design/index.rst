@@ -11,3 +11,5 @@ This section explains how some aspects of CSV processing are handled by the modu
    elements_reordered/index
    elements_unknown_ignored/index
    elements_not_repeatable/index
+   element_names/index
+   reserved_names/index

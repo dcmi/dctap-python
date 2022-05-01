@@ -67,7 +67,7 @@ def get_config(
 ):
     """Get config dict from file if found, else get built-in defaults."""
     # pylint: disable=raise-missing-from
-    elements_dict = dict()
+    elements_dict = {}
     elements_dict["shape_elements"] = shape_elements(shape_class)[0]
     elements_dict["statement_constraint_elements"] = statement_constraint_elements(
         statement_constraint_class
@@ -96,7 +96,7 @@ def get_config(
         raise ConfigError(bad_form)
     config_dict.update(elements_dict)
     if not config_dict.get("element_aliases"):  # is this necessary?
-        config_dict["element_aliases"] = dict()  # is this necessary?
+        config_dict["element_aliases"] = {}     # is this necessary?
     config_dict["element_aliases"].update(
         _compute_alias2element_mappings(config_dict["csv_elements"])
     )
@@ -105,7 +105,7 @@ def get_config(
 
 def _compute_alias2element_mappings(csv_elements_list=None):
     """Compute shortkey/lowerkey-to-element mappings from list of CSV elements."""
-    alias2element_mappings = dict()
+    alias2element_mappings = {}
     for csv_elem in csv_elements_list:
         lowerkey = csv_elem.lower()
         alias2element_mappings[lowerkey] = csv_elem  # { lowerkey: camelcasedValue }

@@ -36,7 +36,7 @@ def _get_tapshapes(rows, config_dict):
     )
 
     # fmt: off
-    shapes = dict()                                 # Init a dict for TAPShapes,
+    shapes = {}                                     # Init a dict for TAPShapes,
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
     warnings = defaultdict(dict)                    # Init defaultdict for warnings.
 
@@ -74,7 +74,7 @@ def _get_tapshapes(rows, config_dict):
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
             shape = shapes[sh_id] = TAPShape()      # give it value TAPShape object,
             set_shape_fields(shape, row)            # populate its shape elements, and
-            warnings[sh_id] = dict()                # use as key in warnings dict.
+            warnings[sh_id] = {}                    # use as key in warnings dict.
 
         shape.normalize(config_dict)
         shape_warnings = shape.get_warnings()
@@ -83,7 +83,7 @@ def _get_tapshapes(rows, config_dict):
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings, by shape,
             except KeyError:                        # but if needed key not found,
-                warnings[sh_id][elem] = list()      # set value of empty list,
+                warnings[sh_id][elem] = []          # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
         sc = TAPStatementConstraint()               # Instantiate SC for this row.
@@ -106,12 +106,12 @@ def _get_tapshapes(rows, config_dict):
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings by shape,
             except KeyError:                        # but if needed key not found,
-                warnings[sh_id][elem] = list()      # set value of empty list,
+                warnings[sh_id][elem] = []          # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        tapshapes_dict = dict()                     # Dict will hold shapes as dicts.
+        tapshapes_dict = {}                         # Dict will hold shapes as dicts.
 
-        shape_list = list()                         # New list for TAPShapes objs, to
+        shape_list = []                             # New list for TAPShapes objs, to
         tapshapes_dict["shapes"] = shape_list       # hold on tapshapes_dict["shapes"].
 
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
@@ -179,7 +179,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     raw_header_line_list = csvlines_stripped[0].split(",")
-    new_header_line_list = list()
+    new_header_line_list = []
 
     recognized_elements = config_dict.get("csv_elements")
     extra_shape_elements = config_dict.get("extra_shape_elements")
@@ -206,8 +206,8 @@ def _get_rows(open_csvfile_obj, config_dict):
             warn = (
                 f"Non-DCTAP element {repr(header)} not configured as extra element."
             )
-            csv_warnings["csv"] = dict()
-            csv_warnings["csv"]["header"] = list()
+            csv_warnings["csv"] = {}
+            csv_warnings["csv"]["header"] = []
             csv_warnings["csv"]["header"].append(warn)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str

@@ -28,11 +28,10 @@ def test_elements_parsed_as_lists():
     assert sc.valueDataType == ["xsd:date", "xsd:time"]
     assert sc.valueShape == ["a", "b", "c", "d"]
 
-@pytest.mark.skip
 def test_value_node_type_not_parsed_as_list():
-    """Value Node Type not parsed as list - should raise error if not configured."""
-    config_dict = get_config()
+    """When element not configured to be parsed as list, just pass through."""
+    config_dict["elements_parsed_as_lists"] = []
     sc = TAPStatementConstraint()
     sc.valueNodeType = "iri bnode"
     sc._parse_elements_listed_in_configfile_as_lists(config_dict)
-    assert sc.valueNodeType == ["iri", "bnode"]
+    assert sc.valueNodeType == "iri bnode"

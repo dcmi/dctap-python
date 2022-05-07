@@ -59,7 +59,7 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
 
     config_dict = get_config(configfile)
     csvreader_output = csvreader(csvfile_obj, config_dict)
-    tapshapes_dict, warnings_dict = csvreader_output
+    (tapshapes_dict, warnings_dict) = csvreader_output
     if expand_prefixes:
         tapshapes_dict = expand_uri_prefixes(tapshapes_dict, config_dict)
 

@@ -61,7 +61,7 @@ def write_configfile(
 
 def get_config(
     config_file=None,
-    nondefault_config_yaml=None,
+    config_yamldoc=None,
     shape_class=TAPShape,
     statement_constraint_class=TAPStatementConstraint,
 ):
@@ -86,8 +86,8 @@ def get_config(
         try:
             config_yaml = Path(DEFAULT_CONFIGFILE_NAME).read_text(encoding='UTF-8')
         except (FileNotFoundError, PermissionError):
-            if nondefault_config_yaml:
-                config_yaml = nondefault_config_yaml
+            if config_yamldoc:
+                config_yaml = config_yamldoc
             else:
                 config_yaml = DEFAULT_CONFIG_YAML
     try:

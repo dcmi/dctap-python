@@ -4,10 +4,10 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config
-from dctap.defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
+from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 from dctap.exceptions import ConfigError
 
-YAML_CONFIGFILE_CONTENTS = """\
+NONDEFAULT_CONFIG_YAMLDOC = """\
 default_shape_identifier: "default"
 
 prefixes:
@@ -34,7 +34,7 @@ def test_get_config_from_builtins(tmp_path):
 def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""
     os.chdir(tmp_path)
-    Path(DEFAULT_CONFIGFILE_NAME).write_text(YAML_CONFIGFILE_CONTENTS)
+    Path(DEFAULT_CONFIGFILE_NAME).write_text(NONDEFAULT_CONFIG_YAMLDOC)
     config_dict = get_config()
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_identifier")
@@ -46,7 +46,7 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
 
 def test_get_config_from_nondefault_yaml(tmp_path):
     """Get config dict when passed non-default YAML."""
-    config_dict = get_config(nondefault_config_yaml=DEFAULT_CONFIG_YAML)
+    config_dict = get_config(config_yamldoc=NONDEFAULT_CONFIG_YAMLDOC)
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_identifier")
 

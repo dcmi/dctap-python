@@ -10,10 +10,8 @@ from .utils import is_uri_or_prefixed_uri
 class TAPStatementConstraint:
     """Instances hold TAP/CSV elements related to statement constraints."""
 
-    # pylint: disable=too-many-instance-attributes
-    # - It's a dataclass, right?
-    # pylint: disable=invalid-name
-    # - propertyID, etc, do not conform to snake-case naming style.
+    # pylint: disable=too-many-instance-attributes # It's a dataclass, right?
+    # pylint: disable=invalid-name # for elements not named in snake case.
 
     propertyID: str = ""
     propertyLabel: str = ""
@@ -248,7 +246,6 @@ class TAPShape:
     def normalize(self, settings):
         """Normalize values where required."""
         self._normalize_default_shapeID(settings)
-        #        self._parse_elements_listed_in_configfile_as_lists(settings)
         return True
 
     def _normalize_default_shapeID(self, settings):

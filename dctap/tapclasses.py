@@ -41,7 +41,7 @@ class TAPStatementConstraint:
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
         self._valueConstraintType_picklist_parse(settings)
         self._valueNodeType_is_from_enumerated_list(settings)
-        self._parse_elements_listed_in_configfile_as_lists(settings)
+        self._parse_elements_listed_in_configfile_as_picklists(settings)
         return self
 
     def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
@@ -206,23 +206,22 @@ class TAPStatementConstraint:
                     f"so node type should not be {repr(self.valueNodeType)}."
                 )
 
-    def _parse_elements_listed_in_configfile_as_lists(
-        self, settings=None, sep=None, elements_to_parse_as_lists=None
-    ):
-        """@@@"""
-        if sep is None:
-            sep = " "
-        if elements_to_parse_as_lists is None:
-            elements_to_parse_as_lists = []
-        if settings:
-            if settings.get("picklist_item_separator"):
-                sep = settings.get("picklist_item_separator")
-            if settings.get("picklist_elements"):
-                elements_to_parse_as_lists = settings.get("picklist_elements")
+    def _parse_elements_listed_in_configfile_as_picklists(self, settings):
+        """Parse elements configured as picklists."""
+        if settings.get("picklist_item_separator"):
+            separator = settings.get("picklist_item_separator")
+        else:
+            separator = " "
 
-        for element in elements_to_parse_as_lists:
+        if settings.get("picklist_elements"):
+            picklist_elements = settings.get("picklist_elements")
+        else:
+            picklist_elements = []
+
+        for element in picklist_elements:
             if getattr(self, element):
-                setattr(self, element, getattr(self, element).split(sep))
+                setattr(self, element, getattr(self, element).split(separator))
+
         return self
 
     def get_warnings(self):

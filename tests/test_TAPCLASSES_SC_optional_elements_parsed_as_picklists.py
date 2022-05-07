@@ -22,7 +22,7 @@ def test_picklist_elements():
     sc.valueNodeType = "iri bnode"
     sc.valueDataType = "xsd:date xsd:time"
     sc.valueShape = "a b c d"
-    sc._parse_elements_listed_in_configfile_as_lists(config_dict)
+    sc._parse_elements_listed_in_configfile_as_picklists(config_dict)
     assert sc.propertyID == ["dcterms:creator"]
     assert sc.valueNodeType == ["iri", "bnode"]
     assert sc.valueDataType == ["xsd:date", "xsd:time"]
@@ -33,7 +33,7 @@ def test_value_node_type_not_parsed_as_list():
     config_dict["picklist_elements"] = []
     sc = TAPStatementConstraint()
     sc.valueNodeType = "iri bnode"
-    sc._parse_elements_listed_in_configfile_as_lists(config_dict)
+    sc._parse_elements_listed_in_configfile_as_picklists(config_dict)
     assert sc.valueNodeType == "iri bnode"
 
 def test_picklist_item_separator_defaults_to_single_blank():
@@ -43,6 +43,6 @@ def test_picklist_item_separator_defaults_to_single_blank():
     config_dict["picklist_elements"] = [ "valueNodeType" ]
     config_dict["picklist_item_separator"] = None
     sc.valueNodeType = "iri bnode"
-    sc._parse_elements_listed_in_configfile_as_lists(config_dict)
+    sc._parse_elements_listed_in_configfile_as_picklists(config_dict)
     assert sc.valueNodeType == ["iri", "bnode"]
     

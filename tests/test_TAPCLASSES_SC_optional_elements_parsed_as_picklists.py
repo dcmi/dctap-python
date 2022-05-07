@@ -8,14 +8,14 @@ from dctap.tapclasses import TAPStatementConstraint
 from dctap.csvreader import csvreader
 
 config_dict = get_config()
-config_dict["elements_parsed_as_lists"] = [
+config_dict["picklist_elements"] = [
     "propertyID", 
     "valueNodeType", 
     "valueDataType", 
     "valueShape",
 ]
 
-def test_elements_parsed_as_lists():
+def test_picklist_elements():
     """Elements enumerated in config settings are parsed as lists."""
     sc = TAPStatementConstraint()
     sc.propertyID = "dcterms:creator"
@@ -30,21 +30,17 @@ def test_elements_parsed_as_lists():
 
 def test_value_node_type_not_parsed_as_list():
     """When element not configured to be parsed as list, just pass through."""
-    config_dict["elements_parsed_as_lists"] = []
+    config_dict["picklist_elements"] = []
     sc = TAPStatementConstraint()
     sc.valueNodeType = "iri bnode"
     sc._parse_elements_listed_in_configfile_as_lists(config_dict)
     assert sc.valueNodeType == "iri bnode"
 
-def test_picklist_item_separator_does_not_exist_setting_unless_activated():
-    """Setting picklist_item_separator does not exist unless activated."""
-    assert "picklist_item_separator" not in list(get_config())
-
 def test_picklist_item_separator_defaults_to_single_blank():
     """Setting picklist_item_separator of None defaults to single blank."""
     sc = TAPStatementConstraint()
     config_dict = get_config()
-    config_dict["elements_parsed_as_lists"] = [ "valueNodeType" ]
+    config_dict["picklist_elements"] = [ "valueNodeType" ]
     config_dict["picklist_item_separator"] = None
     sc.valueNodeType = "iri bnode"
     sc._parse_elements_listed_in_configfile_as_lists(config_dict)

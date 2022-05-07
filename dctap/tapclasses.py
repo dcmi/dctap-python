@@ -217,8 +217,8 @@ class TAPStatementConstraint:
         if settings:
             if settings.get("picklist_item_separator"):
                 sep = settings.get("picklist_item_separator")
-            if settings.get("elements_parsed_as_lists"):
-                elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
+            if settings.get("picklist_elements"):
+                elements_to_parse_as_lists = settings.get("picklist_elements")
 
         for element in elements_to_parse_as_lists:
             if getattr(self, element):

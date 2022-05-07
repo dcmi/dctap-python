@@ -54,7 +54,7 @@ def test_exit_with_ConfigError_if_configfile_specified_but_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""
     os.chdir(tmp_path)
     with pytest.raises(ConfigError):
-        get_config(config_file="dctap.yml")
+        get_config(configfile_name="dctap.yml")
 
 def test_exit_with_ConfigError_if_specified_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if config file specified as argument has bad YAML."""
@@ -63,7 +63,7 @@ def test_exit_with_ConfigError_if_specified_configfile_found_with_bad_yaml(tmp_p
     nondefault_configfile_name = "dctap_settings.yml"
     Path(nondefault_configfile_name).write_text(bad_config_yaml)
     with pytest.raises(ConfigError):
-        get_config(config_file=nondefault_configfile_name)
+        get_config(configfile_name=nondefault_configfile_name)
 
 def test_exit_with_ConfigError_if_default_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if default config file has bad YAML."""

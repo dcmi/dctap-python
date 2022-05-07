@@ -41,27 +41,27 @@ def statement_constraint_elements(
 
 
 def write_configfile(
-    config_file=DEFAULT_CONFIGFILE_NAME,
-    config_yaml=DEFAULT_CONFIG_YAML,
+    configfile_name=DEFAULT_CONFIGFILE_NAME,
+    config_yamldoc=DEFAULT_CONFIG_YAML,
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
-    if Path(config_file).exists():
-        raise ConfigError(f"{repr(config_file)} already exists - will not overwrite.")
+    if Path(configfile_name).exists():
+        raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")
     try:
-        with open(config_file, "w", encoding="utf-8") as outfile:
-            outfile.write(config_yaml)
+        with open(configfile_name, "w", encoding="utf-8") as outfile:
+            outfile.write(config_yamldoc)
             print(
-                f"Built-in settings written to {str(config_file)} - edit as needed.",
+                f"Built-in settings written to {str(configfile_name)} for editing.",
                 file=sys.stderr,
             )
     except FileNotFoundError:
         # pylint: disable=raise-missing-from
-        raise ConfigError(f"{repr(config_file)} is not writeable - try different name.")
+        raise ConfigError(f"{repr(configfile_name)} not writeable; try different name.")
 
 
 def get_config(
-    config_file=None,
-    config_yamldoc=None,
+    configfile_name=None,
+    config_yamldoc=DEFAULT_CONFIG_YAML,
     shape_class=TAPShape,
     statement_constraint_class=TAPStatementConstraint,
 ):
@@ -75,26 +75,27 @@ def get_config(
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_constraint_elements"]
     )
-    bad_form = f"{repr(config_file)} is badly formed: fix, re-generate, or delete."
-    not_found = f"{repr(config_file)} not found or not readable."
-    if config_file:  # if a specific config file was named
+    bad_form = f"{repr(configfile_name)} is badly formed: fix, re-generate, or delete."
+    not_found = f"{repr(configfile_name)} not found or not readable."
+
+    if configfile_name:  # if a specific config file was named
         try:
-            config_yaml = Path(config_file).read_text(encoding='UTF-8')
+            config_yaml = Path(configfile_name).read_text(encoding='UTF-8')
         except (FileNotFoundError, PermissionError):
             raise ConfigError(not_found)
     else:
         try:
             config_yaml = Path(DEFAULT_CONFIGFILE_NAME).read_text(encoding='UTF-8')
         except (FileNotFoundError, PermissionError):
-            if config_yamldoc:
-                config_yaml = config_yamldoc
-            else:
-                config_yaml = DEFAULT_CONFIG_YAML
+            config_yaml = config_yamldoc
+
     try:
         config_dict = yaml.safe_load(config_yaml)
     except (yaml.YAMLError, yaml.scanner.ScannerError):
         raise ConfigError(bad_form)
+
     config_dict.update(elements_dict)
+
     if not config_dict.get("element_aliases"):  # is this necessary?
         config_dict["element_aliases"] = {}     # is this necessary?
     config_dict["element_aliases"].update(

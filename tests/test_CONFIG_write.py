@@ -18,8 +18,8 @@ def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIG_YAML to DEFAULT_CONFIGFILE_NAME and read back as text."""
     os.chdir(tmp_path)
     write_configfile(
-        config_file=DEFAULT_CONFIGFILE_NAME, 
-        config_yaml=NONDEFAULT_CONFIG_YAML)
+        configfile_name=DEFAULT_CONFIGFILE_NAME, 
+        config_yamldoc=NONDEFAULT_CONFIG_YAML)
     assert open(DEFAULT_CONFIGFILE_NAME).read() == NONDEFAULT_CONFIG_YAML
 
 def test_write_specified_configfile_and_read_back(tmp_path):
@@ -27,8 +27,8 @@ def test_write_specified_configfile_and_read_back(tmp_path):
     os.chdir(tmp_path)
     specified_config_file = "dctap.yaml"
     write_configfile(
-        config_file=specified_config_file, 
-        config_yaml=NONDEFAULT_CONFIG_YAML
+        configfile_name=specified_config_file, 
+        config_yamldoc=NONDEFAULT_CONFIG_YAML
     )
     assert open(specified_config_file).read() == NONDEFAULT_CONFIG_YAML
 
@@ -38,8 +38,8 @@ def test_not_write_default_configfile_if_already_exists(tmp_path):
     Path(DEFAULT_CONFIGFILE_NAME).write_text("Config stuff")
     with pytest.raises(SystemExit):
         write_configfile(
-            config_file=DEFAULT_CONFIGFILE_NAME, 
-            config_yaml=NONDEFAULT_CONFIG_YAML
+            configfile_name=DEFAULT_CONFIGFILE_NAME, 
+            config_yamldoc=NONDEFAULT_CONFIG_YAML
         )
 
 def test_not_write_specified_configfile_if_already_exists(tmp_path):
@@ -50,8 +50,8 @@ def test_not_write_specified_configfile_if_already_exists(tmp_path):
     Path(config_file).write_text("Config stuff")
     with pytest.raises(SystemExit):
         write_configfile(
-            config_file="config/dctap.yaml", 
-            config_yaml=NONDEFAULT_CONFIG_YAML
+            configfile_name="config/dctap.yaml", 
+            config_yamldoc=NONDEFAULT_CONFIG_YAML
         )
 
 def test_exits_if_specified_configfile_writeable(tmp_path):
@@ -60,6 +60,6 @@ def test_exits_if_specified_configfile_writeable(tmp_path):
     config_file = "config/dctap.yaml"
     with pytest.raises(SystemExit):
         write_configfile(
-            config_file="config/dctap.yaml", 
-            config_yaml=NONDEFAULT_CONFIG_YAML
+            configfile_name="config/dctap.yaml", 
+            config_yamldoc=NONDEFAULT_CONFIG_YAML
         )

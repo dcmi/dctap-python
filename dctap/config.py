@@ -65,7 +65,7 @@ def get_config(
     shape_class=TAPShape,
     statement_constraint_class=TAPStatementConstraint,
 ):
-    """Get config dict from file if found, else get built-in defaults."""
+    """Get config dict from file if found, else use built-in defaults."""
     # pylint: disable=raise-missing-from
     elements_dict = {}
     elements_dict["shape_elements"] = shape_elements(shape_class)[0]

@@ -213,7 +213,7 @@ class TAPStatementConstraint:
     ):
         """@@@"""
         if sep is None:
-            set = " "
+            sep = " "
         if elements_to_parse_as_lists is None:
             elements_to_parse_as_lists = []
         if settings:
@@ -223,26 +223,12 @@ class TAPStatementConstraint:
                 elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
 
         for element in elements_to_parse_as_lists:
-            if element == "propertyID":
-                if self.propertyID:
-                    self.propertyID = self.propertyID.split(sep)
-                    self.propertyID = [x.strip() for x in self.propertyID if x]
-            if element == "valueNodeType":
-                if self.valueNodeType:
-                    self.valueNodeType = self.valueNodeType.split(sep)
-                    self.valueNodeType = [x.strip() for x in self.valueNodeType if x]
-            if element == "valueDataType":
-                if self.valueDataType:
-                    self.valueDataType = self.valueDataType.split(sep)
-                    self.valueDataType = [x.strip() for x in self.valueDataType if x]
-            if element == "valueShape":
-                if self.valueShape:
-                    self.valueShape = self.valueShape.split(sep)
-                    self.valueShape = [x.strip() for x in self.valueShape if x]
+            if getattr(self, element):
+                setattr(self, element, getattr(self, element).split(sep))
         return self
 
     def get_warnings(self):
-        """Emit warnings dictionary self.sc_warnings, populated by normalize() method."""
+        """Emit self.sc_warnings as populated by self.normalize()."""
         return dict(self.sc_warnings)
 
 

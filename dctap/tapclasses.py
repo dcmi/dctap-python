@@ -257,23 +257,6 @@ class TAPShape:
             self.shapeID = settings.get("default_shape_identifier", "default")
         return self
 
-    #    def _parse_elements_listed_in_configfile_as_lists(self, settings):
-    #        """@@@"""
-    #        if settings.get("picklist_item_separator"):
-    #            sep = settings.get("picklist_item_separator")
-    #        else:
-    #            sep = " "
-    #
-    #        if settings.get("elements_parsed_as_lists"):
-    #            elements_to_parse_as_lists = settings.get("elements_parsed_as_lists")
-    #
-    #        for element in elements_to_parse_as_lists:
-    #            if element == "shapeLabel":
-    #                if self.shapeLabel:
-    #                    self.shapeLabel = self.shapeLabel.split(sep)
-    #                    self.shapeLabel = [x.strip() for x in self.shapeLabel if x]
-    #        return self
-
     def get_warnings(self):
         """Emit warnings dictionary self.sh_warnings, populated by normalize() method."""
         return dict(self.sh_warnings)

@@ -9,7 +9,6 @@ Configuration
 
    prefix_mappings/index
    extra_elements/index
-   extra_value_node_types/index
    picklist_elements/index
    picklist_item_separator/index
    element_aliases/index

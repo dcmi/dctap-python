@@ -19,30 +19,6 @@ The DCTAP Model consists of twelve "elements" related to Shapes and Statement Co
 
 Because the DCTAP Model was designed for compatibility with RDF and Linked Data, property constraints, shapes, literal datatypes and some value constraints are represented in a DCTAP Instance with :term:`IRI`\s (or :term:`Compact IRI`\s).
 
-Minimal application profile
-...........................
+.. toctree::
 
-In the DCTAP model, the simplest possible application profile consists of just one :term:`Statement Constraint` in the context of one :term:`Shape`.
-
-A Statement Constraint has, at a minimum, one **propertyID** element, and the existence of a Shape can be inferred, so in practical terms, the simplest possible application profile is a list of just one property.
-
-Note that if a shape identifier is not explicitly assigned in a CSV, a default identifier will be assigned. (This is discussed in the the section :ref:`elem_shapeID`.) In "shape-less" applications, this shape identifier can simply be ignored.
-
-.. csv-table:: 
-   :file: propertyID_only.csv
-   :header-rows: 1
-
-Interpreted as::
-
-    DCTAP instance
-	Shape
-	    shapeID: default
-	    Statement Constraint
-		propertyID: http://purl.org/dc/terms/title
-	    Statement Constraint
-		propertyID: http://purl.org/dc/terms/publisher
-	    Statement Constraint
-		propertyID: https://schema.org/creator
-	    Statement Constraint
-		propertyID: http://purl.org/dc/terms/date
-
+   minimum_profile/index

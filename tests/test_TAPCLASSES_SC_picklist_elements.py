@@ -15,15 +15,24 @@ config_dict["picklist_elements"] = [
     "valueShape",
 ]
 
+def test_picklist_elements_comma_separated():
+    """Elements enumerated in config settings are parsed as lists."""
+    config_dict["picklist_item_separator"] = ","
+    sc = TAPStatementConstraint()
+    sc.propertyID = "dcterms:creator,dcterms:date"
+    sc._parse_elements_listed_in_configfile_as_picklists(config_dict)
+    assert sc.propertyID == ["dcterms:creator", "dcterms:date"]
+
 def test_picklist_elements():
     """Elements enumerated in config settings are parsed as lists."""
+    config_dict["picklist_item_separator"] = " "
     sc = TAPStatementConstraint()
-    sc.propertyID = "dcterms:creator"
+    sc.propertyID = "dcterms:creator dcterms:date"
     sc.valueNodeType = "iri bnode"
     sc.valueDataType = "xsd:date xsd:time"
     sc.valueShape = "a b c d"
     sc._parse_elements_listed_in_configfile_as_picklists(config_dict)
-    assert sc.propertyID == ["dcterms:creator"]
+    assert sc.propertyID == ["dcterms:creator", "dcterms:date"]
     assert sc.valueNodeType == ["iri", "bnode"]
     assert sc.valueDataType == ["xsd:date", "xsd:time"]
     assert sc.valueShape == ["a", "b", "c", "d"]

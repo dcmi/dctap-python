@@ -1,6 +1,6 @@
 .. _picklist_item_separator:
 
-Picklist item separator
+Picklist Item Separator
 .......................
 
 By default, a picklist is parsed from the CSV string value by splitting substrings separated by a single space. This default separator can be changed to a different character, such as a comma or pipe (orbar). For example, the element **propertyID** can be configured as a picklist element with a non-default picklist item separator, such as a comma::
@@ -17,7 +17,7 @@ In this case, a **propertyID** containing a comma, such as:
 
 would be parsed as a list with two alternative values (the "picklist"), as in the example shown in section :ref:`picklist_elements`.
 
-Note, however, that because columns in CSVs are, by definition, separated by commas, a value with an embedded comma, as above, must be enclosed in quotes. This what a CSV with two columns would look like on disk::
+Note, however, that because columns in CSVs are, by definition, separated by commas, a value with an embedded comma, as above, must be enclosed in quotes. Exporting to CSV from an Excel spreadsheet yields a result such as the following, where the multiple values in cell A2 are enclosed in quotes::
 
     propertyID,valueNodeType
     "dc:creator,foaf:maker",iri

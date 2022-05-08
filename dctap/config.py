@@ -1,5 +1,6 @@
 """Default settings."""
 
+import re
 import sys
 from dataclasses import asdict
 from pathlib import Path
@@ -43,8 +44,18 @@ def statement_constraint_elements(
 def write_configfile(
     configfile_name=DEFAULT_CONFIGFILE_NAME,
     config_yamldoc=DEFAULT_CONFIG_YAML,
+    terse=False,
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
+    if terse:
+        pass
+    if terse:
+        config_yamldoc = '\n'.join( # remove lines starting with more than one '#'
+            [ln for ln in config_yamldoc.splitlines() if not re.match("^##", ln)]
+        )
+        config_yamldoc = '\n'.join( # remove lines that consist only of whitespace
+            [ln.rstrip() for ln in config_yamldoc.splitlines() if ln.rstrip()]
+        )
     if Path(configfile_name).exists():
         raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")
     try:

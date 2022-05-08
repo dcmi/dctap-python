@@ -19,7 +19,7 @@ default_shape_identifier: "default"
 picklist_item_separator: ','
 picklist_elements:
 - propertyID
-- valueNodeType
+# - valueNodeType
 # - valueDataType
 # - valueShape
 # extra_shape_elements:

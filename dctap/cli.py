@@ -41,7 +41,9 @@ def cli(context):
 @cli.command()
 @click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
 @click.option(
-    "--configfile", type=click.Path(exists=True), help="Pathname of configuration file."
+    "--configfile",
+    type=click.Path(exists=True),
+    help="Pathname of (non-default) configuration file."
 )
 @click.option(
     "--expand-prefixes",
@@ -91,11 +93,20 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
 
 
 @cli.command()
-@click.argument("configfile", type=click.Path(), required=False)
+@click.option(
+    "--configfile",
+    type=click.Path(exists=True),
+    help="Pathname of configuration file."
+)
+@click.option(
+    "--terse/--verbose",
+    default=False,
+    help="Write configuration file without verbose commentary."
+)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(context, configfile):
+def init(context, configfile, terse):
     """Generate customizable configuration file [default: dctap.yml]."""
     if not configfile:
         configfile = DEFAULT_CONFIGFILE_NAME
-    write_configfile(configfile)
+    write_configfile(configfile, terse)

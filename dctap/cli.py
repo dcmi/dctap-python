@@ -4,7 +4,8 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .config import get_config, write_configfile, DEFAULT_CONFIGFILE_NAME
+from .config import get_config, write_configfile
+from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
 from .inspect import pprint_tapshapes, print_warnings
 from .csvreader import csvreader
 from .loggers import stderr_logger
@@ -34,7 +35,7 @@ def cli(context):
     $ dctap read --json x.csv                # Show in JSON
     $ dctap read --yaml x.csv                # Show in YAML
     $ dctap read --expand-prefixes x.csv     # Expand prefixes
-    $ dctap read --warnings x.csv            # Show warnings 
+    $ dctap read --warnings x.csv            # Show warnings
     $ dctap read --configfile ../taprc x.csv # Use custom path
     """
 
@@ -44,7 +45,7 @@ def cli(context):
 @click.option(
     "--configfile",
     type=click.Path(exists=True),
-    help="Pathname of (non-default) config file."
+    help="Pathname of (non-default) config file.",
 )
 @click.option(
     "--expand-prefixes",
@@ -56,8 +57,8 @@ def cli(context):
 @click.option("--yaml", is_flag=True, help="Print YAML to stdout.")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml):
-    """Generate normalized text, JSON, or YAML of CSV, with warnings."""
+def read(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml):
+    """Read CSV and generate normalized text, JSON, or YAML, with warnings."""
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile)
@@ -95,19 +96,21 @@ def generate(context, csvfile_obj, configfile, expand_prefixes, warnings, json, 
 
 @cli.command()
 @click.option(
-    "--configfile",
-    type=click.Path(exists=False),
-    help="Pathname of config file to be written."
+    "--hidden-configfile/--configfile",
+    default=False, 
+    help="Write config to hidden file [.dctaprc].",
 )
 @click.option(
-    "--terse/--verbose",
-    default=False,
-    help="Write config file without (or with) verbose commentary."
+    "--terse/--verbose", 
+    default=False, 
+    help="Omit verbose commentary from config file.",
 )
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(context, configfile, terse):
-    """Generate customizable configuration file [default: dctap.yml]."""
-    if not configfile:
+def init(context, hidden_configfile, terse):
+    """Write customizable config file [default: dctap.yml]."""
+    if hidden_configfile:
+        configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
+    else:
         configfile = DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile, terse=terse)

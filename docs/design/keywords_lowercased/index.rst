@@ -1,9 +1,9 @@
-.. _design_elements_lowercased:
+.. _design_keywords_lowercased:
 
-Keyword values are normalized to lowercase.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Keywords are normalized to lowercase.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Keyword values are normalized to lowercase. For example, "LITERAL" and "Literal" are both normalized to "literal".
+Picklist values are normalized to lowercase. For example, "LITERAL", "Literal", and "lITERAL" are normalized to "literal", while "Picklist", "PICKLIST", and "pICKLIST" are normalized to "picklist".
 
 .. csv-table::
    :file: headers.csv
@@ -12,8 +12,20 @@ Keyword values are normalized to lowercase. For example, "LITERAL" and "Literal"
 Interpreted as::
 
     DCTAP instance
-        Shape
-            shapeID:                 :book
-            Statement Constraint
-                propertyID:          dcterms:date
-                valueNodeType:       literal
+    Shape
+        shapeID:                 default
+        Statement Constraint
+            propertyID:          dc:subject
+            valueNodeType:       literal
+            valueConstraint:     ['Kish', 'Uruk', 'Nuzi']
+            valueConstraintType: picklist
+        Statement Constraint
+            propertyID:          dc:subject
+            valueNodeType:       literal
+            valueConstraint:     ['Kish', 'Uruk', 'Nuzi']
+            valueConstraintType: picklist
+        Statement Constraint
+            propertyID:          dc:subject
+            valueNodeType:       literal
+            valueConstraint:     ['Kish', 'Uruk', 'Nuzi']
+            valueConstraintType: picklist

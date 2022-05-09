@@ -19,7 +19,7 @@ The module performs a few simple consistency checks and emits warnings as an aid
 
 The module passes input through to output unchanged, possibly with added warnings, with the following exceptions:
 
-- Element names (column headers) are normalized to lowercase without whitespace or punctuation (see section :ref:`design_elements_lowercased`).
+- Element names (column headers) are normalized to lowercase without whitespace or punctuation (see section :ref:`design_keywords_lowercased`).
 
 - Normalized elements not part of the DCTAP model are ignored (see section :ref:`design_elements_unknown_ignored`).
 

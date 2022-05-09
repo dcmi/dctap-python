@@ -1,2 +1,4 @@
-Shape_ID,Property ID,Value_Node_type
-:book,dcterms:date,Literal
+Property ID,Value_Node_type,Value_Constraint,Value_Constraint_Type
+dc:subject,Literal,"Kish Uruk Nuzi",Picklist
+dc:subject,LITERAL,"Kish Uruk Nuzi",PICKLIST
+dc:subject,lITERAL,"Kish Uruk Nuzi",pICKLIST

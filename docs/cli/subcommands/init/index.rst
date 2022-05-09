@@ -1,4 +1,4 @@
-.. _cli_init:
+.. _cli_subcommands_init:
 
 Initialize an optional config file
 ..................................
@@ -19,9 +19,9 @@ The subcommand **dctap init** generates a starter configuration file by writing 
 Global config files
 :::::::::::::::::::
 
-Alternatively, a configuration file can be generated at a fixed location using the **dctap init --configfile** option, and referenced using **dctap read --configfile**, which designates an alternative pathname for the configuration file.
+Once generated, config files may be moved to arbitrary locations and renamed. As described in the section :ref:`cli_subcommands_read`, config files at arbitrary locations may be referenced by their absolute or relative pathnames with the command **dctap read --configfile ...**:
 
 .. code-block:: bash
 
-    data$ dctap init --configfile /home/tombaker/myproject/dctap.yaml
     data$ dctap read --configfile /home/tombaker/myproject/dctap.yaml example.csv
+    data$ dctap read --configfile ../dctap.yaml example.csv

@@ -19,7 +19,7 @@ Interpreted (with warnings enabled) as::
 
     WARNING [csv/header] Non-DCTAP element 'Status' not configured as extra element.
 
-Users wishing to use columns in their CSV that are not part of the DCTAP model, for example to specify that a shape is "closed" or to specify "severity" of validation errors, can generate a configuration file (see section :ref:`cli_init`) and list their extra column headers in the configuration file under the sections "extra_shape_elements" or "extra_statement_constraint_elements". This will ensure that the extra columns will be passed through to the text, JSON, and YAML outputs.
+Users wishing to use columns in their CSV that are not part of the DCTAP model, for example to specify that a shape is "closed" or to specify "severity" of validation errors, can generate a configuration file (see section :ref:`cli_subcommands_init`) and list their extra column headers in the configuration file under the sections "extra_shape_elements" or "extra_statement_constraint_elements". This will ensure that the extra columns will be passed through to the text, JSON, and YAML outputs.
 
 For example, if the configuration file includes::
     

@@ -19,7 +19,7 @@ prefixes:
 def test_get_config_from_builtins(tmp_path):
     """Get config dict from built-in settings."""
     config_dict = get_config()
-    assert config_dict.get("prefixes")                            # built-in/configurable
+    assert "prefixes" in list(config_dict.keys())                 # built-in/configurable
     assert config_dict.get("csv_elements")                        # computed from dataclasses
     assert config_dict.get("shape_elements")                      # computed from dataclasses
     assert config_dict.get("statement_constraint_elements")       # computed from dataclasses
@@ -37,7 +37,7 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     os.chdir(tmp_path)
     Path(DEFAULT_CONFIGFILE_NAME).write_text(NONDEFAULT_CONFIG_YAMLDOC)
     config_dict = get_config()
-    assert config_dict.get("prefixes")
+    assert "prefixes" in list(config_dict.keys())
     assert config_dict.get("default_shape_identifier")
     assert config_dict.get("csv_elements")                       # computed
     assert config_dict.get("shape_elements")                     # computed

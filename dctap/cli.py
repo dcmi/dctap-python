@@ -97,12 +97,12 @@ def read(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml
 @cli.command()
 @click.option(
     "--hidden-configfile/--configfile",
-    default=False, 
+    default=False,
     help="Write config to hidden file [.dctaprc].",
 )
 @click.option(
-    "--terse/--verbose", 
-    default=False, 
+    "--terse/--verbose",
+    default=False,
     help="Omit verbose commentary from config file.",
 )
 @click.help_option(help="Show help and exit")

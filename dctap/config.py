@@ -7,7 +7,11 @@ from pathlib import Path
 
 # pylint: disable=consider-using-from-import
 import ruamel.yaml as yaml
-from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_CONFIG_YAML
+from .defaults import (
+    DEFAULT_CONFIGFILE_NAME,
+    DEFAULT_HIDDEN_CONFIGFILE_NAME,
+    DEFAULT_CONFIG_YAML,
+)
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementConstraint
 
@@ -48,8 +52,6 @@ def write_configfile(
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
     if terse:
-        pass
-    if terse:
         config_yamldoc = '\n'.join( # remove lines starting with more than one '#'
             [ln for ln in config_yamldoc.splitlines() if not re.match("^##", ln)]
         )
@@ -65,9 +67,8 @@ def write_configfile(
                 f"Built-in settings written to {str(configfile_name)} for editing.",
                 file=sys.stderr,
             )
-    except FileNotFoundError:
-        # pylint: disable=raise-missing-from
-        raise ConfigError(f"{repr(configfile_name)} not writeable; try different name.")
+    except FileNotFoundError as error:
+        raise ConfigError(f"{repr(configfile_name)} not writeable.") from error
 
 
 def get_config(
@@ -76,8 +77,18 @@ def get_config(
     shape_class=TAPShape,
     statement_constraint_class=TAPStatementConstraint,
 ):
-    """Get config dict from file if found, else use built-in defaults."""
-    # pylint: disable=raise-missing-from
+    """Get built-in settings then override from config file (if found)."""
+
+    def load2dict(configfile=None):
+        """Parse contents of YAML configfile and return dictionary."""
+        bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
+        config_yaml = Path(configfile).read_text(encoding='UTF-8')
+        try:
+            file_config_dict = yaml.safe_load(config_yaml)
+        except (yaml.YAMLError, yaml.scanner.ScannerError) as error:
+            raise ConfigError(bad_form) from error
+        return file_config_dict
+
     elements_dict = {}
     elements_dict["shape_elements"] = shape_elements(shape_class)[0]
     elements_dict["statement_constraint_elements"] = statement_constraint_elements(
@@ -86,36 +97,35 @@ def get_config(
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_constraint_elements"]
     )
-    bad_form = f"{repr(configfile_name)} is badly formed: fix, re-generate, or delete."
-    not_found = f"{repr(configfile_name)} not found or not readable."
 
-    if configfile_name:  # if a specific config file was named
-        try:
-            config_yaml = Path(configfile_name).read_text(encoding='UTF-8')
-        except (FileNotFoundError, PermissionError):
-            raise ConfigError(not_found)
-    else:
-        try:
-            config_yaml = Path(DEFAULT_CONFIGFILE_NAME).read_text(encoding='UTF-8')
-        except (FileNotFoundError, PermissionError):
-            config_yaml = config_yamldoc
-
-    try:
-        config_dict = yaml.safe_load(config_yaml)
-    except (yaml.YAMLError, yaml.scanner.ScannerError):
-        raise ConfigError(bad_form)
-
-    config_dict.update(elements_dict)
-
-    if not config_dict.get("element_aliases"):  # is this necessary?
-        config_dict["element_aliases"] = {}     # is this necessary?
+    config_dict = {}
+    config_dict["element_aliases"] = {}
     config_dict["element_aliases"].update(
-        _compute_alias2element_mappings(config_dict["csv_elements"])
+        _alias2element_mappings(elements_dict["csv_elements"])
     )
+    config_dict["prefixes"] = {}
+    config_dict.update(elements_dict)
+    if yaml.safe_load(config_yamldoc):
+        config_dict.update(yaml.safe_load(config_yamldoc))
+
+    file_config_dict = {}
+    if configfile_name:
+        try:
+            file_config_dict.update(load2dict(configfile_name))
+        except FileNotFoundError as error:
+            raise ConfigError(
+                f"{repr(configfile_name)} not found; using defaults."
+            ) from error
+    elif Path(DEFAULT_CONFIGFILE_NAME).exists():
+        file_config_dict.update(load2dict(DEFAULT_CONFIGFILE_NAME))
+    elif Path(DEFAULT_HIDDEN_CONFIGFILE_NAME).exists():
+        file_config_dict.update(load2dict(DEFAULT_HIDDEN_CONFIGFILE_NAME))
+
+    config_dict.update(file_config_dict)
     return config_dict
 
 
-def _compute_alias2element_mappings(csv_elements_list=None):
+def _alias2element_mappings(csv_elements_list=None):
     """Compute shortkey/lowerkey-to-element mappings from list of CSV elements."""
     alias2element_mappings = {}
     for csv_elem in csv_elements_list:

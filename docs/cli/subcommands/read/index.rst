@@ -1,9 +1,9 @@
-.. _cli_generate:
+.. _cli_read:
 
-Generate text, JSON, or YAML
-............................
+Read and parse CSV to text, JSON, or YAML
+.........................................
 
-The subcommand **dctap generate**:
+The subcommand **dctap read**:
 
 - reads a CSV stream (usually a file)
 - sends output to stdout as text (for on-screen debugging), JSON, or YAML
@@ -12,11 +12,11 @@ The subcommand **dctap generate**:
 View CSV contents as text
 :::::::::::::::::::::::::
 
-When used without options, **dctap generate** outputs a lightly normalized view of the DCTAP elements in a CSV to stdout. Note that the CSV can be specified as a filename argument or sent to the command via stdin. The commands **dctap generate example** and **cat example | dctap generate -** (note the dash) get the same result:
+When used without options, **dctap read** outputs a lightly normalized view of the DCTAP elements in a CSV to stdout. Note that the CSV can be specified as a filename argument or sent to the command via stdin. The commands **dctap read example.csv** and **cat example.csv | dctap read -** (note the dash) get the same result:
 
 .. code-block:: bash
 
-    $ cat example.csv | dctap generate -
+    $ cat example.csv | dctap read -
     DCTAP instance
         Shape
             shapeID:                 :a
@@ -27,11 +27,11 @@ When used without options, **dctap generate** outputs a lightly normalized view 
 View warnings
 :::::::::::::
 
-As an aid for debugging, the `dctap generate` subcommand performs various consistency checks on the CSV input and generates warnings for any anomalies or possible errors found. Explanations of these consistency checks can be found in the descriptions of individual :term:`DCTAP Element`\s; see section :ref:`elements`. The option **--warnings** causes the results of these checks to be sent to stderr. This ensures that the warnings are kept out of the stdout streams of text, JSON, or YAML output and can thus be passed as input to other commands in a pipeline.
+As an aid for debugging, the `dctap read` subcommand performs various consistency checks on the CSV input and generates warnings for any anomalies or possible errors found. Explanations of these consistency checks can be found in the descriptions of individual :term:`DCTAP Element`\s; see section :ref:`elements`. The option **--warnings** causes the results of these checks to be sent to stderr. This ensures that the warnings are kept out of the stdout streams of text, JSON, or YAML output and can thus be passed as input to other commands in a pipeline.
 
 .. code-block:: bash
 
-    $ dctap generate --warnings example2.csv
+    $ dctap read --warnings example2.csv
     DCTAP instance
         Shape
             shapeID:                 :a
@@ -48,7 +48,7 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
 
 .. code-block:: bash
 
-    $ dctap generate --expand-prefixes example.csv
+    $ dctap read --expand-prefixes example.csv
     DCTAP instance
         Shape
             shapeID:                 http://example.org/a
@@ -63,7 +63,7 @@ The option **--configfile** triggers use of a configuration file other than the 
 
 .. code-block:: bash
 
-    $ dctap generate --configfile /home/tbaker/dctap.yml example.csv
+    $ dctap read --configfile /home/tbaker/dctap.yml example.csv
 
 
 Generate JSON or YAML output

@@ -26,14 +26,16 @@ def cli(context):
 
     \b
     Write editable configuration file:
-    $ dctap init                         # Write default ./dctap.yml
-    $ dctap init --configfile ../dctaprc # Write non-default pathname
-    Parse CSV, generate normalized view and optional warnings:
-    $ dctap generate xyz.csv
-    $ dctap generate --json xyz.csv
-    $ dctap generate --expand-prefixes xyz.csv
-    $ dctap generate --warnings xyz.csv
-    $ dctap generate --configfile ../dctaprc
+    $ dctap init                             # Default dctap.yml
+    $ dctap init --hidden-configfile         # Default .dctaprc
+    $ dctap init --configfile ../taprc       # Custom path
+    Parse CSV, generate normalized view, show warnings:
+    $ dctap read x.csv                       # Show in plain text
+    $ dctap read --json x.csv                # Show in JSON
+    $ dctap read --yaml x.csv                # Show in YAML
+    $ dctap read --expand-prefixes x.csv     # Expand prefixes
+    $ dctap read --warnings x.csv            # Show warnings 
+    $ dctap read --configfile ../taprc x.csv # Use custom path
     """
 
 

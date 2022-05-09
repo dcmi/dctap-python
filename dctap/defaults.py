@@ -2,80 +2,106 @@
 
 DEFAULT_CONFIGFILE_NAME = "dctap.yml"
 
+DEFAULT_HIDDEN_CONFIGFILE_NAME = ".dctaprc"
+
 DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 
-prefixes:
-    ":":        "http://example.org/"
-    "dc:":      "http://purl.org/dc/elements/1.1/"
-    "dcterms:": "http://purl.org/dc/terms/"
-    "dct:":     "http://purl.org/dc/terms/"
-    "foaf:":    "http://xmlns.com/foaf/0.1/"
-    "owl:":     "http://www.w3.org/2002/07/owl#"
-    "rdf:":     "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    "rdfs:":    "http://www.w3.org/2000/01/rdf-schema#"
-    "schema:":  "http://schema.org/"
-    "skos:":    "http://www.w3.org/2004/02/skos/core#"
-    "skosxl:":  "http://www.w3.org/2008/05/skos-xl#"
-    "wdt:":     "http://www.wikidata.org/prop/direct/"
-    "xsd:":     "http://www.w3.org/2001/XMLSchema#"
+### A default shape identifier is needed to ensure the consistency
+### of JSON and YAML output; the default identifier is "default".
+### A different default identifier can be set here.
+### Note that if identifier is set here to a string of zero length,
+### the identifier will revert to "default".
+# default_shape_identifier: " "
 
-### There must be a shape identifier in order to ensure consistency
-### of JSON and YAML output. A different default identifier can be
-### set here, but the module will not permit the identifier to be a
-### string of zero length (and will revert to "default").
-default_shape_identifier: "default"
-
-### Separator for items in a picklist (default: single blank space).
-### Can be configured with other common separators - eg, comma or pipe (or-bar).
-### Extra whitespace is routinely stripped from start and end of picklist items.
-picklist_item_separator: " "
-
-### User-customized statement constraints can be added here.
-### For example, min/max is a popular alternative to mandatory/repeatable.
-extra_statement_constraint_elements:
-- min
-- max
-
-### Element aliases can shorten header lines.
-element_aliases:
-    "PropID": "propertyID"
-    "PropLabel": "propertyLabel"
-    "Value": "valueConstraint"
-    "ValueType": "valueConstraintType"
-    "DataType": "valueDataType"
-    "NodeType": "valueNodeType"
-    "ShapeRef": "valueShape"
-    "Mand": "mandatory"
-    "Rep": "repeatable"
-
-### Some statement constraint elements can be configured as picklists.
-### These can take multiple values - eg: "this that" ("this" or "that").
-### Values are separated by configurable picklist item separator (see below).
-### Types of element that cannot be configured for multiple values:
-### - Elements with numeric values: min, max
-### - Elements with Boolean values: closed, start, mandatory, repeatable
-### - Elements used purely for annotation: shapeLabel, propertyLabel, note
-# picklist_elements:
-# - propertyID
-# - valueNodeType
-# - valueDataType
-# - valueShape
+### URIs may be shortened in a CSV by using namespace prefixes.
+### Here is a selection of common prefixes:
+# prefixes:
+#     ":":        "http://example.org/"
+#     "dc:":      "http://purl.org/dc/elements/1.1/"
+#     "dcterms:": "http://purl.org/dc/terms/"
+#     "dct:":     "http://purl.org/dc/terms/"
+#     "foaf:":    "http://xmlns.com/foaf/0.1/"
+#     "owl:":     "http://www.w3.org/2002/07/owl#"
+#     "rdf:":     "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+#     "rdfs:":    "http://www.w3.org/2000/01/rdf-schema#"
+#     "schema:":  "http://schema.org/"
+#     "skos:":    "http://www.w3.org/2004/02/skos/core#"
+#     "skosxl:":  "http://www.w3.org/2008/05/skos-xl#"
+#     "wdt:":     "http://www.wikidata.org/prop/direct/"
+#     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 
 ### This module ignores elements (column headers) that are not part of the
 ### base DCTAP model unless they are configured here as "extra" elements.
 ###
-### Extra elements must be designated either as "shape" elements (eg, "closed
-### or "start") or as "statement constraint" elements (eg, "min" and "max").
-### As extra elements are not supported by this module, their values are
-### simply passed through to the text, JSON, and YAML outputs.
+### Extra elements must be declared either as "shape" elements
+### or as "statement constraint" elements.
+###
+### Values for extra elements are passed through to text, JSON, and
+### YAML outputs.
+###
+### Custom shape elements can be added here.
+### Example: "closed" and "start" have meaning in some shape languages.
 # extra_shape_elements:
-# - closed
-# - start
+# - "closed"
+# - "start"
+###
+### Custom statement constraints can be added here.
+### Example: "min" and "max" are popular alternatives to "mandatory" and
+### "repeatable" for expressing the cardinality of statement constraints.
+# extra_statement_constraint_elements:
+# - "min"
+# - "max"
+
+### Some statement constraint elements can be configured as picklist 
+### elements. 
+###
+### A given value of a picklist element is parsed as a set of multiple 
+### values separated by a configurable picklist item separator (see below).
+###
+### What exactly it means for a given element to have multiple values 
+### is application-dependent, so their configurability is considered to be
+### an extension of the core DCTAP model. Users cannot not expect multiple 
+### values to be interpreted in universally interoperable ways.
+###
+### Some types of element cannot be configured for multiple values:
+### - Elements with numeric values: min, max
+### - Elements with Boolean values: closed, start, mandatory, repeatable
+### - Elements used purely for annotation: shapeLabel, propertyLabel, note
+###
+### Example: "this that" is parsed as ["this", "that"] and typically means
+### "this OR that".
+###
+### As discussed in https://dctap-python.readthedocs.io/en/latest/, 
+### the following elements are commonly parsed as picklists.
+# picklist_elements:
+# - "propertyID"
+# - "valueNodeType"
+# - "valueDataType"
+# - "valueShape"
+###
+### Items in a picklist are separated by a given character - by default, 
+### a single blank space, or alternatively by a comma (",") or pipe ("|").
+### Extra whitespace is routinely stripped from start and end of picklist items.
+### The tab character cannot be configured to be a picklist item separator.
+# picklist_item_separator: ","
 
 ### This module has three built-in value node types: "iri", "literal", and "bnode".
-### Extra node types can be added here, for example as aliases, such as "uri" for "iri",
-### or as combinations of node types, such as "shacl:BlankNodeOrLiteral".
+###
+### Extra node types can be added here for use as aliases (eg "uri" for "iri") or
+### as shortcuts for combinations of node types (eg, "nonliteral" for "iri OR bnode").
 # extra_value_node_types:
-# - uri
+# - "uri"
+# - "nonliteral"
 
+### Element aliases can shorten header lines.
+# element_aliases:
+#     "PropID": "propertyID"
+#     "PropLabel": "propertyLabel"
+#     "Value": "valueConstraint"
+#     "ValueType": "valueConstraintType"
+#     "DataType": "valueDataType"
+#     "NodeType": "valueNodeType"
+#     "ShapeRef": "valueShape"
+#     "Mand": "mandatory"
+#     "Rep": "repeatable"
 """

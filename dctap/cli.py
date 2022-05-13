@@ -17,7 +17,7 @@ from .utils import expand_uri_prefixes
 
 
 @click.group()
-@click.version_option("0.3.3", help="Show version and exit")
+@click.version_option("0.3.4", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(context):
@@ -27,23 +27,23 @@ def cli(context):
 
     \b
     Write editable configuration file:
-    $ dctap init                             # Default dctap.yml
-    $ dctap init --hidden-configfile         # Default .dctaprc
-    $ dctap init --configfile ../taprc       # Custom path
-    Parse CSV, generate normalized view, show warnings:
-    $ dctap read x.csv                       # Show in plain text
-    $ dctap read --json x.csv                # Show in JSON
-    $ dctap read --yaml x.csv                # Show in YAML
-    $ dctap read --expand-prefixes x.csv     # Expand prefixes
-    $ dctap read --warnings x.csv            # Show warnings
-    $ dctap read --configfile ../taprc x.csv # Use custom path
+    $ dctap init                           # Write dctap.yaml
+    $ dctap init --hidden                  # Write .dctaprc
+    \b
+    Parse CSV and generate normalized view:
+    $ dctap read x.csv                     # Plain text output
+    $ dctap read --json x.csv              # JSON output
+    $ dctap read --yaml x.csv              # YAML output
+    $ dctap read --expand-prefixes x.csv   # Expand prefixes
+    $ dctap read --warnings x.csv          # Show warnings
+    $ dctap read --config ../taprc x.csv   # Use custom configfile
     """
 
 
 @cli.command()
 @click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
 @click.option(
-    "--configfile",
+    "--config",
     type=click.Path(exists=True),
     help="Pathname of (non-default) config file.",
 )
@@ -57,11 +57,11 @@ def cli(context):
 @click.option("--yaml", is_flag=True, help="Print YAML to stdout.")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def read(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml):
+def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
     """Read CSV and generate normalized text, JSON, or YAML, with warnings."""
     # pylint: disable=too-many-locals,too-many-arguments
 
-    config_dict = get_config(configfile)
+    config_dict = get_config(config)
     csvreader_output = csvreader(csvfile_obj, config_dict)
     (tapshapes_dict, warnings_dict) = csvreader_output
     if expand_prefixes:
@@ -96,7 +96,7 @@ def read(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml
 
 @cli.command()
 @click.option(
-    "--hidden-configfile/--configfile",
+    "--hidden/--visible",
     default=False,
     help="Write config to hidden file [.dctaprc].",
 )
@@ -107,9 +107,9 @@ def read(context, csvfile_obj, configfile, expand_prefixes, warnings, json, yaml
 )
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(context, hidden_configfile, terse):
-    """Write customizable config file [default: dctap.yml]."""
-    if hidden_configfile:
+def init(context, hidden, terse):
+    """Write customizable config file [default: dctap.yaml]."""
+    if hidden:
         configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
     else:
         configfile = DEFAULT_CONFIGFILE_NAME

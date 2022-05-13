@@ -52,11 +52,9 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 # - "min"
 # - "max"
 
-### Some statement template elements can be configured as picklist 
-### elements. 
-###
-### A given value of a picklist element is parsed as a set of multiple 
-### values separated by a configurable picklist item separator (see below).
+### Some statement template elements can be configured as list elements. 
+### A given value of a list element is parsed as a set of multiple 
+### values separated by a configurable list item separator (see below).
 ###
 ### What exactly it means for a given element to have multiple values 
 ### is application-dependent, so their configurability is considered to be
@@ -68,22 +66,23 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 ### - Elements with Boolean values: closed, start, mandatory, repeatable
 ### - Elements used purely for annotation: shapeLabel, propertyLabel, note
 ###
-### Example: "this that" is parsed as ["this", "that"] and typically means
-### "this OR that".
+### The job of this module, dctap-python, is to generate output where list
+### elements have been parsed as lists. What downstream applications that take
+### this output as their input then do with this lists is beyond the scope of 
+### the base DCTAP model.
 ###
 ### As discussed in https://dctap-python.readthedocs.io/en/latest/, 
-### the following elements are commonly parsed as picklists.
-# picklist_elements:
+### elements such as the following may be parsed as lists:
+# list_elements:
 # - "propertyID"
 # - "valueNodeType"
 # - "valueDataType"
-# - "valueShape"
 ###
-### Items in a picklist are separated by a given character - by default, 
-### a single blank space, or alternatively by a comma (",") or pipe ("|").
-### Extra whitespace is routinely stripped from start and end of picklist items.
-### The tab character cannot be configured to be a picklist item separator.
-# picklist_item_separator: ","
+### The value of a list element is intended to be split into substrings 
+### on the basis of a given character - by default, a single blank space, 
+### or alternatively by a comma (",") or pipe ("|").
+### Extra whitespace is stripped from start and end of the resulting list items.
+# list_item_separator: ","
 
 ### This module has three built-in value node types: "iri", "literal", and "bnode".
 ###

@@ -62,9 +62,9 @@ prefixes:
 ## string of zero length (and will revert to "default").
 # default_shape_identifier: "default"
 
-## The default separator for items in a picklist is a single blank space
+## The default separator for items in a list is a single blank space
 ## but this could be replaced with other common separators, such as commas 
 ## or pipes (or-bars). The program routinely strips extra whitespace from 
-## the start and end of picklist items.
-# picklist_item_separator: ','
+## the start and end of list items.
+# list_item_separator: ','
 

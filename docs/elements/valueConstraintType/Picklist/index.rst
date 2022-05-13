@@ -47,5 +47,3 @@ Interpreted as::
             Statement Template
                 propertyID:          :hue
                 valueConstraint:     reddish brown, greenish yellow, bluish green
-
-A program that imports and builds on **dctap** might want to define its own value constraint type, for example, CSPicklist (for comma-separated picklist), with an appropriate parsing algorithm.

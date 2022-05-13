@@ -10,7 +10,7 @@ NONDEFAULT_CONFIG_YAML = """\
 default_shape_identifier: "default"
 
 ### Commentary that would be stripped from "terse" config file.
-# picklist_elements:
+# list_elements:
 # - propertyID
 
 prefixes:
@@ -27,7 +27,7 @@ def test_terse_configfile(tmp_path):
         terse=True,
     )
     assert "Commentary" not in open(DEFAULT_CONFIGFILE_NAME).read()
-    assert "picklist_elements" in open(DEFAULT_CONFIGFILE_NAME).read()
+    assert "list_elements" in open(DEFAULT_CONFIGFILE_NAME).read()
 
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIG_YAML to DEFAULT_CONFIGFILE_NAME and read back as text."""

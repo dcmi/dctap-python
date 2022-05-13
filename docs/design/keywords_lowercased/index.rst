@@ -3,7 +3,7 @@
 Keywords are normalized to lowercase.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Picklist values are normalized to lowercase. For example, "LITERAL", "Literal", and "lITERAL" are normalized to "literal", while "Picklist", "PICKLIST", and "pICKLIST" are normalized to "picklist".
+Value constraint types and value node types are normalized to lowercase. In the example below, "LITERAL", "Literal", and "lITERAL" are normalized to "literal", while "Picklist", "PICKLIST", and "pICKLIST" are normalized to "picklist".
 
 .. csv-table::
    :file: headers.csv

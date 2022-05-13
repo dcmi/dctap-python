@@ -9,7 +9,7 @@ Configuration
 
    prefix_mappings/index
    extra_elements/index
-   picklist_elements/index
-   picklist_item_separator/index
+   list_elements/index
+   list_item_separator/index
    element_aliases/index
    default_shape_name/index

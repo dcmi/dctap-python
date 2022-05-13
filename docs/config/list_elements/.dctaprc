@@ -16,8 +16,8 @@ prefixes:
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 default_shape_identifier: "default"
-picklist_item_separator: ','
-picklist_elements:
+list_item_separator: ','
+list_elements:
 - propertyID
 # - valueNodeType
 # - valueDataType

@@ -41,7 +41,7 @@ class TAPStatementTemplate:
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
         self._valueConstraintType_picklist_parse(settings)
         self._valueNodeType_is_from_enumerated_list(settings)
-        self._parse_elements_listed_in_configfile_as_picklists(settings)
+        self._parse_elements_configured_as_list_elements(settings)
         return self
 
     def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
@@ -136,7 +136,7 @@ class TAPStatementTemplate:
     def _valueConstraintType_languageTag_parse(self, settings):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        sep = settings.get("picklist_item_separator", " ")
+        sep = settings.get("list_item_separator", " ")
         if self.valueConstraintType == "languagetag":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split(sep)
@@ -157,7 +157,7 @@ class TAPStatementTemplate:
     def _valueConstraintType_picklist_parse(self, settings):
         """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        sep = settings.get("picklist_item_separator", " ")
+        sep = settings.get("list_item_separator", " ")
         if self.valueConstraintType == "picklist":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split(sep)
@@ -206,19 +206,19 @@ class TAPStatementTemplate:
                     f"so node type should not be {repr(self.valueNodeType)}."
                 )
 
-    def _parse_elements_listed_in_configfile_as_picklists(self, settings):
-        """Parse elements configured as picklists."""
-        if settings.get("picklist_item_separator"):
-            separator = settings.get("picklist_item_separator")
+    def _parse_elements_configured_as_list_elements(self, settings):
+        """Parse elements configured as list elementss."""
+        if settings.get("list_item_separator"):
+            separator = settings.get("list_item_separator")
         else:
             separator = " "
 
-        if settings.get("picklist_elements"):
-            picklist_elements = settings.get("picklist_elements")
+        if settings.get("list_elements"):
+            list_elements = settings.get("list_elements")
         else:
-            picklist_elements = []
+            list_elements = []
 
-        for element in picklist_elements:
+        for element in list_elements:
             if getattr(self, element):
                 setattr(self, element, getattr(self, element).split(separator))
 

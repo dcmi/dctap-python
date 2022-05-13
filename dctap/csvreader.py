@@ -40,7 +40,7 @@ def _get_tapshapes(rows, config_dict):
     first_valid_row_encountered = True              # read CSV rows as list of dicts.
     warnings = defaultdict(dict)                    # Init defaultdict for warnings.
 
-    def set_shape_fields(shape=None, row=None):     # To set shape-related keys,
+    def set_shape_keys(shape=None, row=None):       # To set shape-related keys,
         for col in row:                             # Iterate remaining keys, to
             if col in sh_elements:
                 try:                                    # populate tapshape fields
@@ -61,7 +61,7 @@ def _get_tapshapes(rows, config_dict):
             else:                                   # If no truthy shapeID be found,
                 sh_id = row["shapeID"] = dshape     # use default shapeID as key.
             shape = shapes[sh_id] = TAPShape()      # Add TAPShape obj to shapes dict,
-            set_shape_fields(shape, row)            # populate its shape elements, and
+            set_shape_keys(shape, row)              # populate its shape elements, and
             first_valid_row_encountered = False     # may future rows be not "first".
 
         if not first_valid_row_encountered:         # In each valid row thereafter,
@@ -73,7 +73,7 @@ def _get_tapshapes(rows, config_dict):
 
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
             shape = shapes[sh_id] = TAPShape()      # give it value TAPShape object,
-            set_shape_fields(shape, row)            # populate its shape elements, and
+            set_shape_keys(shape, row)              # populate its shape elements, and
             warnings[sh_id] = {}                    # use as key in warnings dict.
 
         shape.normalize(config_dict)

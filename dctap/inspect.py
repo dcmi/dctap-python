@@ -1,7 +1,7 @@
 """Print CSV contents and warnings."""
 
 import sys
-from .config import get_shape_elements, statement_template_elements
+from .config import get_shape_elements, get_statement_template_elements
 from .loggers import stderr_logger
 from .tapclasses import TAPShape, TAPStatementTemplate
 
@@ -11,7 +11,7 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
     # pylint: disable=too-many-branches
 
     (only_shape_elements, xtra_shape_elements) = get_shape_elements(TAPShape, config_dict)
-    (only_st_elements, xtra_st_elements) = statement_template_elements(
+    (only_st_elements, xtra_st_elements) = get_statement_template_elements(
         TAPStatementTemplate, config_dict
     )
     pprint_output = []

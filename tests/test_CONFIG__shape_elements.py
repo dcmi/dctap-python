@@ -2,7 +2,7 @@
 
 import pytest
 from dataclasses import asdict
-from dctap.config import get_config, get_shape_elements, statement_template_elements
+from dctap.config import get_config, get_shape_elements, get_statement_template_elements
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_get_TAPShape_elements_when_no_config_dict_specified():
@@ -32,7 +32,7 @@ def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
         "valueShape",
         "note",
     ]
-    assert sorted(statement_template_elements(TAPStatementTemplate)[0]) == sorted(expected)
+    assert sorted(get_statement_template_elements(TAPStatementTemplate)[0]) == sorted(expected)
 
 def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specified():
     """List TAPStatementTemplate elements plus extras."""
@@ -53,6 +53,6 @@ def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specifie
         "max",
     ]
     config_dict = { "extra_statement_template_elements": ["min", "max"] }
-    actual_st_elements, actual_extra_st_elements = statement_template_elements(TAPStatementTemplate, config_dict)
+    actual_st_elements, actual_extra_st_elements = get_statement_template_elements(TAPStatementTemplate, config_dict)
     assert sorted(actual_st_elements) == sorted(expected_st_elements)
     assert sorted(actual_extra_st_elements) == sorted(expected_extra_st_elements)

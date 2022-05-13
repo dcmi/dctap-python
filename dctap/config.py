@@ -30,7 +30,7 @@ def get_shape_elements(shape_class=TAPShape, settings=None):
     return (only_shape_elements, extra_shape_elements)
 
 
-def statement_template_elements(
+def get_statement_template_elements(
     statement_template_class=TAPStatementTemplate, settings=None
 ):
     """List DCTAP elements supported by statement template class."""
@@ -91,7 +91,7 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shape_elements(shape_class)[0]
-    elements_dict["statement_template_elements"] = statement_template_elements(
+    elements_dict["statement_template_elements"] = get_statement_template_elements(
         statement_template_class
     )[0]
     elements_dict["csv_elements"] = (

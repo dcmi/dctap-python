@@ -13,7 +13,7 @@ from .defaults import (
     DEFAULT_CONFIG_YAML,
 )
 from .exceptions import ConfigError
-from .tapclasses import TAPShape, TAPStatementConstraint
+from .tapclasses import TAPShape, TAPStatementTemplate
 
 
 def shape_elements(shape_class=TAPShape, settings=None):
@@ -30,17 +30,17 @@ def shape_elements(shape_class=TAPShape, settings=None):
     return (only_shape_elements, extra_shape_elements)
 
 
-def statement_constraint_elements(
-    statement_constraint_class=TAPStatementConstraint, settings=None
+def statement_template_elements(
+    statement_template_class=TAPStatementTemplate, settings=None
 ):
-    """List DCTAP elements supported by given statement constraint class."""
-    only_sc_elements = list(asdict(statement_constraint_class()))
+    """List DCTAP elements supported by statement template class."""
+    only_sc_elements = list(asdict(statement_template_class()))
     only_sc_elements.remove("sc_warnings")
     only_sc_elements.remove("extra_elements")
     extra_sc_elements = []
     if settings:
-        if settings.get("extra_statement_constraint_elements"):
-            for extra_element in settings.get("extra_statement_constraint_elements"):
+        if settings.get("extra_statement_template_elements"):
+            for extra_element in settings.get("extra_statement_template_elements"):
                 extra_sc_elements.append(extra_element)
     return (only_sc_elements, extra_sc_elements)
 
@@ -75,7 +75,7 @@ def get_config(
     configfile_name=None,
     config_yamldoc=DEFAULT_CONFIG_YAML,
     shape_class=TAPShape,
-    statement_constraint_class=TAPStatementConstraint,
+    statement_template_class=TAPStatementTemplate,
 ):
     """Get built-in settings then override from config file (if found)."""
 
@@ -91,11 +91,11 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = shape_elements(shape_class)[0]
-    elements_dict["statement_constraint_elements"] = statement_constraint_elements(
-        statement_constraint_class
+    elements_dict["statement_template_elements"] = statement_template_elements(
+        statement_template_class
     )[0]
     elements_dict["csv_elements"] = (
-        elements_dict["shape_elements"] + elements_dict["statement_constraint_elements"]
+        elements_dict["shape_elements"] + elements_dict["statement_template_elements"]
     )
 
     config_dict = {}

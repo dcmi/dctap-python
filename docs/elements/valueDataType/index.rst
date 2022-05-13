@@ -23,10 +23,10 @@ Interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dc:creator
                 valueDataType:       xsd:string
-            Statement Constraint
+            Statement Template
                 propertyID:          dct:date
                 valueDataType:       Date
 
@@ -49,11 +49,11 @@ Interpreted, with a warning, as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dcterms:creator
                 valueNodeType:       iri
                 valueDataType:       xsd:string
-            Statement Constraint
+            Statement Template
                 propertyID:          dcterms:subject
                 valueNodeType:       bnode
                 valueDataType:       xsd:string

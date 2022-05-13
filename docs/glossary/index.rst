@@ -48,12 +48,12 @@ Glossary
        A pattern **in an Application Profile** descriptive of how Properties are expected to be used in Instance Data.
    
    Shape 
-       A set of Statement Constraints **in an Application Profile** that characterize Statements expected to be found in a Description. In the now-superseded `DCMI Abstract Model <https://www.dublincore.org/specifications/dublin-core/abstract-model/>`_ of 2007, these were called Description Templates.
+       A set of Statement Templates **in an Application Profile** that characterize Statements expected to be found in a Description. In the now-superseded `DCMI Abstract Model <https://www.dublincore.org/specifications/dublin-core/abstract-model/>`_ of 2007, these were called Description Templates.
    
    Statement
        A property-value pair **in Instance Data** used in a Description to make claims about an Entity.
    
-   Statement Constraint 
+   Statement Template 
        A pattern **in an Application Profile** descriptive of Statements expected to be found in Instance Data.
    
    URI

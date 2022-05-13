@@ -328,7 +328,7 @@ def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     os.chdir(tmp_path)
     config_dict = get_config()
     config_dict["default_shape_identifier"] = "default"
-    config_dict["extra_statement_constraint_elements"] = ["ricearoni"]
+    config_dict["extra_statement_template_elements"] = ["ricearoni"]
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (

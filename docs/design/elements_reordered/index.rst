@@ -15,7 +15,7 @@ Interpreted as::
         Shape
             shapeID:                 :book
             shapeLabel:              Book
-            Statement Constraint
+            Statement Template
                 propertyID:          dcterms:creator
                 valueShape:          :author
 

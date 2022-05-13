@@ -14,30 +14,30 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 :ex1
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraint:     approved_*
                 valueConstraintType: pattern
         Shape
             shapeID:                 :ex2
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraintType: pattern
         Shape
             shapeID:                 :ex3
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraint:     approved_(*
                 valueConstraintType: pattern
         Shape
             shapeID:                 :ex4
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraint:     /approved_*/
                 valueConstraintType: pattern
         Shape
             shapeID:                 :ex5
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraint:     ^2020 August
                 valueConstraintType: pattern

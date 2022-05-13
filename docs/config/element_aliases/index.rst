@@ -20,7 +20,7 @@ Is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 :book
-            Statement Constraint
+            Statement Template  
                 propertyID:          dc:creator
                 mandatory:           True
                 repeatable:          False

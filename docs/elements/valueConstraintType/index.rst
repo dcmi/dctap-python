@@ -20,7 +20,7 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          :securityLevel
                 valueConstraint:     Confidential
 
@@ -50,7 +50,7 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          :securityLevel
                 valueConstraint:     ['Public', 'Confidential']
                 valueConstraintType: picklist
@@ -66,7 +66,7 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          :creator
                 valueConstraint:     one, two, three
 

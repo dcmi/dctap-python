@@ -1,6 +1,6 @@
 """Validate and debug DCTAP instances."""
 
-from .tapclasses import TAPShape, TAPStatementConstraint
+from .tapclasses import TAPShape, TAPStatementTemplate
 from .csvreader import csvreader
 
 __version__ = "0.3.4"

@@ -22,12 +22,12 @@ def test_get_config_from_builtins(tmp_path):
     assert "prefixes" in list(config_dict.keys())                 # built-in/configurable
     assert config_dict.get("csv_elements")                        # computed from dataclasses
     assert config_dict.get("shape_elements")                      # computed from dataclasses
-    assert config_dict.get("statement_constraint_elements")       # computed from dataclasses
+    assert config_dict.get("statement_template_elements")       # computed from dataclasses
     assert config_dict.get("element_aliases")                     # computed/configurable
     ## The following are commented out in the built-in configuration
     # assert config_dict.get("default_shape_identifier")            # configurable with built-in default
     # assert config_dict.get("picklist_item_separator")             # configurable with built-in default
-    # assert config_dict.get("extra_statement_constraint_elements") # configurable
+    # assert config_dict.get("extra_statement_template_elements") # configurable
     # assert config_dict.get("extra_shape_elements")                # configurable
     # assert config_dict.get("extra_value_node_types")              # configurable
     # assert config_dict.get("picklist_elements")                   # configurable
@@ -41,7 +41,7 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     assert config_dict.get("default_shape_identifier")
     assert config_dict.get("csv_elements")                       # computed
     assert config_dict.get("shape_elements")                     # computed
-    assert config_dict.get("statement_constraint_elements")      # computed
+    assert config_dict.get("statement_template_elements")      # computed
     assert config_dict.get("element_aliases")                    # asserted/computed
     assert config_dict.get("value_node_types") is None
 

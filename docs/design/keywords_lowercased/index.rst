@@ -14,17 +14,17 @@ Interpreted as::
     DCTAP instance
     Shape
         shapeID:                 default
-        Statement Constraint
+        Statement Template 
             propertyID:          dc:subject
             valueNodeType:       literal
             valueConstraint:     ['Kish', 'Uruk', 'Nuzi']
             valueConstraintType: picklist
-        Statement Constraint
+        Statement Template
             propertyID:          dc:subject
             valueNodeType:       literal
             valueConstraint:     ['Kish', 'Uruk', 'Nuzi']
             valueConstraintType: picklist
-        Statement Constraint
+        Statement Template
             propertyID:          dc:subject
             valueNodeType:       literal
             valueConstraint:     ['Kish', 'Uruk', 'Nuzi']

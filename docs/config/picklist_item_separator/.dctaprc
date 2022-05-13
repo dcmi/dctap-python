@@ -25,7 +25,7 @@ picklist_elements:
 # extra_shape_elements:
 # - closed
 # - start
-# extra_statement_constraint_elements:
+# extra_statement_template_elements:
 # - min
 # - max
 # extra_value_node_types:

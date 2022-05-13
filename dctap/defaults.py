@@ -34,7 +34,7 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 ### base DCTAP model unless they are configured here as "extra" elements.
 ###
 ### Extra elements must be declared either as "shape" elements
-### or as "statement constraint" elements.
+### or as "statement template" elements.
 ###
 ### Values for extra elements are passed through to text, JSON, and
 ### YAML outputs.
@@ -45,14 +45,14 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 # - "closed"
 # - "start"
 ###
-### Custom statement constraints can be added here.
+### Custom statement templates can be added here.
 ### Example: "min" and "max" are popular alternatives to "mandatory" and
-### "repeatable" for expressing the cardinality of statement constraints.
-# extra_statement_constraint_elements:
+### "repeatable" for expressing the cardinality of statement templates.
+# extra_statement_template_elements:
 # - "min"
 # - "max"
 
-### Some statement constraint elements can be configured as picklist 
+### Some statement template elements can be configured as picklist 
 ### elements. 
 ###
 ### A given value of a picklist element is parsed as a set of multiple 

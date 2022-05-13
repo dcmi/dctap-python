@@ -7,8 +7,8 @@ from .utils import is_uri_or_prefixed_uri
 
 
 @dataclass
-class TAPStatementConstraint:
-    """Instances hold TAP/CSV elements related to statement constraints."""
+class TAPStatementTemplate:
+    """Instances hold TAP/CSV elements related to statement templates."""
 
     # pylint: disable=too-many-instance-attributes # It's a dataclass, right?
     # pylint: disable=invalid-name # for elements not named in snake case.
@@ -238,7 +238,7 @@ class TAPShape:
 
     shapeID: str = ""
     shapeLabel: str = ""
-    sc_list: List[TAPStatementConstraint] = field(default_factory=list)
+    sc_list: List[TAPStatementTemplate] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
     extra_elements: dict = field(default_factory=dict)
 

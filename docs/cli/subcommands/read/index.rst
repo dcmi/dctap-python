@@ -20,7 +20,7 @@ When used without options, **dctap read** outputs a lightly normalized view of t
     DCTAP instance
         Shape
             shapeID:                 :a
-            Statement Constraint
+            Statement Template  
                 propertyID:          dcterms:creator
                 valueNodeType:       iri
 
@@ -35,7 +35,7 @@ As an aid for debugging, the `dctap read` subcommand performs various consistenc
     DCTAP instance
         Shape
             shapeID:                 :a
-            Statement Constraint
+            Statement Template  
                 propertyID:          dcterms:date
                 valueNodeType:       noodles
 
@@ -52,7 +52,7 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
     DCTAP instance
         Shape
             shapeID:                 http://example.org/a
-            Statement Constraint
+            Statement Template  
                 propertyID:          http://purl.org/dc/terms/creator
                 valueNodeType:       iri
 

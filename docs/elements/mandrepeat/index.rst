@@ -25,11 +25,11 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dc:creator
                 mandatory:           True
                 repeatable:          False
-            Statement Constraint
+            Statement Template
                 propertyID:          dc:date
                 mandatory:           False
 
@@ -46,10 +46,10 @@ This is displayed as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dc:creator
                 repeatable:          N
-            Statement Constraint
+            Statement Template
                 propertyID:          dc:date
                 mandatory:           Y
 

@@ -16,9 +16,9 @@ Interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dcterms:creator
-            Statement Constraint
+            Statement Template
                 propertyID:          height
 
     WARNING [default/propertyID] 'height' is not an IRI or Compact IRI.
@@ -34,6 +34,6 @@ Interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dct:creator
                 propertyLabel:       Author or Creator

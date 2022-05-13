@@ -21,7 +21,7 @@ def test_shape_fields_are_individually_addressable():
     assert shap.sc_list[1] == {"propertyID": "dct:subject", "valueNodeType": "IRI"}
     assert len(shap.sc_list) == 3
 
-def test_statement_constraint_list_items_are_individually_addressable():
+def test_statement_template_list_items_are_individually_addressable():
     """Items in sc_list field of TAPShape instance are individually addressable."""
     shap = SHAPE_OBJECT
     assert shap.sc_list[1]["propertyID"] == "dct:subject"

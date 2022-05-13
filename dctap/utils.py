@@ -38,7 +38,7 @@ def expand_uri_prefixes(shapes_dict=None, config_dict=None):
             if re.match(prefix, shape["shapeID"]):
                 prefix_expanded = config_dict["prefixes"][prefix]
                 shape["shapeID"] = re.sub(prefix, prefix_expanded, shape["shapeID"])
-        for sc in shape["statement_constraints"]:
+        for sc in shape["statement_templates"]:
             for element in ["propertyID", "valueDataType", "valueShape"]:
                 if sc.get(element):
                     for prefix in config_dict["prefixes"]:

@@ -4,7 +4,7 @@
 ## base DCTAP model unless they are configured here as "extra" elements.
 ##
 ## Extra elements must be designated either as "shape" elements (eg, "closed 
-## or "start") or as "statement constraint" elements (eg, "min" and "max").
+## or "start") or as "statement template" elements (eg, "min" and "max").
 ## As extra elements are not supported by this module, their values are 
 ## simply passed through to the text, JSON, and YAML outputs.
 
@@ -13,7 +13,7 @@
 # - start
 
 # Alternative elements to mandatory and repeatable
-extra_statement_constraint_elements:
+extra_statement_template_elements:
 - min
 - max
 
@@ -23,7 +23,7 @@ extra_statement_constraint_elements:
 # extra_value_node_types:
 # - uri
 
-## Some statement constraint elements can be configured to be parsed as lists.
+## Some statement template elements can be configured to be parsed as lists.
 ## - Multiple values are separated by a single space.
 ## - Shape elements cannot be repeated.
 ## Types of element that cannot be configured for multiple values:

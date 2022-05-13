@@ -20,11 +20,11 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraint:     ['fr']
                 valueConstraintType: languagetag
-            Statement Constraint
+            Statement Template
                 propertyID:          :status
                 valueConstraint:     ['fr', 'fr-CA']
                 valueConstraintType: languagetag

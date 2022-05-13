@@ -1,12 +1,12 @@
-"""Tests for private functions called by TAPStatementConstraint.normalize()."""
+"""Tests for private functions called by TAPStatementTemplate.normalize()."""
 
 import pytest
-from dctap.tapclasses import TAPStatementConstraint
+from dctap.tapclasses import TAPStatementTemplate
 
 
 def test_warn_if_valueNodeType_literal_used_with_any_value_shape():
     """@@@"""
-    sc = TAPStatementConstraint()
+    sc = TAPStatementTemplate()
     sc.propertyID = ":status"
     sc.valueNodeType = "literal"
     sc.valueShape = "Person"
@@ -15,7 +15,7 @@ def test_warn_if_valueNodeType_literal_used_with_any_value_shape():
 
 def test_warn_if_valueConstraintType_pattern_used_with_any_value_shape():
     """Regular expressions cannot conform to value shapes."""
-    sc = TAPStatementConstraint()
+    sc = TAPStatementTemplate()
     sc.propertyID = ":status"
     sc.valueConstraintType = "pattern"
     sc.valueShape = "Person"
@@ -24,7 +24,7 @@ def test_warn_if_valueConstraintType_pattern_used_with_any_value_shape():
 
 def test_warn_if_valueDataType_used_with_any_value_shape():
     """@@@"""
-    sc = TAPStatementConstraint()
+    sc = TAPStatementTemplate()
     sc.propertyID = ":status"
     sc.valueDataType = "xsd:date"
     sc.valueShape = "Person"

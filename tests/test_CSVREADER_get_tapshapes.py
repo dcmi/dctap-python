@@ -3,7 +3,7 @@
 import pytest
 from dctap.config import get_config
 from dctap.csvreader import _get_tapshapes
-from dctap.tapclasses import TAPShape, TAPStatementConstraint
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 SETTINGS_DICT = get_config()
 
@@ -18,7 +18,7 @@ def test_get_tapshapes_one_default_shape():
     expected_shapes = tapshapes_output[0]
     assert len(expected_shapes) == 1
     assert expected_shapes["shapes"][0]["shapeID"] == "default"
-    assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 3
+    assert len(expected_shapes["shapes"][0]["statement_templates"]) == 3
 
 
 def test_get_tapshapes_one_default_shape_shapeID_not_specified():
@@ -40,7 +40,7 @@ def test_get_tapshapes_twoshapes_first_is_default():
     expected_shapes = tapshapes_output[0]
     assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
-    assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 2
+    assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
 
 
 def test_get_tapshapes_twoshapes_mixed_statements():
@@ -54,7 +54,7 @@ def test_get_tapshapes_twoshapes_mixed_statements():
     expected_shapes = tapshapes_output[0]
     assert expected_shapes["shapes"][0]["shapeID"] == ":book"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
-    assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 2
+    assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
 
 
 def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
@@ -67,7 +67,7 @@ def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
     expected_shapes = {'shapes': [{'sh_warnings': {},
                  'shapeID': 'default',
                  'shapeLabel': '',
-                 'statement_constraints': [{'mandatory': None,
+                 'statement_templates': [{'mandatory': None,
                                             'note': '',
                                             'propertyID': 'dc:creator',
                                             'propertyLabel': '',
@@ -92,7 +92,7 @@ def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
                 {'sh_warnings': {},
                  'shapeID': ':author',
                  'shapeLabel': '',
-                 'statement_constraints': [{'mandatory': None,
+                 'statement_templates': [{'mandatory': None,
                                             'note': '',
                                             'propertyID': 'foaf:name',
                                             'propertyLabel': '',
@@ -107,12 +107,12 @@ def test_get_tapshapes_twoshapes_first_is_default_because_shapeID_empty():
     expected_shapes = tapshapes_output[0]
     assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
-    assert len(expected_shapes["shapes"][0]["statement_constraints"]) == 2
+    assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
     assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]) == dict
     assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]["shapes"]) == list
     assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]["shapes"][0]) == dict
-    assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]["shapes"][0]["statement_constraints"]) == list
-    assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]["shapes"][0]["statement_constraints"][0]) == dict
+    assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]["shapes"][0]["statement_templates"]) == list
+    assert type(_get_tapshapes(rows, SETTINGS_DICT)[0]["shapes"][0]["statement_templates"][0]) == dict
 
 
 def test_get_tapshapes_two_shapes_one_property_each():
@@ -124,12 +124,12 @@ def test_get_tapshapes_two_shapes_one_property_each():
     ]
     expected_shapes = {'shapes': [
                         {'shapeID': ':book',
-                         'statement_constraints': [
+                         'statement_templates': [
                              {'propertyID': 'dc:creator'},
                              {'propertyID': 'dc:type'}
                          ] 
                         }, {'shapeID': ':author',
-                          'statement_constraints': [
+                          'statement_templates': [
                              {'propertyID': 'foaf:name'}
                           ]
                         }

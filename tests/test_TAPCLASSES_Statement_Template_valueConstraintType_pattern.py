@@ -1,12 +1,12 @@
-"""Tests for private functions called by TAPStatementConstraint.normalize()."""
+"""Tests for private functions called by TAPStatementTemplate.normalize()."""
 
 import pytest
-from dctap.tapclasses import TAPStatementConstraint
+from dctap.tapclasses import TAPStatementTemplate
 
 
 def test_valueConstraintType_pattern_is_valid_regex():
     """For valueConstraintType pattern, valueConstraint must be valid regex."""
-    sc = TAPStatementConstraint()
+    sc = TAPStatementTemplate()
     sc.propertyID = ":status"
     sc.valueConstraintType = "pattern"
     sc.valueConstraint = "approved_*"
@@ -25,7 +25,7 @@ def test_valueConstraintType_pattern_is_valid_regex():
 
 def test_valueConstraintType_pattern_warn_if_not_valid_regex():
     """For valueConstraintType pattern, warns if valueConstraint not valid regex."""
-    sc = TAPStatementConstraint()
+    sc = TAPStatementTemplate()
     sc.propertyID = ":status"
     sc.valueConstraintType = "pattern"
     sc.valueConstraint="approved_(*"

@@ -22,11 +22,11 @@ Interpreted as::
     DCTAP instance
         Shape
             shapeID:              :book
-            Statement Constraint
+            Statement Template
                 propertyID:       dct:creator
                 valueShape:       :person
         Shape
             shapeID:              :person
-            Statement Constraint
+            Statement Template
                 propertyID:       foaf:name
 

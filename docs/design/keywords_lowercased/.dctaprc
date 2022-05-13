@@ -14,7 +14,7 @@ prefixes:
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 default_shape_identifier: "default"
 picklist_item_separator: " "
-extra_statement_constraint_elements:
+extra_statement_template_elements:
 - min
 - max
 element_aliases:

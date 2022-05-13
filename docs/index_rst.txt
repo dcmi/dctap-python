@@ -9,7 +9,7 @@
 /Users/tbaker/github/tap/dctap-python/docs/config/index.rst
 /Users/tbaker/github/tap/dctap-python/docs/config/element_aliases/index.rst
 /Users/tbaker/github/tap/dctap-python/docs/config/extra_elements/index.rst
-/Users/tbaker/github/tap/dctap-python/docs/config/extra_elements/extra_statement_constraint_elements/index.rst
+/Users/tbaker/github/tap/dctap-python/docs/config/extra_elements/extra_statement_template_elements/index.rst
 /Users/tbaker/github/tap/dctap-python/docs/config/extra_elements/extra_shape_elements/index.rst
 /Users/tbaker/github/tap/dctap-python/docs/config/picklist_item_separator/index.rst
 /Users/tbaker/github/tap/dctap-python/docs/config/prefix_mappings/index.rst

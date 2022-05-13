@@ -4,9 +4,9 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from dctap.config import shape_elements, statement_constraint_elements
+from dctap.config import shape_elements, statement_template_elements
 from dctap.exceptions import DctapError
-from dctap.tapclasses import TAPShape, TAPStatementConstraint
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 
 def csvreader(open_csvfile_obj, config_dict):
@@ -31,8 +31,8 @@ def _get_tapshapes(rows, config_dict):
     sh_elements, xtra_sh_elements = shape_elements(
         shape_class=TAPShape, settings=config_dict
     )
-    sc_elements, xtra_sc_elements = statement_constraint_elements(
-        statement_constraint_class=TAPStatementConstraint, settings=config_dict
+    sc_elements, xtra_sc_elements = statement_template_elements(
+        statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 
     # fmt: off
@@ -86,7 +86,7 @@ def _get_tapshapes(rows, config_dict):
                 warnings[sh_id][elem] = []          # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        sc = TAPStatementConstraint()               # Instantiate SC for this row.
+        sc = TAPStatementTemplate()                 # Instantiate SC for this row.
 
         for col in row:
             if col in sc_elements:
@@ -117,7 +117,7 @@ def _get_tapshapes(rows, config_dict):
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
             tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
             tapshape_dict[                          # - rename its field "sc_list" to
-                "statement_constraints"             #   "statement_constraints"
+                "statement_templates"               #   "statement_templates"
             ] = tapshape_dict.pop("sc_list")        # - add that shape dict to mutable
             shape_list.append(tapshape_dict)        #   tapshapes_dict["shapes"]
 
@@ -152,7 +152,7 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
 def _reduce_shapesdict(shapes_dict):
     """Iteratively remove elements from shapes dictionary with falsy values."""
     for shape in shapes_dict["shapes"]:
-        for sc in shape["statement_constraints"]:
+        for sc in shape["statement_templates"]:
             if sc.get("extra_elements"):
                 for (k, v) in sc["extra_elements"].items():
                     sc[k] = v
@@ -183,7 +183,7 @@ def _get_rows(open_csvfile_obj, config_dict):
 
     recognized_elements = config_dict.get("csv_elements")
     extra_shape_elements = config_dict.get("extra_shape_elements")
-    extra_sc_elements = config_dict.get("extra_statement_constraint_elements")
+    extra_sc_elements = config_dict.get("extra_statement_template_elements")
     if extra_shape_elements:
         recognized_elements.extend(extra_shape_elements)
         for element in extra_shape_elements:

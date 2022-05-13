@@ -19,7 +19,7 @@ def test_utils_expand_uri_prefixes(tmp_path):
         [
             {
               'shapeID': ':book',
-              'statement_constraints': [
+              'statement_templates': [
                     { 
                       'propertyID': 'dcterms:creator',
                       'valueShape': ':author' 
@@ -31,7 +31,7 @@ def test_utils_expand_uri_prefixes(tmp_path):
             }, 
             {
               'shapeID': ':author',
-              'statement_constraints': [
+              'statement_templates': [
                     {
                       'propertyID': 'foaf:name',
                       'valueDataType': 'xsd:string'
@@ -44,7 +44,7 @@ def test_utils_expand_uri_prefixes(tmp_path):
         [
             {
               'shapeID': 'http://example.org/book',
-              'statement_constraints': [
+              'statement_templates': [
                     {
                       'propertyID': 'http://purl.org/dc/terms/creator',
                       'valueShape': 'http://example.org/author'
@@ -56,7 +56,7 @@ def test_utils_expand_uri_prefixes(tmp_path):
             },
             {
               'shapeID': 'http://example.org/author',
-              'statement_constraints': [
+              'statement_templates': [
                     {
                       'propertyID': 'http://xmlns.com/foaf/0.1/name',
                       'valueDataType': 'xsd:string'

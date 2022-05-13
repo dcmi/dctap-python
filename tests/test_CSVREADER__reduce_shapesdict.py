@@ -10,7 +10,7 @@ def test_reduce_shapesdict():
                          'shapeLabel': '',
                          'sh_warnings': {},
                          'extra_elements': {'closed': 'True'},
-                         'statement_constraints': [
+                         'statement_templates': [
                              {
                               'propertyID': 'dc:creator',
                               'propertyLabel': '',
@@ -32,7 +32,7 @@ def test_reduce_shapesdict():
                          'shapeLabel': '',
                          'sh_warnings': {},
                          'extra_elements': {'closed': 'False'},
-                         'statement_constraints': [
+                         'statement_templates': [
                              {
                               'propertyID': 'foaf:name',
                               'propertyLabel': '',
@@ -55,7 +55,7 @@ def test_reduce_shapesdict():
                         {
                          'shapeID': 'a',
                          'closed': 'True',
-                         'statement_constraints': [
+                         'statement_templates': [
                              {
                               'propertyID': 'dc:creator',
                               'valueConstraintType': 'picklist',
@@ -66,7 +66,7 @@ def test_reduce_shapesdict():
                         {
                          'shapeID': 'b',
                          'closed': 'False',
-                         'statement_constraints': [
+                         'statement_templates': [
                              {
                               'propertyID': 'foaf:name',
                               'min': '2',

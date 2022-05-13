@@ -14,6 +14,6 @@ Interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          dc:creator
                 note:                Typically, the person listed on the cover page.

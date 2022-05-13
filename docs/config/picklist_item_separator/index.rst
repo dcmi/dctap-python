@@ -33,8 +33,8 @@ the value "dc:date" is treated as the single item in a list of values::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template   
                 propertyID:          ['dc:creator', 'foaf:maker']
-            Statement Constraint
+            Statement Template   
                 propertyID:          ['dc:date']
 

@@ -13,9 +13,9 @@ An :term:`Application Profile` (here: DCTAP Instance) enumerates the properties 
 
 In order to minimize that confusion, the DCTAP Model names the things "in Instance Data" differently from the things "in an Application Profile", as summarized in the table and glossary below.
 
-In an Application Profile, a Statement in Instance Data is described with a :term:`Statement Constraint`, and a Property-Value pair is described with a :term:`Property Constraint` and :term:`Value Constraint`. A Description in Instance Data about a distinct entity in the world is described in an application profile with a :term:`Shape`. Where a Description in Instance Data groups a set of Statements, a Shape groups a set of Statement Constraints.
+In an Application Profile, a Statement in Instance Data is described with a :term:`Statement Template`, and a Property-Value pair is described with a :term:`Property Constraint` and :term:`Value Constraint`. A Description in Instance Data about a distinct entity in the world is described in an application profile with a :term:`Shape`. Where a Description in Instance Data groups a set of Statements, a Shape groups a set of Statement Templates.
 
-The DCTAP Model consists of twelve "elements" related to Shapes and Statement Constraints. Concretely, a :term:`DCTAP Element` serves as a header for a column in a tabular application profile. As described in the section :ref:`elements`, the DCTAP model has twelve elements related to the structure of Shapes, the structure of Statement Contraints, or of an annotational nature.
+The DCTAP Model consists of twelve "elements" related to Shapes and Statement Templates. Concretely, a :term:`DCTAP Element` serves as a header for a column in a tabular application profile. As described in the section :ref:`elements`, the DCTAP model has twelve elements related to the structure of Shapes, the structure of Statement Contraints, or of an annotational nature.
 
 Because the DCTAP Model was designed for compatibility with RDF and Linked Data, property constraints, shapes, literal datatypes and some value constraints are represented in a DCTAP Instance with :term:`IRI`\s (or :term:`Compact IRI`\s).
 

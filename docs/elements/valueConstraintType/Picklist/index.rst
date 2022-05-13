@@ -18,11 +18,11 @@ This is interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          :color
                 valueConstraint:     ['red', 'blue', 'green']
                 valueConstraintType: picklist
-            Statement Constraint
+            Statement Template
                 propertyID:          :hue
                 valueConstraint:     ['yellow']
                 valueConstraintType: picklist
@@ -40,11 +40,11 @@ Interpreted as::
     DCTAP instance
         Shape
             shapeID:                 default
-            Statement Constraint
+            Statement Template
                 propertyID:          :color
                 valueConstraint:     ['reddish', 'brown,', 'greenish', 'yellow,', 'bluish', 'green']
                 valueConstraintType: picklist
-            Statement Constraint
+            Statement Template
                 propertyID:          :hue
                 valueConstraint:     reddish brown, greenish yellow, bluish green
 

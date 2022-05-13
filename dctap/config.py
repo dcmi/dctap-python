@@ -35,7 +35,7 @@ def statement_template_elements(
 ):
     """List DCTAP elements supported by statement template class."""
     only_sc_elements = list(asdict(statement_template_class()))
-    only_sc_elements.remove("sc_warnings")
+    only_sc_elements.remove("st_warnings")
     only_sc_elements.remove("extra_elements")
     extra_sc_elements = []
     if settings:
@@ -84,10 +84,10 @@ def get_config(
         bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
         config_yaml = Path(configfile).read_text(encoding='UTF-8')
         try:
-            file_config_dict = yaml.safe_load(config_yaml)
+            config_dict_from_file = yaml.safe_load(config_yaml)
         except (yaml.YAMLError, yaml.scanner.ScannerError) as error:
             raise ConfigError(bad_form) from error
-        return file_config_dict
+        return config_dict_from_file
 
     elements_dict = {}
     elements_dict["shape_elements"] = shape_elements(shape_class)[0]
@@ -103,25 +103,31 @@ def get_config(
     config_dict["element_aliases"].update(
         _alias2element_mappings(elements_dict["csv_elements"])
     )
+    config_dict["default_shape_identifier"] = "default"
     config_dict["prefixes"] = {}
+    config_dict["extra_shape_elements"] = []
+    config_dict["extra_statement_template_elements"] = []
+    config_dict["list_elements"] = []
+    config_dict["list_item_separator"] = " "
+    config_dict["extra_value_node_types"] = []
+
     config_dict.update(elements_dict)
     if yaml.safe_load(config_yamldoc):
         config_dict.update(yaml.safe_load(config_yamldoc))
 
-    file_config_dict = {}
+    config_dict_from_file = {}
     if configfile_name:
         try:
-            file_config_dict.update(load2dict(configfile_name))
+            config_dict_from_file.update(load2dict(configfile_name))
         except FileNotFoundError as error:
-            raise ConfigError(
-                f"{repr(configfile_name)} not found; using defaults."
-            ) from error
+            raise ConfigError(f"{repr(configfile_name)} not found.") from error
     elif Path(DEFAULT_CONFIGFILE_NAME).exists():
-        file_config_dict.update(load2dict(DEFAULT_CONFIGFILE_NAME))
+        config_dict_from_file.update(load2dict(DEFAULT_CONFIGFILE_NAME))
     elif Path(DEFAULT_HIDDEN_CONFIGFILE_NAME).exists():
-        file_config_dict.update(load2dict(DEFAULT_HIDDEN_CONFIGFILE_NAME))
+        config_dict_from_file.update(load2dict(DEFAULT_HIDDEN_CONFIGFILE_NAME))
 
-    config_dict.update(file_config_dict)
+    # Settings from config file may override defaults.
+    config_dict.update(config_dict_from_file)
     return config_dict
 
 

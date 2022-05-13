@@ -61,7 +61,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
     """Read CSV and generate normalized text, JSON, or YAML, with warnings."""
     # pylint: disable=too-many-locals,too-many-arguments
 
-    config_dict = get_config(config)
+    config_dict = get_config(configfile_name=config)
     csvreader_output = csvreader(csvfile_obj, config_dict)
     (tapshapes_dict, warnings_dict) = csvreader_output
     if expand_prefixes:

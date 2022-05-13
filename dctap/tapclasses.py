@@ -238,7 +238,7 @@ class TAPShape:
 
     shapeID: str = ""
     shapeLabel: str = ""
-    sc_list: List[TAPStatementTemplate] = field(default_factory=list)
+    st_list: List[TAPStatementTemplate] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
     extra_elements: dict = field(default_factory=dict)
 

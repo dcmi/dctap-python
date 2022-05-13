@@ -6,7 +6,7 @@ from dctap.config import get_config, shape_elements, statement_template_elements
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_get_TAPShape_elements_when_no_config_dict_specified():
-    """List TAPShape elements (minus sh_warnings and sc_list)."""
+    """List TAPShape elements (minus sh_warnings and st_list)."""
     expected = ['shapeID', 'shapeLabel']
     assert shape_elements(TAPShape)[0] == expected
 

@@ -6,7 +6,7 @@ from dctap.tapclasses import TAPShape
 SHAPE_OBJECT = TAPShape(
     shapeID=":a",
     shapeLabel="Resource",
-    sc_list=[
+    st_list=[
         {"propertyID": "dct:creator", "valueNodeType": "IRI"},
         {"propertyID": "dct:subject", "valueNodeType": "IRI"},
         {"propertyID": "dct:date", "valueNodeType": "Literal"},
@@ -18,24 +18,24 @@ def test_shape_fields_are_individually_addressable():
     shap = SHAPE_OBJECT
     assert shap.shapeID == ":a"
     assert shap.shapeLabel == "Resource"
-    assert shap.sc_list[1] == {"propertyID": "dct:subject", "valueNodeType": "IRI"}
-    assert len(shap.sc_list) == 3
+    assert shap.st_list[1] == {"propertyID": "dct:subject", "valueNodeType": "IRI"}
+    assert len(shap.st_list) == 3
 
 def test_statement_template_list_items_are_individually_addressable():
-    """Items in sc_list field of TAPShape instance are individually addressable."""
+    """Items in st_list field of TAPShape instance are individually addressable."""
     shap = SHAPE_OBJECT
-    assert shap.sc_list[1]["propertyID"] == "dct:subject"
-    assert shap.sc_list[2]["valueNodeType"] == "Literal"
+    assert shap.st_list[1]["propertyID"] == "dct:subject"
+    assert shap.st_list[2]["valueNodeType"] == "Literal"
 
 def test_shape_initialized_by_assignment():
     """TAPShape instances can be created by assignment."""
     shap = TAPShape()
     shap.shapeID = ":a"
     shap.shapeLabel = "Resource"
-    shap.sc_list = []
-    shap.sc_list.append({"propertyID": "dct:creator", "valueNodeType": "IRI"})
-    shap.sc_list.append({"propertyID": "dct:subject", "valueNodeType": "IRI"})
-    shap.sc_list.append({"propertyID": "dct:date", "valueNodeType": "Literal"})
+    shap.st_list = []
+    shap.st_list.append({"propertyID": "dct:creator", "valueNodeType": "IRI"})
+    shap.st_list.append({"propertyID": "dct:subject", "valueNodeType": "IRI"})
+    shap.st_list.append({"propertyID": "dct:date", "valueNodeType": "Literal"})
     assert shap == SHAPE_OBJECT
 
 def test_shape_initialized_with_no_shapeid_field_should_pass_for_now():
@@ -43,14 +43,14 @@ def test_shape_initialized_with_no_shapeid_field_should_pass_for_now():
     config_dict = dict()
     config_dict["default_shape_identifier"] = "default"
     shap = TAPShape()
-    shap.sc_list = []
-    shap.sc_list.append({"propertyID": "dct:creator", "valueNodeType": "IRI"})
-    shap.sc_list.append({"propertyID": "dct:subject", "valueNodeType": "IRI"})
-    shap.sc_list.append({"propertyID": "dct:date", "valueNodeType": "Literal"})
+    shap.st_list = []
+    shap.st_list.append({"propertyID": "dct:creator", "valueNodeType": "IRI"})
+    shap.st_list.append({"propertyID": "dct:subject", "valueNodeType": "IRI"})
+    shap.st_list.append({"propertyID": "dct:date", "valueNodeType": "Literal"})
     shap._normalize_default_shapeID(config_dict)
     assert shap == TAPShape(
         shapeID = "default",
-        sc_list=[
+        st_list=[
             {"propertyID": "dct:creator", "valueNodeType": "IRI"},
             {"propertyID": "dct:subject", "valueNodeType": "IRI"},
             {"propertyID": "dct:date", "valueNodeType": "Literal"},

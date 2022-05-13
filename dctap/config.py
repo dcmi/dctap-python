@@ -19,7 +19,7 @@ from .tapclasses import TAPShape, TAPStatementTemplate
 def shape_elements(shape_class=TAPShape, settings=None):
     """List DCTAP elements supported by given shape class."""
     only_shape_elements = list(asdict(shape_class()))
-    only_shape_elements.remove("sc_list")
+    only_shape_elements.remove("st_list")
     only_shape_elements.remove("sh_warnings")
     only_shape_elements.remove("extra_elements")
     extra_shape_elements = []

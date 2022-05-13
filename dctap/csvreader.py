@@ -97,7 +97,7 @@ def _get_tapshapes(rows, config_dict):
             elif col in xtra_sc_elements:
                 sc.extra_elements[col] = row[col]
 
-        shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
+        shapes[sh_id].st_list.append(sc)            # Add SC to SC list in shapes dict.
 
         sc.normalize(config_dict)                   # SC normalizes itself, and
         st_warnings = sc.get_warnings()             # emits warnings on request.
@@ -116,9 +116,9 @@ def _get_tapshapes(rows, config_dict):
 
         for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
             tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
-            tapshape_dict[                          # - rename its field "sc_list" to
+            tapshape_dict[                          # - rename its field "st_list" to
                 "statement_templates"               #   "statement_templates"
-            ] = tapshape_dict.pop("sc_list")        # - add that shape dict to mutable
+            ] = tapshape_dict.pop("st_list")        # - add that shape dict to mutable
             shape_list.append(tapshape_dict)        #   tapshapes_dict["shapes"]
 
         warnings_dict = dict(warnings)              # Save defaultdict warnings as dict.

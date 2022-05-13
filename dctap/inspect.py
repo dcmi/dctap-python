@@ -11,7 +11,7 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
     # pylint: disable=too-many-branches
 
     only_shape_elements, xtra_shape_elements = shape_elements(TAPShape, config_dict)
-    only_sc_elements, xtra_sc_elements = statement_template_elements(
+    only_st_elements, xtra_st_elements = statement_template_elements(
         TAPStatementTemplate, config_dict
     )
     pprint_output = []
@@ -33,13 +33,13 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
 
         for sc_dict in tapshape_dict.get("statement_templates"):
             pprint_output.append("        Statement Template")
-            for key in only_sc_elements:
+            for key in only_st_elements:
                 if sc_dict.get(key):
                     indent12 = 12 * " " + key + ": "
                     while len(indent12) < 33:
                         indent12 += " "
                     pprint_output.append(indent12 + str(sc_dict.get(key)))
-            for key in xtra_sc_elements:
+            for key in xtra_st_elements:
                 indent08 = 12 * " " + "[" + key + "]: "
                 while len(indent08) < 33:
                     indent08 += " "

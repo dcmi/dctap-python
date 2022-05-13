@@ -34,15 +34,15 @@ def statement_template_elements(
     statement_template_class=TAPStatementTemplate, settings=None
 ):
     """List DCTAP elements supported by statement template class."""
-    only_sc_elements = list(asdict(statement_template_class()))
-    only_sc_elements.remove("st_warnings")
-    only_sc_elements.remove("extra_elements")
-    extra_sc_elements = []
+    only_st_elements = list(asdict(statement_template_class()))
+    only_st_elements.remove("st_warnings")
+    only_st_elements.remove("extra_elements")
+    extra_st_elements = []
     if settings:
         if settings.get("extra_statement_template_elements"):
             for extra_element in settings.get("extra_statement_template_elements"):
-                extra_sc_elements.append(extra_element)
-    return (only_sc_elements, extra_sc_elements)
+                extra_st_elements.append(extra_element)
+    return (only_st_elements, extra_st_elements)
 
 
 def write_configfile(

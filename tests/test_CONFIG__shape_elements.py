@@ -36,7 +36,7 @@ def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
 
 def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specified():
     """List TAPStatementTemplate elements plus extras."""
-    expected_sc_elements = [
+    expected_st_elements = [
         "propertyID",
         "propertyLabel",
         "mandatory",
@@ -48,11 +48,11 @@ def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specifie
         "valueShape",
         "note",
     ]
-    expected_extra_sc_elements = [
+    expected_extra_st_elements = [
         "min",
         "max",
     ]
     config_dict = { "extra_statement_template_elements": ["min", "max"] }
-    actual_sc_elements, actual_extra_sc_elements = statement_template_elements(TAPStatementTemplate, config_dict)
-    assert sorted(actual_sc_elements) == sorted(expected_sc_elements)
-    assert sorted(actual_extra_sc_elements) == sorted(expected_extra_sc_elements)
+    actual_st_elements, actual_extra_st_elements = statement_template_elements(TAPStatementTemplate, config_dict)
+    assert sorted(actual_st_elements) == sorted(expected_st_elements)
+    assert sorted(actual_extra_st_elements) == sorted(expected_extra_st_elements)

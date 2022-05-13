@@ -31,7 +31,7 @@ def _get_tapshapes(rows, config_dict):
     sh_elements, xtra_sh_elements = shape_elements(
         shape_class=TAPShape, settings=config_dict
     )
-    sc_elements, xtra_sc_elements = statement_template_elements(
+    st_elements, xtra_st_elements = statement_template_elements(
         statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 
@@ -89,12 +89,12 @@ def _get_tapshapes(rows, config_dict):
         sc = TAPStatementTemplate()                 # Instantiate SC for this row.
 
         for col in row:
-            if col in sc_elements:
+            if col in st_elements:
                 try:
                     setattr(sc, col, row[col])
                 except KeyError:
                     pass
-            elif col in xtra_sc_elements:
+            elif col in xtra_st_elements:
                 sc.extra_elements[col] = row[col]
 
         shapes[sh_id].st_list.append(sc)            # Add SC to SC list in shapes dict.
@@ -183,15 +183,15 @@ def _get_rows(open_csvfile_obj, config_dict):
 
     recognized_elements = config_dict.get("csv_elements")
     extra_shape_elements = config_dict.get("extra_shape_elements")
-    extra_sc_elements = config_dict.get("extra_statement_template_elements")
+    extra_st_elements = config_dict.get("extra_statement_template_elements")
     if extra_shape_elements:
         recognized_elements.extend(extra_shape_elements)
         for element in extra_shape_elements:
             config_dict["element_aliases"][element.lower()] = element
-    if extra_sc_elements:
+    if extra_st_elements:
         # breakpoint(context=5)
-        recognized_elements.extend(extra_sc_elements)
-        for element in extra_sc_elements:
+        recognized_elements.extend(extra_st_elements)
+        for element in extra_st_elements:
             config_dict["element_aliases"][element.lower()] = element
     recognized_elements = [elem.lower() for elem in recognized_elements]
 

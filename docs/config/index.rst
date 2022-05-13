@@ -10,6 +10,7 @@ Configuration
    prefix_mappings/index
    extra_elements/index
    list_elements/index
+   list_elements/valueNodeType/index
    list_item_separator/index
    element_aliases/index
    default_shape_name/index

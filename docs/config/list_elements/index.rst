@@ -47,7 +47,7 @@ The value would be interpreted as a list::
 Note that a column can be either a regular column or a list column, but not both - ie, all cells in a given column will be treated either as single values or as lists. In the following table:
 
 .. csv-table::
-   :file: propertyID_as_picklist_with_commas2.csv
+   :file: propertyID_as_list_with_commas2.csv
    :header-rows: 1
 
 the value "dc:date" is treated as an item a list that has just one value::
@@ -59,4 +59,5 @@ the value "dc:date" is treated as an item a list that has just one value::
                 propertyID:          ['dc:creator', 'foaf:maker']
             Statement Template   
                 propertyID:          ['dc:date']
+
 

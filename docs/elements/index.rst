@@ -20,7 +20,6 @@ There are nine Statement Template elements, of which the **propertyID** element 
    :maxdepth: 3
 
    propertyID/index
-   propertyLabel/index
    mandrepeat/index
    valueNodeType/index
    valueDataType/index
@@ -31,10 +30,9 @@ There are nine Statement Template elements, of which the **propertyID** element 
 Shape elements
 ..............
 
-There are two Shape elements. If the **shapeID** element is not used in a given DCTAP instance, it will be assigned a default value (which can be customized in the config file - see :ref:`_default_shape_name`).
+There are two Shape elements. If the **shapeID** element is not used in a given DCTAP instance, it will be assigned a default value (which can be customized in the config file - see :ref:`default_shape_name`).
 
 .. toctree::
 
    shapeID/index
-   shapeLabel/index
 

@@ -100,9 +100,9 @@ def _get_tapshapes(rows, config_dict):
         shapes[sh_id].sc_list.append(sc)            # Add SC to SC list in shapes dict.
 
         sc.normalize(config_dict)                   # SC normalizes itself, and
-        sc_warnings = sc.get_warnings()             # emits warnings on request.
+        st_warnings = sc.get_warnings()             # emits warnings on request.
 
-        for (elem, warn) in sc_warnings.items():    # Iterate SC instance warnings.
+        for (elem, warn) in st_warnings.items():    # Iterate SC instance warnings.
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings by shape,
             except KeyError:                        # but if needed key not found,
@@ -157,8 +157,8 @@ def _reduce_shapesdict(shapes_dict):
                 for (k, v) in sc["extra_elements"].items():
                     sc[k] = v
                     del sc["extra_elements"]
-            if sc.get("sc_warnings"):
-                del sc["sc_warnings"]
+            if sc.get("st_warnings"):
+                del sc["st_warnings"]
             for empty_element in [key for key in sc if not sc[key]]:
                 del sc[empty_element]
         if shape.get("extra_elements"):

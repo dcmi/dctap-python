@@ -29,10 +29,10 @@ def is_uri_or_prefixed_uri(uri):
 
 
 def expand_uri_prefixes(shapes_dict=None, config_dict=None):
-    """@@@"""
+    """Expand namespace prefixes, eg: dc:date to http://purl.org/dc/terms/date."""
     # pylint: disable=too-many-nested-blocks
     if not config_dict.get("prefixes"):
-        raise ConfigError("No 'prefixes' section found in configfile.")
+        raise ConfigError("No 'prefixes' section found in config file.")
     for shape in shapes_dict["shapes"]:
         for prefix in config_dict["prefixes"]:
             if re.match(prefix, shape["shapeID"]):

@@ -44,7 +44,7 @@ As an aid for debugging, the `dctap read` subcommand performs various consistenc
 Expand prefixes
 :::::::::::::::
 
-The option **--expand-prefixes** triggers the expansion of namespace prefixes used in :term:`Compact IRI`\s to be expanded, by checking the prefix mappings defined in a configuration file --- by default "dctap.yml" in the working directory, or any other file specified with the **--configfile** option. If no configuration file is found, it will check the prefixes against a dozen or so mappings defined as built-in configuration defaults.
+The option **--expand-prefixes** triggers the expansion of namespace prefixes used in :term:`Compact IRI`\s to be expanded, by checking the prefix mappings defined in a configuration file --- by default "dctap.yaml" in the working directory, or any other file specified with the **--config** option. If no configuration file is found, it will check the prefixes against a dozen or so mappings defined as built-in configuration defaults.
 
 .. code-block:: bash
 
@@ -59,11 +59,11 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
 Read settings from non-default config file
 ::::::::::::::::::::::::::::::::::::::::::
 
-The option **--configfile** triggers use of a configuration file other than the default "dctap.yml". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the section :ref:`cli_subcommands_init`.
+The option **--configfile** triggers use of a configuration file other than the default "dctap.yaml". Settings such as the default shape name and namespace prefix mappings can be tweaked in this file, as discussed in the section :ref:`config`. A starter configuration file can be generated with **dctap init**, as described in the section :ref:`cli_subcommands_init`.
 
 .. code-block:: bash
 
-    $ dctap read --configfile /home/tbaker/dctap.yml example.csv
+    $ dctap read --configfile /home/tbaker/dctap.yaml example.csv
 
 
 Generate JSON or YAML output

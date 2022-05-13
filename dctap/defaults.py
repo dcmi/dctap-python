@@ -1,6 +1,6 @@
 """Default settings."""
 
-DEFAULT_CONFIGFILE_NAME = "dctap.yml"
+DEFAULT_CONFIGFILE_NAME = "dctap.yaml"
 
 DEFAULT_HIDDEN_CONFIGFILE_NAME = ".dctaprc"
 

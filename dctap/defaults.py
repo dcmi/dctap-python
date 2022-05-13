@@ -11,7 +11,7 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 ### A different default identifier can be set here.
 ### Note that if identifier is set here to a string of zero length,
 ### the identifier will revert to "default".
-# default_shape_identifier: " "
+# default_shape_identifier: "default"
 
 ### URIs may be shortened in a CSV by using namespace prefixes.
 ### Here is a selection of common prefixes:

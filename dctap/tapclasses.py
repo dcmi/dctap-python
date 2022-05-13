@@ -23,7 +23,7 @@ class TAPStatementTemplate:
     valueConstraintType: str = ""
     valueShape: str = ""
     note: str = ""
-    sc_warnings: dict = field(default_factory=dict)
+    st_warnings: dict = field(default_factory=dict)
     extra_elements: dict = field(default_factory=dict)
 
     def normalize(self, settings):
@@ -47,12 +47,12 @@ class TAPStatementTemplate:
     def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
         """@@@"""
         if not is_uri_or_prefixed_uri(self.propertyID):
-            self.sc_warnings[
+            self.st_warnings[
                 "propertyID"
             ] = f"{repr(self.propertyID)} is not an IRI or Compact IRI."
         if self.valueDataType:
             if not is_uri_or_prefixed_uri(self.valueDataType):
-                self.sc_warnings[
+                self.st_warnings[
                     "valueDataType"
                 ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
 
@@ -67,7 +67,7 @@ class TAPStatementTemplate:
         if self.mandatory:
             mand = self.mandatory.lower()
             if mand not in valid_values:
-                self.sc_warnings[
+                self.st_warnings[
                     "mandatory"
                 ] = f"{repr(self.mandatory)} is not a supported Boolean value."
             if mand in valid_values_for_true:
@@ -78,7 +78,7 @@ class TAPStatementTemplate:
         if self.repeatable:
             repeat = self.repeatable.lower()
             if repeat not in valid_values:
-                self.sc_warnings[
+                self.st_warnings[
                     "repeatable"
                 ] = f"{repr(self.repeatable)} is not a supported Boolean value."
             if repeat in valid_values_for_true:
@@ -102,7 +102,7 @@ class TAPStatementTemplate:
         if self.valueConstraintType == "iristem":
             for list_item in self.valueConstraint:
                 if not is_uri_or_prefixed_uri(list_item):
-                    self.sc_warnings["valueConstraint"] = (
+                    self.st_warnings["valueConstraint"] = (
                         f"Value constraint type is {repr(self.valueConstraintType)}, "
                         f"but {repr(list_item)} does not look like an IRI or "
                         "Compact IRI."
@@ -116,7 +116,7 @@ class TAPStatementTemplate:
             try:
                 re.compile(self.valueConstraint)
             except (re.error, TypeError):
-                self.sc_warnings["valueConstraint"] = (
+                self.st_warnings["valueConstraint"] = (
                     f"Value constraint type is {repr(self.valueConstraintType)}, but "
                     f"{repr(self.valueConstraint)} is not a valid regular expression."
                 )
@@ -127,7 +127,7 @@ class TAPStatementTemplate:
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "pattern":
             if self.valueShape:
-                self.sc_warnings["valueConstraintType"] = (
+                self.st_warnings["valueConstraintType"] = (
                     f"Value constraint type "
                     f"({repr(self.valueConstraintType)}) "
                     "cannot conform to a value shape."
@@ -147,7 +147,7 @@ class TAPStatementTemplate:
         """Warns if valueConstraintType used without valueConstraint."""
         if self.valueConstraintType:
             if not self.valueConstraint:
-                self.sc_warnings["valueConstraint"] = (
+                self.st_warnings["valueConstraint"] = (
                     f"Value constraint type "
                     f"({repr(self.valueConstraintType)}) "
                     "but no value constraint."
@@ -172,7 +172,7 @@ class TAPStatementTemplate:
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
             if self.valueNodeType not in valid_types:
-                self.sc_warnings[
+                self.st_warnings[
                     "valueNodeType"
                 ] = f"{repr(self.valueNodeType)} is not a valid node type."
         return self
@@ -182,7 +182,7 @@ class TAPStatementTemplate:
         self.valueNodeType = self.valueNodeType.lower()
         if self.valueShape:
             if self.valueNodeType == "literal":
-                self.sc_warnings["valueDataType"] = (
+                self.st_warnings["valueDataType"] = (
                     "Datatypes are only for literals, "
                     "which cannot conform to a value shape."
                 )
@@ -191,7 +191,7 @@ class TAPStatementTemplate:
         """Value with any datatype cannot conform to a value shape."""
         if self.valueShape:
             if self.valueDataType:
-                self.sc_warnings["valueDataType"] = (
+                self.st_warnings["valueDataType"] = (
                     "Datatypes are only for literals, "
                     "which cannot conform to a value shape."
                 )
@@ -201,7 +201,7 @@ class TAPStatementTemplate:
         node_type = self.valueNodeType.lower()
         if node_type in ("iri", "uri", "bnode"):
             if self.valueDataType:
-                self.sc_warnings["valueDataType"] = (
+                self.st_warnings["valueDataType"] = (
                     f"Datatypes are only for literals, "
                     f"so node type should not be {repr(self.valueNodeType)}."
                 )
@@ -225,8 +225,8 @@ class TAPStatementTemplate:
         return self
 
     def get_warnings(self):
-        """Emit self.sc_warnings as populated by self.normalize()."""
-        return dict(self.sc_warnings)
+        """Emit self.st_warnings as populated by self.normalize()."""
+        return dict(self.st_warnings)
 
 
 @dataclass

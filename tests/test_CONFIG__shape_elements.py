@@ -19,7 +19,7 @@ def test_get_TAPShape_elements_plus_extras_when_config_dict_specified():
     assert shape_elements(TAPShape, config_dict)[1] == expected_xtra_shape_elements
 
 def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
-    """List TAPStatementTemplate elements (minus sc_warnings)."""
+    """List TAPStatementTemplate elements (minus st_warnings)."""
     expected = [
         "propertyID",
         "propertyLabel",

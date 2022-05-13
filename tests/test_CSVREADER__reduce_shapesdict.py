@@ -22,7 +22,7 @@ def test_reduce_shapesdict():
                               'valueConstraintType': 'picklist',
                               'valueShape': '',
                               'note': '',
-                              'sc_warnings': {'valueConstraint': "Value constraint type ('picklist') but no value constraint."},
+                              'st_warnings': {'valueConstraint': "Value constraint type ('picklist') but no value constraint."},
                               'extra_elements': {'min': '1'}
                              }
                          ]
@@ -44,7 +44,7 @@ def test_reduce_shapesdict():
                               'valueConstraintType': '',
                               'valueShape': '',
                               'note': '',
-                              'sc_warnings': {},
+                              'st_warnings': {},
                               'extra_elements': {'min': '2'}
                              }
                          ]

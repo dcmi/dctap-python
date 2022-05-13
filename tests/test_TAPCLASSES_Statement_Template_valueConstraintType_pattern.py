@@ -30,6 +30,6 @@ def test_valueConstraintType_pattern_warn_if_not_valid_regex():
     sc.valueConstraintType = "pattern"
     sc.valueConstraint="approved_(*"
     sc._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
-    assert len(sc.sc_warnings) == 1
+    assert len(sc.st_warnings) == 1
 
 

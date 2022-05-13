@@ -42,11 +42,11 @@ def test_mandatory_and_repeatable_raise_warn_unsupported_boolean_values():
     sc.mandatory = "WAHR"
     sc.repeatable = "WAHR"
     sc._normalize_booleans_mandatory_repeatable()
-    print(sc.sc_warnings)
-    print(dict(sc.sc_warnings))
-    print(len(dict(sc.sc_warnings)))
+    print(sc.st_warnings)
+    print(dict(sc.st_warnings))
+    print(len(dict(sc.st_warnings)))
     print(f"Mandatory: {sc.mandatory}")
     print(f"Repeatable: {sc.repeatable}")
-    assert len(sc.sc_warnings) == 2
+    assert len(sc.st_warnings) == 2
     assert sc.mandatory is "WAHR"
     assert sc.repeatable is "WAHR"

@@ -1,7 +1,7 @@
 """Print CSV contents and warnings."""
 
 import sys
-from .config import shape_elements, statement_template_elements
+from .config import get_shape_elements, statement_template_elements
 from .loggers import stderr_logger
 from .tapclasses import TAPShape, TAPStatementTemplate
 

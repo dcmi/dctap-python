@@ -4,7 +4,7 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from dctap.config import shape_elements, statement_template_elements
+from dctap.config import get_shape_elements, statement_template_elements
 from dctap.exceptions import DctapError
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
@@ -28,7 +28,7 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    sh_elements, xtra_sh_elements = shape_elements(
+    sh_elements, xtra_sh_elements = get_shape_elements(
         shape_class=TAPShape, settings=config_dict
     )
     st_elements, xtra_st_elements = statement_template_elements(

@@ -16,21 +16,16 @@ prefixes:
 """
 
 
-def test_get_config_from_builtins(tmp_path):
+def test_get_config_from_builtins():
     """Get config dict from built-in settings."""
     config_dict = get_config()
-    assert "prefixes" in list(config_dict.keys())                 # built-in/configurable
+    config_keys = list(config_dict.keys())
+    assert "prefixes" in config_keys
     assert config_dict.get("csv_elements")                        # computed from dataclasses
     assert config_dict.get("shape_elements")                      # computed from dataclasses
-    assert config_dict.get("statement_template_elements")       # computed from dataclasses
-    assert config_dict.get("element_aliases")                     # computed/configurable
-    ## The following are commented out in the built-in configuration
-    # assert config_dict.get("default_shape_identifier")            # configurable with built-in default
-    # assert config_dict.get("list_item_separator")             # configurable with built-in default
-    # assert config_dict.get("extra_statement_template_elements") # configurable
-    # assert config_dict.get("extra_shape_elements")                # configurable
-    # assert config_dict.get("extra_value_node_types")              # configurable
-    # assert config_dict.get("list_elements")                   # configurable
+    assert config_dict.get("statement_template_elements")         # computed from dataclasses
+    assert config_dict.get("element_aliases")                     # computed from dataclasses
+    assert "element_aliases" in config_keys                       # computed and configurable
 
 def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""

@@ -26,8 +26,8 @@ from dctap.exceptions import ConfigError
 from dctap.tapclasses import TAPShape
 
 
-def test_get_tapshapes_shape_elements_on_their_own_line(tmp_path):
-    """Getting rows_list from tests/test_CSVREADER_get_rows.py ."""
+def test_set_tapshapes_fields(tmp_path):
+    """Set TAPShape fields based on header: cell_value dict for one row."""
     os.chdir(tmp_path) # precaution to avoid interference among pytests
     config_dict = get_config()
     assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
@@ -55,11 +55,32 @@ def test_get_tapshapes_shape_elements_on_their_own_line(tmp_path):
         extras={"closed": False, "start": True}
     )
 
-#     one_row = {
-#         "shapeID": ":a",
-#         "shapeLabel": "Book",
-#         "closed": False,
-#         "start": True,
-#         "propertyID": "ex:name",
-#         "valueNodeType": "literal",
-#     }
+def test_set_tapshapes_fields_shape_element_not_configured_is_ignored(tmp_path):
+    """Set TAPShape fields based on header: cell_value dict for one row."""
+    os.chdir(tmp_path) # precaution to avoid interference among pytests
+    config_dict = get_config()
+    assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
+    config_dict["extra_shape_elements"] = ["closed"]
+    (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)
+    shape_instance = TAPShape()
+    one_row = {
+        "shapeID": ":a",
+        "shapeLabel": "Book",
+        "closed": False,
+        "start": True,
+        "propertyID": "ex:name",
+        "valueNodeType": "literal",
+    }
+    assert _set_shape_fields(
+        tapshape_obj=shape_instance,
+        row_dict=one_row,
+        main_shape_elements=main_shems,
+        xtra_shape_elements=xtra_shems,
+    ) == TAPShape(
+        shapeID=':a', 
+        shapeLabel='Book', 
+        st_list=[], 
+        sh_warnings={}, 
+        extras={"closed": False}
+    )
+

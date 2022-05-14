@@ -148,7 +148,7 @@ def _set_shape_keys(
                 pass
         elif key in xtra_shape_elements:
             try:
-                shape.extra_elements[key] = row_dict[key]
+                shape_instance.extra_elements[key] = row_dict[key]
             except KeyError:
                 pass
     return shape_instance

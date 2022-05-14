@@ -4,7 +4,7 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from dctap.config import get_shape_elements, get_statement_template_elements
+from dctap.config import get_shems, get_statement_template_elements
 from dctap.exceptions import DctapError
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
@@ -18,7 +18,7 @@ def csvreader(open_csvfile_obj, config_dict):
 
 
 def _get_tapshapes(rows, config_dict):
-    """Return tuple: { shape objects as dicts : warnings as dicts }."""
+    """Return tuple: (shapes dict: warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
@@ -28,7 +28,7 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    (main_shems, xtra_shems) = get_shape_elements(
+    (main_shems, xtra_shems) = get_shems(
         shape_class=TAPShape, settings=config_dict
     )
     (main_stems, xtra_stems) = get_statement_template_elements(
@@ -124,7 +124,7 @@ def _get_tapshapes(rows, config_dict):
         warnings_dict = dict(warnings)              # Save defaultdict warnings as dict.
 
     return (                                        # Return tuple:
-	_reduce_shapesdict(tapshapes_dict),         #   Shapes dict, empties removed
+	_reduce_shapesdict(tapshapes_dict),             #   Shapes dict, empties removed
         warnings_dict                               #   Dict of warnings, by shape
     )
     # fmt: on

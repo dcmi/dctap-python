@@ -16,7 +16,7 @@ from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementTemplate
 
 
-def get_shape_elements(shape_class=TAPShape, settings=None):
+def get_shems(shape_class=TAPShape, settings=None):
     """List DCTAP elements supported by given shape class."""
     only_shape_elements = list(asdict(shape_class()))
     only_shape_elements.remove("st_list")
@@ -90,7 +90,7 @@ def get_config(
         return config_dict_from_file
 
     elements_dict = {}
-    elements_dict["shape_elements"] = get_shape_elements(shape_class)[0]
+    elements_dict["shape_elements"] = get_shems(shape_class)[0]
     elements_dict["statement_template_elements"] = get_statement_template_elements(
         statement_template_class
     )[0]

@@ -1,4 +1,7 @@
-"""Return config dictionary from reading config file."""
+"""
+dctap.csvreader._get_tapshapes 
+- 
+"""
 
 import os
 import pytest
@@ -8,8 +11,9 @@ from dctap.csvreader import _get_tapshapes
 from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 from dctap.exceptions import ConfigError
 
+@pytest.mark.skip
 def test_get_tapshapes_shape_elements_on_their_own_line(tmp_path):
-    """@@@"""
+    """Getting rows_list from tests/test_CSVREADER_get_rows.py ."""
     os.chdir(tmp_path) # precaution to avoid interference among pytests
     config_dict = get_config()
     assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]

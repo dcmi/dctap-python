@@ -53,6 +53,6 @@ def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specifie
         "max",
     ]
     config_dict = { "extra_statement_template_elements": ["min", "max"] }
-    actual_st_elements, actual_extra_st_elements = get_statement_template_elements(TAPStatementTemplate, config_dict)
+    (actual_st_elements, actual_extra_st_elements) = get_statement_template_elements(TAPStatementTemplate, config_dict)
     assert sorted(actual_st_elements) == sorted(expected_st_elements)
     assert sorted(actual_extra_st_elements) == sorted(expected_extra_st_elements)

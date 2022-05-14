@@ -69,25 +69,24 @@ def _get_tapshapes(rows, config_dict):
         shape.normalize(config_dict)
         shape_warnings = shape.get_warnings()
 
-        for (elem,warn) in shape_warnings.items():  # Iterate Shape warnings.
+        for (elem, warn) in shape_warnings.items(): # Iterate Shape warnings.
             try:                                    # Try to add each warning to dict
                 warnings[sh_id][elem].append(warn)  # of all warnings, by shape,
             except KeyError:                        # but if needed key not found,
                 warnings[sh_id][elem] = []          # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        sc = TAPStatementTemplate()                 # Instantiate SC for this row.
+        sc = TAPStatementTemplate()                 # For this row make a new 
+        for key in row:                             # Statement Template object,
+            if key in main_stems:                   # then iterate the row dict keys.
+                try:                                # If given key be found among
+                    setattr(sc, key, row[key])      # Statement Template elements,
+                except KeyError:                    # then assign it as field of 
+                    pass                            # Statement Template object.
+            elif key in xtra_stems:                 # If given key defined as "extra",
+                sc.extras[key] = row[key]           # assign it to an "extras" dict.
 
-        for k in row:
-            if k in main_stems:
-                try:
-                    setattr(sc, k, row[k])
-                except KeyError:
-                    pass
-            elif k in xtra_stems:
-                sc.extras[k] = row[k]
-
-        shapes[sh_id].st_list.append(sc)            # Add SC to SC list in shapes dict.
+        shapes[sh_id].st_list.append(sc)            # Append Template object to a list.
 
         sc.normalize(config_dict)                   # SC normalizes itself, and
         st_warnings = sc.get_warnings()             # emits warnings on request.

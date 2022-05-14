@@ -98,19 +98,19 @@ def _get_tapshapes(rows, config_dict):
                 warnings[sh_id][elem] = []          # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        tapshapes_dict = {}                         # Dict will hold shapes as dicts.
+        warnings_dict = dict(warnings)              # Result: dictionary of warnings.
 
-        shape_list = []                             # New list for TAPShapes objs, to
-        tapshapes_dict["shapes"] = shape_list       # hold on tapshapes_dict["shapes"].
+        tapshapes_dict = {}                         # In old dict: TAPShape objects.
+        shape_list = []                             # In new dict: shapes as dicts,
+        tapshapes_dict["shapes"] = shape_list       # held in a list of shapes.
 
-        for tapshape_obj in list(shapes.values()):  # For each TAPShape object in list:
-            tapshape_dict = asdict(tapshape_obj)    # - convert object to pure dict,
-            tapshape_dict[                          # - rename its field "st_list" to
-                "statement_templates"               #   "statement_templates"
-            ] = tapshape_dict.pop("st_list")        # - add that shape dict to mutable
-            shape_list.append(tapshape_dict)        #   tapshapes_dict["shapes"]
+        for tapshape_obj in list(shapes.values()):  # Each shape-as-TAPShape-object
+            tapshape_dict = asdict(tapshape_obj)    # is converted to plain dictionary,
+            tapshape_dict[                          # and added to list of 
+                "statement_templates"               # statement_templates,
+            ] = tapshape_dict.pop("st_list")        # and appended to growing list 
+            shape_list.append(tapshape_dict)        # of shapes-as-dictionaries.
 
-        warnings_dict = dict(warnings)              # Save defaultdict warnings as dict.
         tapshapes_dict = _simplify(tapshapes_dict)  # Purge items with falsy values.
 
     return (tapshapes_dict, warnings_dict)

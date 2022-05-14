@@ -20,7 +20,7 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config, get_shems
-from dctap.csvreader import _get_tapshapes, _set_shape_keys
+from dctap.csvreader import _get_tapshapes, _set_shape_fields
 from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 from dctap.exceptions import ConfigError
 from dctap.tapclasses import TAPShape
@@ -42,7 +42,7 @@ def test_get_tapshapes_shape_elements_on_their_own_line(tmp_path):
         "propertyID": "ex:name",
         "valueNodeType": "literal",
     }
-    assert _set_shape_keys(
+    assert _set_shape_fields(
         tapshape_obj=shape_instance,
         row_dict=one_row,
         main_shape_elements=main_shems,

@@ -9,7 +9,7 @@ Some keywords may not be used as names of elements (i.e., of CSV column headers)
 - "st_list"
 - "sh_warnings"
 - "st_warnings"
-- "extra_elements"
+- "extras"
 
 Note that in processing headers, the module ignores case, certain punctuation (dashes and understores), and whitespace, so none of the following variants of "st_list" may be used as element names (see :ref:`design_element_names`):
 

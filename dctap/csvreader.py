@@ -44,11 +44,11 @@ def _get_tapshapes(rows, config_dict):
 
         if first_valid_row_encountered:             # In very "first" valid row,
             if row.get("shapeID"):                  # if truthy shapeID be found,
-                sh_id = row.get("shapeID")          # use as a key for shapes dict.
+                sh_id = row.get("shapeID")          # use as field for tapshape object.
             else:                                   # If no truthy shapeID be found,
                 sh_id = row["shapeID"] = dshape     # use default shapeID as key.
             new_shape = shapes[sh_id] = TAPShape()  # Add TAPShape obj to shapes dict,
-            shape = _set_shape_keys(
+            shape = _set_shape_fields(
                 tapshape_obj=new_shape,
                 row_dict=row,
                 main_shape_elements=main_shems,
@@ -65,7 +65,7 @@ def _get_tapshapes(rows, config_dict):
 
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
             new_shape = shapes[sh_id] = TAPShape()  # give it value TAPShape object,
-            shape = _set_shape_keys(
+            shape = _set_shape_fields(
                 tapshape_obj=new_shape,
                 row_dict=row,
                 main_shape_elements=main_shems,
@@ -127,7 +127,7 @@ def _get_tapshapes(rows, config_dict):
     # fmt: on
 
 
-def _set_shape_keys(
+def _set_shape_fields(
     tapshape_obj=None,
     row_dict=None,
     main_shape_elements=None,

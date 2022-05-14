@@ -11,8 +11,8 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
-    csvrows, csvwarnings = _get_rows(open_csvfile_obj, config_dict)
-    tapshapes, tapwarnings = _get_tapshapes(csvrows, config_dict)
+    (csvrows, csvwarnings) = _get_rows(open_csvfile_obj, config_dict)
+    (tapshapes, tapwarnings) = _get_tapshapes(csvrows, config_dict)
     tapwarnings = {**csvwarnings, **tapwarnings}
     return (tapshapes, tapwarnings)
 

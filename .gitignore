@@ -1,3 +1,4 @@
+*.trypy
 Session.vim
 .idea/
 *swp

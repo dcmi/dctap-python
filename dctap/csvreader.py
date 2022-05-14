@@ -36,18 +36,7 @@ def _get_tapshapes(rows, config_dict):
     # fmt: off
     shapes = {}                                     # New dict will hold TAPShapes.
     warnings = defaultdict(dict)                    # New dict will hold warnings.
-    first_valid_row_encountered = True              # Only one valid row to be "first".
-
-    def set_shape_keys(shape=None, row=None):       # To set shape-related keys,
-        for k in row:                             # Iterate remaining keys, to
-            if k in main_shems:
-                try:                                    # populate tapshape fields
-                    setattr(shape, k, row[k])       # with values from row dict.
-                except KeyError:                        # Values not found in row dict,
-                    pass                                # are simply skipped.
-            elif k in xtra_shems:
-                shape.extra_elements[k] = row[k]
-        return shape                                # Return shape with fields set.
+    first_valid_row_encountered = True              # Only one row can be "first valid".
 
     for row in rows:                                # For each row
         if not row["propertyID"]:                   # where no propertyID be found,
@@ -58,8 +47,13 @@ def _get_tapshapes(rows, config_dict):
                 sh_id = row.get("shapeID")          # use as a key for shapes dict.
             else:                                   # If no truthy shapeID be found,
                 sh_id = row["shapeID"] = dshape     # use default shapeID as key.
-            shape = shapes[sh_id] = TAPShape()      # Add TAPShape obj to shapes dict,
-            set_shape_keys(shape, row)              # populate its shape elements, and
+            new_shape = shapes[sh_id] = TAPShape()  # Add TAPShape obj to shapes dict,
+            shape = _set_shape_keys(
+                shape_instance=new_shape,
+                row_dict=row,
+                main_shape_elements=main_shems,
+                xtra_shape_elements=xtra_shems,
+            )
             first_valid_row_encountered = False     # may future rows be not "first".
 
         if not first_valid_row_encountered:         # In each valid row thereafter,
@@ -70,8 +64,13 @@ def _get_tapshapes(rows, config_dict):
                 sh_id = so_far[-1]                  # use the most recent as key.
 
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
-            shape = shapes[sh_id] = TAPShape()      # give it value TAPShape object,
-            set_shape_keys(shape, row)              # populate its shape elements, and
+            new_shape = shapes[sh_id] = TAPShape()  # give it value TAPShape object,
+            shape = _set_shape_keys(
+                shape_instance=new_shape,
+                row_dict=row,
+                main_shape_elements=main_shems,
+                xtra_shape_elements=xtra_shems,
+            )
             warnings[sh_id] = {}                    # use as key in warnings dict.
 
         shape.normalize(config_dict)
@@ -126,6 +125,33 @@ def _get_tapshapes(rows, config_dict):
         warnings_dict                               #   Dict of warnings, by shape
     )
     # fmt: on
+
+
+def _set_shape_keys(
+    shape_instance=None,
+    row_dict=None,
+    main_shape_elements=None,
+    xtra_shape_elements=None,
+):
+    """
+    Populate shape-related keys of dictionary for a named instance of TAPShape.
+    Iterate columns, and if header is found to be among default shems, add
+    key-value to TAPShape dict. Skip any keys not found in row. Or if header is
+    found among extra shape elements, add key-value to list of extra elements on
+    TAPShape instance, skipping extra keys not found. Return TAPShape dict.
+    """
+    for key in row_dict:
+        if key in main_shape_elements:
+            try:
+                setattr(shape_instance, key, row_dict[key])
+            except KeyError:
+                pass
+        elif key in xtra_shape_elements:
+            try:
+                shape.extra_elements[key] = row_dict[key]
+            except KeyError:
+                pass
+    return shape_instance
 
 
 def _lowercase_despace_depunctuate(some_str=None):
@@ -200,9 +226,7 @@ def _get_rows(open_csvfile_obj, config_dict):
 
     for header in new_header_line_list:
         if header.lower() not in recognized_elements:
-            warn = (
-                f"Non-DCTAP element {repr(header)} not configured as extra element."
-            )
+            warn = f"Non-DCTAP element {repr(header)} not configured as extra element."
             csv_warnings["csv"] = {}
             csv_warnings["csv"]["header"] = []
             csv_warnings["csv"]["header"].append(warn)

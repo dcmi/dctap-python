@@ -49,7 +49,7 @@ def _get_tapshapes(rows, config_dict):
                 sh_id = row["shapeID"] = dshape     # use default shapeID as key.
             new_shape = shapes[sh_id] = TAPShape()  # Add TAPShape obj to shapes dict,
             shape = _set_shape_keys(
-                shape_instance=new_shape,
+                tapshape_obj=new_shape,
                 row_dict=row,
                 main_shape_elements=main_shems,
                 xtra_shape_elements=xtra_shems,
@@ -66,7 +66,7 @@ def _get_tapshapes(rows, config_dict):
         if sh_id not in shapes:                     # If shape ID not in shapes dict,
             new_shape = shapes[sh_id] = TAPShape()  # give it value TAPShape object,
             shape = _set_shape_keys(
-                shape_instance=new_shape,
+                tapshape_obj=new_shape,
                 row_dict=row,
                 main_shape_elements=main_shems,
                 xtra_shape_elements=xtra_shems,
@@ -92,7 +92,7 @@ def _get_tapshapes(rows, config_dict):
                 except KeyError:
                     pass
             elif k in xtra_stems:
-                sc.extra_elements[k] = row[k]
+                sc.extras[k] = row[k]
 
         shapes[sh_id].st_list.append(sc)            # Add SC to SC list in shapes dict.
 
@@ -128,30 +128,37 @@ def _get_tapshapes(rows, config_dict):
 
 
 def _set_shape_keys(
-    shape_instance=None,
+    tapshape_obj=None,
     row_dict=None,
     main_shape_elements=None,
     xtra_shape_elements=None,
 ):
-    """
-    Populate shape-related keys of dictionary for a named instance of TAPShape.
-    Iterate columns, and if header is found to be among default shems, add
-    key-value to TAPShape dict. Skip any keys not found in row. Or if header is
-    found among extra shape elements, add key-value to list of extra elements on
-    TAPShape instance, skipping extra keys not found. Return TAPShape dict.
+    """Populates shape fields of dataclass TAPShape object from dict for one row.
+
+    Args:
+        tapshape_obj: Unpopulated instance of dctap.tapclasses.TAPShape:
+            TAPShape(shapeID='', shapeLabel='', st_list=[], sh_warnings={}, extras={})
+        row_dict: Dictionary of all columns headers (keys) and cell values (values)
+            found in a given row, with no distinction between shape elements and
+            statement template elements.
+        main_shape_elements: Default TAPClass fields related to shapes.
+        xtra_shape_elements: Extra TAPClass fields as per optional config file.
+
+    Returns:
+        TAPShape object with shape fields set.
     """
     for key in row_dict:
         if key in main_shape_elements:
             try:
-                setattr(shape_instance, key, row_dict[key])
+                setattr(tapshape_obj, key, row_dict[key])
             except KeyError:
                 pass
         elif key in xtra_shape_elements:
             try:
-                shape_instance.extra_elements[key] = row_dict[key]
+                tapshape_obj.extras[key] = row_dict[key]
             except KeyError:
                 pass
-    return shape_instance
+    return tapshape_obj
 
 
 def _lowercase_despace_depunctuate(some_str=None):
@@ -177,18 +184,18 @@ def _reduce_shapesdict(shapes_dict):
     """Iteratively remove elements from shapes dictionary with falsy values."""
     for shape in shapes_dict["shapes"]:
         for sc in shape["statement_templates"]:
-            if sc.get("extra_elements"):
-                for (k, v) in sc["extra_elements"].items():
+            if sc.get("extras"):
+                for (k, v) in sc["extras"].items():
                     sc[k] = v
-                    del sc["extra_elements"]
+                    del sc["extras"]
             if sc.get("st_warnings"):
                 del sc["st_warnings"]
             for empty_element in [key for key in sc if not sc[key]]:
                 del sc[empty_element]
-        if shape.get("extra_elements"):
-            for (k, v) in shape["extra_elements"].items():
+        if shape.get("extras"):
+            for (k, v) in shape["extras"].items():
                 shape[k] = v
-                del shape["extra_elements"]
+                del shape["extras"]
         if shape.get("sh_warnings"):
             del shape["sh_warnings"]
         for empty_element in [key for key in shape if not shape[key]]:

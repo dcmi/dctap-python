@@ -68,3 +68,22 @@ def test_exit_with_ConfigError_if_default_configfile_found_with_bad_yaml(tmp_pat
     Path(DEFAULT_CONFIGFILE_NAME).write_text(bad_config_yaml)
     with pytest.raises(ConfigError):
         get_config()
+
+def test_exit_with_ConfigError_wtf(tmp_path):
+    """2022-05-13: It appears that this test, to succeed, 
+    would need to change away from directory with the bad 
+    config file created in the previous test (above).
+    """
+    with pytest.raises(ConfigError):
+        get_config()
+
+def test_extra_shape_elements(tmp_path):
+    """2022-05-13: os.chdir(tmp_path) is needed here because 
+    a previous pytest (above) wrote a bad config file to tmp_path.
+    """
+    os.chdir(tmp_path) 
+    config_dict = get_config()
+    config_dict["extra_shape_elements"] = ["closed", "start"]
+    assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
+    config_dict["shape_elements"].extend(config_dict["extra_shape_elements"])
+    assert config_dict["shape_elements"] == ["shapeID", "shapeLabel", "closed", "start"]

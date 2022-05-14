@@ -76,7 +76,8 @@ def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
             'shapeID': ':a', 
             'propertyID': 'dct:creator', 
             '': 'URI', 
-            None: ['comment', 'comment two']}
+            None: ['comment', 'comment two']
+        }
     ]
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list
@@ -93,7 +94,9 @@ def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
         )
     csvfile_obj = open(csvfile_path)
     expected_rows_list = [
-        {'shapeID': ':a', 'propertyID': 'dct:creator', '': 'URI'}
+        {
+            'shapeID': ':a', 'propertyID': 'dct:creator', '': 'URI'
+        }
     ]
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list

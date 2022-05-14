@@ -28,10 +28,10 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    (sh_elements, xtra_sh_elements) = get_shape_elements(
+    (main_shems, xtra_shems) = get_shape_elements(
         shape_class=TAPShape, settings=config_dict
     )
-    (st_elements, xtra_st_elements) = get_statement_template_elements(
+    (main_stems, xtra_stems) = get_statement_template_elements(
         statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 
@@ -42,12 +42,12 @@ def _get_tapshapes(rows, config_dict):
 
     def set_shape_keys(shape=None, row=None):       # To set shape-related keys,
         for col in row:                             # Iterate remaining keys, to
-            if col in sh_elements:
+            if col in main_shems:
                 try:                                    # populate tapshape fields
                     setattr(shape, col, row[col])       # with values from row dict.
                 except KeyError:                        # Values not found in row dict,
                     pass                                # are simply skipped.
-            elif col in xtra_sh_elements:
+            elif col in xtra_shems:
                 shape.extra_elements[col] = row[col]
         return shape                                # Return shape with fields set.
 
@@ -89,12 +89,12 @@ def _get_tapshapes(rows, config_dict):
         sc = TAPStatementTemplate()                 # Instantiate SC for this row.
 
         for col in row:
-            if col in st_elements:
+            if col in main_stems:
                 try:
                     setattr(sc, col, row[col])
                 except KeyError:
                     pass
-            elif col in xtra_st_elements:
+            elif col in xtra_stems:
                 sc.extra_elements[col] = row[col]
 
         shapes[sh_id].st_list.append(sc)            # Add SC to SC list in shapes dict.
@@ -182,16 +182,15 @@ def _get_rows(open_csvfile_obj, config_dict):
     new_header_line_list = []
 
     recognized_elements = config_dict.get("csv_elements")
-    extra_shape_elements = config_dict.get("extra_shape_elements")
-    extra_st_elements = config_dict.get("extra_statement_template_elements")
-    if extra_shape_elements:
-        recognized_elements.extend(extra_shape_elements)
-        for element in extra_shape_elements:
+    xtra_shems = config_dict.get("extra_shape_elements")
+    xtra_stems = config_dict.get("extra_statement_template_elements")
+    if xtra_shems:
+        recognized_elements.extend(xtra_shems)
+        for element in xtra_shems:
             config_dict["element_aliases"][element.lower()] = element
-    if extra_st_elements:
-        # breakpoint(context=5)
-        recognized_elements.extend(extra_st_elements)
-        for element in extra_st_elements:
+    if xtra_stems:
+        recognized_elements.extend(xtra_stems)
+        for element in xtra_stems:
             config_dict["element_aliases"][element.lower()] = element
     recognized_elements = [elem.lower() for elem in recognized_elements]
 

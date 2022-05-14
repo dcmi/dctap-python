@@ -1,6 +1,6 @@
 """Iteratively remove elements from shapes dictionary with falsy values."""
 
-from dctap.csvreader import _reduce_shapesdict
+from dctap.csvreader import _simplify
 
 def test_reduce_shapesdict():
     """Iterate thru shapes in shapes_dict, removing empty shape and sc elements."""
@@ -75,4 +75,4 @@ def test_reduce_shapesdict():
                         }
                        ]
             }
-    assert _reduce_shapesdict(input) == expected_output
+    assert _simplify(input) == expected_output

@@ -76,12 +76,12 @@ def _get_tapshapes(rows, config_dict):
                 warnings[sh_id][elem] = []          # set value of empty list,
                 warnings[sh_id][elem].append(warn)  # and add the warning.
 
-        sc = TAPStatementTemplate()                 # For this row make a new 
+        sc = TAPStatementTemplate()                 # For this row make a new
         for key in row:                             # Statement Template object,
             if key in main_stems:                   # then iterate the row dict keys.
                 try:                                # If given key be found among
                     setattr(sc, key, row[key])      # Statement Template elements,
-                except KeyError:                    # then assign it as field of 
+                except KeyError:                    # then assign it as field of
                     pass                            # Statement Template object.
             elif key in xtra_stems:                 # If given key defined as "extra",
                 sc.extras[key] = row[key]           # assign it to an "extras" dict.
@@ -111,11 +111,9 @@ def _get_tapshapes(rows, config_dict):
             shape_list.append(tapshape_dict)        #   tapshapes_dict["shapes"]
 
         warnings_dict = dict(warnings)              # Save defaultdict warnings as dict.
+        tapshapes_dict = _simplify(tapshapes_dict)  # Purge items with falsy values.
 
-    return (                                        # Return tuple:
-	_reduce_shapesdict(tapshapes_dict),             #   Shapes dict, empties removed
-        warnings_dict                               #   Dict of warnings, by shape
-    )
+    return (tapshapes_dict, warnings_dict)
     # fmt: on
 
 
@@ -172,7 +170,7 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
     return some_str
 
 
-def _reduce_shapesdict(shapes_dict):
+def _simplify(shapes_dict):
     """Iteratively remove elements from shapes dictionary with falsy values."""
     for shape in shapes_dict["shapes"]:
         for sc in shape["statement_templates"]:

@@ -4,7 +4,7 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from dctap.config import get_shems, get_statement_template_elements
+from dctap.config import get_shems, get_stems
 from dctap.exceptions import DctapError
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
@@ -31,7 +31,7 @@ def _get_tapshapes(rows, config_dict):
     (main_shems, xtra_shems) = get_shems(
         shape_class=TAPShape, settings=config_dict
     )
-    (main_stems, xtra_stems) = get_statement_template_elements(
+    (main_stems, xtra_stems) = get_stems(
         statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 

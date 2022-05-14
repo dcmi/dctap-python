@@ -2,7 +2,7 @@
 
 import pytest
 from dataclasses import asdict
-from dctap.config import get_config, get_shems, get_statement_template_elements
+from dctap.config import get_config, get_shems, get_stems
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_get_TAPShape_elements_when_no_config_dict_specified():
@@ -12,11 +12,13 @@ def test_get_TAPShape_elements_when_no_config_dict_specified():
 
 def test_get_TAPShape_elements_plus_extras_when_config_dict_specified():
     """List TAPShape elements plus extras."""
-    expected_shape_elements = ["shapeID", "shapeLabel"]
-    expected_xtra_shape_elements = ["closed", "start"]
-    config_dict = dict(extra_shape_elements=["closed", "start"])
-    assert get_shems(TAPShape, config_dict)[0] == expected_shape_elements
-    assert get_shems(TAPShape, config_dict)[1] == expected_xtra_shape_elements
+    expected_main_shems = ["shapeID", "shapeLabel"]
+    expected_xtra_shems = ["closed", "start"]
+    #config_dict = dict(extra_shape_elements=["closed", "start"])
+    config_dict = get_config()
+    config_dict["extra_shape_elements"] = ["closed", "start"]
+    assert get_shems(TAPShape, config_dict)[0] == expected_main_shems
+    assert get_shems(TAPShape, config_dict)[1] == expected_xtra_shems
 
 def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
     """List TAPStatementTemplate elements (minus st_warnings)."""
@@ -32,7 +34,7 @@ def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
         "valueShape",
         "note",
     ]
-    assert sorted(get_statement_template_elements(TAPStatementTemplate)[0]) == sorted(expected)
+    assert sorted(get_stems(TAPStatementTemplate)[0]) == sorted(expected)
 
 def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specified():
     """List TAPStatementTemplate elements plus extras."""
@@ -53,6 +55,6 @@ def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specifie
         "max",
     ]
     config_dict = { "extra_statement_template_elements": ["min", "max"] }
-    (actual_st_elements, actual_extra_st_elements) = get_statement_template_elements(TAPStatementTemplate, config_dict)
+    (actual_st_elements, actual_extra_st_elements) = get_stems(TAPStatementTemplate, config_dict)
     assert sorted(actual_st_elements) == sorted(expected_st_elements)
     assert sorted(actual_extra_st_elements) == sorted(expected_extra_st_elements)

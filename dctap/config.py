@@ -30,9 +30,7 @@ def get_shems(shape_class=TAPShape, settings=None):
     return (only_shape_elements, extra_shape_elements)
 
 
-def get_statement_template_elements(
-    statement_template_class=TAPStatementTemplate, settings=None
-):
+def get_stems(statement_template_class=TAPStatementTemplate, settings=None):
     """List DCTAP elements supported by statement template class."""
     only_st_elements = list(asdict(statement_template_class()))
     only_st_elements.remove("st_warnings")
@@ -91,7 +89,7 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shems(shape_class)[0]
-    elements_dict["statement_template_elements"] = get_statement_template_elements(
+    elements_dict["statement_template_elements"] = get_stems(
         statement_template_class
     )[0]
     elements_dict["csv_elements"] = (

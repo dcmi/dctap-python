@@ -24,7 +24,7 @@ class TAPStatementTemplate:
     valueShape: str = ""
     note: str = ""
     st_warnings: dict = field(default_factory=dict)
-    extra_elements: dict = field(default_factory=dict)
+    extras: dict = field(default_factory=dict)
 
     def normalize(self, settings):
         """Normalizes specific fields."""
@@ -231,7 +231,7 @@ class TAPStatementTemplate:
 
 @dataclass
 class TAPShape:
-    """Instances hold TAP/CSV row elements related to shapes."""
+    """An instance holds TAP/CSV row elements related to one given, named shape."""
 
     # pylint: disable=invalid-name
     # True that propertyID, etc, do not conform to snake-case naming style.
@@ -240,7 +240,7 @@ class TAPShape:
     shapeLabel: str = ""
     st_list: List[TAPStatementTemplate] = field(default_factory=list)
     sh_warnings: dict = field(default_factory=dict)
-    extra_elements: dict = field(default_factory=dict)
+    extras: dict = field(default_factory=dict)
 
     def normalize(self, settings):
         """Normalize values where required."""

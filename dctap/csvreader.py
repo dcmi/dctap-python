@@ -28,27 +28,25 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    (main_shems, xtra_shems) = get_shems(
-        shape_class=TAPShape, settings=config_dict
-    )
+    (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)
     (main_stems, xtra_stems) = get_stems(
         statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 
     # fmt: off
-    shapes = {}                                     # Init a dict for TAPShapes,
-    first_valid_row_encountered = True              # read CSV rows as list of dicts.
-    warnings = defaultdict(dict)                    # Init defaultdict for warnings.
+    shapes = {}                                     # New dict will hold TAPShapes.
+    warnings = defaultdict(dict)                    # New dict will hold warnings.
+    first_valid_row_encountered = True              # Only one valid row to be "first".
 
     def set_shape_keys(shape=None, row=None):       # To set shape-related keys,
-        for col in row:                             # Iterate remaining keys, to
-            if col in main_shems:
+        for k in row:                             # Iterate remaining keys, to
+            if k in main_shems:
                 try:                                    # populate tapshape fields
-                    setattr(shape, col, row[col])       # with values from row dict.
+                    setattr(shape, k, row[k])       # with values from row dict.
                 except KeyError:                        # Values not found in row dict,
                     pass                                # are simply skipped.
-            elif col in xtra_shems:
-                shape.extra_elements[col] = row[col]
+            elif k in xtra_shems:
+                shape.extra_elements[k] = row[k]
         return shape                                # Return shape with fields set.
 
     for row in rows:                                # For each row
@@ -88,14 +86,14 @@ def _get_tapshapes(rows, config_dict):
 
         sc = TAPStatementTemplate()                 # Instantiate SC for this row.
 
-        for col in row:
-            if col in main_stems:
+        for k in row:
+            if k in main_stems:
                 try:
-                    setattr(sc, col, row[col])
+                    setattr(sc, k, row[k])
                 except KeyError:
                     pass
-            elif col in xtra_stems:
-                sc.extra_elements[col] = row[col]
+            elif k in xtra_stems:
+                sc.extra_elements[k] = row[k]
 
         shapes[sh_id].st_list.append(sc)            # Add SC to SC list in shapes dict.
 

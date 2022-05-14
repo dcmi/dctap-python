@@ -38,9 +38,11 @@ def _get_tapshapes(rows, config_dict):
     warnings = defaultdict(dict)                    # New dict will hold warnings.
     first_valid_row_encountered = True              # Only one row can be "first valid".
 
-    for row in rows:                                # For each row
-        if not row["propertyID"]:                   # where no propertyID be found,
-            continue                                # ignore and move to next.
+    for row in rows:                                # Examine each row in turn:
+        if row.get("shapeID"):                      # If shapeID exists, and is truthy,
+            pass                                    # proceed. Alternatively:
+        elif not row.get("propertyID"):             # If propertyID does not exist,
+            continue                                # or is not truthy, skip the row.
 
         if not first_valid_row_encountered:         # In each "post-first valid" row,
             if row.get("shapeID"):                  # if truthy shapeID be found,
@@ -100,15 +102,15 @@ def _get_tapshapes(rows, config_dict):
 
         warnings_dict = dict(warnings)              # Result: dictionary of warnings.
 
-        tapshapes_dict = {}                         # In old dict: TAPShape objects.
-        shape_list = []                             # In new dict: shapes as dicts,
+        tapshapes_dict = {}                         # In dict above: TAPShape objects.
+        shape_list = []                             # In this new dict: dict objects,
         tapshapes_dict["shapes"] = shape_list       # held in a list of shapes.
 
         for tapshape_obj in list(shapes.values()):  # Each shape-as-TAPShape-object
             tapshape_dict = asdict(tapshape_obj)    # is converted to plain dictionary,
-            tapshape_dict[                          # and added to list of 
+            tapshape_dict[                          # and added to list of
                 "statement_templates"               # statement_templates,
-            ] = tapshape_dict.pop("st_list")        # and appended to growing list 
+            ] = tapshape_dict.pop("st_list")        # and appended to growing list
             shape_list.append(tapshape_dict)        # of shapes-as-dictionaries.
 
         tapshapes_dict = _simplify(tapshapes_dict)  # Purge items with falsy values.

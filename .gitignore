@@ -1,4 +1,5 @@
 *.trypy
+.dctaprc
 Session.vim
 .idea/
 *swp

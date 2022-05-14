@@ -26,7 +26,7 @@ from dctap.exceptions import ConfigError
 from dctap.tapclasses import TAPShape
 
 
-def test_set_tapshapes_fields(tmp_path):
+def test_set_tapshapes_fields_even_without_propertyID_in_row(tmp_path):
     """Set TAPShape fields based on header: cell_value dict for one row."""
     os.chdir(tmp_path) # precaution to avoid interference among pytests
     config_dict = get_config()
@@ -39,8 +39,6 @@ def test_set_tapshapes_fields(tmp_path):
         "shapeLabel": "Book",
         "closed": False,
         "start": True,
-        "propertyID": "ex:name",
-        "valueNodeType": "literal",
     }
     assert _set_shape_fields(
         tapshape_obj=shape_instance,

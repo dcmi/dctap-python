@@ -1,4 +1,5 @@
 *.trypy
+byard
 .dctaprc
 Session.vim
 .idea/

@@ -1,4 +1,4 @@
-"""Read CSV file and return list of rows as Python dictionaries."""
+"""From list of rows-as-dictionaries, output dictionary of shapes-as-dictionaries."""
 
 import pytest
 from dctap.config import get_config
@@ -6,6 +6,7 @@ from dctap.csvreader import _get_tapshapes
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 SETTINGS_DICT = get_config()
+
 
 def test_get_tapshapes_one_default_shape():
     """CSV: one default shape."""

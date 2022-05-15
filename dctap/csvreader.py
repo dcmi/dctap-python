@@ -52,7 +52,7 @@ def _get_tapshapes(rows, config_dict):
                 warns[sh_id] = {}                   #   init shape object warnings.
 
             sh_warns = sh_obj.get_warnings()        # Get warnings for shape object.
-            for (elem, warn) in sh_warns.items():   # For each warning, by element, 
+            for (elem, warn) in sh_warns.items():   # For each warning, by element,
                 try:                                #   append to warnings list
                     warns[sh_id][elem].append(warn) #   the value for key "shapeID".
                 except KeyError:                    # If element key does not yet exist,

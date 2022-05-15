@@ -11,21 +11,21 @@ config_dict = get_config()
 
 def test_valueConstraintType_picklist_parse():
     """If valueConstraintType picklist, valueConstraint parsed on whitespace."""
-    sc = TAPStatementTemplate()
-    sc.propertyID = "dcterms:creator"
-    sc.valueConstraintType = "picklist"
-    sc.valueConstraint = "one two three"
-    sc._valueConstraintType_picklist_parse(config_dict)
-    assert sc.valueConstraint == ["one", "two", "three"]
+    st = TAPStatementTemplate()
+    st.propertyID = "dcterms:creator"
+    st.valueConstraintType = "picklist"
+    st.valueConstraint = "one two three"
+    st._valueConstraintType_picklist_parse(config_dict)
+    assert st.valueConstraint == ["one", "two", "three"]
 
 def test_valueConstraintType_picklist_parse_case_insensitive():
     """Value constraint types are processed as case-insensitive."""
-    sc = TAPStatementTemplate()
-    sc.propertyID = "dcterms:creator"
-    sc.valueConstraintType = "PICKLIST"
-    sc.valueConstraint = "one two          three" # extra whitespace
-    sc._valueConstraintType_picklist_parse(config_dict)
-    assert sc.valueConstraint == ["one", "two", "three"]
+    st = TAPStatementTemplate()
+    st.propertyID = "dcterms:creator"
+    st.valueConstraintType = "PICKLIST"
+    st.valueConstraint = "one two          three" # extra whitespace
+    st._valueConstraintType_picklist_parse(config_dict)
+    assert st.valueConstraint == ["one", "two", "three"]
 
 def test_valueConstraintType_list_item_separator_comma(tmp_path):
     """@@@"""

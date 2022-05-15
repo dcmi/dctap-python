@@ -33,7 +33,7 @@ def _get_tapshapes(rows, config_dict):
         statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 
-    # fmt: off # black formatter will ignore
+    # fmt: off
     shapes = {}                             # New dict for shapeID-to-TAPShapes.
     warns = defaultdict(dict)               # New dict for shapeID-to-warnings.
     first_valid_row_encountered = True      # Only one row can be "first valid".
@@ -82,7 +82,7 @@ def _get_tapshapes(rows, config_dict):
 
         shapes[sh_id].st_list.append(st)        # Append Template object to a list.
 
-        st.normalize(config_dict)               # Normalize some ST values, and 
+        st.normalize(config_dict)               # Normalize some ST values, and
         st_warns = st.get_warnings()            # populate the ST warnings dict.
 
         for (elem, warn) in st_warns.items():   # For item in ST warnings dict
@@ -108,7 +108,7 @@ def _get_tapshapes(rows, config_dict):
         shapes_dict = _simplify(shapes_dict)    # Purge items with falsy values.
 
     return (shapes_dict, warns_dict)
-    # fmt: on # black formatter will stop ignoring
+    # fmt: on
 
 
 def _set_shape_fields(

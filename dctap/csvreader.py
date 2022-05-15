@@ -28,15 +28,15 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)
     (main_stems, xtra_stems) = get_stems(
         statement_template_class=TAPStatementTemplate, settings=config_dict
     )
 
     # fmt: off
-    shapes = {}                             # New dict for shapeID-to-TAPShapes.
-    warns = defaultdict(dict)               # New dict for shapeID-to-warnings.
-    first_valid_row_encountered = True      # Only one row can be "first valid".
+    shapes = {}                             # New dict for shapeID-to-TAPShape_list.
+    warns = defaultdict(dict)               # New dict for shapeID-to-warnings_list.
+    first_valid_row_encountered = True      # Only one row is ever "first valid".
+    so_far = []                             # Growing list of shapes used so far.
 
     for row in rows:                        # For each row:
         if row.get("shapeID"):                  # If shapeID be truthy and
@@ -54,24 +54,30 @@ def _get_tapshapes(rows, config_dict):
                     sh_id = so_far[-1]              #   use the most recent.
 
             if sh_id not in shapes:                 # If shapeID not yet in shapes dict,
-                shape = shapes[sh_id] = TAPShape()  #   make new TAPShape object,
-                shape = _set_shape_fields(          #   and add it to shapes dict, so:
-                    tapshape_obj=shape,             #   - key: shapeID
-                    row_dict=row,                   #   - value: TAPShape object
-                    main_shape_elements=main_shems,
-                    xtra_shape_elements=xtra_shems, # Then add to warnings dict:
-                    )                               # - key: shapeID
-                warns[sh_id] = {}                   # - value: empty dict
+                rowshape = _make_shapeobj(
+                    row,
+                    config_dict
+                )                                   #   make TAPShape object from row,
+                rowshape.normalize(config_dict)     #   normalize some values,
+                shapes[sh_id] = rowshape            #   add to dictionary of shapes.
 
-            shape.normalize(config_dict)            # Normalize some shape values.
-            sh_warns = shape.get_warnings()         # Populate the shape warnings dict.
+            warns[sh_id] = {}                       # Add key shapeID to warnings dict.
+            sh_warns = rowshape.get_warnings()      # Get warnings for shape obj.
+            for (elem, warn) in sh_warns.items():   # For each warning, per element, 
+                try:                                #   append to warnings list - value
+                    warns[sh_id][elem].append(warn) #   for key "shapeID".
+                except KeyError:                    # If element key does not yet exist,
+                    warns[sh_id][elem] = []         #   initialize with empty list,
+                    warns[sh_id][elem].append(warn) #   and only then add the warning.
+        elif not row.get("propertyID"):             # But if propertyID be not truthy,
+            continue                                #   skip this row and move to next.
 
-            for (elem, warn) in sh_warns.items():   # Iterate Shape warnings.
-                try:                                # Try to add each warning to dict
-                    warns[sh_id][elem].append(warn) # of all warnings, by shape,
-                except KeyError:                    # but if needed key not found,
-                    warns[sh_id][elem] = []         # set value of empty list,
-                    warns[sh_id][elem].append(warn) # and add the warning.
+        if row.get("propertyID"):               # If propertyID be truthy
+            try:                                    # then
+                sh_id = so_far[-1]                  # use most recent listed shapeID.
+            except IndexError:                      # But if no shapeID yet listed,
+                sh_id = row["shapeID"] = dshape     # use default shapeID.
+            shape = shapes[sh_id] = TAPShape()      # make new TAPShape object,
 
         st = TAPStatementTemplate()             # Make new ST object for the row.
         for col in row:                         # For each column in row dict,
@@ -111,37 +117,28 @@ def _get_tapshapes(rows, config_dict):
     # fmt: on
 
 
-def _set_shape_fields(
-    tapshape_obj=None,
-    row_dict=None,
-    main_shape_elements=None,
-    xtra_shape_elements=None,
-):
+def _make_shapeobj(row_dict=None, config_dict=None):
     """Populates shape fields of dataclass TAPShape object from dict for one row.
 
     Args:
-        tapshape_obj: Unpopulated instance of dctap.tapclasses.TAPShape:
-            TAPShape(shapeID='', shapeLabel='', st_list=[], sh_warnings={}, extras={})
         row_dict: Dictionary of all columns headers (keys) and cell values (values)
             found in a given row, with no distinction between shape elements and
             statement template elements.
-        main_shape_elements: Default TAPClass fields related to shapes.
-        xtra_shape_elements: Extra TAPClass fields as per optional config file.
+        main_shape_elements: Default TAPShapefields related to shapes.
+        xtra_shape_elements: Extra TAPShape fields as per optional config file.
 
     Returns:
-        TAPShape object with shape fields set.
+        Unpopulated instance of dctap.tapclasses.TAPShape, by default:
+        - TAPShape(shapeID='', shapeLabel='', st_list=[], sh_warnings={}, extras={})
+        - Plus extra TAPShape fields as per config settings.
     """
+    (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)
+    tapshape_obj = TAPShape()
     for key in row_dict:
-        if key in main_shape_elements:
-            try:
-                setattr(tapshape_obj, key, row_dict[key])
-            except KeyError:
-                pass
-        elif key in xtra_shape_elements:
-            try:
-                tapshape_obj.extras[key] = row_dict[key]
-            except KeyError:
-                pass
+        if key in main_shems:
+            setattr(tapshape_obj, key, row_dict[key])
+        elif key in xtra_shems:
+            tapshape_obj.extras[key] = row_dict[key]
     return tapshape_obj
 
 
@@ -165,23 +162,23 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
 
 
 def _simplify(shapes_dict):
-    """Iteratively remove elements from shapes dictionary with falsy values."""
+    """Remove elements from shapes dictionary with falsy values."""
     for shape in shapes_dict["shapes"]:
         for st in shape["statement_templates"]:
             if st.get("extras"):
                 for (k, v) in st["extras"].items():
                     st[k] = v
                     del st["extras"]
-            if st.get("st_warns"):
-                del st["st_warns"]
+            if st.get("st_warnings"):
+                del st["st_warnings"]
             for empty_element in [key for key in st if not st[key]]:
                 del st[empty_element]
         if shape.get("extras"):
             for (k, v) in shape["extras"].items():
                 shape[k] = v
                 del shape["extras"]
-        if shape.get("sh_warns"):
-            del shape["sh_warns"]
+        if shape.get("sh_warnings"):
+            del shape["sh_warnings"]
         for empty_element in [key for key in shape if not shape[key]]:
             del shape[empty_element]
     return shapes_dict

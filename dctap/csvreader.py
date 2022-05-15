@@ -39,17 +39,14 @@ def _get_tapshapes(rows, config_dict):
 
     for row in rows:                                # For each row:
         if row.get("shapeID"):                      # If shapeID be truthy and
-            if first_valid_row_encountered:         # If row IS "first valid" found,
-                sh_id = row.get("shapeID")          #   use its value for shapeID.
-                first_valid_row_encountered = False # May future rows be not "first".
-            elif not first_valid_row_encountered:   # But if row be NOT "first valid",
-                sh_id = row["shapeID"]              #   use its value for shapeID.
-
+            sh_id = row.get("shapeID")          #   use its value for shapeID.
             if sh_id not in list(shapes):           # If shapeID not yet in shapes dict,
                 sh_obj = _make_shapeobj(row, config_dict) # init shape from row elements.
                 sh_obj.normalize(config_dict)       #   normalize a few values, and add
                 shapes[sh_id] = sh_obj              #   that shape to all-shapes dict,
                 warns[sh_id] = {}                   #   init shape object warnings.
+        elif not row.get("propertyID"):             # But if propertyID be not truthy,
+            continue                                #   skip this row and move to next.
 
             sh_warns = sh_obj.get_warnings()        # Get warnings for shape object.
             for (elem, warn) in sh_warns.items():   # For each warning, by element,
@@ -58,8 +55,6 @@ def _get_tapshapes(rows, config_dict):
                 except KeyError:                    # If element key does not yet exist,
                     warns[sh_id][elem] = []         #   initialize with empty list,
                     warns[sh_id][elem].append(warn) #   only then do add the warning.
-        elif not row.get("propertyID"):             # But if propertyID be not truthy,
-            continue                                #   skip this row and move to next.
 
         if row.get("propertyID"):                   # If propertyID be truthy
             try:                                    # then

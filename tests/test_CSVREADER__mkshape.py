@@ -17,17 +17,68 @@ dctap.csvreader._mkshape - from docstring:
 """
 
 import os
-import pytest
-from pathlib import Path
-from dctap.config import get_config, get_shems
-from dctap.csvreader import _get_tapshapes, _mkshape
-from dctap.defaults import DEFAULT_CONFIGFILE_NAME
-from dctap.exceptions import ConfigError
+from dctap.config import get_config
+from dctap.csvreader import _mkshape
 from dctap.tapclasses import TAPShape
 
+def test_mkshapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path):
+    """Populates TAPShape object even in the absence of a propertyID."""
+    os.chdir(tmp_path) # precaution to avoid interference among pytests
+    config_dict = get_config()
+    assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
+    one_row = {
+        "shapeID": ":a",
+        "shapeLabel": "Book",
+    }
+    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
+        shapeID=':a', 
+        shapeLabel='Book', 
+        st_list=[], 
+        sh_warnings={}, 
+        extras={}
+    )
+
+def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
+    """Populates TAPShape object but ignores any statement template elements in row."""
+    os.chdir(tmp_path) # precaution to avoid interference among pytests
+    config_dict = get_config()
+    config_dict["extra_shape_elements"] = ["closed"]
+    one_row = {
+        "shapeID": ":a",
+        "shapeLabel": "Book",
+        "closed": False,
+        "start": True,
+    }
+    assert _mkshape(one_row, config_dict=config_dict) == TAPShape(
+        shapeID=':a', 
+        shapeLabel='Book', 
+        st_list=[],
+        sh_warnings={}, 
+        extras={"closed": False}
+    )
+
+def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
+    """Reads all elements configured as extra shape elements."""
+    os.chdir(tmp_path) # precaution to avoid interference among pytests
+    config_dict = get_config()
+    assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
+    config_dict["extra_shape_elements"] = ["closed", "start"]
+    one_row = {
+        "shapeID": ":a",
+        "shapeLabel": "Book",
+        "closed": False,
+        "start": True,
+    }
+    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
+        shapeID=':a', 
+        shapeLabel='Book', 
+        st_list=[], 
+        sh_warnings={}, 
+        extras={"closed": False, "start": True}
+    )
 
 def test_mkshape_sets_shape_elements_only(tmp_path):
-    """Set TAPShape fields based on header: cell_value dict for one row."""
+    """Populates TAPShape object but ignores any statement template elements in row."""
     os.chdir(tmp_path) # precaution to avoid interference among pytests
     config_dict = get_config()
     config_dict["extra_shape_elements"] = ["closed", "start"]
@@ -46,21 +97,22 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
     assert shape.extras == {"closed": False, "start": True}
     assert shape.st_list == [] # _mkshape() sets shape fields only, not ST fields
 
-def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
-    """Set TAPShape fields based on header: cell_value dict for one row."""
+def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path):
+    """Empty shape elements are passed through, but not unasserted elements."""
     os.chdir(tmp_path) # precaution to avoid interference among pytests
     config_dict = get_config()
-    config_dict["extra_shape_elements"] = ["closed"]
+    assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
+    config_dict["extra_shape_elements"] = ["closed", "start"]
     one_row = {
         "shapeID": ":a",
-        "shapeLabel": "Book",
-        "closed": False,
-        "start": True,
+        "shapeLabel": "",
+        "closed": "",
     }
-    assert _mkshape(one_row, config_dict=config_dict) == TAPShape(
+    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
-        shapeLabel='Book', 
-        st_list=[],
+        shapeLabel='', 
+        st_list=[], 
         sh_warnings={}, 
-        extras={"closed": False}
+        extras={"closed": ""}
     )
+

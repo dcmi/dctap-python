@@ -14,3 +14,4 @@ This section explains how some aspects of CSV processing are handled by the modu
    element_names/index
    reserved_names/index
    shapes_on_own_rows/index
+   shapes_declared_once/index

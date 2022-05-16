@@ -21,12 +21,12 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:              :book
+            shapeID               :book
             Statement Template
-                propertyID:       dct:creator
-                valueShape:       :person
+                propertyID        dct:creator
+                valueShape        :person
         Shape
-            shapeID:              :person
+            shapeID               :person
             Statement Template
-                propertyID:       foaf:name
+                propertyID        foaf:name
 

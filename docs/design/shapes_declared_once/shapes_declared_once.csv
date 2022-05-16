@@ -1,0 +1,3 @@
+shapeID,propertyID,valueNodetype,closed,start
+book,dc:creator,uri,,True
+book,dc:date,literal,False,False

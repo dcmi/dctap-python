@@ -21,15 +21,15 @@ Interpreted, with a warning, as::
 
     DCTAP instance
 	Shape
-	    shapeID:                 default
+	    shapeID                  default
 	    Statement Template
-		propertyID:          dcterms:title
-		valueNodeType:       literal
+		propertyID           dcterms:title
+		valueNodeType        literal
 	    Statement Template
-		propertyID:          dcterms:creator
-		valueNodeType:       uri
+		propertyID           dcterms:creator
+		valueNodeType        uri
 	    Statement Template
-		propertyID:          dcterms:subject
-		valueNodeType:       concept
+		propertyID           dcterms:subject
+		valueNodeType        concept
 
     WARNING [default/valueNodeType] 'concept' is not a valid node type.

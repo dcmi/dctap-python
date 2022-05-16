@@ -22,13 +22,13 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dc:creator
-                valueDataType:       xsd:string
+                propertyID           dc:creator
+                valueDataType        xsd:string
             Statement Template
-                propertyID:          dct:date
-                valueDataType:       Date
+                propertyID           dct:date
+                valueDataType        Date
 
     WARNING [default/valueDataType] 'Date' is not an IRI or Compact IRI.
 
@@ -48,15 +48,15 @@ Interpreted, with a warning, as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dcterms:creator
-                valueNodeType:       iri
-                valueDataType:       xsd:string
+                propertyID           dcterms:creator
+                valueNodeType        iri
+                valueDataType        xsd:string
             Statement Template
-                propertyID:          dcterms:subject
-                valueNodeType:       bnode
-                valueDataType:       xsd:string
+                propertyID           dcterms:subject
+                valueNodeType        bnode
+                valueDataType        xsd:string
 
     WARNING [default/valueDataType] Datatypes are only for literals, so node type should not be 'iri'.
     WARNING [default/valueDataType] Datatypes are only for literals, so node type should not be 'bnode'.

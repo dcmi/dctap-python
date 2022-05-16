@@ -13,9 +13,9 @@ Interpreted (with warnings enabled) as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator
 
     WARNING [csv/header] Non-DCTAP element 'Status' not configured as extra element.
 
@@ -24,16 +24,16 @@ Users wishing to use columns in their CSV that are not part of the DCTAP model, 
 For example, if the configuration file includes::
     
     extra_statement_template_elements:
-    - Status
+    - status
 
 The text output, intended as an aid in debugging, includes the extra element but marks it as "extra" with brackets::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dcterms:creator
-                [Status]:            ignotus
+                propertyID           dcterms:creator
+                [status]             ignotus
         
 The JSON (or YAML) output includes the extra element "as is"::
 
@@ -44,7 +44,7 @@ The JSON (or YAML) output includes the extra element "as is"::
                 "statement_templates": [
                     {
                         "propertyID": "dcterms:creator",
-                        "Status": "ignotus"
+                        "status": "ignotus"
                     }
                 ]
             }

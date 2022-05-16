@@ -19,9 +19,9 @@ Is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :book
+            shapeID                  :book
             Statement Template  
-                propertyID:          dc:creator
-                mandatory:           True
-                repeatable:          False
+                propertyID           dc:creator
+                mandatory            True
+                repeatable           False
 

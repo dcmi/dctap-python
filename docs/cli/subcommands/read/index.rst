@@ -19,10 +19,10 @@ When used without options, **dctap read** outputs a lightly normalized view of t
     $ cat example.csv | dctap read -
     DCTAP instance
         Shape
-            shapeID:                 :a
+            shapeID                  :a
             Statement Template  
-                propertyID:          dcterms:creator
-                valueNodeType:       iri
+                propertyID           dcterms:creator
+                valueNodeType        iri
 
 View warnings
 :::::::::::::
@@ -34,10 +34,10 @@ As an aid for debugging, the `dctap read` subcommand performs various consistenc
     $ dctap read --warnings example2.csv
     DCTAP instance
         Shape
-            shapeID:                 :a
+            shapeID                  :a
             Statement Template  
-                propertyID:          dcterms:date
-                valueNodeType:       noodles
+                propertyID           dcterms:date
+                valueNodeType        noodles
 
     WARNING [:a/valueNodeType] 'noodles' is not a valid node type.
 
@@ -51,10 +51,10 @@ The option **--expand-prefixes** triggers the expansion of namespace prefixes us
     $ dctap read --expand-prefixes example.csv
     DCTAP instance
         Shape
-            shapeID:                 http://example.org/a
+            shapeID                  http://example.org/a
             Statement Template  
-                propertyID:          http://purl.org/dc/terms/creator
-                valueNodeType:       iri
+                propertyID           http://purl.org/dc/terms/creator
+                valueNodeType        iri
 
 Read settings from non-default config file
 ::::::::::::::::::::::::::::::::::::::::::

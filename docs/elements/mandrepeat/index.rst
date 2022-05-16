@@ -24,14 +24,14 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dc:creator
-                mandatory:           True
-                repeatable:          False
+                propertyID           dc:creator
+                mandatory            True
+                repeatable           False
             Statement Template
-                propertyID:          dc:date
-                mandatory:           False
+                propertyID           dc:date
+                mandatory            False
 
 Any other value for either element --- including an empty string for when the element is present but left blank --- has no effect on the default of **None** for each element and will be passed through as a string (or empty string) to the JSON and YAML output.
 
@@ -45,13 +45,13 @@ This is displayed as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dc:creator
-                repeatable:          N
+                propertyID           dc:creator
+                repeatable           N
             Statement Template
-                propertyID:          dc:date
-                mandatory:           Y
+                propertyID           dc:date
+                mandatory            Y
 
     WARNING [default/repeatable] 'N' is not a supported Boolean value.
     WARNING [default/mandatory] 'Y' is not a supported Boolean value.

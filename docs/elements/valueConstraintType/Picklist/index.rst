@@ -17,15 +17,15 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          :color
-                valueConstraint:     ['red', 'blue', 'green']
-                valueConstraintType: picklist
+                propertyID           :color
+                valueConstraint      ['red', 'blue', 'green']
+                valueConstraintType  picklist
             Statement Template
-                propertyID:          :hue
-                valueConstraint:     ['yellow']
-                valueConstraintType: picklist
+                propertyID           :hue
+                valueConstraint      ['yellow']
+                valueConstraintType  picklist
 
 Note that lists with items that themselves include spaces, or are intended to be parsed not by whitespace but by commas, may need to be handled differently. In such a case the value of the element --- spaces and commas included --- could be passed through "as is" for further processing by another program downstream.
 
@@ -39,11 +39,11 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          :color
-                valueConstraint:     ['reddish', 'brown,', 'greenish', 'yellow,', 'bluish', 'green']
-                valueConstraintType: picklist
+                propertyID           :color
+                valueConstraint      ['reddish', 'brown,', 'greenish', 'yellow,', 'bluish', 'green']
+                valueConstraintType  picklist
             Statement Template
-                propertyID:          :hue
-                valueConstraint:     reddish brown, greenish yellow, bluish green
+                propertyID           :hue
+                valueConstraint      reddish brown, greenish yellow, bluish green

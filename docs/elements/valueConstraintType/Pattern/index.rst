@@ -13,34 +13,34 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :ex1
+            shapeID                  :ex1
             Statement Template
-                propertyID:          :status
-                valueConstraint:     approved_*
-                valueConstraintType: pattern
+                propertyID           :status
+                valueConstraint      approved_*
+                valueConstraintType  pattern
         Shape
-            shapeID:                 :ex2
+            shapeID                  :ex2
             Statement Template
-                propertyID:          :status
-                valueConstraintType: pattern
+                propertyID           :status
+                valueConstraintType  pattern
         Shape
-            shapeID:                 :ex3
+            shapeID                  :ex3
             Statement Template
-                propertyID:          :status
-                valueConstraint:     approved_(*
-                valueConstraintType: pattern
+                propertyID           :status
+                valueConstraint      approved_(*
+                valueConstraintType  pattern
         Shape
-            shapeID:                 :ex4
+            shapeID                  :ex4
             Statement Template
-                propertyID:          :status
-                valueConstraint:     /approved_*/
-                valueConstraintType: pattern
+                propertyID           :status
+                valueConstraint      /approved_*/
+                valueConstraintType  pattern
         Shape
-            shapeID:                 :ex5
+            shapeID                  :ex5
             Statement Template
-                propertyID:          :status
-                valueConstraint:     ^2020 August
-                valueConstraintType: pattern
+                propertyID           :status
+                valueConstraint      ^2020 August
+                valueConstraintType  pattern
 
     WARNING [:ex2/valueConstraint] Value constraint type is 'pattern', but value constraint is empty.
     WARNING [:ex3/valueConstraint] Value constraint type is 'pattern', but 'approved_(*' is not a valid regular expression.

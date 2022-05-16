@@ -1,6 +1,6 @@
-shapeID,shapeLabel,propertyID,valueNodetype,closed,start
-book,Book,,,True,True
-,,dc:creator,uri,,
-,,dc:subject,literal,,
-author,Author,,,,
-,,foaf:name,literal,,
+shapeID,propertyID,valueNodetype,closed,start
+book,,,True,True
+,dc:creator,uri,,
+,dc:subject,literal,,
+author,,,,
+,foaf:name,literal,,

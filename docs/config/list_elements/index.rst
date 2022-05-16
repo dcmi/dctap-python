@@ -27,9 +27,9 @@ In the following example, the value of **propertyID** would by default be interp
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dc:creator foaf:maker
+                propertyID           dc:creator foaf:maker
 
 However, if **dctap** were so configured::
 
@@ -40,9 +40,9 @@ The value would be interpreted as a list::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          ['dc:creator', 'foaf:maker']
+                propertyID           ['dc:creator', 'foaf:maker']
 
 Note that a column can be either a regular column or a list column, but not both - ie, all cells in a given column will be treated either as single values or as lists. In the following table:
 
@@ -54,10 +54,10 @@ the value "dc:date" is treated as an item a list that has just one value::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template   
-                propertyID:          ['dc:creator', 'foaf:maker']
+                propertyID           ['dc:creator', 'foaf:maker']
             Statement Template   
-                propertyID:          ['dc:date']
+                propertyID           ['dc:date']
 
 

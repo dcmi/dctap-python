@@ -19,12 +19,12 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          :status
-                valueConstraint:     ['fr']
-                valueConstraintType: languagetag
+                propertyID           :status
+                valueConstraint      ['fr']
+                valueConstraintType  languagetag
             Statement Template
-                propertyID:          :status
-                valueConstraint:     ['fr', 'fr-CA']
-                valueConstraintType: languagetag
+                propertyID           :status
+                valueConstraint      ['fr', 'fr-CA']
+                valueConstraintType  languagetag

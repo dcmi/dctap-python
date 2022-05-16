@@ -19,10 +19,10 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          :securityLevel
-                valueConstraint:     Confidential
+                propertyID           :securityLevel
+                valueConstraint      Confidential
 
 Built-in value constraint types
 ...............................
@@ -49,11 +49,11 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          :securityLevel
-                valueConstraint:     ['Public', 'Confidential']
-                valueConstraintType: picklist
+                propertyID           :securityLevel
+                valueConstraint      ['Public', 'Confidential']
+                valueConstraintType  picklist
 
 Note that a value constraint that contains commas --- and is properly formatted with quotation marks in a CSV --- will be treated as a single value with commas:
 
@@ -65,10 +65,10 @@ This is interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          :creator
-                valueConstraint:     one, two, three
+                propertyID           :creator
+                valueConstraint      one, two, three
 
 Because the value constraint type is intended to provide a context for interpreting a value constraint, the value constraint type means nothing in the absence of a value constraint. If a value is provided for **valueConstraintType** but not for **valueConstraint**, a warning will be emitted.
 

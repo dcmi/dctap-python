@@ -13,9 +13,9 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :book
-            shapeLabel:              Book
+            shapeID                  :book
+            shapeLabel               Book
             Statement Template
-                propertyID:          dcterms:creator
-                valueShape:          :author
+                propertyID           dcterms:creator
+                valueShape           :author
 

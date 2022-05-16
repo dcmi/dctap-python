@@ -16,14 +16,13 @@ Note that if a shape identifier is not explicitly assigned in a CSV, a default i
 Interpreted as::
 
     DCTAP instance
-	Shape
-	    shapeID: default
-	    Statement Template
-		propertyID: http://purl.org/dc/terms/title
-	    Statement Template
-		propertyID: http://purl.org/dc/terms/publisher
-	    Statement Template
-		propertyID: https://schema.org/creator
-	    Statement Template
-		propertyID: http://purl.org/dc/terms/date
-
+        Shape
+            shapeID                  default
+            Statement Template
+                propertyID           http://purl.org/dc/terms/title
+            Statement Template
+                propertyID           http://purl.org/dc/terms/publisher
+            Statement Template
+                propertyID           https://schema.org/creator
+            Statement Template
+                propertyID           http://purl.org/dc/terms/date

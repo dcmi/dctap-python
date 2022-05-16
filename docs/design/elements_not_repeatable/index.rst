@@ -13,7 +13,7 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dc:creator
-                note:                Typically, the person listed on the cover page.
+                propertyID           dc:creator
+                note                 Typically, the person listed on the cover page.

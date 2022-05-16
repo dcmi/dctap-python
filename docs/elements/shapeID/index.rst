@@ -17,11 +17,11 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator
             Statement Template
-                propertyID:          dcterms:date
+                propertyID           dcterms:date
 
 Users with metadata about a single :term:`Entity`, or whose downstream applications do not make use of shapes, can safely ignore this default identifier.
 
@@ -35,17 +35,17 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :book
+            shapeID                  :book
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator
             Statement Template
-                propertyID:          dcterms:date
+                propertyID           dcterms:date
             Statement Template
-                propertyID:          dcterms:language
+                propertyID           dcterms:language
         Shape
-            shapeID:                 :author
+            shapeID                  :author
             Statement Template
-                propertyID:          foaf:name
+                propertyID           foaf:name
 
 If a shape identifier is not provided for the first rows processed but is provided for rows processed thereafter, only the shape identifier for the first statement templates will be the default.
 
@@ -57,15 +57,15 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
+            shapeID                  default
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator
             Statement Template
-                propertyID:          dcterms:date
+                propertyID           dcterms:date
         Shape
-            shapeID:                 :author
+            shapeID                  :author
             Statement Template
-                propertyID:          foaf:name
+                propertyID           foaf:name
 
 Shapes can also have labels for use in displays and documentation.
 
@@ -77,10 +77,10 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 :book
-            shapeLabel:              Book
+            shapeID                  :book
+            shapeLabel               Book
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator
 
 Note that a shape label does not function as a shape identifier. If no value is provided for **shapeID** it will be assigned a (configurable) default. Only the assignment of a new **shapeID** will trigger the creation of a new shape. In the example below, the second **shapeLabel** ("Libro") is simply ignored.
 
@@ -92,9 +92,9 @@ Interpreted as::
 
     DCTAP instance
         Shape
-            shapeID:                 default
-            shapeLabel:              Book
+            shapeID                  default
+            shapeLabel               Book
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator
             Statement Template
-                propertyID:          dcterms:creator
+                propertyID           dcterms:creator

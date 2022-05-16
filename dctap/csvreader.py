@@ -28,76 +28,74 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    (main_stems, xtra_stems) = get_stems(
-        statement_template_class=TAPStatementTemplate, settings=config_dict
-    )
+    (main_stems, xtra_stems) = get_stems(TAPStatementTemplate, config_dict)
 
     # fmt: off
     shapes = {}                             # Dict for shapeID-to-TAPShape_list.
     warns = defaultdict(dict)               # Dict for shapeID-to-warnings_list.
 
-    for row in rows:                                # For each row:
-        if row.get("shapeID"):                      # If shapeID be truthy and
-            sh_id = row.get("shapeID")              #   use its value for shapeID.
-            if sh_id not in list(shapes):           # If shapeID not yet in shapes dict,
-                sh_obj = _mkshape(row, config_dict) # init shape from row elements.
-                sh_obj.normalize(config_dict)       #   normalize a few values, and add
-                shapes[sh_id] = sh_obj              #   that shape to all-shapes dict,
-                warns[sh_id] = {}                   #   init shape object warnings.
-        elif not row.get("propertyID"):             # But if propertyID be not truthy,
-            continue                                #   skip this row and move to next.
+    for row in rows:
+        if row.get("shapeID"):
+            sh_id = row.get("shapeID")
+            if sh_id not in list(shapes):
+                sh_obj = _mkshape(row, config_dict)
+                sh_obj.normalize(config_dict)
+                shapes[sh_id] = sh_obj
+                warns[sh_id] = {}
+        elif not row.get("propertyID"):
+            continue
 
-            sh_warns = sh_obj.get_warnings()        # Get warnings for shape object.
-            for (elem, warn) in sh_warns.items():   # For each warning, by element,
-                try:                                #   append to warnings list
-                    warns[sh_id][elem].append(warn) #   the value for key "shapeID".
-                except KeyError:                    # If element key does not yet exist,
-                    warns[sh_id][elem] = []         #   initialize with empty list,
-                    warns[sh_id][elem].append(warn) #   only then do add the warning.
+            sh_warns = sh_obj.get_warnings()
+            for (elem, warn) in sh_warns.items():
+                try:
+                    warns[sh_id][elem].append(warn)
+                except KeyError:
+                    warns[sh_id][elem] = []
+                    warns[sh_id][elem].append(warn)
 
-        if row.get("propertyID"):                   # If propertyID be truthy
-            try:                                    # then
-                sh_id = list(shapes)[-1]            # use most recent listed shapeID.
-            except IndexError:                      # But if shapeID not be listed,
-                sh_id = row["shapeID"] = dshape     # use default shapeID.
+        if row.get("propertyID"):
+            try:
+                sh_id = list(shapes)[-1]
+            except IndexError:
+                sh_id = row["shapeID"] = dshape
 
-            if sh_id not in list(shapes):           # If shapeID not yet in shapes dict,
-                sh_obj = _mkshape(row, config_dict) # init shape from row elements.
-                sh_obj.normalize(config_dict)       #   normalize a few values, and add
-                shapes[sh_id] = sh_obj              #   that shape to all-shapes dict,
-                warns[sh_id] = {}                   #   init shape object warnings.
+            if sh_id not in list(shapes):
+                sh_obj = _mkshape(row, config_dict)
+                sh_obj.normalize(config_dict)
+                shapes[sh_id] = sh_obj
+                warns[sh_id] = {}
 
-            st = TAPStatementTemplate()             # Make new ST object for the row.
-            for col in row:                         # For each column in row dict,
-                if col in main_stems:               # If column be ST element
-                    setattr(st, col, row[col])      # assign key-value to ST object.
-                elif col in xtra_stems:             # But if column defined as "extra",
-                    st.extras[col] = row[col]       # add to "extras" dict on ST object.
+            st = TAPStatementTemplate()
+            for col in row:
+                if col in main_stems:
+                    setattr(st, col, row[col])
+                elif col in xtra_stems:
+                    st.extras[col] = row[col]
 
-            st.normalize(config_dict)               # Normalize some ST values, and
-            shapes[sh_id].st_list.append(st)        # Add ST object to ST list.
-            st_warns = st.get_warnings()            # Get warnings for ST warnings dict.
+            st.normalize(config_dict)
+            shapes[sh_id].st_list.append(st)
+            st_warns = st.get_warnings()
 
-            for (elem, warn) in st_warns.items():   # For item in ST warnings dict
-                try:                                # Transfer each warning to dict
-                    warns[sh_id][elem].append(warn) # of all warnings (by shape),
-                except KeyError:                    # but if element not already key,
-                    warns[sh_id][elem] = []         # initialize that element as key,
-                    warns[sh_id][elem].append(warn) # and add the warning.
+            for (elem, warn) in st_warns.items():
+                try:
+                    warns[sh_id][elem].append(warn)
+                except KeyError:
+                    warns[sh_id][elem] = []
+                    warns[sh_id][elem].append(warn)
 
-            warns_dict = dict(warns)                # Make defaultdict of warns to dict,
-            shapes_dict = {}                        # an empty dict for shape objs.
-            list_of_shapes = []                     # Make list to hold a list of shapes,
-            shapes_dict["shapes"] = list_of_shapes  # make key on dict to hold that list.
+            warns_dict = dict(warns)
+            shapes_dict = {}
+            list_of_shapes = []
+            shapes_dict["shapes"] = list_of_shapes
 
-            for sh_obj in list(shapes.values()):    # Each shape-as-TAPShape-object
-                sh_dict = asdict(sh_obj)            # be converted to plain dict,
-                sh_dict[                            # and added to a list of
-                    "statement_templates"           # statement_templates,
-                ] = sh_dict.pop("st_list")          # and appended to growing list
-                list_of_shapes.append(sh_dict)      # of shapes-as-dictionaries.
+            for sh_obj in list(shapes.values()):
+                sh_dict = asdict(sh_obj)
+                sh_dict[
+                    "statement_templates"
+                ] = sh_dict.pop("st_list")
+                list_of_shapes.append(sh_dict)
 
-            shapes_dict = _simplify(shapes_dict)    # Purge anything of falsy value.
+            shapes_dict = _simplify(shapes_dict)
 
     return (shapes_dict, warns_dict)
     # fmt: on
@@ -212,17 +210,3 @@ def _get_rows(open_csvfile_obj, config_dict):
     csv_rows = list(DictReader(tmp_buffer2))
     csv_warns = dict(csv_warns)
     return (csv_rows, csv_warns)
-
-
-#            if first_valid_row_encountered:         # If row IS "first valid" found,
-#                if row.get("shapeID"):              #   and shapeID be truthy,
-#                    sh_id = row.get("shapeID")      #   use its value for shapeID.
-#                else:                               # Else shapeID be not truthy,
-#                    sh_id = row["shapeID"] = dshape #   use default shapeID.
-#                first_valid_row_encountered = False # May future rows be not "first".
-#            elif not first_valid_row_encountered:   # But if row be NOT "first valid",
-#                if row.get("shapeID"):              #   and shapeID be truthy,
-#                    sh_id = row["shapeID"]          #   use its value for shapeID.
-#                else:                               # Else shapeID be not truthy, then
-#                    so_far = list(shapes)           #   then from shapeIDs used so far,
-#                    sh_id = list(shapes)[-1]        #   use the most recent.

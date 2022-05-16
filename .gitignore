@@ -2,6 +2,7 @@
 byard
 .dctaprc
 Session.vim
+.vimrc
 .idea/
 *swp
 site/

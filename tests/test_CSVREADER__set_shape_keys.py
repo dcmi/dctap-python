@@ -1,5 +1,5 @@
 """
-dctap.csvreader._make_shapeobj - from docstring:
+dctap.csvreader._mkshape - from docstring:
 
     Populates shape fields of dataclass TAPShape object from dict for one row.
 
@@ -20,7 +20,7 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config, get_shems
-from dctap.csvreader import _get_tapshapes, _make_shapeobj
+from dctap.csvreader import _get_tapshapes, _mkshape
 from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 from dctap.exceptions import ConfigError
 from dctap.tapclasses import TAPShape
@@ -36,7 +36,7 @@ def test_set_tapshapes_fields_even_without_propertyID_in_row_with_extras(tmp_pat
         "shapeID": ":a",
         "shapeLabel": "Book",
     }
-    assert _make_shapeobj(row_dict=one_row, config_dict=config_dict) == TAPShape(
+    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
         shapeLabel='Book', 
         st_list=[], 
@@ -57,7 +57,7 @@ def test_set_tapshapes_fields_even_without_propertyID_in_row(tmp_path):
         "closed": False,
         "start": True,
     }
-    assert _make_shapeobj(row_dict=one_row, config_dict=config_dict) == TAPShape(
+    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
         shapeLabel='Book', 
         st_list=[], 

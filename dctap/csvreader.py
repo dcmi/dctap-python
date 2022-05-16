@@ -33,15 +33,14 @@ def _get_tapshapes(rows, config_dict):
     )
 
     # fmt: off
-    shapes = {}                             # New dict for shapeID-to-TAPShape_list.
-    warns = defaultdict(dict)               # New dict for shapeID-to-warnings_list.
-    first_valid_row_encountered = True      # Only one row is ever "first valid".
+    shapes = {}                             # Dict for shapeID-to-TAPShape_list.
+    warns = defaultdict(dict)               # Dict for shapeID-to-warnings_list.
 
     for row in rows:                                # For each row:
         if row.get("shapeID"):                      # If shapeID be truthy and
-            sh_id = row.get("shapeID")          #   use its value for shapeID.
+            sh_id = row.get("shapeID")              #   use its value for shapeID.
             if sh_id not in list(shapes):           # If shapeID not yet in shapes dict,
-                sh_obj = _make_shapeobj(row, config_dict) # init shape from row elements.
+                sh_obj = _mkshape(row, config_dict) # init shape from row elements.
                 sh_obj.normalize(config_dict)       #   normalize a few values, and add
                 shapes[sh_id] = sh_obj              #   that shape to all-shapes dict,
                 warns[sh_id] = {}                   #   init shape object warnings.
@@ -63,7 +62,7 @@ def _get_tapshapes(rows, config_dict):
                 sh_id = row["shapeID"] = dshape     # use default shapeID.
 
             if sh_id not in list(shapes):           # If shapeID not yet in shapes dict,
-                sh_obj = _make_shapeobj(row, config_dict) # init shape from row elements.
+                sh_obj = _mkshape(row, config_dict) # init shape from row elements.
                 sh_obj.normalize(config_dict)       #   normalize a few values, and add
                 shapes[sh_id] = sh_obj              #   that shape to all-shapes dict,
                 warns[sh_id] = {}                   #   init shape object warnings.
@@ -104,7 +103,7 @@ def _get_tapshapes(rows, config_dict):
     # fmt: on
 
 
-def _make_shapeobj(row_dict=None, config_dict=None):
+def _mkshape(row_dict=None, config_dict=None):
     """Populates shape fields of dataclass TAPShape object from dict for one row.
 
     Args:

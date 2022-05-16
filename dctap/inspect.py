@@ -19,13 +19,13 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
     for tapshape_dict in tapshapes_dict.get("shapes"):
         pprint_output.append("    Shape")
         for key in only_shape_elements:
-            indent08 = 8 * " " + key + ": "
+            indent08 = 8 * " " + key + " "
             while len(indent08) < 33:
                 indent08 += " "
             if tapshape_dict.get(key):
                 pprint_output.append(indent08 + str(tapshape_dict.get(key)))
         for key in xtra_shape_elements:
-            indent08 = 8 * " " + "[" + key + "]: "
+            indent08 = 8 * " " + "[" + key + "] "
             while len(indent08) < 33:
                 indent08 += " "
             if tapshape_dict.get(key):
@@ -35,12 +35,12 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
             pprint_output.append("        Statement Template")
             for key in only_st_elements:
                 if sc_dict.get(key):
-                    indent12 = 12 * " " + key + ": "
+                    indent12 = 12 * " " + key + " "
                     while len(indent12) < 33:
                         indent12 += " "
                     pprint_output.append(indent12 + str(sc_dict.get(key)))
             for key in xtra_st_elements:
-                indent08 = 12 * " " + "[" + key + "]: "
+                indent08 = 12 * " " + "[" + key + "] "
                 while len(indent08) < 33:
                     indent08 += " "
                 if sc_dict.get(key):

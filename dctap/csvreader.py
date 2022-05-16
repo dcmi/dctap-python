@@ -159,7 +159,7 @@ def _simplify(shapes_dict):
         if shape.get("extras"):
             for (k, v) in shape["extras"].items():
                 shape[k] = v
-                del shape["extras"]
+            del shape["extras"]
         if shape.get("sh_warnings"):
             del shape["sh_warnings"]
         for empty_element in [key for key in shape if not shape[key]]:

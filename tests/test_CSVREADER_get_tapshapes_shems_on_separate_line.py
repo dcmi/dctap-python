@@ -7,7 +7,7 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 SETTINGS_DICT = get_config()
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_tapshapes_one_default_shape_but_with_shape_elements_on_separate_line():
     """CSV: one named shape, declared on its own line."""
     rows = [

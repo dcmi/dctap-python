@@ -35,15 +35,24 @@ def _get_tapshapes(rows, config_dict):
     warns = defaultdict(dict)               # Dict for shapeID-to-warnings_list.
 
     for row in rows:
-        if row.get("shapeID"):
+        sh_id = ""
+        if row.get("propertyID"):
+            if row.get("shapeID"):
+                sh_id = row.get("shapeID")
+            elif not row.get("shapeID"):
+                try:
+                    sh_id = list(shapes)[-1]
+                except IndexError:
+                    sh_id = row["shapeID"] = dshape
+        elif row.get("shapeID"):
             sh_id = row.get("shapeID")
+
+        if sh_id:
             if sh_id not in list(shapes):
                 sh_obj = _mkshape(row, config_dict)
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
                 warns[sh_id] = {}
-        elif not row.get("propertyID"):
-            continue
 
             sh_warns = sh_obj.get_warnings()
             for (elem, warn) in sh_warns.items():
@@ -53,49 +62,40 @@ def _get_tapshapes(rows, config_dict):
                     warns[sh_id][elem] = []
                     warns[sh_id][elem].append(warn)
 
-        if row.get("propertyID"):
+        if not row.get("propertyID"):
+            continue
+
+        st = TAPStatementTemplate()
+        for col in row:
+            if col in main_stems:
+                setattr(st, col, row[col])
+            elif col in xtra_stems:
+                st.extras[col] = row[col]
+
+        st.normalize(config_dict)
+        shapes[sh_id].st_list.append(st)
+        st_warns = st.get_warnings()
+
+        for (elem, warn) in st_warns.items():
             try:
-                sh_id = list(shapes)[-1]
-            except IndexError:
-                sh_id = row["shapeID"] = dshape
+                warns[sh_id][elem].append(warn)
+            except KeyError:
+                warns[sh_id][elem] = []
+                warns[sh_id][elem].append(warn)
 
-            if sh_id not in list(shapes):
-                sh_obj = _mkshape(row, config_dict)
-                sh_obj.normalize(config_dict)
-                shapes[sh_id] = sh_obj
-                warns[sh_id] = {}
+        warns_dict = dict(warns)
+        shapes_dict = {}
+        list_of_shapes = []
+        shapes_dict["shapes"] = list_of_shapes
 
-            st = TAPStatementTemplate()
-            for col in row:
-                if col in main_stems:
-                    setattr(st, col, row[col])
-                elif col in xtra_stems:
-                    st.extras[col] = row[col]
+        for sh_obj in list(shapes.values()):
+            sh_dict = asdict(sh_obj)
+            sh_dict[
+                "statement_templates"
+            ] = sh_dict.pop("st_list")
+            list_of_shapes.append(sh_dict)
 
-            st.normalize(config_dict)
-            shapes[sh_id].st_list.append(st)
-            st_warns = st.get_warnings()
-
-            for (elem, warn) in st_warns.items():
-                try:
-                    warns[sh_id][elem].append(warn)
-                except KeyError:
-                    warns[sh_id][elem] = []
-                    warns[sh_id][elem].append(warn)
-
-            warns_dict = dict(warns)
-            shapes_dict = {}
-            list_of_shapes = []
-            shapes_dict["shapes"] = list_of_shapes
-
-            for sh_obj in list(shapes.values()):
-                sh_dict = asdict(sh_obj)
-                sh_dict[
-                    "statement_templates"
-                ] = sh_dict.pop("st_list")
-                list_of_shapes.append(sh_dict)
-
-            shapes_dict = _simplify(shapes_dict)
+        shapes_dict = _simplify(shapes_dict)
 
     return (shapes_dict, warns_dict)
     # fmt: on
@@ -108,8 +108,7 @@ def _mkshape(row_dict=None, config_dict=None):
         row_dict: Dictionary of all columns headers (keys) and cell values (values)
             found in a given row, with no distinction between shape elements and
             statement template elements.
-        main_shape_elements: Default TAPShapefields related to shapes.
-        xtra_shape_elements: Extra TAPShape fields as per optional config file.
+        config_dict: Dictionary of settings, built-in or as read from config file.
 
     Returns:
         Unpopulated instance of dctap.tapclasses.TAPShape, by default:

@@ -1,0 +1,5 @@
+shapeID,propertyID,valueNodetype
+book,,
+,,literal
+,dc:creator,uri
+book,dc:date,literal

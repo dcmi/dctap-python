@@ -25,3 +25,4 @@ Is interpreted as::
                 mandatory            True
                 repeatable           False
 
+Aliases can be used for translations of CSV headers into other languages.

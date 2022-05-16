@@ -43,7 +43,6 @@ def test_get_tapshapes_twoshapes_first_is_default():
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
 
 
-@pytest.mark.skip
 def test_get_tapshapes_twoshapes_mixed_statements():
     """CSV: two shapes in three rows, in mixed order (ABA)."""
     rows = [

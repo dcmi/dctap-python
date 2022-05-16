@@ -26,12 +26,31 @@ from dctap.exceptions import ConfigError
 from dctap.tapclasses import TAPShape
 
 
-def test_set_tapshapes_fields_shape_element_not_configured_is_ignored(tmp_path):
+def test_mkshape_sets_shape_elements_only(tmp_path):
+    """Set TAPShape fields based on header: cell_value dict for one row."""
+    os.chdir(tmp_path) # precaution to avoid interference among pytests
+    config_dict = get_config()
+    config_dict["extra_shape_elements"] = ["closed", "start"]
+    one_row = {
+        "shapeID": ":a",
+        "shapeLabel": "Book",
+        "closed": False,
+        "start": True,
+        "propertyID": "ex:name",
+        "valueNodeType": "literal",
+    }
+    shape = _mkshape(one_row, config_dict) 
+    assert shape.shapeID == ":a"
+    assert shape.shapeLabel == "Book"
+    assert shape.sh_warnings == {}
+    assert shape.extras == {"closed": False, "start": True}
+    assert shape.st_list == [] # _mkshape() sets shape fields only, not ST fields
+
+def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
     """Set TAPShape fields based on header: cell_value dict for one row."""
     os.chdir(tmp_path) # precaution to avoid interference among pytests
     config_dict = get_config()
     config_dict["extra_shape_elements"] = ["closed"]
-    shape_instance = TAPShape()
     one_row = {
         "shapeID": ":a",
         "shapeLabel": "Book",
@@ -45,27 +64,3 @@ def test_set_tapshapes_fields_shape_element_not_configured_is_ignored(tmp_path):
         sh_warnings={}, 
         extras={"closed": False}
     )
-
-@pytest.mark.skip
-def test_set_tapshapes_fields_shape_element_not(tmp_path):
-    """Set TAPShape fields based on header: cell_value dict for one row."""
-    os.chdir(tmp_path) # precaution to avoid interference among pytests
-    config_dict = get_config()
-    config_dict["extra_shape_elements"] = ["closed", "start"]
-    shape_instance = TAPShape()
-    one_row = {
-        "shapeID": ":a",
-        "shapeLabel": "Book",
-        "closed": False,
-        "start": True,
-        "propertyID": "ex:name",
-        "valueNodeType": "literal",
-    }
-    assert _mkshape(one_row, config_dict) == TAPShape(
-        shapeID=':a', 
-        shapeLabel='Book', 
-        st_list=[{"propertyID": "ex:name", "valueNodeType": "literal"}], 
-        sh_warnings={}, 
-        extras={"closed": False, "start": True}
-    )
-

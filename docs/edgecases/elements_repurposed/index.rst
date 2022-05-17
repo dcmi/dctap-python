@@ -3,7 +3,7 @@
 Elements are either for shapes or statement templates, not both.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A given element is defined either as an element of a shape or an element of a statement template. A statement constraint element can be configured as an "extra shape element", for example with:
+A given element is defined either as an element of a shape or an element of a statement template. At one's own risk, one can configure a statement constraint element as an "extra shape element" (or vice versa), for example with::
 
     extra_shape_elements:
     - "note"
@@ -30,7 +30,7 @@ is interpreted as::
                 propertyID           foaf:name
                 note                 Where does this note belong?
 
-This ambiguity could be solved simply by coining an extra element, eg **shapeNote**:
+This ambiguity could be solved simply by coining an extra element, eg **shapeNote**::
 
     extra_shape_elements:
     - "shapeNote"

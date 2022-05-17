@@ -61,14 +61,21 @@ Note that a value constraint that contains commas --- and is properly formatted 
    :file: valueConstraint_with_commas.csv
    :header-rows: 1
 
-This is interpreted as::
+This is interpreted as (shown here in JSON to emphasize the single string value of **valueConstraint**)::
 
-    DCTAP instance
-        Shape
-            shapeID                  default
-            Statement Template
-                propertyID           :creator
-                valueConstraint      one, two, three
+    {
+      "shapes": [
+        {
+          "shapeID": "default",
+          "statement_templates": [
+            {
+                "propertyID": ":creator",
+                "valueConstraint": "Public, Confidential"
+            }
+          ]
+        }
+      ]
+    }
 
 Because the value constraint type is intended to provide a context for interpreting a value constraint, the value constraint type means nothing in the absence of a value constraint. If a value is provided for **valueConstraintType** but not for **valueConstraint**, a warning will be emitted.
 

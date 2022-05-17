@@ -1,6 +1,6 @@
 .. _list_elements:
 
-List elements
+List Elements
 .............
 
 Some statement template elements can be configured as list elements. Cell values of list elements are split into lists of multiple values on the basis of a configurable :ref:`list_item_separator`. Value lists may be used or interpreted differently in applications downstream of a DCTAP instance. The semantic implications of using list values with given elements in particular applications is out of scope for DCTAP.

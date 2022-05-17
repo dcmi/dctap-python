@@ -7,10 +7,10 @@ Configuration
 
 .. toctree::
 
+   default_shape_name/index
    prefix_mappings/index
    extra_elements/index
    list_elements/index
-   list_elements/valueNodeType/index
    list_item_separator/index
+   list_elements/valueNodeType/index
    element_aliases/index
-   default_shape_name/index

@@ -103,4 +103,16 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 #     "ShapeRef": "valueShape"
 #     "Mand": "mandatory"
 #     "Rep": "repeatable"
+
+### This module has a "starter set" with four built-in value node types:
+### "Picklist", "Pattern", "IRIStem", and "LanguageTag". Other types may be needed.
+### As of May 2022, this is not yet implemented.
+# extra_value_constraint_types:
+# - "YourExampleHere"
+
+### Aliases for Boolean values may make more sense in a given user community.
+### As of May 2022, this is not yet implemented.
+# boolean_aliases:
+#     "Y": "true"
+#     "N": "false"
 """

@@ -15,4 +15,5 @@ dctap is a module and command-line utility for reading and interpreting CSV file
    config/index
    design/index
    glossary/index
+   edgecases/index
 

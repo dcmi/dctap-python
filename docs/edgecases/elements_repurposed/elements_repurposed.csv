@@ -1,0 +1,4 @@
+shapeID,propertyID,note
+book,,Note on a Shape
+,dc:creator,Note on a Statement Template
+author,foaf:name,Where does this note belong?

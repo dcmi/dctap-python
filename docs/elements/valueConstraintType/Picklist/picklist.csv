@@ -1,3 +1,4 @@
 propertyID,valueConstraint,valueConstraintType
+:color,red blue green,
 :color,red blue green,picklist
-:hue,yellow,picklist
+:color,yellow,picklist

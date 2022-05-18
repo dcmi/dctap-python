@@ -11,7 +11,7 @@ A given element is defined either as an element of a shape or an element of a st
 However, the results may be unexpected. The CSV:
 
 .. csv-table::
-   :file: shapes_declared_once.csv
+   :file: elements_repurposed.csv
    :header-rows: 1
 
 is interpreted as::

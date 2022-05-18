@@ -16,3 +16,34 @@ The **valueConstraintType** element is intended to serve as an extension point f
 In contrast to the :ref:`elem_valueDataType`, which mark the datatype of literals in a form carried by :term:`Instance Data`, the value constraint type is intended to be used to trigger specific algorithms for transforming the values of a CSV cells, which are by definition only ever strings, into lists, regular expressions, or other data structures of the type used in programming.
 
 Because the value constraint type is intended to provide a context for interpreting a value constraint, the value constraint type means nothing in the absence of a value constraint. If a value is provided for **valueConstraintType** but not for **valueConstraint**, a warning will be emitted.
+
+.. csv-table:: 
+   :file: valueConstraint_without_valueConstraintType.csv
+   :header-rows: 1
+
+is interpreted as::
+
+    DCTAP instance
+        Shape
+            shapeID                  default
+            Statement Template
+                propertyID           dc:subject
+                valueConstraintType  picklist
+
+    WARNING [default/valueConstraint] Value constraint type ('picklist') but no value constraint.
+
+If a **valueConstraintType** other than the four built-in types is provided --- in the following example, a hypothetical type **markdown** --- **dctap** will simply pass the value through to the output, where any consuming applications will be responsible for processing the type correctly.
+
+.. csv-table:: 
+   :file: valueConstraintType_markdown.csv
+   :header-rows: 1
+
+is interpreted as::
+
+    DCTAP instance
+        Shape
+            shapeID                  default
+            Statement Template
+                propertyID           :tutorial
+                valueConstraint      click [here](https://sphinx-rtd-tutorial.readthedocs.io)
+                valueConstraintType  markdown

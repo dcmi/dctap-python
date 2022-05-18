@@ -24,7 +24,7 @@ Note that asserting a value constraint type in the absence of a corresponding va
    :file: valueConstraint_with_no_valueConstraintType.csv
    :header-rows: 1
 
-This is interpreted as::
+is interpreted as::
 
     DCTAP instance
         Shape

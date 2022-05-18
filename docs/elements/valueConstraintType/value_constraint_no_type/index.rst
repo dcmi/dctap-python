@@ -18,19 +18,3 @@ This is interpreted as::
                 propertyID           :securityLevel
                 valueConstraint      Confidential
 
-Note that asserting a value constraint type in the absence of a corresponding value constraint will trigger a warning.
-
-.. csv-table:: 
-   :file: valueConstraint_with_no_valueConstraintType.csv
-   :header-rows: 1
-
-is interpreted as::
-
-    DCTAP instance
-        Shape
-            shapeID                  default
-            Statement Template
-                propertyID           :securityLevel
-                valueConstraintType  picklist
-
-    WARNING [default/valueConstraint] Value constraint type ('picklist') but no value constraint.

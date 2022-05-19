@@ -44,8 +44,8 @@ Glossary
    Property
        A controlled term **in Instance Data** denoting an attribute of an Entity used in a Statement.
    
-   Property Constraint
-       A pattern **in an Application Profile** descriptive of how Properties are expected to be used in Instance Data.
+   Predicate Constraint
+       A pattern **in an Application Profile** descriptive of how Properties are expected to be used in Instance Data. Also commonly known as a Property Constraint.
    
    Shape 
        A set of Statement Templates **in an Application Profile** that characterize Statements expected to be found in a Description. In the now-superseded `DCMI Abstract Model <https://www.dublincore.org/specifications/dublin-core/abstract-model/>`_ of 2007, these were called Description Templates.

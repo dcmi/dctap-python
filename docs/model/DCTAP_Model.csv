@@ -2,5 +2,5 @@ Reality,Metadata,DCTAP,Vocabulary
 Entity,,,Class
 ,(Statements about an entity),Shape,
 ,Statement,Statement Template,
-,Predicate,Property Constraint,Property
+,Predicate,Predicate Constraint,Property
 ,Value,Value Constraint,

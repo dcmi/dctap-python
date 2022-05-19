@@ -26,11 +26,11 @@ def cli(context):
     Examples (see https://dctap-python.rtfd.io):
 
     \b
-    Write editable configuration file:
+    Write an editable configuration file:
     $ dctap init                           # Write dctap.yaml
     $ dctap init --hidden                  # Write .dctaprc
     \b
-    Parse CSV and generate normalized view:
+    Parse a CSV and generate a normalized view:
     $ dctap read x.csv                     # Plain text output
     $ dctap read --json x.csv              # JSON output
     $ dctap read --yaml x.csv              # YAML output

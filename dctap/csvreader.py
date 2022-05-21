@@ -147,15 +147,15 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
 def _simplify(shapes_dict):
     """Remove elements from shapes dictionary with falsy values."""
     for shape in shapes_dict["shapes"]:
-        for st in shape["statement_templates"]:
-            if st.get("extras"):
-                for (k, v) in st["extras"].items():
-                    st[k] = v
-                    del st["extras"]
-            if st.get("st_warnings"):
-                del st["st_warnings"]
-            for empty_element in [key for key in st if not st[key]]:
-                del st[empty_element]
+        for state in shape["statement_templates"]:
+            if state.get("extras"):
+                for (k, v) in state["extras"].items():
+                    state[k] = v
+                del state["extras"]
+            if state.get("st_warnings"):
+                del state["st_warnings"]
+            for empty_element in [key for key in state if not state[key]]:
+                del state[empty_element]
         if shape.get("extras"):
             for (k, v) in shape["extras"].items():
                 shape[k] = v

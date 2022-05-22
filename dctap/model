@@ -1,0 +1,16 @@
+@cli.command()
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def model(context):
+    """Show DCTAP model built-ins for ready reference"""
+
+    shape_elements = list(asdict(TAPShape()))
+    shape_elements.remove('tc_list')
+    state_elements = list(asdict(TAPStatementTemplate()))
+    print("DC Tabular Application Profile")
+    print("    Shape elements:")
+    for element in shape_elements:
+        print(f"        {element}")
+    print("        Statement Template elements:")
+    for element in state_elements:
+        print(f"            {element}")

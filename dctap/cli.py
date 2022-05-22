@@ -2,6 +2,7 @@
 
 import sys
 import json as j
+from dataclasses import asdict
 from ruamel.yaml import YAML
 import click
 from .config import get_config, write_configfile
@@ -9,6 +10,7 @@ from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
 from .inspect import pprint_tapshapes, print_warnings
 from .csvreader import csvreader
 from .loggers import stderr_logger
+from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
@@ -42,16 +44,11 @@ def cli(context):
 
 @cli.command()
 @click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
-@click.option(
-    "--config",
+@click.option("--config",
     type=click.Path(exists=True),
-    help="Pathname of (non-default) config file.",
+    help="Path to alternative config file.",
 )
-@click.option(
-    "--expand-prefixes",
-    is_flag=True,
-    help="Compact to full IRI with prefixes mapped to namespaces.",
-)
+@click.option("--expand-prefixes", is_flag=True, help="Expand compact to full IRIs.")
 @click.option("--warnings", is_flag=True, help="Print warnings to stderr.")
 @click.option("--json", is_flag=True, help="Print JSON to stdout.")
 @click.option("--yaml", is_flag=True, help="Print YAML to stdout.")
@@ -113,3 +110,21 @@ def init(context, hidden, terse):
     else:
         configfile = DEFAULT_CONFIGFILE_NAME
     write_configfile(configfile, terse=terse)
+
+
+@cli.command()
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def model(context):
+    """Show DCTAP model built-ins for ready reference"""
+
+    shape_elements = list(asdict(TAPShape()))
+    # shape_elements.remove('tc_list')
+    state_elements = list(asdict(TAPStatementTemplate()))
+    print("DC Tabular Application Profile")
+    print("    Shape elements:")
+    for element in shape_elements:
+        print(f"        {element}")
+    print("        Statement Template elements:")
+    for element in state_elements:
+        print(f"            {element}")

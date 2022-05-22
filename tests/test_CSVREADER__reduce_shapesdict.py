@@ -8,8 +8,8 @@ def test_reduce_shapesdict():
                         {
                          'shapeID': 'a',
                          'shapeLabel': '',
-                         'sh_warnings': {},
-                         'extras': {'closed': 'True'},
+                         'shape_warns': {},
+                         'shape_extras': {'closed': 'True'},
                          'statement_templates': [
                              {
                               'propertyID': 'dc:creator',
@@ -22,16 +22,16 @@ def test_reduce_shapesdict():
                               'valueConstraintType': 'picklist',
                               'valueShape': '',
                               'note': '',
-                              'st_warnings': {'valueConstraint': "Value constraint type ('picklist') but no value constraint."},
-                              'extras': {'min': '1'}
+                              'state_warns': {'valueConstraint': "Value constraint type ('picklist') but no value constraint."},
+                              'state_extras': {'min': '1'}
                              }
                          ]
                         },
                         {
                          'shapeID': 'b',
                          'shapeLabel': '',
-                         'sh_warnings': {},
-                         'extras': {'closed': 'False'},
+                         'shape_warns': {},
+                         'shape_extras': {'closed': 'False'},
                          'statement_templates': [
                              {
                               'propertyID': 'foaf:name',
@@ -44,8 +44,8 @@ def test_reduce_shapesdict():
                               'valueConstraintType': '',
                               'valueShape': '',
                               'note': '',
-                              'st_warnings': {},
-                              'extras': {'min': '2'}
+                              'state_warns': {},
+                              'state_extras': {'min': '2'}
                              }
                          ]
                         }

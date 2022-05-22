@@ -5,7 +5,7 @@ dctap.csvreader._mkshape - from docstring:
 
     Args:
         tapshape_obj: Unpopulated instance of dctap.tapclasses.TAPShape:
-            TAPShape(shapeID='', shapeLabel='', st_list=[], sh_warnings={}, extras={})
+            TAPShape(shapeID='', shapeLabel='', state_list=[], shape_warns={}, shape_extras={})
         row_dict: Dictionary of all columns headers (keys) and cell values (values) 
             found in a given row, with no distinction between shape elements and 
             statement template elements.
@@ -33,9 +33,9 @@ def test_mkshapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path
     assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
         shapeLabel='Book', 
-        st_list=[], 
-        sh_warnings={}, 
-        extras={}
+        state_list=[], 
+        shape_warns={}, 
+        shape_extras={}
     )
 
 def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
@@ -52,9 +52,9 @@ def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
     assert _mkshape(one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
         shapeLabel='Book', 
-        st_list=[],
-        sh_warnings={}, 
-        extras={"closed": False}
+        state_list=[],
+        shape_warns={}, 
+        shape_extras={"closed": False}
     )
 
 def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
@@ -72,9 +72,9 @@ def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
     assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
         shapeLabel='Book', 
-        st_list=[], 
-        sh_warnings={}, 
-        extras={"closed": False, "start": True}
+        state_list=[], 
+        shape_warns={}, 
+        shape_extras={"closed": False, "start": True}
     )
 
 def test_mkshape_sets_shape_elements_only(tmp_path):
@@ -93,9 +93,9 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
     shape = _mkshape(one_row, config_dict) 
     assert shape.shapeID == ":a"
     assert shape.shapeLabel == "Book"
-    assert shape.sh_warnings == {}
-    assert shape.extras == {"closed": False, "start": True}
-    assert shape.st_list == [] # _mkshape() sets shape fields only, not ST fields
+    assert shape.shape_warns == {}
+    assert shape.shape_extras == {"closed": False, "start": True}
+    assert shape.state_list == [] # _mkshape() sets shape fields only, not ST fields
 
 def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path):
     """Empty shape elements are passed through, but not unasserted elements."""
@@ -111,8 +111,8 @@ def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path
     assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=':a', 
         shapeLabel='', 
-        st_list=[], 
-        sh_warnings={}, 
-        extras={"closed": ""}
+        state_list=[], 
+        shape_warns={}, 
+        shape_extras={"closed": ""}
     )
 

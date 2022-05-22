@@ -6,12 +6,12 @@ from dctap.config import get_config, get_shems, get_stems
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_get_TAPShape_elements_when_no_config_dict_specified():
-    """List TAPShape elements (minus sh_warnings and st_list)."""
+    """List TAPShape elements (minus shape_warns and state_list)."""
     expected = ['shapeID', 'shapeLabel']
     assert get_shems(TAPShape)[0] == expected
 
 def test_get_TAPShape_elements_plus_extras_when_config_dict_specified():
-    """List TAPShape elements plus extras."""
+    """List TAPShape elements plus extra shape elements."""
     expected_main_shems = ["shapeID", "shapeLabel"]
     expected_xtra_shems = ["closed", "start"]
     #config_dict = dict(extra_shape_elements=["closed", "start"])
@@ -21,7 +21,7 @@ def test_get_TAPShape_elements_plus_extras_when_config_dict_specified():
     assert get_shems(TAPShape, config_dict)[1] == expected_xtra_shems
 
 def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
-    """List TAPStatementTemplate elements (minus st_warnings)."""
+    """List TAPStatementTemplate elements (minus state_warns)."""
     expected = [
         "propertyID",
         "propertyLabel",
@@ -37,7 +37,7 @@ def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
     assert sorted(get_stems(TAPStatementTemplate)[0]) == sorted(expected)
 
 def test_get_TAPStatementTemplate_elements_plus_extras_when_config_dict_specified():
-    """List TAPStatementTemplate elements plus extras."""
+    """List TAPStatementTemplate elements plus extra statement elements."""
     expected_st_elements = [
         "propertyID",
         "propertyLabel",

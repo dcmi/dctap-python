@@ -19,9 +19,9 @@ from .tapclasses import TAPShape, TAPStatementTemplate
 def get_shems(shape_class=TAPShape, settings=None):
     """List DCTAP elements supported by given shape class."""
     only_shape_elements = list(asdict(shape_class()))
-    only_shape_elements.remove("st_list")
-    only_shape_elements.remove("sh_warnings")
-    only_shape_elements.remove("extras")
+    only_shape_elements.remove("state_list")
+    only_shape_elements.remove("shape_warns")
+    only_shape_elements.remove("shape_extras")
     extra_shape_elements = []
     if settings:
         if settings.get("extra_shape_elements"):
@@ -33,8 +33,8 @@ def get_shems(shape_class=TAPShape, settings=None):
 def get_stems(statement_template_class=TAPStatementTemplate, settings=None):
     """List DCTAP elements supported by statement template class."""
     only_st_elements = list(asdict(statement_template_class()))
-    only_st_elements.remove("st_warnings")
-    only_st_elements.remove("extras")
+    only_st_elements.remove("state_warns")
+    only_st_elements.remove("state_extras")
     extra_st_elements = []
     if settings:
         if settings.get("extra_statement_template_elements"):

@@ -70,10 +70,10 @@ def _get_tapshapes(rows, config_dict):
             if col in main_stems:
                 setattr(st, col, row[col])
             elif col in xtra_stems:
-                st.extras[col] = row[col]
+                st.state_extras[col] = row[col]
 
         st.normalize(config_dict)
-        shapes[sh_id].st_list.append(st)
+        shapes[sh_id].state_list.append(st)
         st_warns = st.get_warnings()
 
         for (elem, warn) in st_warns.items():
@@ -92,7 +92,7 @@ def _get_tapshapes(rows, config_dict):
             sh_dict = asdict(sh_obj)
             sh_dict[
                 "statement_templates"
-            ] = sh_dict.pop("st_list")
+            ] = sh_dict.pop("state_list")
             list_of_shapes.append(sh_dict)
 
         shapes_dict = _simplify(shapes_dict)
@@ -112,7 +112,7 @@ def _mkshape(row_dict=None, config_dict=None):
 
     Returns:
         Unpopulated instance of dctap.tapclasses.TAPShape, by default:
-        - TAPShape(shapeID='', shapeLabel='', st_list=[], sh_warnings={}, extras={})
+        - TAPShape(shapeID='', shapeLabel='', state_list=[], shape_warns={}, state_extras={})
         - Plus extra TAPShape fields as per config settings.
     """
     (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)
@@ -121,7 +121,7 @@ def _mkshape(row_dict=None, config_dict=None):
         if key in main_shems:
             setattr(tapshape_obj, key, row_dict[key])
         elif key in xtra_shems:
-            tapshape_obj.extras[key] = row_dict[key]
+            tapshape_obj.shape_extras[key] = row_dict[key]
     return tapshape_obj
 
 
@@ -148,20 +148,20 @@ def _simplify(shapes_dict):
     """Remove elements from shapes dictionary with falsy values."""
     for shape in shapes_dict["shapes"]:
         for state in shape["statement_templates"]:
-            if state.get("extras"):
-                for (k, v) in state["extras"].items():
+            if state.get("state_extras"):
+                for (k, v) in state["state_extras"].items():
                     state[k] = v
-                del state["extras"]
-            if state.get("st_warnings"):
-                del state["st_warnings"]
+                del state["state_extras"]
+            if state.get("state_warns"):
+                del state["state_warns"]
             for empty_element in [key for key in state if not state[key]]:
                 del state[empty_element]
-        if shape.get("extras"):
-            for (k, v) in shape["extras"].items():
+        if shape.get("shape_extras"):
+            for (k, v) in shape["shape_extras"].items():
                 shape[k] = v
-            del shape["extras"]
-        if shape.get("sh_warnings"):
-            del shape["sh_warnings"]
+            del shape["shape_extras"]
+        if shape.get("shape_warns"):
+            del shape["shape_warns"]
         for empty_element in [key for key in shape if not shape[key]]:
             del shape[empty_element]
     return shapes_dict

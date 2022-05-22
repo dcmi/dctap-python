@@ -7,10 +7,10 @@ def test_warn_if_propertyID_not_URI():
     sc = TAPStatementTemplate()
     sc.propertyID = "P31"
     sc._warn_if_propertyID_or_valueDataType_not_IRIlike()
-    print(sc.st_warnings)
-    print(dict(sc.st_warnings))
-    print(len(dict(sc.st_warnings)))
-    assert len(dict(sc.st_warnings)) == 1
+    print(sc.state_warns)
+    print(dict(sc.state_warns))
+    print(len(dict(sc.state_warns)))
+    assert len(dict(sc.state_warns)) == 1
 
 
 def test_warn_if_valueDataType_not_URI():
@@ -19,7 +19,7 @@ def test_warn_if_valueDataType_not_URI():
     sc.propertyID = "wdt:P31"
     sc.valueDataType = "date"
     sc._warn_if_propertyID_or_valueDataType_not_IRIlike()
-    print(sc.st_warnings)
-    print(dict(sc.st_warnings))
-    print(len(dict(sc.st_warnings)))
-    assert len(dict(sc.st_warnings)) == 1
+    print(sc.state_warns)
+    print(dict(sc.state_warns))
+    print(len(dict(sc.state_warns)))
+    assert len(dict(sc.state_warns)) == 1

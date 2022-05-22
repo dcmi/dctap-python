@@ -40,10 +40,9 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 ### YAML outputs.
 ###
 ### Custom shape elements can be added here.
-### Example: "closed" and "start" have meaning in some shape languages.
+### Example: in some shape languages, a shape may be "closed".
 # extra_shape_elements:
 # - "closed"
-# - "start"
 ###
 ### Custom statement templates can be added here.
 ### Example: "min" and "max" are popular alternatives to "mandatory" and

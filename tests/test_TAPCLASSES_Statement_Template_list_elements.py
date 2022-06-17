@@ -37,6 +37,19 @@ def test_list_elements():
     assert sc.valueDataType == ["xsd:date", "xsd:time"]
     assert sc.valueShape == ["a", "b", "c", "d"]
 
+def test_list_elements_single_space_is_default():
+    """Space is default list item separator."""
+    sc = TAPStatementTemplate()
+    sc.propertyID = "dcterms:creator dcterms:date"
+    sc.valueNodeType = "iri bnode"
+    sc.valueDataType = "xsd:date xsd:time"
+    sc.valueShape = "a b c d"
+    sc._parse_elements_configured_as_list_elements(config_dict)
+    assert sc.propertyID == ["dcterms:creator", "dcterms:date"]
+    assert sc.valueNodeType == ["iri", "bnode"]
+    assert sc.valueDataType == ["xsd:date", "xsd:time"]
+    assert sc.valueShape == ["a", "b", "c", "d"]
+
 def test_value_node_type_not_parsed_as_list():
     """When element not configured to be parsed as list, just pass through."""
     config_dict["list_elements"] = []

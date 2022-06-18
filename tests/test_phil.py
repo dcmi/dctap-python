@@ -21,6 +21,21 @@ element_aliases:
      "Rep": "repeatable"
 """
 
+@pytest.mark.skip
+def test_get_config_with_extra_element_aliases():
+    """Extra element aliases are added to existing aliases, not replacements."""
+    given_config_dict = { "extra_element_aliases": { "Eigenschaftsidentifikator": "propertyID" } }
+    config_dict = get_config()
+    expected_config_dict = {
+        "element_aliases": {
+            'propertyid': 'propertyID',  
+            'propertylabel': 'propertyLabel',  
+            'eigenschaftsidentifikator': 'propertyID',  
+        }
+    }
+    given_config_dict["element_aliases"].update(expected_mappings) == expected_config_dict["element_aliases"]
+    given_config_dict == expected_config_dict
+
 def test_get_config_from_phils_yamldoc(tmp_path):
     """Get config dict when passed Phil's YAML."""
     os.chdir(tmp_path)

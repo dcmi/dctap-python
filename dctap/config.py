@@ -75,7 +75,10 @@ def get_config(
     shape_class=TAPShape,
     statement_template_class=TAPStatementTemplate,
 ):
-    """Get built-in settings then override from config file (if found)."""
+    """
+    Get built-in settings then override from config file (if found).
+    - Note: extra element aliases added to defaults.
+    """
 
     def load2dict(configfile=None):
         """Parse contents of YAML configfile and return dictionary."""
@@ -108,6 +111,7 @@ def get_config(
     config_dict["list_elements"] = []
     config_dict["list_item_separator"] = " "
     config_dict["extra_value_node_types"] = []
+    config_dict["extra_element_aliases"] = {}
 
     config_dict.update(elements_dict)
     if yaml.safe_load(config_yamldoc):
@@ -126,6 +130,14 @@ def get_config(
 
     # Settings from config file may override defaults.
     config_dict.update(config_dict_from_file)
+
+    # But extra element aliases, if declared, are added to element aliases.
+    if config_dict_from_file.get("extra_element_aliases"):
+        config_dict["element_aliases"] = dict(
+            config_dict["element_aliases"], 
+            *config_dict_from_file["extra_element_aliases"]
+        )
+
     return config_dict
 
 

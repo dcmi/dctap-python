@@ -135,7 +135,7 @@ def _lowercase_despace_depunctuate(some_str=None):
 
 
 def _normalize_element_name(some_str, element_aliases_dict=None):
-    """Normalize a given string (or leave unchanged)."""
+    """Normalize a given element string, if recognized; if not, leave unchanged)."""
     some_str = _lowercase_despace_depunctuate(some_str)
     if element_aliases_dict:
         for key in element_aliases_dict.keys():
@@ -189,18 +189,18 @@ def _get_rows(open_csvfile_obj, config_dict):
             config_dict["element_aliases"][element.lower()] = element
     recognized_elements = [elem.lower() for elem in recognized_elements]
 
-    for header in raw_header_line_list:
-        header = _lowercase_despace_depunctuate(header)
-        header = _normalize_element_name(header, config_dict.get("element_aliases"))
-        new_header_line_list.append(header)
+    for column in raw_header_line_list:
+        column = _lowercase_despace_depunctuate(column)
+        column = _normalize_element_name(column, config_dict.get("element_aliases"))
+        new_header_line_list.append(column)
     csv_warns = defaultdict(dict)
 
-    for header in new_header_line_list:
-        if header.lower() not in recognized_elements:
-            warn = f"Non-DCTAP element {repr(header)} not configured as extra element."
+    for column in new_header_line_list:
+        if column.lower() not in recognized_elements:
+            warn = f"Non-DCTAP element {repr(column)} not configured as extra element."
             csv_warns["csv"] = {}
-            csv_warns["csv"]["header"] = []
-            csv_warns["csv"]["header"].append(warn)
+            csv_warns["csv"]["column"] = []
+            csv_warns["csv"]["column"].append(warn)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:

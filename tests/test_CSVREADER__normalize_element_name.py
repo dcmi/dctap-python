@@ -1,5 +1,6 @@
 """In getting rows: normalize element names (CSV header) as per config_config."""
 
+import pytest
 from dctap.config import get_config
 from dctap.csvreader import _normalize_element_name
 
@@ -11,6 +12,7 @@ def test_normalize_element_name():
     assert _normalize_element_name("SHAPE___ID", element_aliases_dict) == "shapeID"
     assert _normalize_element_name("rid", element_aliases_dict) == "rid"
 
+@pytest.mark.skip
 def test_normalize_element_name_customized():
     """Uses customized element name aliases taken from configuration file."""
     element_aliases_dict = { 

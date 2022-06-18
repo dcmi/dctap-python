@@ -91,8 +91,8 @@ DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
 # - "uri"
 # - "nonliteral"
 
-### Element aliases can shorten header lines.
-# element_aliases:
+### Element aliases for shorter, translated, or preferred CSV column names.
+# extra_element_aliases:
 #     "PropID": "propertyID"
 #     "PropLabel": "propertyLabel"
 #     "Value": "valueConstraint"

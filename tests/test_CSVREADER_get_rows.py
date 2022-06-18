@@ -44,6 +44,7 @@ def test_get_rows_minimal(tmp_path):
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
 def test_get_rows_given_customized_element_alias(tmp_path):
     """Using customized element alias, normalized for case, dashes, underscores."""
     os.chdir(tmp_path)

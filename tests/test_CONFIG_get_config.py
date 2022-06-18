@@ -15,7 +15,6 @@ prefixes:
     "dcterms:": "http://purl.org/dc/terms/"
 """
 
-
 def test_get_config_from_builtins():
     """Get config dict from built-in settings."""
     config_dict = get_config()

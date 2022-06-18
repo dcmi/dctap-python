@@ -7,8 +7,8 @@ from dctap.config import get_config
 from dctap.csvreader import _get_rows
 
 
-def test_get_rows_including_header_not_in_DCTAP(tmp_path):
-    """Get rows where one header is not part of the DCTAP model."""
+def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
+    """Get rows where one header element is not part of the DCTAP model."""
     os.chdir(tmp_path)
     config_dict = get_config()
     csvfile_path = Path(tmp_path).joinpath("some.csv")

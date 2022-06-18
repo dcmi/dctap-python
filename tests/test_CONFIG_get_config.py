@@ -36,7 +36,7 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     assert config_dict.get("default_shape_identifier")
     assert config_dict.get("csv_elements")                       # computed
     assert config_dict.get("shape_elements")                     # computed
-    assert config_dict.get("statement_template_elements")      # computed
+    assert config_dict.get("statement_template_elements")        # computed
     assert config_dict.get("element_aliases")                    # asserted/computed
     assert config_dict.get("value_node_types") is None
 

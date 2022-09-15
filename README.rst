@@ -33,8 +33,8 @@ or uninstalled with:
 
     python3 -m pip uninstall dctap
 
-Installation with pip
-^^^^^^^^^^^^^^^^^^^^^
+Installation from Github
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 "dctap" can be installed directly from Github with:
 

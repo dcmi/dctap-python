@@ -42,6 +42,8 @@ Installation with pip
 
     python3 -m pip install -U https://github.com/dcmi/dctap-python/archive/main.zip
 
+Installing "dctap" this way, and periodically re-running this command to refresh, is the best way to keep up with the latest version of "dctap".
+
 Installation with pip in virtual environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

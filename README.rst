@@ -18,6 +18,15 @@ To work correctly, "dctap" requires Python 3.7 or higher. Executing the command 
 
 As explained below, the command-line utility can be installed either from the online PyPI repository, using the ``pip`` command, or from a local copy of the project on your own machine.
 
+Installation from PyPI
+^^^^^^^^^^^^^^^^^^^^^^
+
+"dctap" can be installed from the PyPi repository with:
+
+.. code-block:: bash
+
+    python3 -m pip install dctap
+
 Installation with pip
 ^^^^^^^^^^^^^^^^^^^^^
 

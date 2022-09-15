@@ -21,7 +21,7 @@ As explained below, the command-line utility can be installed either from the on
 Installation from PyPI
 ^^^^^^^^^^^^^^^^^^^^^^
 
-"dctap" can be installed from the PyPi repository with:
+Installing with "pip" pulls the most recently published version of the project from the `PyPI repository <https://pypi.org/project/dctap/>`_ with the following command:
 
 .. code-block:: bash
 
@@ -36,7 +36,7 @@ or uninstalled with:
 Installation with pip
 ^^^^^^^^^^^^^^^^^^^^^
 
-Installing with "pip" pulls the most recently published version of the project from the `PyPI repository <https://pypi.org/project/dctap/>`_ with the following command:
+"dctap" can be installed directly from Github with:
 
 .. code-block:: bash
 

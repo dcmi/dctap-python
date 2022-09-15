@@ -27,6 +27,12 @@ Installation from PyPI
 
     python3 -m pip install dctap
 
+or uninstalled with:
+
+.. code-block:: bash
+
+    python3 -m pip uninstall dctap
+
 Installation with pip
 ^^^^^^^^^^^^^^^^^^^^^
 

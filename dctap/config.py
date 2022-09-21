@@ -134,7 +134,7 @@ def get_config(
     # But extra element aliases, if declared, are added to element aliases.
     if config_dict_from_file.get("extra_element_aliases"):
         config_dict["element_aliases"] = dict(
-            config_dict["element_aliases"], 
+            config_dict["element_aliases"],
             *config_dict_from_file["extra_element_aliases"]
         )
 

@@ -1,4 +1,14 @@
-"""Tests for private functions called by TAPStatementTemplate.normalize()."""
+"""
+Tests for TAPStatementTemplate._languageTag_parse
+- Called by sc.normalize().
+
+2022-09-21 definition: "One or more language tags that can be applied to
+strings used with the property are given valueConstraintType languageTag.
+Languages are most commonly designated using the ISO 639 standard codes." [1]
+
+[1] https://www.loc.gov/standards/iso639-2/langhome.html
+"""
+
 
 import os
 import pytest

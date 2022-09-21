@@ -29,7 +29,8 @@ class TAPStatementTemplate:
     def normalize(self, settings):
         """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
-        self._warn_if_propertyID_or_valueDataType_not_IRIlike()
+        self._warn_if_propertyID_not_IRIlike()
+        self._warn_if_valueDataType_not_IRIlike()
         self._normalize_booleans_mandatory_repeatable()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_pattern_warn_if_used_with_value_shape()
@@ -44,12 +45,14 @@ class TAPStatementTemplate:
         self._parse_elements_configured_as_list_elements(settings)
         return self
 
-    def _warn_if_propertyID_or_valueDataType_not_IRIlike(self):
-        """@@@"""
+    def _warn_if_propertyID_not_IRIlike(self):
+        """Records warning if propertyID or valueDataType are not IRI-like."""
         if not is_uri_or_prefixed_uri(self.propertyID):
             self.state_warns[
                 "propertyID"
             ] = f"{repr(self.propertyID)} is not an IRI or Compact IRI."
+
+    def _warn_if_valueDataType_not_IRIlike(self):
         if self.valueDataType:
             if not is_uri_or_prefixed_uri(self.valueDataType):
                 self.state_warns[

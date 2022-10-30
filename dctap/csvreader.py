@@ -126,11 +126,19 @@ def _mkshape(row_dict=None, config_dict=None):
 
 
 def _lowercase_despace_depunctuate(some_str=None):
-    """For given string, delete underscores, dashes, spaces, then lowercase."""
+    """
+    For given string:
+    - delete spaces, underscores, dashes, commas
+    - lowercase
+    - delete surrounding single and double quotes
+    """
     some_str = some_str.replace(" ", "")
     some_str = some_str.replace("_", "")
     some_str = some_str.replace("-", "")
+    some_str = some_str.replace(",", "")
     some_str = some_str.lower()
+    some_str = some_str.strip('"')
+    some_str = some_str.strip("'")
     return some_str
 
 

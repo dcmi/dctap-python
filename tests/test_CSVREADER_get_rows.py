@@ -34,6 +34,28 @@ def test_get_rows_when_header_values_are_quoted(tmp_path):
     assert actual_rows_list == expected_rows_list
 
 
+def test_get_rows_where_header_elements_surrounded_by_whitespace(tmp_path):
+    """Get rows where header elements are surrounded by whitespace."""
+    os.chdir(tmp_path)
+    config_dict = get_config()
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            " PropertyID ,      PropertyLabel \n"
+            "dc:creator,Creator\n"
+        )
+    )
+    csvfile_obj = open(csvfile_path)
+    expected_rows_list = [ 
+        {
+            'propertyID': 'dc:creator',
+            'propertyLabel': 'Creator',
+        }
+    ]
+    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
+    assert actual_rows_list == expected_rows_list
+
+
 
 def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
     """Get rows where one header element is not part of the DCTAP model."""

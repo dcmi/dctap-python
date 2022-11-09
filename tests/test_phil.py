@@ -21,21 +21,6 @@ element_aliases:
      "Rep": "repeatable"
 """
 
-@pytest.mark.skip
-def test_get_config_with_extra_element_aliases():
-    """Extra element aliases are added to existing aliases, not replacements."""
-    given_config_dict = { "extra_element_aliases": { "Eigenschaftsidentifikator": "propertyID" } }
-    config_dict = get_config()
-    expected_config_dict = {
-        "element_aliases": {
-            'propertyid': 'propertyID',  
-            'propertylabel': 'propertyLabel',  
-            'eigenschaftsidentifikator': 'propertyID',  
-        }
-    }
-    given_config_dict["element_aliases"].update(expected_mappings) == expected_config_dict["element_aliases"]
-    given_config_dict == expected_config_dict
-
 def test_get_config_from_phils_yamldoc(tmp_path):
     """Get config dict when passed Phil's YAML."""
     os.chdir(tmp_path)
@@ -51,27 +36,3 @@ def test_get_element_aliases_from_default_yamldoc(tmp_path):
     assert config_dict["element_aliases"]["propertyid"] == "propertyID"
     assert config_dict["element_aliases"]["mandatory"] == "mandatory"
     assert config_dict["element_aliases"]["repeatable"] == "repeatable"
-
-@pytest.mark.skip
-def test_get_tapshapes_dict_given_phils_yamldoc(tmp_path):
-    """Get tapshape_dict with Phil's configuration."""
-    os.chdir(tmp_path)
-    Path(DEFAULT_CONFIGFILE_NAME).write_text(PHIL_CONFIG_YAMLDOC)
-    (tapshapes_dict, warnings_dict) = csvreader(csvfile_obj, config_dict)
-
-@pytest.mark.skip
-def test_get_rows_phils_data(tmp_path):
-    """Get list of rows, as dicts, from one-row, one-column CSV."""
-    os.chdir(tmp_path)
-    config_dict = get_config()
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(
-        (
-            "PropertyID\n"
-            "dct:title\n"
-        )
-    )
-    csvfile_obj = open(csvfile_path)
-    expected_rows_list = [ {'propertyID': 'http://purl.org/dc/terms/creator'} ]
-    actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
-    assert actual_rows_list == expected_rows_list

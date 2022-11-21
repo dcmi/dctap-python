@@ -85,10 +85,13 @@ def get_config(
         bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
         config_yaml = Path(configfile).read_text(encoding='UTF-8')
         try:
-            config_dict_from_file = yaml.safe_load(config_yaml)
+            config_read_from_file = yaml.safe_load(config_yaml)
         except (yaml.YAMLError, yaml.scanner.ScannerError) as error:
             raise ConfigError(bad_form) from error
-        return config_dict_from_file
+
+        if config_read_from_file:
+            return config_read_from_file
+        return {}
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shems(shape_class)[0]

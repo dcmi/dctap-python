@@ -39,6 +39,19 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     assert config_dict.get("element_aliases")                    # asserted/computed
     assert config_dict.get("value_node_types") is None
 
+def test_get_config_from_default_config_file_even_if_empty(tmp_path):
+    """Get well-formed config dict even if config file is empty."""
+    os.chdir(tmp_path)
+    Path(DEFAULT_CONFIGFILE_NAME).write_text("""###""")
+    config_dict = get_config()
+    assert "prefixes" in list(config_dict.keys())
+    assert config_dict.get("default_shape_identifier")
+    assert config_dict.get("csv_elements")                       # computed
+    assert config_dict.get("shape_elements")                     # computed
+    assert config_dict.get("statement_template_elements")        # computed
+    assert config_dict.get("element_aliases")                    # asserted/computed
+    assert config_dict.get("value_node_types") is None
+
 def test_get_config_from_nondefault_yaml(tmp_path):
     """Get config dict when passed non-default YAML."""
     config_dict = get_config(config_yamldoc=NONDEFAULT_CONFIG_YAMLDOC)

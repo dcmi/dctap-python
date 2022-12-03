@@ -1,6 +1,8 @@
 """
-Tests for TAPStatementTemplate._mininclusive_parse / _maxinclusive_parse
-- Called by sc.normalize().
+Tests for 
+- TAPStatementTemplate._valueConstraintType_mininclusive_parse
+- TAPStatementTemplate._valueConstraintType_maxinclusive_parse
+- Called by sc.normalize()
 
 2022-09-21 definition: "A number to define lower and upper bounds of a numeric
 value. 'Inclusive' means that the numbers listed will be included in the

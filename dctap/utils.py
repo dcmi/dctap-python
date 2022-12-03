@@ -4,6 +4,15 @@ import re
 from urllib.parse import urlparse
 from .exceptions import ConfigError
 
+def coerce_integer(value_constraint=None):
+    """Coerces string to integer or returns string untouched."""
+    try:
+        value_constraint = int(value_constraint)
+    except (ValueError, TypeError):
+        pass  # pass the valueConstraint through untouched
+    return value_constraint
+
+
 def coerce_numeric(value_constraint=None):
     """Coerces string to numeric type or returns string untouched."""
     try:

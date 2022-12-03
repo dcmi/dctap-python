@@ -16,23 +16,45 @@ from dctap.csvreader import csvreader
 
 config_dict = get_config()
 
+def test_valueConstraintType_mininclusive_parse():
+    """
+    If valueConstraintType is minInclusive:
+    - value of valueConstraint must be numeric
+    - value of valueConstraint must be greater than, or equal to, given value
+    See: https://stackoverflow.com/questions/379906/how-do-i-parse-a-string-to-a-float-or-int
+    """
+    sc = TAPStatementTemplate()
+    sc.propertyID = "dcterms:date"
+    sc.valueConstraintType = "mininclusive"
+    sc.valueConstraint = "4"
+    sc._valueConstraintType_mininclusive_parse()
+    assert sc.valueConstraint == 4
+    sc._valueConstraintType_mininclusive_warn_if_value_not_numeric()
+    assert not sc.state_warns                         # Here: no warnings at all, but
+    assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
+def test_valueConstraintType_mininclusive_parse_also_floats():
+    """Value of valueConstraint greater than, or equal to, given float."""
+    sc = TAPStatementTemplate()
+    sc.propertyID = "dcterms:date"
+    sc.valueConstraintType = "mininclusive"
+    sc.valueConstraint = "4.123"
+    sc._valueConstraintType_mininclusive_parse()
+    assert sc.valueConstraint == 4.123
+    assert not sc.state_warns.get("valueConstraint")
 
+def test_valueConstraintType_mininclusive_parse_also_floats_not():
+    """Value of valueConstraint does not coerce to a float."""
+    sc = TAPStatementTemplate()
+    sc.propertyID = "dcterms:date"
+    sc.valueConstraintType = "mininclusive"
+    sc.valueConstraint = "tom@tombaker.org"
+    sc._valueConstraintType_mininclusive_parse()
+    assert sc.valueConstraint == "tom@tombaker.org"
+    sc._valueConstraintType_mininclusive_warn_if_value_not_numeric()
+    assert sc.state_warns.get("valueConstraint")
+    assert "tom@" in sc.state_warns.get("valueConstraint")
 
-
-
-
-
-
-# def test_valueConstraintType_languagetag_parse():
-#     """If valueConstraintType list, valueConstraint parsed on whitespace."""
-#     sc = TAPStatementTemplate()
-#     sc.propertyID = "dcterms:creator"
-#     sc.valueConstraintType = "languagetag"
-#     sc.valueConstraint = "fr it de"
-#     sc._valueConstraintType_languageTag_parse(config_dict)
-#     assert sc.valueConstraint == ["fr", "it", "de"]
-#
 # def test_exit_with_ConfigError_if_configfile_specified_but_not_found(tmp_path):
 #     """Exit with ConfigError if config file specified as argument is not found."""
 #     os.chdir(tmp_path)

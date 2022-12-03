@@ -37,6 +37,8 @@ class TAPStatementTemplate:
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse(settings)
+        self._valueConstraintType_mininclusive_parse()
+        self._valueConstraintType_mininclusive_warn_if_value_not_numeric()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
@@ -109,6 +111,37 @@ class TAPStatementTemplate:
                         f"Value constraint type is {repr(self.valueConstraintType)}, "
                         f"but {repr(list_item)} does not look like an IRI or "
                         "Compact IRI."
+                    )
+        return self
+
+    def _valueConstraintType_mininclusive_parse(self):
+        """
+        If valueConstraintType is minInclusive: 
+        - data value must be numeric
+        - data value must evaluate as greater than, or equal to, valueConstraint.
+        """
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "mininclusive":
+            if self.valueConstraint:
+                try:
+                    self.valueConstraint = float(self.valueConstraint)
+                except (ValueError, TypeError):
+                    pass  # pass the valueConstraint through untouched
+        return self
+
+    def _valueConstraintType_mininclusive_warn_if_value_not_numeric(self):
+        """
+        If valueConstraintType minInclusive
+        - valueConstraint must be coercable to float()
+        """
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "mininclusive":
+            try:
+                float(self.valueConstraint)
+            except ValueError:
+                self.state_warns["valueConstraint"] = (
+                        f"Value constraint type is {repr(self.valueConstraintType)}, "
+                        f"but {repr(self.valueConstraint)} is not numeric."
                     )
         return self
 

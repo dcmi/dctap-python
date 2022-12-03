@@ -4,6 +4,17 @@ import re
 from urllib.parse import urlparse
 from .exceptions import ConfigError
 
+def coerce_numeric(value_constraint=None):
+    """Coerces string to numeric type or returns string untouched."""
+    try:
+        if value_constraint == str(float(value_constraint)):
+            value_constraint = float(value_constraint)
+        else:
+            value_constraint = int(value_constraint)
+    except (ValueError, TypeError):
+        pass  # pass the valueConstraint through untouched
+    return value_constraint
+
 
 def strip_enclosing_angle_brackets(url):
     """Normalize URL by stripping angle brackets."""

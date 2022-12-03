@@ -3,7 +3,7 @@
 import re
 from dataclasses import dataclass, field
 from typing import List
-from .utils import is_uri_or_prefixed_uri
+from .utils import coerce_numeric, is_uri_or_prefixed_uri
 
 
 @dataclass
@@ -117,19 +117,13 @@ class TAPStatementTemplate:
     def _valueConstraintType_mininclusive_parse(self):
         """
         If valueConstraintType is minInclusive: 
-        - data value must be numeric
-        - data value must evaluate as greater than, or equal to, valueConstraint.
+        - value of valueConstraint should be numeric (int or float)
         """
         self.valueConstraintType = self.valueConstraintType.lower()
+        value_constraint = self.valueConstraint
         if self.valueConstraintType == "mininclusive":
-            if self.valueConstraint:
-                try:
-                    if self.valueConstraint == str(float(self.valueConstraint)):
-                        self.valueConstraint = float(self.valueConstraint)
-                    else:
-                        self.valueConstraint = int(self.valueConstraint)
-                except (ValueError, TypeError):
-                    pass  # pass the valueConstraint through untouched
+            if value_constraint:
+                self.valueConstraint = coerce_numeric(value_constraint)
         return self
 
     def _valueConstraintType_mininclusive_warn_if_value_not_numeric(self):

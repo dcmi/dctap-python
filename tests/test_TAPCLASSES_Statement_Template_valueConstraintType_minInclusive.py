@@ -17,7 +17,7 @@ from dctap.csvreader import csvreader
 
 config_dict = get_config()
 
-def test_valueConstraintType_mininclusive_parse():
+def test_valueConstraintType_minmaxinclusive_parse():
     """If valueConstraintType minInclusive, valueConstraint must be numeric."""
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
@@ -30,7 +30,7 @@ def test_valueConstraintType_mininclusive_parse():
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
-def test_valueConstraintType_mininclusive_parse_also_floats():
+def test_valueConstraintType_minmaxinclusive_parse_also_floats():
     """Value of valueConstraint greater than, or equal to, given float."""
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
@@ -40,7 +40,7 @@ def test_valueConstraintType_mininclusive_parse_also_floats():
     assert sc.valueConstraint == 4.123
     assert not sc.state_warns.get("valueConstraint")
 
-def test_valueConstraintType_mininclusive_parse_also_floats_not():
+def test_valueConstraintType_minmaxinclusive_parse_also_floats_not():
     """Value of valueConstraint does not coerce to a float."""
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"

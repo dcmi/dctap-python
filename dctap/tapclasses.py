@@ -40,7 +40,7 @@ class TAPStatementTemplate:
         self._valueConstraintType_minmaxlength_parse()
         self._valueConstraintType_minmaxlength_warn_if_not_integer()
         self._valueConstraintType_minmaxinclusive_parse()
-        self._valueConstraintType_mininclusive_warn_if_value_not_numeric()
+        self._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()

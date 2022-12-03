@@ -124,7 +124,10 @@ class TAPStatementTemplate:
         if self.valueConstraintType == "mininclusive":
             if self.valueConstraint:
                 try:
-                    self.valueConstraint = float(self.valueConstraint)
+                    if self.valueConstraint == str(float(self.valueConstraint)):
+                        self.valueConstraint = float(self.valueConstraint)
+                    else:
+                        self.valueConstraint = int(self.valueConstraint)
                 except (ValueError, TypeError):
                     pass  # pass the valueConstraint through untouched
         return self

@@ -26,9 +26,10 @@ def test_valueConstraintType_mininclusive_parse():
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "mininclusive"
-    sc.valueConstraint = "4"
+    sc.valueConstraint = "4.0"
     sc._valueConstraintType_mininclusive_parse()
-    assert sc.valueConstraint == 4
+    assert sc.valueConstraint == 4.0
+    assert str(sc.valueConstraint) != str(4)
     sc._valueConstraintType_mininclusive_warn_if_value_not_numeric()
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...

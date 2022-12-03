@@ -138,8 +138,6 @@ class TAPStatementTemplate:
                 )
         return self
 
-    ####################################
-
     def _valueConstraintType_minmaxinclusive_parse(self):
         """
         valueConstraintType minInclusive / maxInclusive

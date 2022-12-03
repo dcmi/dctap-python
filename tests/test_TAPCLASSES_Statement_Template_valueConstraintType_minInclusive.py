@@ -19,6 +19,7 @@ config_dict = get_config()
 
 def test_valueConstraintType_minmaxinclusive_parse():
     """If valueConstraintType minInclusive, valueConstraint must be numeric."""
+    # minInclusive
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "mininclusive"
@@ -30,30 +31,7 @@ def test_valueConstraintType_minmaxinclusive_parse():
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
-def test_valueConstraintType_minmaxinclusive_parse_also_floats():
-    """Value of valueConstraint greater than, or equal to, given float."""
-    sc = TAPStatementTemplate()
-    sc.propertyID = "dcterms:date"
-    sc.valueConstraintType = "mininclusive"
-    sc.valueConstraint = "4.123"
-    sc._valueConstraintType_minmaxinclusive_parse()
-    assert sc.valueConstraint == 4.123
-    assert not sc.state_warns.get("valueConstraint")
-
-def test_valueConstraintType_minmaxinclusive_parse_also_floats_not():
-    """Value of valueConstraint does not coerce to a float."""
-    sc = TAPStatementTemplate()
-    sc.propertyID = "dcterms:date"
-    sc.valueConstraintType = "mininclusive"
-    sc.valueConstraint = "tom@tombaker.org"
-    sc._valueConstraintType_minmaxinclusive_parse()
-    assert sc.valueConstraint == "tom@tombaker.org"
-    sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
-    assert sc.state_warns.get("valueConstraint")
-    assert "tom@" in sc.state_warns.get("valueConstraint")
-
-def test_valueConstraintType_maxinclusive_parse():
-    """If valueConstraintType maxInclusive, valueConstraint must be numeric."""
+    # maxInclusive
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "maxinclusive"
@@ -65,8 +43,19 @@ def test_valueConstraintType_maxinclusive_parse():
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
+
 def test_valueConstraintType_minmaxinclusive_parse_also_floats():
     """Value of valueConstraint greater than, or equal to, given float."""
+    # minInclusive
+    sc = TAPStatementTemplate()
+    sc.propertyID = "dcterms:date"
+    sc.valueConstraintType = "mininclusive"
+    sc.valueConstraint = "4.123"
+    sc._valueConstraintType_minmaxinclusive_parse()
+    assert sc.valueConstraint == 4.123
+    assert not sc.state_warns.get("valueConstraint")
+
+    # maxInclusive
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "maxinclusive"
@@ -77,6 +66,18 @@ def test_valueConstraintType_minmaxinclusive_parse_also_floats():
 
 def test_valueConstraintType_minmaxinclusive_parse_also_floats_not():
     """Value of valueConstraint does not coerce to a float."""
+    # minInclusive
+    sc = TAPStatementTemplate()
+    sc.propertyID = "dcterms:date"
+    sc.valueConstraintType = "mininclusive"
+    sc.valueConstraint = "tom@tombaker.org"
+    sc._valueConstraintType_minmaxinclusive_parse()
+    assert sc.valueConstraint == "tom@tombaker.org"
+    sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
+    assert sc.state_warns.get("valueConstraint")
+    assert "tom@" in sc.state_warns.get("valueConstraint")
+
+    # maxInclusive
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "maxinclusive"
@@ -86,9 +87,3 @@ def test_valueConstraintType_minmaxinclusive_parse_also_floats_not():
     sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
     assert sc.state_warns.get("valueConstraint")
     assert "tom@" in sc.state_warns.get("valueConstraint")
-
-# def test_exit_with_ConfigError_if_configfile_specified_but_not_found(tmp_path):
-#     """Exit with ConfigError if config file specified as argument is not found."""
-#     os.chdir(tmp_path)
-#     with pytest.raises(ConfigError):
-#         get_config(configfile_name="dctap.yaml")

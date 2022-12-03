@@ -141,11 +141,7 @@ class TAPStatementTemplate:
     def _valueConstraintType_minmaxlength_warn_if_not_integer(self):
         """Warns if valueConstraint minLength not a nonnegative integer."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        if  (
-                self.valueConstraintType == "minlength"
-            ) or (
-                self.valueConstraintType == "maxlength"
-            ):
+        if  self.valueConstraintType in ('minlength', 'maxlength'):
             try:
                 int(self.valueConstraint)
             except (ValueError, TypeError):

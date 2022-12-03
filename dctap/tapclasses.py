@@ -37,13 +37,10 @@ class TAPStatementTemplate:
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse(settings)
-        self._valueConstraintType_minlength_parse()
-        self._valueConstraintType_maxlength_parse()
+        self._valueConstraintType_minmaxlength_parse()
         self._valueConstraintType_minmaxlength_warn_if_not_integer()
-        self._valueConstraintType_mininclusive_parse()
-        self._valueConstraintType_maxinclusive_parse()
+        self._valueConstraintType_minmaxinclusive_parse()
         self._valueConstraintType_mininclusive_warn_if_value_not_numeric()
-        self._valueConstraintType_maxinclusive_warn_if_value_not_numeric()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
@@ -119,21 +116,11 @@ class TAPStatementTemplate:
                     )
         return self
 
-    ######################
-    def _valueConstraintType_minlength_parse(self):
+    def _valueConstraintType_minmaxlength_parse(self):
         """valueConstraintType minLength: coerce integer (or return string)."""
         self.valueConstraintType = self.valueConstraintType.lower()
         value_constraint = self.valueConstraint
-        if self.valueConstraintType == "minlength":
-            if value_constraint:
-                self.valueConstraint = coerce_integer(value_constraint)
-        return self
-
-    def _valueConstraintType_maxlength_parse(self):
-        """valueConstraintType maxLength: coerce integer (or return string)."""
-        self.valueConstraintType = self.valueConstraintType.lower()
-        value_constraint = self.valueConstraint
-        if self.valueConstraintType == "maxlength":
+        if self.valueConstraintType in ('minlength', 'maxlength'):
             if value_constraint:
                 self.valueConstraint = coerce_integer(value_constraint)
         return self
@@ -141,7 +128,7 @@ class TAPStatementTemplate:
     def _valueConstraintType_minmaxlength_warn_if_not_integer(self):
         """Warns if valueConstraint minLength not a nonnegative integer."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        if  self.valueConstraintType in ('minlength', 'maxlength'):
+        if self.valueConstraintType in ('minlength', 'maxlength'):
             try:
                 int(self.valueConstraint)
             except (ValueError, TypeError):
@@ -153,47 +140,22 @@ class TAPStatementTemplate:
 
     ####################################
 
-    def _valueConstraintType_mininclusive_parse(self):
+    def _valueConstraintType_minmaxinclusive_parse(self):
         """
-        If valueConstraintType is minInclusive
-        value of valueConstraint should be numeric (int or float)
+        valueConstraintType minInclusive / maxInclusive
+        - value of valueConstraint should be numeric (int or float)
         """
         self.valueConstraintType = self.valueConstraintType.lower()
         value_constraint = self.valueConstraint
-        if self.valueConstraintType == "mininclusive":
+        if self.valueConstraintType in ("mininclusive", "maxinclusive"):
             if value_constraint:
                 self.valueConstraint = coerce_numeric(value_constraint)
         return self
 
-    def _valueConstraintType_maxinclusive_parse(self):
-        """
-        If valueConstraintType is maxInclusive
-        value of valueConstraint should be numeric (int or float)
-        """
-        self.valueConstraintType = self.valueConstraintType.lower()
-        value_constraint = self.valueConstraint
-        if self.valueConstraintType == "maxinclusive":
-            if value_constraint:
-                self.valueConstraint = coerce_numeric(value_constraint)
-        return self
-
-    def _valueConstraintType_mininclusive_warn_if_value_not_numeric(self):
+    def _valueConstraintType_minmaxinclusive_warn_if_value_not_numeric(self):
         """Warns if valueConstraint for minInclusive not coercable to float."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        if self.valueConstraintType == "mininclusive":
-            try:
-                float(self.valueConstraint)
-            except (ValueError, TypeError):
-                self.state_warns["valueConstraint"] = (
-                        f"Value constraint type is {repr(self.valueConstraintType)}, "
-                        f"but {repr(self.valueConstraint)} is not numeric."
-                    )
-        return self
-
-    def _valueConstraintType_maxinclusive_warn_if_value_not_numeric(self):
-        """Warns if valueConstraint for maxInclusive not coercable to float()."""
-        self.valueConstraintType = self.valueConstraintType.lower()
-        if self.valueConstraintType == "maxinclusive":
+        if self.valueConstraintType in ("mininclusive", "maxinclusive"):
             try:
                 float(self.valueConstraint)
             except (ValueError, TypeError):

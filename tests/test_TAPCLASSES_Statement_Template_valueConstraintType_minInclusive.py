@@ -1,7 +1,6 @@
 """
 Tests for 
-- TAPStatementTemplate._valueConstraintType_mininclusive_parse
-- TAPStatementTemplate._valueConstraintType_maxinclusive_parse
+- TAPStatementTemplate._valueConstraintType_minmaxinclusive_parse
 - Called by sc.normalize()
 
 2022-09-21 definition: "A number to define lower and upper bounds of a numeric
@@ -24,10 +23,10 @@ def test_valueConstraintType_mininclusive_parse():
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "mininclusive"
     sc.valueConstraint = "4.0"
-    sc._valueConstraintType_mininclusive_parse()
+    sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == 4.0
     assert str(sc.valueConstraint) != str(4)
-    sc._valueConstraintType_mininclusive_warn_if_value_not_numeric()
+    sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
@@ -37,7 +36,7 @@ def test_valueConstraintType_mininclusive_parse_also_floats():
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "mininclusive"
     sc.valueConstraint = "4.123"
-    sc._valueConstraintType_mininclusive_parse()
+    sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == 4.123
     assert not sc.state_warns.get("valueConstraint")
 
@@ -47,9 +46,9 @@ def test_valueConstraintType_mininclusive_parse_also_floats_not():
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "mininclusive"
     sc.valueConstraint = "tom@tombaker.org"
-    sc._valueConstraintType_mininclusive_parse()
+    sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == "tom@tombaker.org"
-    sc._valueConstraintType_mininclusive_warn_if_value_not_numeric()
+    sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
     assert sc.state_warns.get("valueConstraint")
     assert "tom@" in sc.state_warns.get("valueConstraint")
 
@@ -59,32 +58,32 @@ def test_valueConstraintType_maxinclusive_parse():
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "maxinclusive"
     sc.valueConstraint = "4.0"
-    sc._valueConstraintType_maxinclusive_parse()
+    sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == 4.0
     assert str(sc.valueConstraint) != str(4)
-    sc._valueConstraintType_maxinclusive_warn_if_value_not_numeric()
+    sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
-def test_valueConstraintType_maxinclusive_parse_also_floats():
+def test_valueConstraintType_minmaxinclusive_parse_also_floats():
     """Value of valueConstraint greater than, or equal to, given float."""
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "maxinclusive"
     sc.valueConstraint = "4.123"
-    sc._valueConstraintType_maxinclusive_parse()
+    sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == 4.123
     assert not sc.state_warns.get("valueConstraint")
 
-def test_valueConstraintType_maxinclusive_parse_also_floats_not():
+def test_valueConstraintType_minmaxinclusive_parse_also_floats_not():
     """Value of valueConstraint does not coerce to a float."""
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:date"
     sc.valueConstraintType = "maxinclusive"
     sc.valueConstraint = "tom@tombaker.org"
-    sc._valueConstraintType_maxinclusive_parse()
+    sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == "tom@tombaker.org"
-    sc._valueConstraintType_maxinclusive_warn_if_value_not_numeric()
+    sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
     assert sc.state_warns.get("valueConstraint")
     assert "tom@" in sc.state_warns.get("valueConstraint")
 

@@ -38,6 +38,7 @@ class TAPStatementTemplate:
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse(settings)
         self._valueConstraintType_mininclusive_parse()
+        self._valueConstraintType_maxinclusive_parse()
         self._valueConstraintType_mininclusive_warn_if_value_not_numeric()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
@@ -116,8 +117,8 @@ class TAPStatementTemplate:
 
     def _valueConstraintType_mininclusive_parse(self):
         """
-        If valueConstraintType is minInclusive: 
-        - value of valueConstraint should be numeric (int or float)
+        If valueConstraintType is minInclusive
+        value of valueConstraint should be numeric (int or float)
         """
         self.valueConstraintType = self.valueConstraintType.lower()
         value_constraint = self.valueConstraint
@@ -126,13 +127,35 @@ class TAPStatementTemplate:
                 self.valueConstraint = coerce_numeric(value_constraint)
         return self
 
-    def _valueConstraintType_mininclusive_warn_if_value_not_numeric(self):
+    def _valueConstraintType_maxinclusive_parse(self):
         """
-        If valueConstraintType minInclusive
-        - valueConstraint must be coercable to float()
+        If valueConstraintType is maxInclusive
+        value of valueConstraint should be numeric (int or float)
         """
         self.valueConstraintType = self.valueConstraintType.lower()
+        value_constraint = self.valueConstraint
+        if self.valueConstraintType == "maxinclusive":
+            if value_constraint:
+                self.valueConstraint = coerce_numeric(value_constraint)
+        return self
+
+    def _valueConstraintType_mininclusive_warn_if_value_not_numeric(self):
+        """Warns if valueConstraint not coercable to float()."""
+        self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "mininclusive":
+            try:
+                float(self.valueConstraint)
+            except ValueError:
+                self.state_warns["valueConstraint"] = (
+                        f"Value constraint type is {repr(self.valueConstraintType)}, "
+                        f"but {repr(self.valueConstraint)} is not numeric."
+                    )
+        return self
+
+    def _valueConstraintType_maxinclusive_warn_if_value_not_numeric(self):
+        """Warns if valueConstraint not coercable to float()."""
+        self.valueConstraintType = self.valueConstraintType.lower()
+        if self.valueConstraintType == "maxinclusive":
             try:
                 float(self.valueConstraint)
             except ValueError:

@@ -15,5 +15,3 @@ dctap
    config/index
    design/index
    glossary/index
-   edgecases/index
-

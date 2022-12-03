@@ -12,5 +12,7 @@ The **valueConstraintType** element is intended to serve as an extension point f
    ../Pattern/index
    ../IRIStem/index
    ../LanguageTag/index
+   ../MinInclusive_MaxInclusive/index
+   ../MinLength_MaxLength/index
 
-In contrast to the :ref:`elem_valueDataType`, which mark the datatype of literals in a form carried by :term:`Instance Data`, the value constraint type is intended to be used to trigger specific algorithms for transforming the values of a CSV cells, which are by definition only ever strings, into lists, regular expressions, or other data structures of the type used in programming.
+Recall that the element :ref:`elem_valueDataType` is used for general datatypes of literal values, such as "string" and "date". The element :ref:`elem_valueConstraintType` is used for more specific or rarely used types of value. While every imaginable value constraint type could, in principle, have its own column in a tabular application profile, the resulting tables would be overly wide and this specification would be more longer and difficult to use. Pairing value constraint types with value constraints in just two columns helps keep tabular profiles more compact and concise.

@@ -1,0 +1,6 @@
+shapeID,propertyID,valueConstraint,valueConstraintType
+:ex1,:status,approved_*,Pattern
+:ex2,:status,,Pattern
+:ex3,:status,approved_(*,Pattern
+:ex4,:status,/approved_*/,Pattern
+:ex5,:status,^2020 August,Pattern

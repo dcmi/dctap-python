@@ -1,0 +1,5 @@
+propertyID,valueConstraint,valueConstraintType
+:identifier,3,MinLength
+:identifier,3.1,MinLength
+:identifier,-10,MaxLength
+:identifier,info@example.org,MaxLength

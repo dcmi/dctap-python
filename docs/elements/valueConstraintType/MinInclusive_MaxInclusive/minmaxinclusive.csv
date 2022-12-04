@@ -1,0 +1,6 @@
+propertyID,valueConstraint,valueConstraintType
+:temperature,9,MinInclusive
+:temperature,-9,MinInclusive
+:temperature,12.2,MaxInclusive
+:temperature,-2,MaxInclusive
+:temperature,info@example.org,MaxInclusive

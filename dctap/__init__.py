@@ -1,4 +1,4 @@
-"""Validate and debug DCTAP instances."""
+"""Normalize and debug DCTAP instances."""
 
 from .tapclasses import TAPShape, TAPStatementTemplate
 from .csvreader import csvreader

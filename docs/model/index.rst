@@ -20,5 +20,6 @@ The DCTAP Model consists of twelve "elements" related to Shapes and Statement Te
 Because the DCTAP Model was designed for compatibility with RDF and Linked Data, property constraints, shapes, literal datatypes and some value constraints are represented in a DCTAP Instance with :term:`IRI`\s (or :term:`Compact IRI`\s).
 
 .. toctree::
+   :hidden:
 
    minimum_profile/index

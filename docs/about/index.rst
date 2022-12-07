@@ -1,21 +1,14 @@
 .. _about:
 
-About the project
------------------
+About dctap
+-----------
 
-This project consists of:
+**dctap** is a Python package for parsing and normalizing CSV files formatted according to the `DC Tabular Application Profiles (DCTAP) model <https://github.com/dcmi/dctap/blob/main/TAPprimer.md>`_. It provides a command-line tool for viewing the normalized contents of a DCTAP/CSV file in a verbose indented-TXT format, in YAML, or in JSON. The tool performs basic consistency checks and emits warnings as an aid to debugging a CSV.
 
-- A Python module for parsing, normalizing, and converting CSV files formatted according to the `DC Application Profiles (DCTAP) model <https://github.com/dcmi/dctap/blob/main/TAPprimer.md>`_.
+for use in application pipelines.
 
-- A command-line utility usable 
 
-  - for viewing the normalized contents of a DCTAP/CSV file on screen as an aid in debugging, and 
-
-  - for generating machine-processable output in JSON and YAML for use in application pipelines.
-
-This documentation describes the :ref:`model` and its :term:`DCTAP Element`\s (a set of labels used as spreadsheet headers). 
-
-The module performs a few simple consistency checks and emits warnings as an aid in debugging. (These are described in the documentation below.) These checks focus on verifying those parts of a CSV that fit the DCTAP model. Any parts of a CSV that are not covered by the DCTAP model, such as extra columns (aka "elements"), are simply passed through to the text, JSON, or YAML output. 
+These checks focus on verifying those parts of a CSV that fit the DCTAP model. Any parts of a CSV that are not covered by the DCTAP model, such as extra columns (aka "elements"), are simply passed through to the text, JSON, or YAML output. 
 
 The module passes input through to output unchanged, possibly with added warnings, with the following exceptions:
 

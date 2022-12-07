@@ -1,2 +1,2 @@
-Shape ID,PropertyID,Mand,Rep
+SID,PropertyID,Mand,Rep
 :book,dc:creator,1,0

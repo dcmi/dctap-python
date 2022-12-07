@@ -1,7 +1,7 @@
 .. _cli_subcommands_read:
 
-Read and parse CSV to text, JSON, or YAML
-.........................................
+View CSV as TXT, JSON, or YAML
+..............................
 
 The subcommand **dctap read**:
 
@@ -9,8 +9,8 @@ The subcommand **dctap read**:
 - sends output to stdout as text (for on-screen debugging), JSON, or YAML
 - if requested, sends warnings to stderr.
 
-View CSV contents as text
-:::::::::::::::::::::::::
+View as text
+::::::::::::
 
 When used without options, **dctap read** outputs a lightly normalized view of the DCTAP elements in a CSV to stdout. Note that the CSV can be specified as a filename argument or sent to the command via stdin. The commands **dctap read example.csv** and **cat example.csv | dctap read -** (note the dash) get the same result:
 
@@ -24,8 +24,8 @@ When used without options, **dctap read** outputs a lightly normalized view of t
                 propertyID           dcterms:creator
                 valueNodeType        iri
 
-View warnings
-:::::::::::::
+View warnings generated
+:::::::::::::::::::::::
 
 As an aid for debugging, the `dctap read` subcommand performs various consistency checks on the CSV input and generates warnings for any anomalies or possible errors found. Explanations of these consistency checks can be found in the descriptions of individual :term:`DCTAP Element`\s; see section :ref:`elements`. The option **--warnings** causes the results of these checks to be sent to stderr. This ensures that the warnings are kept out of the stdout streams of text, JSON, or YAML output and can thus be passed as input to other commands in a pipeline.
 
@@ -66,7 +66,7 @@ The option **--configfile** triggers use of a configuration file other than the 
     $ dctap read --configfile /home/tbaker/dctap.yaml example.csv
 
 
-Generate JSON or YAML output
-::::::::::::::::::::::::::::
+Generate JSON or YAML
+:::::::::::::::::::::
 
 The options **--json** and **--yaml** (which cannot be used in combination) send JSON or YAML representations of the lightly normalized DCTAP elements in a CSV to stdout. These options can be used in combination with **--warnings**, which are sent to stderr.

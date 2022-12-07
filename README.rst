@@ -71,10 +71,10 @@ Cloning the "dctap-python" repository to your machine and installing it from the
 
     $ git clone https://github.com/dcmi/dctap-python.git
     $ cd dctap-python
-    dctap-python$ python -m venv .venv
-    dctap-python$ source .venv/bin/activate
-    dctap-python$ python3 -m pip install flit Pygments
-    dctap-python$ flit install -s
+    $ python -m venv .venv
+    $ source .venv/bin/activate
+    $ python3 -m pip install flit Pygments
+    $ flit install -s
 
 Quick start
 -----------

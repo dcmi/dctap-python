@@ -4,7 +4,7 @@ Element Name Aliases
 ....................
 
 
-By default, some shortened names can be used to minimize the horizontal length of CSV rows. Alternatively, users might want to create aliases for headers in other languages. Note that for aliases, case, dashes, and underscores will be ignored, but the canonical element names to which they map must exactly match those presented in the section :ref:`elements`. Aliases will be expanded to the canonical element names in text, JSON, and YAML output. For example, if the configuration file specifies::
+By default, some shortened names can be used to minimize the horizontal length of CSV rows. Alternatively, users might want to create aliases for headers in other languages. Note that for aliases, case, dashes, and underscores will be ignored, but the canonical element names to which they map must exactly match those presented in the section :ref:`elements`. Aliases will be expanded to the canonical element names in text, JSON, and YAML output. For example, if the configuration file specifies.
 
 The column headers of a CSV can be customized as follows by defining aliases::
 

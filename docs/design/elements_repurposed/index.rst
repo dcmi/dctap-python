@@ -1,7 +1,7 @@
 .. _elements_repurposed:
 
-Elements are either for shapes or statement templates, not both.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Elements belong either to shapes or to statement templates, not both.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A given element is defined either as an element of a shape or an element of a statement template. At one's own risk, one can configure a statement constraint element as an "extra shape element" (or vice versa), for example with::
 

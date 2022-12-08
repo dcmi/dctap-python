@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
+## [0.3.7] - 2022-12-08
+- Improved documentation.
+
 ## [0.3.6] - 2022-12-04
 - Added support and documentation for value constraint types MinLength and MinInclusive.
 

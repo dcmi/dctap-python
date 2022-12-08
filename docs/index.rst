@@ -20,5 +20,5 @@ An Application Profile is also commonly used as a basis for data validation. Whi
    elements/index.rst
    config/index.rst
    design/index.rst
-   glossary/index.rst
    cli/index.rst
+   glossary/index.rst

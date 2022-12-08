@@ -1,7 +1,7 @@
 .. _model_glossary:
 
-Glossary
---------
+DCTAP Glossary
+--------------
 
 .. glossary::
 

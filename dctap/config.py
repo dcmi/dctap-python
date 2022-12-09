@@ -46,16 +46,9 @@ def get_stems(stem_class=TAPStatementTemplate, settings=None):
 def write_configfile(
     configfile_name=DEFAULT_CONFIGFILE_NAME,
     config_yamldoc=DEFAULT_CONFIG_YAML,
-    terse=False,
 ):
     """Write initial config file or exit trying."""
-    if terse:
-        config_yamldoc = "\n".join(  # remove lines starting with more than one '#'
-            [ln for ln in config_yamldoc.splitlines() if not re.match("^##", ln)]
-        )
-        config_yamldoc = "\n".join(  # remove lines that consist only of whitespace
-            [ln.rstrip() for ln in config_yamldoc.splitlines() if ln.rstrip()]
-        )
+
     if Path(configfile_name).exists():
         raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")
     try:

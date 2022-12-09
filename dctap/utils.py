@@ -4,6 +4,7 @@ import re
 from urllib.parse import urlparse
 from .exceptions import ConfigError
 
+
 def coerce_integer(value_constraint=None):
     """Coerces string to integer or returns string untouched."""
     try:

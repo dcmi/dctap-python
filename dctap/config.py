@@ -48,7 +48,7 @@ def write_configfile(
     config_yamldoc=DEFAULT_CONFIG_YAML,
     terse=False,
 ):
-    """Write initial config file, by default to CWD, or exit if already exists."""
+    """Write initial config file or exit trying."""
     if terse:
         config_yamldoc = "\n".join(  # remove lines starting with more than one '#'
             [ln for ln in config_yamldoc.splitlines() if not re.match("^##", ln)]

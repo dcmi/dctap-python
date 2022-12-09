@@ -44,10 +44,7 @@ def cli(context):
 
 @cli.command()
 @click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
-@click.option("--config",
-    type=click.Path(exists=True),
-    help="Path to alternative config file.",
-)
+@click.option("--config", type=click.Path(exists=True), help="Alternative config file")
 @click.option("--expand-prefixes", is_flag=True, help="Expand compact IRIs")
 @click.option("--warnings", is_flag=True, help="Print warnings to stderr")
 @click.option("--json", is_flag=True, help="Print JSON to stdout")

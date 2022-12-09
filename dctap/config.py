@@ -30,9 +30,9 @@ def get_shems(shape_class=TAPShape, settings=None):
     return (only_shape_elements, extra_shape_elements)
 
 
-def get_stems(statement_template_class=TAPStatementTemplate, settings=None):
+def get_stems(stem_class=TAPStatementTemplate, settings=None):
     """List DCTAP elements supported by statement template class."""
-    only_st_elements = list(asdict(statement_template_class()))
+    only_st_elements = list(asdict(stem_class()))
     only_st_elements.remove("state_warns")
     only_st_elements.remove("state_extras")
     extra_st_elements = []
@@ -50,10 +50,10 @@ def write_configfile(
 ):
     """Write initial config file, by default to CWD, or exit if already exists."""
     if terse:
-        config_yamldoc = '\n'.join( # remove lines starting with more than one '#'
+        config_yamldoc = "\n".join(  # remove lines starting with more than one '#'
             [ln for ln in config_yamldoc.splitlines() if not re.match("^##", ln)]
         )
-        config_yamldoc = '\n'.join( # remove lines that consist only of whitespace
+        config_yamldoc = "\n".join(  # remove lines that consist only of whitespace
             [ln.rstrip() for ln in config_yamldoc.splitlines() if ln.rstrip()]
         )
     if Path(configfile_name).exists():
@@ -73,7 +73,7 @@ def get_config(
     configfile_name=None,
     config_yamldoc=DEFAULT_CONFIG_YAML,
     shape_class=TAPShape,
-    statement_template_class=TAPStatementTemplate,
+    stem_class=TAPStatementTemplate,
 ):
     """
     Get built-in settings then override from config file (if found).
@@ -83,7 +83,7 @@ def get_config(
     def load2dict(configfile=None):
         """Parse contents of YAML configfile and return dictionary."""
         bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
-        config_yaml = Path(configfile).read_text(encoding='UTF-8')
+        config_yaml = Path(configfile).read_text(encoding="UTF-8")
         try:
             config_read_from_file = yaml.safe_load(config_yaml)
         except (yaml.YAMLError, yaml.scanner.ScannerError) as error:
@@ -95,9 +95,7 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shems(shape_class)[0]
-    elements_dict["statement_template_elements"] = get_stems(
-        statement_template_class
-    )[0]
+    elements_dict["statement_template_elements"] = get_stems(stem_class)[0]
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_template_elements"]
     )
@@ -136,10 +134,12 @@ def get_config(
 
     # But extra element aliases, if declared, are added to element aliases.
     if config_dict_from_file.get("extra_element_aliases"):
-        config_dict["element_aliases"] = dict(
-            config_dict["element_aliases"],
-            *config_dict_from_file["extra_element_aliases"]
-        )
+        try:
+            config_dict["element_aliases"].update(
+                config_dict_from_file.get("extra_element_aliases")
+            )
+        except TypeError:
+            pass
 
     return config_dict
 

@@ -17,6 +17,52 @@ def csvreader(open_csvfile_obj, config_dict):
     return (tapshapes, tapwarns)
 
 
+def _get_rows(open_csvfile_obj, config_dict):
+    """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
+    # pylint: disable=too-many-locals
+
+    csvfile_contents_str = open_csvfile_obj.read()
+    tmp_buffer = StringBuffer(csvfile_contents_str)
+    csvlines_stripped = [line.strip() for line in tmp_buffer]
+    # breakpoint(context=5)
+    raw_header_line_list = csvlines_stripped[0].split(",")
+    new_header_line_list = []
+
+    recognized_elements = config_dict.get("csv_elements")
+    xtra_shems = config_dict.get("extra_shape_elements")
+    xtra_stems = config_dict.get("extra_statement_template_elements")
+    if xtra_shems:
+        recognized_elements.extend(xtra_shems)
+        for element in xtra_shems:
+            config_dict["element_aliases"][element.lower()] = element
+    if xtra_stems:
+        recognized_elements.extend(xtra_stems)
+        for element in xtra_stems:
+            config_dict["element_aliases"][element.lower()] = element
+    recognized_elements = [elem.lower() for elem in recognized_elements]
+
+    for column in raw_header_line_list:
+        column = _lowercase_despace_depunctuate(column)
+        column = _normalize_element_name(column, config_dict.get("element_aliases"))
+        new_header_line_list.append(column)
+    csv_warns = defaultdict(dict)
+
+    for column in new_header_line_list:
+        if column.lower() not in recognized_elements:
+            warn = f"Non-DCTAP element {repr(column)} not configured as extra element."
+            csv_warns["csv"] = {}
+            csv_warns["csv"]["column"] = []
+            csv_warns["csv"]["column"].append(warn)
+    new_header_line_str = ",".join(new_header_line_list)
+    csvlines_stripped[0] = new_header_line_str
+    if "propertyID" not in csvlines_stripped[0]:
+        raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
+    tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
+    csv_rows = list(DictReader(tmp_buffer2))
+    csv_warns = dict(csv_warns)
+    return (csv_rows, csv_warns)
+
+
 def _get_tapshapes(rows, config_dict):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
@@ -143,7 +189,12 @@ def _lowercase_despace_depunctuate(some_str=None):
 
 
 def _normalize_element_name(some_str, element_aliases_dict=None):
-    """Normalize a given element string, if recognized; if not, leave unchanged)."""
+    """
+    Given an element name (string),
+    If name is recognized
+    If not, leave unchanged.
+    """
+
     some_str = _lowercase_despace_depunctuate(some_str)
     if element_aliases_dict:
         for key in element_aliases_dict.keys():
@@ -173,47 +224,3 @@ def _simplify(shapes_dict):
         for empty_element in [key for key in shape if not shape[key]]:
             del shape[empty_element]
     return shapes_dict
-
-
-def _get_rows(open_csvfile_obj, config_dict):
-    """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
-    # pylint: disable=too-many-locals
-    csvfile_contents_str = open_csvfile_obj.read()
-    tmp_buffer = StringBuffer(csvfile_contents_str)
-    csvlines_stripped = [line.strip() for line in tmp_buffer]
-    raw_header_line_list = csvlines_stripped[0].split(",")
-    new_header_line_list = []
-
-    recognized_elements = config_dict.get("csv_elements")
-    xtra_shems = config_dict.get("extra_shape_elements")
-    xtra_stems = config_dict.get("extra_statement_template_elements")
-    if xtra_shems:
-        recognized_elements.extend(xtra_shems)
-        for element in xtra_shems:
-            config_dict["element_aliases"][element.lower()] = element
-    if xtra_stems:
-        recognized_elements.extend(xtra_stems)
-        for element in xtra_stems:
-            config_dict["element_aliases"][element.lower()] = element
-    recognized_elements = [elem.lower() for elem in recognized_elements]
-
-    for column in raw_header_line_list:
-        column = _lowercase_despace_depunctuate(column)
-        column = _normalize_element_name(column, config_dict.get("element_aliases"))
-        new_header_line_list.append(column)
-    csv_warns = defaultdict(dict)
-
-    for column in new_header_line_list:
-        if column.lower() not in recognized_elements:
-            warn = f"Non-DCTAP element {repr(column)} not configured as extra element."
-            csv_warns["csv"] = {}
-            csv_warns["csv"]["column"] = []
-            csv_warns["csv"]["column"].append(warn)
-    new_header_line_str = ",".join(new_header_line_list)
-    csvlines_stripped[0] = new_header_line_str
-    if "propertyID" not in csvlines_stripped[0]:
-        raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
-    tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
-    csv_rows = list(DictReader(tmp_buffer2))
-    csv_warns = dict(csv_warns)
-    return (csv_rows, csv_warns)

@@ -2,7 +2,6 @@
 
 import sys
 import json as j
-from dataclasses import asdict
 from ruamel.yaml import YAML
 import click
 from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
@@ -10,7 +9,6 @@ from .config import get_config, write_configfile
 from .inspect import pprint_tapshapes, print_warnings
 from .csvreader import csvreader
 from .loggers import stderr_logger
-from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter

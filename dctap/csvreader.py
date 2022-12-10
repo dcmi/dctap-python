@@ -7,6 +7,7 @@ from dataclasses import asdict
 from dctap.config import get_shems, get_stems
 from dctap.exceptions import DctapError
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
+from dctap.utils import coerce_concise
 
 
 def csvreader(open_csvfile_obj, config_dict):
@@ -41,8 +42,9 @@ def _get_rows(open_csvfile_obj, config_dict):
             config_dict["element_aliases"][element.lower()] = element
     recognized_elements = [elem.lower() for elem in recognized_elements]
 
+    # breakpoint(context=5)
     for column in raw_header_line_list:
-        column = _lowercase_despace_depunctuate(column)
+        column = coerce_concise(column)
         column = _normalize_element_name(column, config_dict.get("element_aliases"))
         new_header_line_list.append(column)
     csv_warns = defaultdict(dict)
@@ -171,23 +173,6 @@ def _mkshape(row_dict=None, config_dict=None):
     return tapshape_obj
 
 
-def _lowercase_despace_depunctuate(some_str=None):
-    """
-    For given string:
-    - delete spaces, underscores, dashes, commas
-    - lowercase
-    - delete surrounding single and double quotes
-    """
-    some_str = some_str.replace(" ", "")
-    some_str = some_str.replace("_", "")
-    some_str = some_str.replace("-", "")
-    some_str = some_str.replace(",", "")
-    some_str = some_str.lower()
-    some_str = some_str.strip('"')
-    some_str = some_str.strip("'")
-    return some_str
-
-
 def _normalize_element_name(some_str, element_aliases_dict=None):
     """
     Given an element name (string),
@@ -195,7 +180,7 @@ def _normalize_element_name(some_str, element_aliases_dict=None):
     If not, leave unchanged.
     """
 
-    some_str = _lowercase_despace_depunctuate(some_str)
+    some_str = coerce_concise(some_str)
     if element_aliases_dict:
         for key in element_aliases_dict.keys():
             if key == some_str:

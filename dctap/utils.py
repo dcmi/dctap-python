@@ -5,6 +5,23 @@ from urllib.parse import urlparse
 from .exceptions import ConfigError
 
 
+def coerce_concise(some_str=None):
+    """
+    For given string:
+    - delete spaces, underscores, dashes, commas
+    - lowercase
+    - delete surrounding single and double quotes
+    """
+    some_str = some_str.replace(" ", "")
+    some_str = some_str.replace("_", "")
+    some_str = some_str.replace("-", "")
+    some_str = some_str.replace(",", "")
+    some_str = some_str.lower()
+    some_str = some_str.strip('"')
+    some_str = some_str.strip("'")
+    return some_str
+
+
 def coerce_integer(value_constraint=None):
     """Coerces string to integer or returns string untouched."""
     try:

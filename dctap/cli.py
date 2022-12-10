@@ -41,6 +41,19 @@ def cli(context):
 
 
 @cli.command()
+@click.option("--hidden", default=False, help="Write as dot file [.dctaprc]")
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def init(context, hidden):
+    """Write config file [dctap.yaml]"""
+    if hidden:
+        configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
+    else:
+        configfile = DEFAULT_CONFIGFILE_NAME
+    write_configfile(configfile)
+
+
+@cli.command()
 @click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
 @click.option("--config", type=click.Path(exists=True), help="Alternative config file")
 @click.option("--expand-prefixes", is_flag=True, help="Expand compact IRIs")
@@ -83,16 +96,3 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
             print(line, file=sys.stdout)
         if warnings:
             print_warnings(warnings_dict)
-
-
-@cli.command()
-@click.option("--hidden", default=False, help="Write as dot file [.dctaprc]")
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def init(context, hidden):
-    """Write config file [dctap.yaml]"""
-    if hidden:
-        configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
-    else:
-        configfile = DEFAULT_CONFIGFILE_NAME
-    write_configfile(configfile)

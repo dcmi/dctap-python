@@ -1,6 +1,5 @@
 """Default settings."""
 
-import re
 import sys
 from dataclasses import asdict
 from pathlib import Path
@@ -14,66 +13,14 @@ from .defaults import (
 )
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementTemplate
-
-
-def get_shems(shape_class=TAPShape, settings=None):
-    """List DCTAP elements supported by given shape class."""
-    only_shape_elements = list(asdict(shape_class()))
-    only_shape_elements.remove("state_list")
-    only_shape_elements.remove("shape_warns")
-    only_shape_elements.remove("shape_extras")
-    extra_shape_elements = []
-    if settings:
-        if settings.get("extra_shape_elements"):
-            for extra_element in settings.get("extra_shape_elements"):
-                extra_shape_elements.append(extra_element)
-    return (only_shape_elements, extra_shape_elements)
-
-
-def get_stems(statement_template_class=TAPStatementTemplate, settings=None):
-    """List DCTAP elements supported by statement template class."""
-    only_st_elements = list(asdict(statement_template_class()))
-    only_st_elements.remove("state_warns")
-    only_st_elements.remove("state_extras")
-    extra_st_elements = []
-    if settings:
-        if settings.get("extra_statement_template_elements"):
-            for extra_element in settings.get("extra_statement_template_elements"):
-                extra_st_elements.append(extra_element)
-    return (only_st_elements, extra_st_elements)
-
-
-def write_configfile(
-    configfile_name=DEFAULT_CONFIGFILE_NAME,
-    config_yamldoc=DEFAULT_CONFIG_YAML,
-    terse=False,
-):
-    """Write initial config file, by default to CWD, or exit if already exists."""
-    if terse:
-        config_yamldoc = '\n'.join( # remove lines starting with more than one '#'
-            [ln for ln in config_yamldoc.splitlines() if not re.match("^##", ln)]
-        )
-        config_yamldoc = '\n'.join( # remove lines that consist only of whitespace
-            [ln.rstrip() for ln in config_yamldoc.splitlines() if ln.rstrip()]
-        )
-    if Path(configfile_name).exists():
-        raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")
-    try:
-        with open(configfile_name, "w", encoding="utf-8") as outfile:
-            outfile.write(config_yamldoc)
-            print(
-                f"Built-in settings written to {str(configfile_name)} for editing.",
-                file=sys.stderr,
-            )
-    except FileNotFoundError as error:
-        raise ConfigError(f"{repr(configfile_name)} not writeable.") from error
+from .utils import coerce_concise
 
 
 def get_config(
     configfile_name=None,
     config_yamldoc=DEFAULT_CONFIG_YAML,
     shape_class=TAPShape,
-    statement_template_class=TAPStatementTemplate,
+    stem_class=TAPStatementTemplate,
 ):
     """
     Get built-in settings then override from config file (if found).
@@ -82,8 +29,9 @@ def get_config(
 
     def load2dict(configfile=None):
         """Parse contents of YAML configfile and return dictionary."""
+
         bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
-        config_yaml = Path(configfile).read_text(encoding='UTF-8')
+        config_yaml = Path(configfile).read_text(encoding="UTF-8")
         try:
             config_read_from_file = yaml.safe_load(config_yaml)
         except (yaml.YAMLError, yaml.scanner.ScannerError) as error:
@@ -95,9 +43,7 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shems(shape_class)[0]
-    elements_dict["statement_template_elements"] = get_stems(
-        statement_template_class
-    )[0]
+    elements_dict["statement_template_elements"] = get_stems(stem_class)[0]
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_template_elements"]
     )
@@ -135,19 +81,68 @@ def get_config(
     config_dict.update(config_dict_from_file)
 
     # But extra element aliases, if declared, are added to element aliases.
-    if config_dict_from_file.get("extra_element_aliases"):
-        config_dict["element_aliases"] = dict(
-            config_dict["element_aliases"],
-            *config_dict_from_file["extra_element_aliases"]
-        )
+    extras = config_dict.get("extra_element_aliases")
+    if extras:
+        try:
+            extras = {coerce_concise(str(k).lower()):v for (k, v) in extras.items()}
+        except AttributeError:
+            extras = {}
+        config_dict["element_aliases"].update(extras)
 
     return config_dict
 
 
+def get_shems(shape_class=TAPShape, settings=None):
+    """List DCTAP elements supported by given shape class."""
+    only_shape_elements = list(asdict(shape_class()))
+    only_shape_elements.remove("state_list")
+    only_shape_elements.remove("shape_warns")
+    only_shape_elements.remove("shape_extras")
+    extra_shape_elements = []
+    if settings:
+        if settings.get("extra_shape_elements"):
+            for extra_element in settings.get("extra_shape_elements"):
+                extra_shape_elements.append(extra_element)
+    return (only_shape_elements, extra_shape_elements)
+
+
+def get_stems(stem_class=TAPStatementTemplate, settings=None):
+    """List DCTAP elements supported by statement template class."""
+    only_st_elements = list(asdict(stem_class()))
+    only_st_elements.remove("state_warns")
+    only_st_elements.remove("state_extras")
+    extra_st_elements = []
+    if settings:
+        if settings.get("extra_statement_template_elements"):
+            for extra_element in settings.get("extra_statement_template_elements"):
+                extra_st_elements.append(extra_element)
+    return (only_st_elements, extra_st_elements)
+
+
+def write_configfile(
+    configfile_name=DEFAULT_CONFIGFILE_NAME,
+    config_yamldoc=DEFAULT_CONFIG_YAML,
+):
+    """Write initial config file or exit trying."""
+
+    if Path(configfile_name).exists():
+        raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")
+    try:
+        with open(configfile_name, "w", encoding="utf-8") as outfile:
+            outfile.write(config_yamldoc)
+            print(
+                f"Built-in settings written to {str(configfile_name)} for editing.",
+                file=sys.stderr,
+            )
+    except FileNotFoundError as error:
+        raise ConfigError(f"{repr(configfile_name)} not writeable.") from error
+
+
 def _alias2element_mappings(csv_elements_list=None):
     """Compute shortkey/lowerkey-to-element mappings from list of CSV elements."""
+
     alias2element_mappings = {}
     for csv_elem in csv_elements_list:
         lowerkey = csv_elem.lower()
-        alias2element_mappings[lowerkey] = csv_elem  # { lowerkey: camelcasedValue }
+        alias2element_mappings[lowerkey] = csv_elem  # { foobar: fooBar }
     return alias2element_mappings

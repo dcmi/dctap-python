@@ -22,7 +22,9 @@ def test_normalize_element_name_customized():
     assert _normalize_element_name("eigenschaftsidentifikator", element_aliases_dict) == "propertyID"
 
 def test_normalize_element_name_if_element_aliases_dict_pass_through_unchanged():
-    """Pass through element name unchanged when function not passed element aliases dict.
-    Normally, this should not happen because these are computed and configurable."""
+    """
+    If no element aliases dict passed to function, pass element name through unchanged.
+    Normally, this should not happen because these are computed and configurable.
+    """
     assert _normalize_element_name("propertyid") == "propertyid"
     assert _normalize_element_name("eigenschaftsidentifikator") == "eigenschaftsidentifikator"

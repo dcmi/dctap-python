@@ -1,0 +1,9 @@
+prefixes:
+    ":":        "http://example.org/"
+    "dc:":      "http://purl.org/dc/elements/1.1/"
+
+extra_element_aliases:
+    "PropID": "propertyID"
+    "Mand": "mandatory"
+    "Rep": "repeatable"
+    "SID": "shapeID"

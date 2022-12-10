@@ -43,7 +43,3 @@ extra_element_aliases:
     "ShapeRef": "valueShape"
     "Mand": "mandatory"
     "Rep": "repeatable"
-
-boolean_aliases:
-    "Y": "true"
-    "N": "false"

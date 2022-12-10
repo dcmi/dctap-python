@@ -2,16 +2,14 @@
 
 import sys
 import json as j
-from dataclasses import asdict
 from ruamel.yaml import YAML
 import click
-from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
-from .config import get_config, write_configfile
-from .inspect import pprint_tapshapes, print_warnings
-from .csvreader import csvreader
-from .loggers import stderr_logger
-from .tapclasses import TAPShape, TAPStatementTemplate
-from .utils import expand_uri_prefixes
+from dctap.defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
+from dctap.config import get_config, write_configfile
+from dctap.csvreader import csvreader
+from dctap.inspect import pprint_tapshapes, print_warnings
+from dctap.loggers import stderr_logger
+from dctap.utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
 # => unused-argument: Allows placeholders for now.
@@ -19,7 +17,7 @@ from .utils import expand_uri_prefixes
 
 
 @click.group()
-@click.version_option("0.3.8", help="Show version and exit")
+@click.version_option("0.3.9", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(context):
@@ -33,29 +31,39 @@ def cli(context):
     $ dctap init --hidden                  # Write .dctaprc
     \b
     Parse a CSV and generate a normalized view:
-    $ dctap read x.csv                     # Plain text output
-    $ dctap read --json x.csv              # JSON output
-    $ dctap read --yaml x.csv              # YAML output
+    $ dctap read x.csv                     # Output as plain text
+    $ dctap read --json x.csv              # Output as JSON
+    $ dctap read --yaml x.csv              # Output as YAML
     $ dctap read --expand-prefixes x.csv   # Expand prefixes
     $ dctap read --warnings x.csv          # Show warnings
-    $ dctap read --config ../taprc x.csv   # Use custom configfile
+    $ dctap read --config ../taprc x.csv   # Point to a configfile
     """
 
 
 @cli.command()
+@click.option("--hidden", default=False, help="Write as dot file [.dctaprc]")
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def init(context, hidden):
+    """Write config file [dctap.yaml]"""
+    if hidden:
+        configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
+    else:
+        configfile = DEFAULT_CONFIGFILE_NAME
+    write_configfile(configfile)
+
+
+@cli.command()
 @click.argument("csvfile_obj", type=click.File(mode="r", encoding="utf-8-sig"))
-@click.option("--config",
-    type=click.Path(exists=True),
-    help="Path to alternative config file.",
-)
-@click.option("--expand-prefixes", is_flag=True, help="Expand compact to full IRIs.")
-@click.option("--warnings", is_flag=True, help="Print warnings to stderr.")
-@click.option("--json", is_flag=True, help="Print JSON to stdout.")
-@click.option("--yaml", is_flag=True, help="Print YAML to stdout.")
+@click.option("--config", type=click.Path(exists=True), help="Alternative config file")
+@click.option("--expand-prefixes", is_flag=True, help="Expand compact IRIs")
+@click.option("--warnings", is_flag=True, help="Print warnings to stderr")
+@click.option("--json", is_flag=True, help="Print JSON to stdout")
+@click.option("--yaml", is_flag=True, help="Print YAML to stdout")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
-    """Read CSV and generate normalized text, JSON, or YAML, with warnings."""
+    """Normalize TAP to text, JSON, or YAML."""
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile_name=config)
@@ -88,43 +96,3 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
             print(line, file=sys.stdout)
         if warnings:
             print_warnings(warnings_dict)
-
-
-@cli.command()
-@click.option(
-    "--hidden/--visible",
-    default=False,
-    help="Write config to hidden file [.dctaprc].",
-)
-@click.option(
-    "--terse/--verbose",
-    default=False,
-    help="Omit verbose commentary from config file.",
-)
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def init(context, hidden, terse):
-    """Write customizable config file [default: dctap.yaml]."""
-    if hidden:
-        configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
-    else:
-        configfile = DEFAULT_CONFIGFILE_NAME
-    write_configfile(configfile, terse=terse)
-
-
-@cli.command()
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def model(context):
-    """Show DCTAP model built-ins for ready reference"""
-
-    shape_elements = list(asdict(TAPShape()))
-    # shape_elements.remove('tc_list')
-    state_elements = list(asdict(TAPStatementTemplate()))
-    print("DC Tabular Application Profile")
-    print("    Shape elements:")
-    for element in shape_elements:
-        print(f"        {element}")
-    print("        Statement Template elements:")
-    for element in state_elements:
-        print(f"            {element}")

@@ -20,11 +20,11 @@ def test_get_config_from_builtins():
     config_dict = get_config()
     config_keys = list(config_dict.keys())
     assert "prefixes" in config_keys
-    assert config_dict.get("csv_elements")                        # computed from dataclasses
-    assert config_dict.get("shape_elements")                      # computed from dataclasses
-    assert config_dict.get("statement_template_elements")         # computed from dataclasses
-    assert config_dict.get("element_aliases")                     # computed from dataclasses
-    assert "element_aliases" in config_keys                       # computed and configurable
+    assert config_dict.get("csv_elements")                # computed from dataclasses
+    assert config_dict.get("shape_elements")              # computed from dataclasses
+    assert config_dict.get("statement_template_elements") # computed from dataclasses
+    assert config_dict.get("element_aliases")             # computed from dataclasses
+    assert "element_aliases" in config_keys               # computed and configurable
 
 def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""
@@ -33,10 +33,10 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     config_dict = get_config()
     assert "prefixes" in list(config_dict.keys())
     assert config_dict.get("default_shape_identifier")
-    assert config_dict.get("csv_elements")                       # computed
-    assert config_dict.get("shape_elements")                     # computed
-    assert config_dict.get("statement_template_elements")        # computed
-    assert config_dict.get("element_aliases")                    # asserted/computed
+    assert config_dict.get("csv_elements")                # computed
+    assert config_dict.get("shape_elements")              # computed
+    assert config_dict.get("statement_template_elements") # computed
+    assert config_dict.get("element_aliases")             # asserted/computed
     assert config_dict.get("value_node_types") is None
 
 def test_get_config_from_default_config_file_even_if_empty(tmp_path):
@@ -46,10 +46,10 @@ def test_get_config_from_default_config_file_even_if_empty(tmp_path):
     config_dict = get_config()
     assert "prefixes" in list(config_dict.keys())
     assert config_dict.get("default_shape_identifier")
-    assert config_dict.get("csv_elements")                       # computed
-    assert config_dict.get("shape_elements")                     # computed
-    assert config_dict.get("statement_template_elements")        # computed
-    assert config_dict.get("element_aliases")                    # asserted/computed
+    assert config_dict.get("csv_elements")                # computed
+    assert config_dict.get("shape_elements")              # computed
+    assert config_dict.get("statement_template_elements") # computed
+    assert config_dict.get("element_aliases")             # asserted/computed
     assert config_dict.get("value_node_types") is None
 
 def test_get_config_from_nondefault_yaml(tmp_path):

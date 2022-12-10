@@ -120,7 +120,7 @@ class TAPStatementTemplate:
         """valueConstraintType minLength: coerce integer (or return string)."""
         self.valueConstraintType = self.valueConstraintType.lower()
         value_constraint = self.valueConstraint
-        if self.valueConstraintType in ('minlength', 'maxlength'):
+        if self.valueConstraintType in ("minlength", "maxlength"):
             if value_constraint:
                 self.valueConstraint = coerce_integer(value_constraint)
         return self
@@ -128,7 +128,7 @@ class TAPStatementTemplate:
     def _valueConstraintType_minmaxlength_warn_if_not_integer(self):
         """Warns if valueConstraint minLength not a nonnegative integer."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        if self.valueConstraintType in ('minlength', 'maxlength'):
+        if self.valueConstraintType in ("minlength", "maxlength"):
             try:
                 int(self.valueConstraint)
             except (ValueError, TypeError):
@@ -158,9 +158,9 @@ class TAPStatementTemplate:
                 float(self.valueConstraint)
             except (ValueError, TypeError):
                 self.state_warns["valueConstraint"] = (
-                        f"Value constraint type is {repr(self.valueConstraintType)}, "
-                        f"but {repr(self.valueConstraint)} is not numeric."
-                    )
+                    f"Value constraint type is {repr(self.valueConstraintType)}, "
+                    f"but {repr(self.valueConstraint)} is not numeric."
+                )
         return self
 
     def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex(self):

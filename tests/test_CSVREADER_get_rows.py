@@ -7,7 +7,6 @@ from dctap.config import get_config
 from dctap.csvreader import _get_rows
 
 
-
 def test_get_rows_when_header_values_are_quoted(tmp_path):
     """
     Get rows where header elements are in quotes:

@@ -11,9 +11,7 @@ def pprint_tapshapes(tapshapes_dict, config_dict):
     # pylint: disable=too-many-branches
 
     (only_shape_elements, xtra_shape_elements) = get_shems(TAPShape, config_dict)
-    (only_st_elements, xtra_st_elements) = get_stems(
-        TAPStatementTemplate, config_dict
-    )
+    (only_st_elements, xtra_st_elements) = get_stems(TAPStatementTemplate, config_dict)
     pprint_output = []
     pprint_output.append("DCTAP instance")
     for tapshape_dict in tapshapes_dict.get("shapes"):

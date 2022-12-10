@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
+## [0.3.9] - 2022-12-10
+- Support and documentation for extra element aliases
+
 ## [0.3.8] - 2022-12-08
 - Tweaked terminology used in glossary following discussion in DCTAP WG.
 

@@ -4,7 +4,7 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
+from dctap.defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
 from dctap.config import get_config, write_configfile
 from dctap.csvreader import csvreader
 from dctap.inspect import pprint_tapshapes, print_warnings

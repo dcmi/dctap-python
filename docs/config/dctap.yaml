@@ -22,7 +22,7 @@ extra_statement_template_elements:
 - "min"
 - "max"
 
-list_elements:
+picklist_elements:
 - "propertyID"
 - "valueNodeType"
 - "valueDataType"

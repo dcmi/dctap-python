@@ -57,8 +57,8 @@ def get_config(
     config_dict["prefixes"] = {}
     config_dict["extra_shape_elements"] = []
     config_dict["extra_statement_template_elements"] = []
-    config_dict["list_elements"] = []
-    config_dict["list_item_separator"] = " "
+    config_dict["picklist_elements"] = []
+    config_dict["picklist_item_separator"] = " "
     config_dict["extra_value_node_types"] = []
     config_dict["extra_element_aliases"] = {}
 

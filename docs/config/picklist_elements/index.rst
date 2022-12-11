@@ -1,14 +1,14 @@
-.. _list_elements:
+.. _picklist_elements:
 
-List Elements
-.............
+Picklist Elements
+.................
 
-Some statement template elements can be configured as list elements. Cell values of list elements are split into lists of multiple values on the basis of a configurable :ref:`list_item_separator`. Value lists may be used or interpreted differently in applications downstream of a DCTAP instance. The semantic implications of using list values with given elements in particular applications is out of scope for DCTAP.
+Some statement template elements can be configured as picklist elements. Cell values of picklist elements are split into lists of multiple values on the basis of a configurable :ref:`picklist_item_separator`. Value lists may be used or interpreted differently in applications downstream of a DCTAP instance. The semantic implications of using list values with given elements in particular applications is out of scope for DCTAP.
 
 There are two cases where a list may be used as the value of an element:
 
 - In the context of a specific statement constraint, a **valueConstraint** is provided together with a **valueConstraintType** of "picklist".
-- An element has been declared in the config file as a list element - ie, all values in that given column are to be treated as lists.
+- An element has been declared in the config file as a picklist element - ie, all values in that given column are to be treated as lists.
 
 Note that the following types of statement template element cannot sensibly be configured for use with multiple values:
 
@@ -33,7 +33,7 @@ In the following example, the value of **propertyID** would by default be interp
 
 However, if **dctap** were so configured::
 
-    list_elements:
+    picklist_elements:
     - propertyID
 
 The value would be interpreted as a list::

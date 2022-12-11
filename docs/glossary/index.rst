@@ -41,6 +41,12 @@ DCTAP Glossary
    Literal
        Along with :term:`IRI` and :term:`Blank Node`, Literal is one of the three allowable node types defined in the abstract syntax of RDF. For the purposes of DCTAP, it is close enough to think of literals as strings. Literals are used for values such as strings, numbers, and dates. Interested readers can learn more about how literals relate to "lexical forms", :term:`Datatype`\s, and :term:`Language Tag`\s by consulting `RDF 1.1 Concepts and Abstract Syntax <https://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal>`__.
 
+   Picklist
+       A controlled list of valid options, one of which can be picked.
+
+   Picklist Element
+       A :term:`DCTAP Element`, the values of which must be selected from a :term:`Picklist`.
+
    Property
        A controlled term in :term:`Instance Data` denoting an attribute of an Entity referenced in a Statement.
    

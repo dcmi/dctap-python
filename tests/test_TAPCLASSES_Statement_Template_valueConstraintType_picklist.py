@@ -27,10 +27,10 @@ def test_valueConstraintType_picklist_parse_case_insensitive():
     st._valueConstraintType_picklist_parse(config_dict)
     assert st.valueConstraint == ["one", "two", "three"]
 
-def test_valueConstraintType_list_item_separator_comma(tmp_path):
+def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
     """Picklist values are split on List Item Separator - default or configured."""
     config_dict = get_config()
-    config_dict["list_item_separator"] = ","
+    config_dict["picklist_item_separator"] = ","
     config_dict["default_shape_identifier"] = "default"
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")
@@ -43,10 +43,10 @@ def test_valueConstraintType_list_item_separator_comma(tmp_path):
     value_constraint = csvreader(open(csvfile_path), config_dict)[0]["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]
 
-def test_valueConstraintType_list_item_separator_pipe(tmp_path):
+def test_valueConstraintType_picklist_item_separator_pipe(tmp_path):
     """Picklist values are split on pipe character if so configured."""
     config_dict = get_config()
-    config_dict["list_item_separator"] = "|"
+    config_dict["picklist_item_separator"] = "|"
     config_dict["default_shape_identifier"] = "default"
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")

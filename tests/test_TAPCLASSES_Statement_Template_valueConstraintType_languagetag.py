@@ -31,7 +31,7 @@ def test_valueConstraintType_languagetag_parse():
 def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     """@@@"""
     config_dict = get_config()
-    config_dict["list_item_separator"] = ","
+    config_dict["picklist_item_separator"] = ","
     config_dict["default_shape_identifier"] = "default"
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")
@@ -47,7 +47,7 @@ def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
 def test_valueConstraintType_languagetag_item_separator_pipe(tmp_path):
     """@@@"""
     config_dict = get_config()
-    config_dict["list_item_separator"] = "|"
+    config_dict["picklist_item_separator"] = "|"
     config_dict["default_shape_identifier"] = "default"
     os.chdir(tmp_path)
     csvfile_path = Path(tmp_path).joinpath("some.csv")

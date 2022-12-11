@@ -4,12 +4,12 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from dctap.defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
-from dctap.config import get_config, write_configfile
-from dctap.csvreader import csvreader
-from dctap.inspect import pprint_tapshapes, print_warnings
-from dctap.loggers import stderr_logger
-from dctap.utils import expand_uri_prefixes
+from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
+from .config import get_config, write_configfile
+from .csvreader import csvreader
+from .inspect import pprint_tapshapes, print_warnings
+from .loggers import stderr_logger
+from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter
 # => unused-argument: Allows placeholders for now.

@@ -3,18 +3,10 @@
 DCTAP Elements
 --------------
 
-There are three types of :term:`DCTAP Element`\s: 
-
-- :term:`Statement Template` elements, which express constraints on property-value pairs (aka :term:`Statement`\s) in :term:`Instance Data`.
-
-- :term:`Shape` elements, which enumerate characteristics of a a set of Statement Templates about a :term:`Description` in :term:`Instance Data` (ie, a set of :term:`Statement`\s about exactly one :term:`Entity`, or Resource, in the real world.
-
-- the **note** element, which is a simple annotation that can apply either to a Shape or to a Statement Template, according to context.
+In the DCTAP Model, a Shape groups a set of Statement Templates, each of which describes one type of Statement in Instance Data about a specified Entity. Each of these two components (Shapes and Statement Templates) has its own (extensible) set of DCTAP Elements:
 
 Statement Template elements
 ...........................
-
-There are nine Statement Template elements, of which the **propertyID** element alone is required.
 
 .. toctree::
    :maxdepth: 3

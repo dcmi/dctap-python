@@ -29,7 +29,6 @@ def get_config(
 
     def load2dict(configfile=None):
         """Parse contents of YAML configfile and return dictionary."""
-
         bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
         config_yaml = Path(configfile).read_text(encoding="UTF-8")
         try:

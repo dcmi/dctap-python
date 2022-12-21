@@ -55,7 +55,6 @@ def test_get_rows_where_header_elements_surrounded_by_whitespace(tmp_path):
     assert actual_rows_list == expected_rows_list
 
 
-
 def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
     """Get rows where one header element is not part of the DCTAP model."""
     os.chdir(tmp_path)
@@ -386,7 +385,6 @@ def test_warns_if_header_not_recognized(tmp_path):
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list
     assert len(actual_warnings) == 1
-
 
 def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     """@@@"""

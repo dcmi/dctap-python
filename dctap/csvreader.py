@@ -1,5 +1,6 @@
 """Parse DCTAP/CSV, return two-item tuple: (list of shape objects, list of warnings)."""
 
+import re
 from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
@@ -13,9 +14,22 @@ from .utils import coerce_concise
 def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
+    prefixes_used = _get_prefixes(csvrows)
     (tapshapes, tapwarns) = _get_tapshapes(csvrows, config_dict)
     tapwarns = {**csvwarns, **tapwarns}
     return (tapshapes, tapwarns)
+
+
+def _get_prefixes(csvrows):
+    """@@@"""
+    prefixes = set()
+    for row in csvrows:
+        for element in ['propertyID', 'valueDataType', 'shapeID', 'valueShape']:
+            if row.get(element):
+                pre = re.match(r"(.*:)", row.get(element))
+                if pre:
+                    prefixes.add(pre.group(0))
+    return prefixes
 
 
 def _get_rows(open_csvfile_obj, config_dict):
@@ -25,7 +39,6 @@ def _get_rows(open_csvfile_obj, config_dict):
     csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
-    # breakpoint(context=5)
     raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = []
 
@@ -42,7 +55,6 @@ def _get_rows(open_csvfile_obj, config_dict):
             config_dict["element_aliases"][element.lower()] = element
     recognized_elements = [elem.lower() for elem in recognized_elements]
 
-    # breakpoint(context=5)
     for column in raw_header_line_list:
         column = coerce_concise(column)
         column = _normalize_element_name(column, config_dict.get("element_aliases"))

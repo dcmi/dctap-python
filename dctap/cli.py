@@ -67,7 +67,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile_name=config)
-    (tapshapes_dict, warnings_dict) = csvreader(csvfile_obj, config_dict)
+    tapshapes_dict = csvreader(csvfile_obj, config_dict)
     if expand_prefixes:
         tapshapes_dict = expand_uri_prefixes(tapshapes_dict, config_dict)
 
@@ -78,21 +78,21 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
         click.Context.exit(0)
 
     if json:
+        if not warnings:
+            del tapshapes_dict["warnings"]
         json_output = j.dumps(tapshapes_dict, indent=2)
         print(json_output)
-        if warnings:
-            print_warnings(warnings_dict)
 
     if yaml:
+        if not warnings:
+            del tapshapes_dict["warnings"]
         y = YAML()
         y.indent(mapping=2, sequence=4, offset=2)
         y.dump(tapshapes_dict, sys.stdout)
-        if warnings:
-            print_warnings(warnings_dict)
 
     if not (json or yaml):
         pprint_output = pprint_tapshapes(tapshapes_dict, config_dict)
         for line in pprint_output:
             print(line, file=sys.stdout)
         if warnings:
-            print_warnings(warnings_dict)
+            print_warnings(tapshapes_dict["warnings"])

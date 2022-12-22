@@ -14,13 +14,13 @@ from .utils import coerce_concise
 def csvreader(open_csvfile_obj, config_dict):
     """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
-    prefixes_used = _get_prefixes(csvrows)
     (tapshapes, tapwarns) = _get_tapshapes(csvrows, config_dict)
     tapwarns = {**csvwarns, **tapwarns}
+    prefixes_used = _get_prefixes_actually_used(csvrows)
     return (tapshapes, tapwarns)
 
 
-def _get_prefixes(csvrows):
+def _get_prefixes_actually_used(csvrows):
     """@@@"""
     prefixes = set()
     for row in csvrows:

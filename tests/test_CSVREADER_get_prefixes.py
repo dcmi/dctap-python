@@ -4,10 +4,10 @@ import os
 from pathlib import Path
 import pytest
 from dctap.config import get_config
-from dctap.csvreader import _get_prefixes
+from dctap.csvreader import _get_prefixes_actually_used
 
 
-def test_get_prefixes():
+def test_get_prefixes_actually_used():
     """@@@"""
     csvrows = [ 
         {
@@ -29,4 +29,4 @@ def test_get_prefixes():
         }
     ]
     expected_prefixes = {":", "dc:", "xsd:", "foaf:"}
-    assert _get_prefixes(csvrows) == expected_prefixes
+    assert _get_prefixes_actually_used(csvrows) == expected_prefixes

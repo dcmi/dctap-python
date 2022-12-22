@@ -16,8 +16,20 @@ def csvreader(open_csvfile_obj, config_dict):
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     (tapshapes, tapwarns) = _get_tapshapes(csvrows, config_dict)
     tapwarns = {**csvwarns, **tapwarns}
-    prefixes_used = _get_prefixes_actually_used(csvrows)
+    tapshapes = _add_namespaces(tapshapes, config_dict, csvrows)
     return (tapshapes, tapwarns)
+
+
+def _add_namespaces(tapshapes=None, config_dict=None, csvrows=None):
+    """@@@"""
+    prefixes_used = _get_prefixes_actually_used(csvrows)
+    tapshapes['namespaces'] = {}
+    if config_dict.get('prefixes'):
+        for prefix in prefixes_used:
+            if config_dict['prefixes'].get(prefix):
+                tapshapes['namespaces'][prefix] = config_dict['prefixes'].get(prefix)
+
+    return tapshapes
 
 
 def _get_prefixes_actually_used(csvrows):

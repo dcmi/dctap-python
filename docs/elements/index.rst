@@ -11,13 +11,13 @@ Statement Template elements
 .. toctree::
    :maxdepth: 3
 
-   propertyID/index
-   mandrepeat/index
-   valueNodeType/index
-   valueDataType/index
-   valueConstraintType/index
-   valueShape/index
-   note/index
+   propertyID/index.rst
+   mandrepeat/index.rst
+   valueNodeType/index.rst
+   valueDataType/index.rst
+   valueConstraintType/index.rst
+   valueShape/index.rst
+   note/index.rst
 
 Shape elements
 ..............
@@ -26,5 +26,5 @@ There are two Shape elements. If the **shapeID** element is not used in a given 
 
 .. toctree::
 
-   shapeID/index
+   shapeID/index.rst
 

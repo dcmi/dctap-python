@@ -3,15 +3,14 @@
 View warnings generated
 :::::::::::::::::::::::
 
-As an aid for debugging, **dctap read** checks the CSV input for obvious inconsistencies and generates warnings for any anomalies or errors found. 
+As an aid for debugging, **dctap read --warnings** generates warnings for any obvious inconsistencies or errors found in the TAP.
 
-These consistency checks are explained in the descriptions of individual :term:`DCTAP elements <DCTAP Element>`; see section :ref:`elements`. 
+Specific consistency checks are explained in the descriptions of individual :term:`DCTAP elements <DCTAP Element>`; see section :ref:`elements`. 
 
-The option **--warnings** causes the results of these checks to be sent to stderr. This ensures that warnings are kept out of the stdout streams of text, JSON, or YAML output and can thus be passed as input to other commands in a pipeline.
+**dctap read --warnings example2.csv** sends warnings in plain text to stderr:
 
 .. code-block:: bash
 
-    $ dctap read --warnings example2.csv
     DCTAP instance
         Shape
             shapeID                  :a
@@ -21,3 +20,46 @@ The option **--warnings** causes the results of these checks to be sent to stder
 
     WARNING [:a/valueNodeType] 'noodles' is not a valid node type.
 
+**dctap read --warnings --json example2.csv** includes warnings in the JSON dictionary:
+
+.. code-block:: json
+
+    {
+      "shapes": [
+        {
+          "shapeID": "default",
+          "statement_templates": [
+            {
+              "propertyID": "dcterms:date",
+              "valueNodeType": "noodles"
+            }
+          ]
+        }
+      ],
+      "namespaces": {
+        "dcterms:": "http://purl.org/dc/terms/"
+      },
+      "warnings": {
+        "default": {
+          "valueNodeType": [
+            "'noodles' is not a valid node type."
+          ]
+        }
+      }
+    }
+
+**dctap read --warnings --yaml example2.csv** includes warnings in the YAML output:
+
+.. code-block:: yaml
+
+    shapes:
+      - shapeID: default
+        statement_templates:
+          - propertyID: dcterms:date
+            valueNodeType: noodles
+    namespaces:
+      'dcterms:': http://purl.org/dc/terms/
+    warnings:
+      default:
+        valueNodeType:
+          - "'noodles' is not a valid node type."

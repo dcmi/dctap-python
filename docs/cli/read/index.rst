@@ -11,7 +11,6 @@ The subcommand **dctap read**:
   - by default, outputs TXT for on-screen debugging, without showing prefixes
   - with option **--json**, outputs JSON, with namespace prefixes
   - with option **--yaml**, outputs YAML, with namespace prefixes
-- with the option **--warnings**, sends warnings to stderr
 
 The option **--expand-prefixes** expands any :term:`Compact IRI` into a full :term:`IRI` using prefixes found in the built-in defaults or as overridden by a :ref:`configuration file <prefix_mappings>`.
 
@@ -49,8 +48,8 @@ Or as JSON with **dctap read --json example.csv**:
         }
       ],
       "namespaces": {
-        "dcterms:": "http://purl.org/dc/terms/",
-        ":": "http://example.org/"
+        ":": "http://example.org/",
+        "dcterms:": "http://purl.org/dc/terms/"
       }
     }
 
@@ -59,13 +58,13 @@ Or as YAML, with full IRIs, with **dctap read --yaml example.csv**:
 .. code-block:: yaml
 
     shapes:
-      - shapeID: http://example.org/a
+      - shapeID: :a
         statement_templates:
-          - propertyID: http://purl.org/dc/terms/creator
+          - propertyID: dcterms:creator
             valueNodeType: iri
     namespaces:
-      'dcterms:': http://purl.org/dc/terms/
       ':': http://example.org/
+      'dcterms:': http://purl.org/dc/terms/
 
 .. toctree::
    :hidden:

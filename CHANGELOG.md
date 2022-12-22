@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
+## [0.3.13] - 2022-12-22
+- csvreader outputs just one shapes dictionary, now includes "warnings".
+- JSON and YAML outputs now include "warnings" section.
+- Documentation updated.
+
 ## [0.3.12] - 2022-12-22
 - JSON and YAML outputs now include "namespaces" section.
 

@@ -163,13 +163,12 @@ def _get_tapshapes(rows, config_dict):
 
         warns_dict = dict(warns)
         shapes_dict = {}
-        list_of_shapes = []
-        shapes_dict["shapes"] = list_of_shapes
+        shapes_dict["shapes"] = []
 
         for sh_obj in list(shapes.values()):
             sh_dict = asdict(sh_obj)
             sh_dict["statement_templates"] = sh_dict.pop("state_list")
-            list_of_shapes.append(sh_dict)
+            shapes_dict["shapes"].append(sh_dict)
 
         shapes_dict = _simplify(shapes_dict)
 

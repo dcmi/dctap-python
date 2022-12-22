@@ -18,6 +18,7 @@ def test_valueConstraintType_picklist_parse():
     st._valueConstraintType_picklist_parse(config_dict)
     assert st.valueConstraint == ["one", "two", "three"]
 
+
 def test_valueConstraintType_picklist_parse_case_insensitive():
     """Value constraint types are case-insensitive."""
     st = TAPStatementTemplate()
@@ -26,6 +27,7 @@ def test_valueConstraintType_picklist_parse_case_insensitive():
     st.valueConstraint = "one two          three" # extra whitespace
     st._valueConstraintType_picklist_parse(config_dict)
     assert st.valueConstraint == ["one", "two", "three"]
+
 
 def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
     """Picklist values are split on List Item Separator - default or configured."""
@@ -40,8 +42,9 @@ def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
             'ex:foo,picklist,"one, two, three"\n'
         )
     )
-    value_constraint = csvreader(open(csvfile_path), config_dict)[0]["shapes"][0]["statement_templates"][0]["valueConstraint"]
+    value_constraint = csvreader(open(csvfile_path), config_dict)["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]
+
 
 def test_valueConstraintType_picklist_item_separator_pipe(tmp_path):
     """Picklist values are split on pipe character if so configured."""
@@ -56,5 +59,5 @@ def test_valueConstraintType_picklist_item_separator_pipe(tmp_path):
             'ex:foo,picklist,"one|two|three"\n'
         )
     )
-    value_constraint = csvreader(open(csvfile_path), config_dict)[0]["shapes"][0]["statement_templates"][0]["valueConstraint"]
+    value_constraint = csvreader(open(csvfile_path), config_dict)["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]

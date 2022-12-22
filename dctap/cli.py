@@ -26,17 +26,15 @@ def cli(context):
     Examples (see https://dctap-python.rtfd.io):
 
     \b
-    Write an editable configuration file:
+    Write starter config file:
     $ dctap init                           # Write dctap.yaml
     $ dctap init --hidden                  # Write .dctaprc
     \b
-    Parse a CSV and generate a normalized view:
+    Show normalized view of TAP:
     $ dctap read x.csv                     # Output as plain text
     $ dctap read --json x.csv              # Output as JSON
     $ dctap read --yaml x.csv              # Output as YAML
-    $ dctap read --expand-prefixes x.csv   # Expand prefixes
-    $ dctap read --warnings x.csv          # Show warnings
-    $ dctap read --config ../taprc x.csv   # Point to a configfile
+    $ dctap read --warnings x.csv          # Also show warnings
     """
 
 
@@ -63,7 +61,7 @@ def init(context, hidden):
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
-    """Normalize TAP to text, JSON, or YAML."""
+    """Show TAP as TXT, JSON, or YAML."""
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile_name=config)

@@ -83,7 +83,7 @@ def get_config(
     extras = config_dict.get("extra_element_aliases")
     if extras:
         try:
-            extras = {coerce_concise(str(k).lower()):v for (k, v) in extras.items()}
+            extras = {coerce_concise(str(k).lower()): v for (k, v) in extras.items()}
         except AttributeError:
             extras = {}
         config_dict["element_aliases"].update(extras)

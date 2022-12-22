@@ -23,11 +23,11 @@ def csvreader(open_csvfile_obj, config_dict):
 def _add_namespaces(tapshapes=None, config_dict=None, csvrows=None):
     """@@@"""
     prefixes_used = _get_prefixes_actually_used(csvrows)
-    tapshapes['namespaces'] = {}
-    if config_dict.get('prefixes'):
+    tapshapes["namespaces"] = {}
+    if config_dict.get("prefixes"):
         for prefix in prefixes_used:
-            if config_dict['prefixes'].get(prefix):
-                tapshapes['namespaces'][prefix] = config_dict['prefixes'].get(prefix)
+            if config_dict["prefixes"].get(prefix):
+                tapshapes["namespaces"][prefix] = config_dict["prefixes"].get(prefix)
 
     return tapshapes
 
@@ -36,7 +36,7 @@ def _get_prefixes_actually_used(csvrows):
     """@@@"""
     prefixes = set()
     for row in csvrows:
-        for element in ['propertyID', 'valueDataType', 'shapeID', 'valueShape']:
+        for element in ["propertyID", "valueDataType", "shapeID", "valueShape"]:
             if row.get(element):
                 pre = re.match(r"(.*:)", row.get(element))
                 if pre:
@@ -103,7 +103,7 @@ def _get_tapshapes(rows, config_dict):
 
     (main_stems, xtra_stems) = get_stems(TAPStatementTemplate, config_dict)
 
-    shapes = {}                # dict for shapeID-to-TAPShape_list
+    shapes = {}  # dict for shapeID-to-TAPShape_list
     warns = defaultdict(dict)  # dict for shapeID-to-warnings_list
 
     for row in rows:
@@ -182,10 +182,10 @@ def _mkshape(row_dict=None, config_dict=None):
     Returns:
         Unpopulated instance of dctap.tapclasses.TAPShape, by default:
         - TAPShape(
-              shapeID='', 
-              shapeLabel='', 
-              state_list=[], 
-              shape_warns={}, 
+              shapeID='',
+              shapeLabel='',
+              state_list=[],
+              shape_warns={},
               state_extras={}
           )
         - Plus extra TAPShape fields as per config settings.

@@ -78,7 +78,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
         click.Context.exit(0)
 
     if json:
-        json_output = j.dumps(tapshapes_dict, indent=4)
+        json_output = j.dumps(tapshapes_dict, indent=2)
         print(json_output)
         if warnings:
             print_warnings(warnings_dict)

@@ -12,23 +12,29 @@ from .utils import coerce_concise
 
 
 def csvreader(open_csvfile_obj, config_dict):
-    """From open CSV file object, return tuple: (shapes dict, warnings dict)."""
+    """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     (tapshapes, tapwarns) = _get_tapshapes(csvrows, config_dict)
     tapwarns = {**csvwarns, **tapwarns}
     tapshapes = _add_namespaces(tapshapes, config_dict, csvrows)
-    return (tapshapes, tapwarns)
+    tapshapes = _add_tapwarns(tapshapes, tapwarns)
+    return tapshapes
 
 
 def _add_namespaces(tapshapes=None, config_dict=None, csvrows=None):
-    """@@@"""
+    """Adds key 'namespaces' to tapshapes dict."""
     prefixes_used = _get_prefixes_actually_used(csvrows)
     tapshapes["namespaces"] = {}
     if config_dict.get("prefixes"):
         for prefix in prefixes_used:
             if config_dict["prefixes"].get(prefix):
                 tapshapes["namespaces"][prefix] = config_dict["prefixes"].get(prefix)
+    return tapshapes
 
+
+def _add_tapwarns(tapshapes=None, tapwarns=None):
+    """Adds key 'warnings' to tapshapes dict."""
+    tapshapes["warnings"] = tapwarns
     return tapshapes
 
 

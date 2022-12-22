@@ -220,45 +220,41 @@ class TAPStatementTemplate:
 
     def _valueNodeType_is_from_enumerated_list(self, settings):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
+        warning = f"{repr(self.valueNodeType)} is not a valid node type."
         valid_types = ["iri", "bnode", "literal"]
         if settings.get("value_node_types"):
             valid_types += [vnt.lower() for vnt in settings["value_node_types"]]
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
             if self.valueNodeType not in valid_types:
-                self.state_warns[
-                    "valueNodeType"
-                ] = f"{repr(self.valueNodeType)} is not a valid node type."
+                self.state_warns["valueNodeType"] = warning
         return self
 
     def _valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape(self):
         """Value with node type Literal cannot conform to a value shape."""
+        warning = "Datatypes are only for values that are literals, not shapes."
         self.valueNodeType = self.valueNodeType.lower()
         if self.valueShape:
             if self.valueNodeType == "literal":
-                self.state_warns["valueDataType"] = (
-                    "Datatypes are only for literals, "
-                    "which cannot conform to a value shape."
-                )
+                self.state_warns["valueDataType"] = warning
+        return self
 
     def _valueDataType_warn_if_used_with_valueShape(self):
         """Value with any datatype cannot conform to a value shape."""
+        warning = "Datatypes are only for values that are literals, not shapes."
         if self.valueShape:
             if self.valueDataType:
-                self.state_warns["valueDataType"] = (
-                    "Datatypes are only for literals, "
-                    "which cannot conform to a value shape."
-                )
+                self.state_warns["valueDataType"] = warning
+        return self
 
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """Value with datatype implies Literal and cannot be node type IRI."""
+        warning = f"Datatypes do not apply to nodes of type {repr(self.valueNodeType)}."
         node_type = self.valueNodeType.lower()
         if node_type in ("iri", "uri", "bnode"):
             if self.valueDataType:
-                self.state_warns["valueDataType"] = (
-                    f"Datatypes are only for literals, "
-                    f"so node type should not be {repr(self.valueNodeType)}."
-                )
+                self.state_warns["valueDataType"] = warning
+        return self
 
     def _parse_elements_configured_as_picklist_elements(self, settings):
         """Parse elements configured as list elementss."""

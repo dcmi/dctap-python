@@ -71,14 +71,15 @@ def _get_rows(open_csvfile_obj, config_dict):
         column = coerce_concise(column)
         column = _normalize_element_name(column, config_dict.get("element_aliases"))
         new_header_line_list.append(column)
-    csv_warns = defaultdict(dict)
 
+    csv_warns = defaultdict(dict)
     for column in new_header_line_list:
         if column.lower() not in recognized_elements:
             warn = f"Non-DCTAP element {repr(column)} not configured as extra element."
             csv_warns["csv"] = {}
             csv_warns["csv"]["column"] = []
             csv_warns["csv"]["column"].append(warn)
+
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if "propertyID" not in csvlines_stripped[0]:
@@ -102,9 +103,8 @@ def _get_tapshapes(rows, config_dict):
 
     (main_stems, xtra_stems) = get_stems(TAPStatementTemplate, config_dict)
 
-    # fmt: off
-    shapes = {}                             # Dict for shapeID-to-TAPShape_list.
-    warns = defaultdict(dict)               # Dict for shapeID-to-warnings_list.
+    shapes = {}                # dict for shapeID-to-TAPShape_list
+    warns = defaultdict(dict)  # dict for shapeID-to-warnings_list
 
     for row in rows:
         sh_id = ""
@@ -162,15 +162,12 @@ def _get_tapshapes(rows, config_dict):
 
         for sh_obj in list(shapes.values()):
             sh_dict = asdict(sh_obj)
-            sh_dict[
-                "statement_templates"
-            ] = sh_dict.pop("state_list")
+            sh_dict["statement_templates"] = sh_dict.pop("state_list")
             list_of_shapes.append(sh_dict)
 
         shapes_dict = _simplify(shapes_dict)
 
     return (shapes_dict, warns_dict)
-    # fmt: on
 
 
 def _mkshape(row_dict=None, config_dict=None):
@@ -184,7 +181,13 @@ def _mkshape(row_dict=None, config_dict=None):
 
     Returns:
         Unpopulated instance of dctap.tapclasses.TAPShape, by default:
-        - TAPShape(shapeID='', shapeLabel='', state_list=[], shape_warns={}, state_extras={})
+        - TAPShape(
+              shapeID='', 
+              shapeLabel='', 
+              state_list=[], 
+              shape_warns={}, 
+              state_extras={}
+          )
         - Plus extra TAPShape fields as per config settings.
     """
     (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)

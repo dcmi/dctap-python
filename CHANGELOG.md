@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
+## [0.3.12] - 2022-12-22
+- JSON and YAML outputs now include "namespaces" section.
+
 ## [0.3.11] - 2022-12-11
 - Make imports within dctap relative again.
 

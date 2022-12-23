@@ -26,7 +26,7 @@ class TAPStatementTemplate:
     state_warns: dict = field(default_factory=dict)
     state_extras: dict = field(default_factory=dict)
 
-    def normalize(self, settings):
+    def normalize(self, config_dict):
         """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
         self._warn_if_propertyID_not_IRIlike()
@@ -36,7 +36,7 @@ class TAPStatementTemplate:
         self._valueConstraintType_pattern_warn_if_used_with_value_shape()
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
-        self._valueConstraintType_languageTag_parse(settings)
+        self._valueConstraintType_languageTag_parse(config_dict)
         self._valueConstraintType_minmaxlength_parse()
         self._valueConstraintType_minmaxlength_warn_if_not_integer()
         self._valueConstraintType_minmaxinclusive_parse()
@@ -44,9 +44,9 @@ class TAPStatementTemplate:
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
         self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
-        self._valueConstraintType_picklist_parse(settings)
-        self._valueNodeType_is_from_enumerated_list(settings)
-        self._parse_elements_configured_as_picklist_elements(settings)
+        self._valueConstraintType_picklist_parse(config_dict)
+        self._valueNodeType_is_from_enumerated_list(config_dict)
+        self._parse_elements_configured_as_picklist_elements(config_dict)
         return self
 
     def _warn_if_propertyID_not_IRIlike(self):
@@ -187,10 +187,10 @@ class TAPStatementTemplate:
                     "cannot conform to a value shape."
                 )
 
-    def _valueConstraintType_languageTag_parse(self, settings):
+    def _valueConstraintType_languageTag_parse(self, config_dict):
         """For valueConstraintType languageTag, splits valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        sep = settings.get("picklist_item_separator", " ")
+        sep = config_dict.get("picklist_item_separator", " ")
         if self.valueConstraintType == "languagetag":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split(sep)
@@ -208,22 +208,22 @@ class TAPStatementTemplate:
                 )
         return self
 
-    def _valueConstraintType_picklist_parse(self, settings):
+    def _valueConstraintType_picklist_parse(self, config_dict):
         """If valueConstraintType is Picklist, split valueConstraint on whitespace."""
         self.valueConstraintType = self.valueConstraintType.lower()
-        sep = settings.get("picklist_item_separator", " ")
+        sep = config_dict.get("picklist_item_separator", " ")
         if self.valueConstraintType == "picklist":
             if self.valueConstraint:
                 self.valueConstraint = self.valueConstraint.split(sep)
                 self.valueConstraint = [x.strip() for x in self.valueConstraint if x]
         return self
 
-    def _valueNodeType_is_from_enumerated_list(self, settings):
+    def _valueNodeType_is_from_enumerated_list(self, config_dict):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
         warning = f"{repr(self.valueNodeType)} is not a valid node type."
         valid_types = ["iri", "bnode", "literal"]
-        if settings.get("value_node_types"):
-            valid_types += [vnt.lower() for vnt in settings["value_node_types"]]
+        if config_dict.get("value_node_types"):
+            valid_types += [vnt.lower() for vnt in config_dict["value_node_types"]]
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
             if self.valueNodeType not in valid_types:
@@ -256,17 +256,17 @@ class TAPStatementTemplate:
                 self.state_warns["valueDataType"] = warning
         return self
 
-    def _parse_elements_configured_as_picklist_elements(self, settings):
+    def _parse_elements_configured_as_picklist_elements(self, config_dict):
         """Parse elements configured as list elementss."""
-        if settings.get("picklist_item_separator"):
-            separator = settings.get("picklist_item_separator")
+        if config_dict.get("picklist_item_separator"):
+            separator = config_dict.get("picklist_item_separator")
         else:
             separator = " "
 
-        if settings.get("list_elements"):
-            picklist_elements = settings.get("list_elements")
-        elif settings.get("picklist_elements"):
-            picklist_elements = settings.get("picklist_elements")
+        if config_dict.get("list_elements"):
+            picklist_elements = config_dict.get("list_elements")
+        elif config_dict.get("picklist_elements"):
+            picklist_elements = config_dict.get("picklist_elements")
         else:
             picklist_elements = []
 
@@ -294,15 +294,15 @@ class TAPShape:
     shape_warns: dict = field(default_factory=dict)
     shape_extras: dict = field(default_factory=dict)
 
-    def normalize(self, settings):
+    def normalize(self, config_dict):
         """Normalize values where required."""
-        self._normalize_default_shapeID(settings)
+        self._normalize_default_shapeID(config_dict)
         return True
 
-    def _normalize_default_shapeID(self, settings):
+    def _normalize_default_shapeID(self, config_dict):
         """If shapeID not specified, looks first in config, else sets "default"."""
         if not self.shapeID:
-            self.shapeID = settings.get("default_shape_identifier", "default")
+            self.shapeID = config_dict.get("default_shape_identifier", "default")
         return self
 
     def get_warnings(self):

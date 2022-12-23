@@ -6,14 +6,20 @@ from .loggers import stderr_logger
 from .tapclasses import TAPShape, TAPStatementTemplate
 
 
-def pprint_tapshapes(tapshapes_dict, config_dict):
+def pprint_tapshapes(
+    tapshapes_dict=None, config_dict=None, shape_class=None, state_class=None
+):
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
     # pylint: disable=too-many-branches
 
-    (only_shape_elements, xtra_shape_elements) = get_shems(TAPShape, config_dict)
-    (only_st_elements, xtra_st_elements) = get_stems(TAPStatementTemplate, config_dict)
+    (only_shape_elements, xtra_shape_elements) = get_shems(
+        shape_class=shape_class, config_dict=config_dict
+    )
+    (only_st_elements, xtra_st_elements) = get_stems(
+        state_class=state_class, config_dict=config_dict
+    )
     pprint_output = []
-    pprint_output.append("DCTAP instance")
+    pprint_output.append("Tabular Application Profile (TAP)")
     for tapshape_dict in tapshapes_dict.get("shapes"):
         pprint_output.append("    Shape")
         for key in only_shape_elements:

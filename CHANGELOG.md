@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
+## [0.3.14] - 2022-12-23
+- csvreader now called with keyword args for state_class and shape_class.
+
 ## [0.3.13] - 2022-12-22
 - csvreader outputs just one shapes dictionary, now includes "warnings".
 - JSON and YAML outputs now include "warnings" section.

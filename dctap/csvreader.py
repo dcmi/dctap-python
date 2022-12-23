@@ -6,10 +6,8 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from dctap.loggers import stderr_logger
 from .config import get_shems, get_stems
 from .exceptions import DctapError
-from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import coerce_concise
 
 

@@ -20,7 +20,7 @@ def get_config(
     configfile_name=None,
     config_yamldoc=DEFAULT_CONFIG_YAML,
     shape_class=TAPShape,
-    stem_class=TAPStatementTemplate,
+    state_class=TAPStatementTemplate,
 ):
     """
     Get built-in settings then override from config file (if found).
@@ -42,7 +42,7 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shems(shape_class)[0]
-    elements_dict["statement_template_elements"] = get_stems(stem_class)[0]
+    elements_dict["statement_template_elements"] = get_stems(state_class)[0]
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_template_elements"]
     )
@@ -91,29 +91,29 @@ def get_config(
     return config_dict
 
 
-def get_shems(shape_class=TAPShape, settings=None):
+def get_shems(shape_class=None, config_dict=None):
     """List DCTAP elements supported by given shape class."""
     only_shape_elements = list(asdict(shape_class()))
     only_shape_elements.remove("state_list")
     only_shape_elements.remove("shape_warns")
     only_shape_elements.remove("shape_extras")
     extra_shape_elements = []
-    if settings:
-        if settings.get("extra_shape_elements"):
-            for extra_element in settings.get("extra_shape_elements"):
+    if config_dict:
+        if config_dict.get("extra_shape_elements"):
+            for extra_element in config_dict.get("extra_shape_elements"):
                 extra_shape_elements.append(extra_element)
     return (only_shape_elements, extra_shape_elements)
 
 
-def get_stems(stem_class=TAPStatementTemplate, settings=None):
+def get_stems(state_class=None, config_dict=None):
     """List DCTAP elements supported by statement template class."""
-    only_st_elements = list(asdict(stem_class()))
+    only_st_elements = list(asdict(state_class()))
     only_st_elements.remove("state_warns")
     only_st_elements.remove("state_extras")
     extra_st_elements = []
-    if settings:
-        if settings.get("extra_statement_template_elements"):
-            for extra_element in settings.get("extra_statement_template_elements"):
+    if config_dict:
+        if config_dict.get("extra_statement_template_elements"):
+            for extra_element in config_dict.get("extra_statement_template_elements"):
                 extra_st_elements.append(extra_element)
     return (only_st_elements, extra_st_elements)
 

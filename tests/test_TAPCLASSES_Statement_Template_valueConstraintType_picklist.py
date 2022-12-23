@@ -4,10 +4,11 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config
-from dctap.tapclasses import TAPStatementTemplate
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
 from dctap.csvreader import csvreader
 
 config_dict = get_config()
+
 
 def test_valueConstraintType_picklist_parse():
     """If valueConstraintType picklist, valueConstraint parsed on whitespace."""
@@ -42,7 +43,12 @@ def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
             'ex:foo,picklist,"one, two, three"\n'
         )
     )
-    value_constraint = csvreader(open(csvfile_path), config_dict)["shapes"][0]["statement_templates"][0]["valueConstraint"]
+    value_constraint = csvreader(
+        open_csvfile_obj=open(csvfile_path), 
+        config_dict=config_dict,
+        shape_class=TAPShape,
+        state_class=TAPStatementTemplate,
+    )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]
 
 
@@ -59,5 +65,10 @@ def test_valueConstraintType_picklist_item_separator_pipe(tmp_path):
             'ex:foo,picklist,"one|two|three"\n'
         )
     )
-    value_constraint = csvreader(open(csvfile_path), config_dict)["shapes"][0]["statement_templates"][0]["valueConstraint"]
+    value_constraint = csvreader(
+        open_csvfile_obj=open(csvfile_path), 
+        config_dict=config_dict,
+        shape_class=TAPShape,
+        state_class=TAPStatementTemplate,
+    )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]

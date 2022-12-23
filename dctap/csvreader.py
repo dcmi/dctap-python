@@ -155,16 +155,16 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
         if not row.get("propertyID"):
             continue
 
-        st = state_class()
+        st_obj = state_class()
         for col in row:
             if col in main_stems:
-                setattr(st, col, row[col])
+                setattr(st_obj, col, row[col])
             elif col in xtra_stems:
-                st.state_extras[col] = row[col]
+                st_obj.state_extras[col] = row[col]
 
-        st.normalize(config_dict)
-        shapes[sh_id].state_list.append(st)
-        st_warns = st.get_warnings()
+        st_obj.normalize(config_dict)
+        shapes[sh_id].state_list.append(st_obj)
+        st_warns = st_obj.get_warnings()
 
         for (elem, warn) in st_warns.items():
             try:

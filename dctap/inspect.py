@@ -3,7 +3,6 @@
 import sys
 from .config import get_shems, get_stems
 from .loggers import stderr_logger
-from .tapclasses import TAPShape, TAPStatementTemplate
 
 
 def pprint_tapshapes(

@@ -1,20 +1,32 @@
-"""Parse DCTAP/CSV, return two-item tuple: (list of shape objects, list of warnings)."""
+"""Parse TAP, return two-item tuple: (list of shape objects, list of warnings)."""
 
 import re
+import sys
 from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
+from dctap.loggers import stderr_logger
 from .config import get_shems, get_stems
 from .exceptions import DctapError
 from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import coerce_concise
 
 
-def csvreader(open_csvfile_obj, config_dict):
+def csvreader(
+    open_csvfile_obj=None, config_dict=None, shape_class=None, state_class=None
+):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
-    (tapshapes, tapwarns) = _get_tapshapes(csvrows, config_dict)
+    if csvrows:
+        (tapshapes, tapwarns) = _get_tapshapes(
+            rows=csvrows,
+            config_dict=config_dict,
+            shape_class=shape_class,
+            state_class=state_class,
+        )
+    else:
+        sys.exit("No data to process.")
     tapwarns = {**csvwarns, **tapwarns}
     tapshapes = _add_namespaces(tapshapes, config_dict, csvrows)
     tapshapes = _add_tapwarns(tapshapes, tapwarns)
@@ -96,7 +108,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(rows, config_dict):
+def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=None):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
@@ -107,7 +119,9 @@ def _get_tapshapes(rows, config_dict):
     except KeyError:
         dshape = "default"
 
-    (main_stems, xtra_stems) = get_stems(TAPStatementTemplate, config_dict)
+    (main_stems, xtra_stems) = get_stems(
+        state_class=state_class, config_dict=config_dict
+    )
 
     shapes = {}  # dict for shapeID-to-TAPShape_list
     warns = defaultdict(dict)  # dict for shapeID-to-warnings_list
@@ -127,7 +141,7 @@ def _get_tapshapes(rows, config_dict):
 
         if sh_id:
             if sh_id not in list(shapes):
-                sh_obj = _mkshape(row, config_dict)
+                sh_obj = _mkshape(row_dict=row, config_dict=config_dict, shape_class=shape_class)
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
                 warns[sh_id] = {}
@@ -143,7 +157,7 @@ def _get_tapshapes(rows, config_dict):
         if not row.get("propertyID"):
             continue
 
-        st = TAPStatementTemplate()
+        st = state_class()
         for col in row:
             if col in main_stems:
                 setattr(st, col, row[col])
@@ -175,8 +189,8 @@ def _get_tapshapes(rows, config_dict):
     return (shapes_dict, warns_dict)
 
 
-def _mkshape(row_dict=None, config_dict=None):
-    """Populates shape fields of dataclass TAPShape object from dict for one row.
+def _mkshape(row_dict=None, config_dict=None, shape_class=None):
+    """Populates shape fields of dataclass shape object from dict for one row.
 
     Args:
         row_dict: Dictionary of all columns headers (keys) and cell values (values)
@@ -185,18 +199,11 @@ def _mkshape(row_dict=None, config_dict=None):
         config_dict: Dictionary of settings, built-in or as read from config file.
 
     Returns:
-        Unpopulated instance of dctap.tapclasses.TAPShape, by default:
-        - TAPShape(
-              shapeID='',
-              shapeLabel='',
-              state_list=[],
-              shape_warns={},
-              state_extras={}
-          )
-        - Plus extra TAPShape fields as per config settings.
+        Unpopulated instance of shape class, for example:
+        TAPShape(shapeID='', state_list=[], shape_warns={}, state_extras={}, ...)
     """
-    (main_shems, xtra_shems) = get_shems(shape_class=TAPShape, settings=config_dict)
-    tapshape_obj = TAPShape()
+    (main_shems, xtra_shems) = get_shems(shape_class=shape_class, config_dict=config_dict)
+    tapshape_obj = shape_class()
     for key in row_dict:
         if key in main_shems:
             setattr(tapshape_obj, key, row_dict[key])
@@ -206,12 +213,7 @@ def _mkshape(row_dict=None, config_dict=None):
 
 
 def _normalize_element_name(some_str, element_aliases_dict=None):
-    """
-    Given an element name (string),
-    If name is recognized
-    If not, leave unchanged.
-    """
-
+    """Given header string, return converted if aliased, else return unchanged."""
     some_str = coerce_concise(some_str)
     if element_aliases_dict:
         for key in element_aliases_dict.keys():

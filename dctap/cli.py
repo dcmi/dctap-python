@@ -9,6 +9,7 @@ from .config import get_config, write_configfile
 from .csvreader import csvreader
 from .inspect import pprint_tapshapes, print_warnings
 from .loggers import stderr_logger
+from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import expand_uri_prefixes
 
 # pylint: disable=unused-argument,no-value-for-parameter

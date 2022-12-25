@@ -37,8 +37,8 @@ class TAPStatementTemplate:
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse(config_dict)
-        self._valueConstraintType_minmaxlength_parse()
-        self._valueConstraintType_minmaxlength_warn_if_not_integer()
+        # self._valueConstraintType_minmaxlength_parse()
+        self._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
         self._valueConstraintType_minmaxinclusive_parse()
         self._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
@@ -116,26 +116,24 @@ class TAPStatementTemplate:
                     )
         return self
 
-    def _valueConstraintType_minmaxlength_parse(self):
-        """valueConstraintType minLength: coerce integer (or return string)."""
-        self.valueConstraintType = self.valueConstraintType.lower()
-        value_constraint = self.valueConstraint
-        if self.valueConstraintType in ("minlength", "maxlength"):
-            if value_constraint:
-                self.valueConstraint = coerce_integer(value_constraint)
-        return self
+    def _valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer(self):
+        """
+        Tries to coerce valueConstraint to integer (or leaves string untouched).
+        Warns if valueConstraint for minLength is not a nonnegative integer.
+        """
+        vctype = self.valueConstraintType.lower()
+        vc = self.valueConstraint = coerce_integer(self.valueConstraint)
+        bad_vc_warning = (
+            f"Value constraint type is {repr(self.valueConstraintType)}, "
+            f"but {repr(self.valueConstraint)} is not a positive integer."
+        )
+        if vctype in ("minlength", "maxlength"):
+            if isinstance(vc, int):
+                if vc < 0:
+                    self.state_warns["valueConstraint"] = bad_vc_warning
+            elif not isinstance(vc, int):
+                self.state_warns["valueConstraint"] = bad_vc_warning
 
-    def _valueConstraintType_minmaxlength_warn_if_not_integer(self):
-        """Warns if valueConstraint minLength not a nonnegative integer."""
-        self.valueConstraintType = self.valueConstraintType.lower()
-        if self.valueConstraintType in ("minlength", "maxlength"):
-            try:
-                int(self.valueConstraint)
-            except (ValueError, TypeError):
-                self.state_warns["valueConstraint"] = (
-                    f"Value constraint type is {repr(self.valueConstraintType)}, "
-                    f"but {repr(self.valueConstraint)} is not an integer."
-                )
         return self
 
     def _valueConstraintType_minmaxinclusive_parse(self):

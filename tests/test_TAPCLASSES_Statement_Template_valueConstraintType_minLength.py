@@ -1,6 +1,6 @@
 """
 Tests for
-- TAPStatementTemplate._valueConstraintType_minmaxlength_parse
+- TAPStatementTemplate._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer
 - Called by sc.normalize()
 """
 
@@ -21,9 +21,9 @@ def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "minlength"
     sc.valueConstraint = "4"
-    sc._valueConstraintType_minmaxlength_parse()
+    assert sc.valueConstraint == "4"
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.valueConstraint == 4
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
@@ -32,9 +32,9 @@ def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "maxlength"
     sc.valueConstraint = "4"
-    sc._valueConstraintType_minmaxlength_parse()
+    assert sc.valueConstraint == "4"
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.valueConstraint == 4
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
     assert not sc.state_warns                         # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
@@ -47,9 +47,8 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_float():
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "minlength"
     sc.valueConstraint = "4.123"
-    sc._valueConstraintType_minmaxlength_parse()
     assert sc.valueConstraint == "4.123"
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.state_warns.get("valueConstraint")
 
     # maxLength
@@ -57,9 +56,8 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_float():
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "maxlength"
     sc.valueConstraint = "4.123"
-    sc._valueConstraintType_minmaxlength_parse()
     assert sc.valueConstraint == "4.123"
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.state_warns.get("valueConstraint")
 
 def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
@@ -70,9 +68,8 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "minlength"
     sc.valueConstraint = "tom@tombaker.org"
-    sc._valueConstraintType_minmaxlength_parse()
     assert sc.valueConstraint == "tom@tombaker.org"
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.state_warns.get("valueConstraint")
     assert "tom@" in sc.state_warns.get("valueConstraint")
 
@@ -81,20 +78,19 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "maxlength"
     sc.valueConstraint = "tom@tombaker.org"
-    sc._valueConstraintType_minmaxlength_parse()
     assert sc.valueConstraint == "tom@tombaker.org"
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.state_warns.get("valueConstraint")
     assert "tom@" in sc.state_warns.get("valueConstraint")
 
 def test_valueConstraintType_minlength_parse_integer_may_be_negative_edge_case():
-    """Edge case: minLength as negative integer. Test for this and issue warning?"""
+    """If minLength is a negative integer, issues warning."""
     sc = TAPStatementTemplate()
     sc.propertyID = "dc:identifier"
     sc.valueConstraintType = "minlength"
     sc.valueConstraint = "-4"
-    sc._valueConstraintType_minmaxlength_parse()
+    assert sc.valueConstraint == "-4"
+    sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.valueConstraint == -4
-    sc._valueConstraintType_minmaxlength_warn_if_not_integer()
-    assert not sc.state_warns                         # Here: no warnings at all, but
-    assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
+    assert sc.state_warns                         # Here: there are warnings...
+    assert sc.state_warns.get("valueConstraint")  # specifically, a warning for...

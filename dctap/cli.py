@@ -96,7 +96,12 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
         y.dump(tapshapes_dict, sys.stdout)
 
     if not (json or yaml):
-        pprint_output = pprint_tapshapes(tapshapes_dict, config_dict)
+        pprint_output = pprint_tapshapes(
+            tapshapes_dict=tapshapes_dict,
+            config_dict=config_dict,
+            shape_class=TAPShape,
+            state_class=TAPStatementTemplate,
+        )
         for line in pprint_output:
             print(line, file=sys.stdout)
         if warnings:

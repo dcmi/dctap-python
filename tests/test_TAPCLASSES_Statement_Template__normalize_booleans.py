@@ -6,7 +6,6 @@ from dctap.config import get_config
 from dctap.tapclasses import TAPStatementTemplate
 from dctap.inspect import pprint_tapshapes
 
-
 def test_mandatory_repeatable_true_given_supported_boolean_values():
     """Literal 'True' (case-insensitive) is a supported Boolean value."""
     sc = TAPStatementTemplate()

@@ -58,22 +58,16 @@ class TAPStatementTemplate:
                     self.state_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
 
     def _normalize_booleans(self):
-        """Tries to coerce values in Boolean fields to 'true' or 'false'."""
-
+        """Coerces supported Boolean values to 'true' or 'false' or leaves unchanged."""
         valid_values_for_true = ["true", "TRUE", "True", "1"]
         valid_values_for_false = ["false", "FALSE", "False", "0"]
-        valid_values = valid_values_for_true + valid_values_for_false
-
-        boolean_elements = {
-            "mandatory": self.mandatory,
-            "repeatable": self.repeatable,
-        }
+        boolean_elements = ["mandatory", "repeatable"]
         for elem in boolean_elements:
             warning_message = f"{repr(elem)} is not a supported Boolean value."
-            if boolean_elements[elem]:
-                if boolean_elements[elem] in valid_values_for_true:
+            if getattr(self, elem):
+                if getattr(self, elem) in valid_values_for_true:
                     setattr(self, elem, "true")
-                elif boolean_elements[elem] in valid_values_for_false:
+                elif getattr(self, elem) in valid_values_for_false:
                     setattr(self, elem, "false")
                 else:
                     self.state_warns[elem] = warning_message

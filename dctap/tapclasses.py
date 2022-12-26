@@ -53,9 +53,9 @@ class TAPStatementTemplate:
             "propertyID": self.propertyID,
             "valueDataType": self.valueDataType,
         }
-        for (elem, field) in elements_that_may_take_uris.items():
-            if field:
-                if not is_uri_or_prefixed_uri(field):
+        for (elem, statefield) in elements_that_may_take_uris.items():
+            if statefield:
+                if not is_uri_or_prefixed_uri(statefield):
                     self.state_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
 
     def _normalize_booleans_mandatory_repeatable(self):
@@ -302,9 +302,9 @@ class TAPShape:
     def _warn_if_value_not_urilike(self):
         """Warns when values of given elements do not look like URIs."""
         elements_that_may_take_uris = {"shapeID": self.shapeID}
-        for (elem, field) in elements_that_may_take_uris.items():
-            if field:
-                if not is_uri_or_prefixed_uri(field):
+        for (elem, shapefield) in elements_that_may_take_uris.items():
+            if shapefield:
+                if not is_uri_or_prefixed_uri(shapefield):
                     self.shape_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
 
     def get_warnings(self):

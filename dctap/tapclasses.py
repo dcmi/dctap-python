@@ -29,13 +29,12 @@ class TAPStatementTemplate:
     def normalize(self, config_dict):
         """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
-        self._normalize_booleans_mandatory_repeatable()
+        self._normalize_booleans()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_pattern_warn_if_used_with_value_shape()
         self._valueConstraintType_iristem_parse()
         self._valueConstraintType_iristem_warn_if_list_items_not_IRIs()
         self._valueConstraintType_languageTag_parse(config_dict)
-        # self._valueConstraintType_minmaxlength_parse()
         self._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
         self._valueConstraintType_minmaxinclusive_parse()
         self._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
@@ -58,36 +57,26 @@ class TAPStatementTemplate:
                 if not is_uri_or_prefixed_uri(statefield):
                     self.state_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
 
-    def _normalize_booleans_mandatory_repeatable(self):
-        """Booleans take true/false (case-insensitive) or 1/0, default None."""
+    def _normalize_booleans(self):
+        """Tries to coerce values in Boolean fields to 'true' or 'false'."""
 
-        valid_values_for_true = ["true", "1"]
-        valid_values_for_false = ["false", "0"]
+        valid_values_for_true = ["true", "TRUE", "True", "1"]
+        valid_values_for_false = ["false", "FALSE", "False", "0"]
         valid_values = valid_values_for_true + valid_values_for_false
 
-        # pylint: disable=singleton-comparison
-        if self.mandatory:
-            mand = self.mandatory.lower()
-            if mand not in valid_values:
-                self.state_warns[
-                    "mandatory"
-                ] = f"{repr(self.mandatory)} is not a supported Boolean value."
-            if mand in valid_values_for_true:
-                self.mandatory = "true"
-            elif mand in valid_values_for_false:
-                self.mandatory = "false"
-
-        if self.repeatable:
-            repeat = self.repeatable.lower()
-            if repeat not in valid_values:
-                self.state_warns[
-                    "repeatable"
-                ] = f"{repr(self.repeatable)} is not a supported Boolean value."
-            if repeat in valid_values_for_true:
-                self.repeatable = "true"
-            elif repeat in valid_values_for_false:
-                self.repeatable = "false"
-
+        boolean_elements = {
+            "mandatory": self.mandatory,
+            "repeatable": self.repeatable,
+        }
+        for elem in boolean_elements:
+            warning_message = f"{repr(elem)} is not a supported Boolean value."
+            if boolean_elements[elem]:
+                if boolean_elements[elem] in valid_values_for_true:
+                    setattr(self, elem, "true")
+                elif boolean_elements[elem] in valid_values_for_false:
+                    setattr(self, elem, "false")
+                else:
+                    self.state_warns[elem] = warning_message
         return self
 
     def _valueConstraintType_iristem_parse(self):

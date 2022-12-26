@@ -29,8 +29,6 @@ class TAPStatementTemplate:
     def normalize(self, config_dict):
         """Normalizes specific fields."""
         # pylint: disable=attribute-defined-outside-init
-        self._warn_if_propertyID_not_IRIlike()
-        self._warn_if_valueDataType_not_IRIlike()
         self._normalize_booleans_mandatory_repeatable()
         self._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
         self._valueConstraintType_pattern_warn_if_used_with_value_shape()
@@ -49,19 +47,16 @@ class TAPStatementTemplate:
         self._parse_elements_configured_as_picklist_elements(config_dict)
         return self
 
-    def _warn_if_propertyID_not_IRIlike(self):
-        """Records warning if propertyID or valueDataType are not IRI-like."""
-        if not is_uri_or_prefixed_uri(self.propertyID):
-            self.state_warns[
-                "propertyID"
-            ] = f"{repr(self.propertyID)} is not an IRI or Compact IRI."
-
-    def _warn_if_valueDataType_not_IRIlike(self):
-        if self.valueDataType:
-            if not is_uri_or_prefixed_uri(self.valueDataType):
-                self.state_warns[
-                    "valueDataType"
-                ] = f"{repr(self.valueDataType)} is not an IRI or Compact IRI."
+    def _warn_if_value_not_urilike(self):
+        """Warns when values of given elements do not look like URIs."""
+        elements_that_may_take_uris = {
+            "propertyID": self.propertyID,
+            "valueDataType": self.valueDataType,
+        }
+        for (elem, field) in elements_that_may_take_uris.items():
+            if field:
+                if not is_uri_or_prefixed_uri(field):
+                    self.state_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
 
     def _normalize_booleans_mandatory_repeatable(self):
         """Booleans take true/false (case-insensitive) or 1/0, default None."""
@@ -295,6 +290,7 @@ class TAPShape:
     def normalize(self, config_dict):
         """Normalize values where required."""
         self._normalize_default_shapeID(config_dict)
+        self._warn_if_value_not_urilike()
         return True
 
     def _normalize_default_shapeID(self, config_dict):
@@ -302,6 +298,14 @@ class TAPShape:
         if not self.shapeID:
             self.shapeID = config_dict.get("default_shape_identifier", "default")
         return self
+
+    def _warn_if_value_not_urilike(self):
+        """Warns when values of given elements do not look like URIs."""
+        elements_that_may_take_uris = {"shapeID": self.shapeID}
+        for (elem, field) in elements_that_may_take_uris.items():
+            if field:
+                if not is_uri_or_prefixed_uri(field):
+                    self.shape_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
 
     def get_warnings(self):
         """Emit warnings dictionary self.shape_warns, populated by normalize() method."""

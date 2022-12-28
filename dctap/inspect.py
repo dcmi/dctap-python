@@ -1,7 +1,7 @@
 """Print CSV contents and warnings."""
 
 import sys
-from .config import get_shems, get_stems
+from .config import get_stems
 from .loggers import stderr_logger
 
 
@@ -11,9 +11,8 @@ def pprint_tapshapes(
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
     # pylint: disable=too-many-branches
 
-    (only_shape_elements, xtra_shape_elements) = get_shems(
-        shape_class=shape_class, config_dict=config_dict
-    )
+    main_shems = config_dict.get("shape_elements")
+    xtra_shems = config_dict.get("extra_shape_elements")
     (only_st_elements, xtra_st_elements) = get_stems(
         state_class=state_class, config_dict=config_dict
     )
@@ -21,13 +20,13 @@ def pprint_tapshapes(
     pprint_output.append("Tabular Application Profile (TAP)")
     for tapshape_dict in tapshapes_dict.get("shapes"):
         pprint_output.append("    Shape")
-        for key in only_shape_elements:
+        for key in main_shems:
             indent08 = 8 * " " + key + " "
             while len(indent08) < 33:
                 indent08 += " "
             if tapshape_dict.get(key):
                 pprint_output.append(indent08 + str(tapshape_dict.get(key)))
-        for key in xtra_shape_elements:
+        for key in xtra_shems:
             indent08 = 8 * " " + "[" + key + "] "
             while len(indent08) < 33:
                 indent08 += " "

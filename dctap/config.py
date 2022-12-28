@@ -4,8 +4,8 @@ import sys
 from dataclasses import asdict
 from pathlib import Path
 
-# pylint: disable=consider-using-from-import
-import ruamel.yaml as yaml
+from ruamel.yaml import YAML, YAMLError
+from ruamel.yaml.scanner import ScannerError
 from .defaults import (
     DEFAULT_CONFIGFILE_NAME,
     DEFAULT_HIDDEN_CONFIGFILE_NAME,
@@ -32,8 +32,9 @@ def get_config(
         bad_form = f"{repr(configfile)} is badly formed: fix, re-generate, or delete."
         config_yaml = Path(configfile).read_text(encoding="UTF-8")
         try:
-            config_read_from_file = yaml.safe_load(config_yaml)
-        except (yaml.YAMLError, yaml.scanner.ScannerError) as error:
+            yaml = YAML(typ='safe', pure=True)
+            config_read_from_file = yaml.load(config_yaml)
+        except (YAMLError, ScannerError) as error:
             raise ConfigError(bad_form) from error
 
         if config_read_from_file:
@@ -62,8 +63,9 @@ def get_config(
     config_dict["extra_element_aliases"] = {}
 
     config_dict.update(elements_dict)
-    if yaml.safe_load(config_yamldoc):
-        config_dict.update(yaml.safe_load(config_yamldoc))
+    yaml = YAML(typ='safe', pure=True)
+    if yaml.load(config_yamldoc):
+        config_dict.update(yaml.load(config_yamldoc))
 
     config_dict_from_file = {}
     if configfile_name:

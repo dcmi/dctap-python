@@ -7,14 +7,23 @@ from dctap.config import get_config
 from dctap.defaults import DEFAULT_CONFIGFILE_NAME
 from dctap.exceptions import ConfigError
 
-NONDEFAULT_CONFIG_YAMLDOC = """\
-default_shape_identifier: "default"
 
-prefixes:
-    ":": "http://example.org/"
-    "dcterms:": "http://purl.org/dc/terms/"
-    "school:": "http://school.example/#"
-"""
+def test_get_config_from_passed_nondefault_yaml_even_if_prefixes_lack_colons():
+    """Prefixes without colons are tolerated in YAML docs but added by get_config."""
+    NONDEFAULT_CONFIG_YAMLDOC = """\
+    default_shape_identifier: "default"
+    prefixes:
+        "": "http://example.org/"
+        "dcterms": "http://purl.org/dc/terms/"
+        "school": "http://school.example/#"
+    """
+    config_dict = get_config(config_yamldoc=NONDEFAULT_CONFIG_YAMLDOC)
+    assert config_dict.get("prefixes")
+    assert config_dict.get("default_shape_identifier")
+    assert ":" in config_dict.get("prefixes")
+    assert "dcterms:" in config_dict.get("prefixes")
+    assert "school:" in config_dict.get("prefixes")
+
 
 def test_get_config_from_builtins():
     """Get config dict from built-in settings."""
@@ -28,19 +37,6 @@ def test_get_config_from_builtins():
     assert "xsd:" in config_dict.get("prefixes")          # built-in default
     assert "school:" not in config_dict.get("prefixes")
 
-def test_get_config_from_default_config_file_if_present(tmp_path):
-    """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""
-    os.chdir(tmp_path)
-    Path(DEFAULT_CONFIGFILE_NAME).write_text(NONDEFAULT_CONFIG_YAMLDOC)
-    config_dict = get_config()
-    assert config_dict.get("prefixes")                    # here: from dctap.yaml
-    assert config_dict.get("default_shape_identifier")
-    assert config_dict.get("csv_elements")                # computed
-    assert config_dict.get("shape_elements")              # computed
-    assert config_dict.get("statement_template_elements") # computed
-    assert config_dict.get("element_aliases")             # asserted/computed
-    assert config_dict.get("value_node_types") is None
-    assert "school:" in config_dict.get("prefixes")
 
 def test_get_config_from_default_config_file_even_if_empty(tmp_path):
     """Get well-formed config dict even if config file is empty."""
@@ -56,18 +52,49 @@ def test_get_config_from_default_config_file_even_if_empty(tmp_path):
     assert config_dict.get("value_node_types") is None
     assert "school:" not in config_dict.get("prefixes")
 
-def test_get_config_from_nondefault_yaml(tmp_path):
+
+def test_get_config_from_default_config_file_if_present(tmp_path):
+    """Get config dict from config file DEFAULT_CONFIGFILE_NAME if present."""
+    os.chdir(tmp_path)
+    Path(DEFAULT_CONFIGFILE_NAME).write_text("""\
+    default_shape_identifier: "default"
+    prefixes:
+        ":": "http://example.org/"
+        "dcterms:": "http://purl.org/dc/terms/"
+        "school:": "http://school.example/#"
+    """)
+    config_dict = get_config()
+    assert config_dict.get("prefixes")                    # here: from dctap.yaml
+    assert config_dict.get("default_shape_identifier")
+    assert config_dict.get("csv_elements")                # computed
+    assert config_dict.get("shape_elements")              # computed
+    assert config_dict.get("statement_template_elements") # computed
+    assert config_dict.get("element_aliases")             # asserted/computed
+    assert config_dict.get("value_node_types") is None
+    assert "school:" in config_dict.get("prefixes")
+
+
+def test_get_config_from_passed_nondefault_yaml():
     """Get config dict when passed non-default YAML."""
+    NONDEFAULT_CONFIG_YAMLDOC = """\
+    default_shape_identifier: "default"
+    prefixes:
+        ":": "http://example.org/"
+        "dcterms:": "http://purl.org/dc/terms/"
+        "school:": "http://school.example/#"
+    """
     config_dict = get_config(config_yamldoc=NONDEFAULT_CONFIG_YAMLDOC)
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_identifier")
     assert ":" in config_dict.get("prefixes")
+
 
 def test_exit_with_ConfigError_if_configfile_specified_but_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""
     os.chdir(tmp_path)
     with pytest.raises(ConfigError):
         get_config(configfile_name="dctap.yaml")
+
 
 def test_exit_with_ConfigError_if_specified_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if config file specified as argument has bad YAML."""
@@ -78,6 +105,7 @@ def test_exit_with_ConfigError_if_specified_configfile_found_with_bad_yaml(tmp_p
     with pytest.raises(ConfigError):
         get_config(configfile_name=nondefault_configfile_name)
 
+
 def test_exit_with_ConfigError_if_default_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if default config file has bad YAML."""
     os.chdir(tmp_path)
@@ -86,15 +114,16 @@ def test_exit_with_ConfigError_if_default_configfile_found_with_bad_yaml(tmp_pat
     with pytest.raises(ConfigError):
         get_config()
 
+
 def test_exit_with_ConfigError_wtf(tmp_path):
     """2022-05-13: Instructive issue with pytest, part I:
 
-    Looks like for this test to succeed, 
-    would need to change away from directory with the bad 
-    config file created in the previous test (above).
+    For this test to succeed, would need to change away from directory with bad 
+    config file created in previous test (above).
     """
     with pytest.raises(ConfigError):
         get_config()
+
 
 def test_extra_shape_elements(tmp_path):
     """2022-05-13: Instructive issue with pytest, part II:

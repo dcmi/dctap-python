@@ -90,8 +90,23 @@ def get_config(
             extras = {}
         config_dict["element_aliases"].update(extras)
 
+    # Ensure that each prefix ends in a colon.
+    config_dict = _add_colons_to_prefixes_if_needed(config_dict)
+
     return config_dict
 
+def _add_colons_to_prefixes_if_needed(config_dict=None):
+    """Reconstitute config_dict.prefixes, ensuring that each prefix ends in colon."""
+    prefixes = config_dict.get("prefixes")
+    new_prefixes = {}
+    if prefixes:
+        for prefix in prefixes:
+            if not prefix.endswith(":"):
+                new_prefixes[prefix + ":"] = prefixes[prefix]
+            else:
+                new_prefixes[prefix] = prefixes[prefix]
+    config_dict["prefixes"] = new_prefixes
+    return config_dict
 
 def get_shems(shape_class=None):
     """List TAP elements supported by given shape class."""

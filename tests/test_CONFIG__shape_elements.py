@@ -8,17 +8,7 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 def test_get_TAPShape_elements_when_no_config_dict_specified():
     """List TAPShape elements (minus shape_warns and state_list)."""
     expected = ['shapeID', 'shapeLabel']
-    assert get_shems(TAPShape)[0] == expected
-
-def test_get_TAPShape_elements_plus_extras_when_config_dict_specified():
-    """List TAPShape elements plus extra shape elements."""
-    expected_main_shems = ["shapeID", "shapeLabel"]
-    expected_xtra_shems = ["closed", "start"]
-    #config_dict = dict(extra_shape_elements=["closed", "start"])
-    config_dict = get_config()
-    config_dict["extra_shape_elements"] = ["closed", "start"]
-    assert get_shems(TAPShape, config_dict)[0] == expected_main_shems
-    assert get_shems(TAPShape, config_dict)[1] == expected_xtra_shems
+    assert get_shems(TAPShape) == expected
 
 def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
     """List TAPStatementTemplate elements (minus state_warns)."""

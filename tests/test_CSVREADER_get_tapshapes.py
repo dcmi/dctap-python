@@ -7,6 +7,7 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 SETTINGS_DICT = get_config()
 
+
 def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     """Lines without shapeID and/or propertyID are ignored."""
     rows = [

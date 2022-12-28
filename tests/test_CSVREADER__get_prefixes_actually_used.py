@@ -28,5 +28,27 @@ def test_get_prefixes_actually_used():
             "note": "Typically: the author.",
         }
     ]
-    expected_prefixes = {":", "dc:", "xsd:", "foaf:"}
+    expected_prefixes = [":", "dc:", "xsd:", "foaf:"]
+    assert sorted(_get_prefixes_actually_used(csvrows)) == sorted(expected_prefixes)
+
+
+def test_get_prefixes_actually_used_even_if_none_used():
+    """Set config_dict.prefixes as empty dict if no prefixes used in TAP."""
+    csvrows = [ 
+        {
+            'shapeID': 'book',
+            'propertyID': 'creator',
+            'valueShape': 'author',
+            'valueDataType': 'integer',
+        }, {
+            'shapeID': '',
+            'propertyID': 'type',
+            'valueConstraint': 'Book',
+        }, {
+            'shapeID': 'author',
+            'propertyID': 'name',
+            "note": "Typically the author.",
+        }
+    ]
+    expected_prefixes = []
     assert _get_prefixes_actually_used(csvrows) == expected_prefixes

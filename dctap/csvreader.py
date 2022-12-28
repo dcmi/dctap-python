@@ -33,7 +33,6 @@ def csvreader(
 
 def _add_namespaces(tapshapes=None, config_dict=None, prefixes_used=None):
     """Adds key 'namespaces' to tapshapes dict."""
-    breakpoint(context=5)
     tapshapes["namespaces"] = {}
     if config_dict.get("prefixes"):
         for prefix in prefixes_used:
@@ -60,11 +59,11 @@ def _get_prefixes_actually_used(csvrows):
             "valueShape",
         ]:
             if row.get(element):
-                pre = re.match(r"(.*:)", row.get(element))
-                if pre:
-                    pre_stripped = pre.group(0).rstrip(":")
-                    prefixes.add(pre_stripped)
-    return prefixes
+                prefix_plus_uri_pair = re.match(r"(.*:)", row.get(element))
+                if prefix_plus_uri_pair:  # there must be at least one
+                    prefix_as_provided = prefix_plus_uri_pair.group(0)
+                    prefixes.add(prefix_as_provided)
+    return list(prefixes)
 
 
 def _get_rows(open_csvfile_obj, config_dict):

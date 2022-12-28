@@ -51,7 +51,13 @@ def _get_prefixes_actually_used(csvrows):
     """@@@"""
     prefixes = set()
     for row in csvrows:
-        for element in ["propertyID", "valueDataType", "shapeID", "valueShape"]:
+        for element in [
+            "shapeID",
+            "propertyID",
+            "valueDataType",
+            "shapeID",
+            "valueShape",
+        ]:
             if row.get(element):
                 pre = re.match(r"(.*:)", row.get(element))
                 if pre:
@@ -137,7 +143,9 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
 
         if sh_id:
             if sh_id not in list(shapes):
-                sh_obj = _mkshape(row_dict=row, config_dict=config_dict, shape_class=shape_class)
+                sh_obj = _mkshape(
+                    row_dict=row, config_dict=config_dict, shape_class=shape_class
+                )
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
                 warns[sh_id] = {}

@@ -43,7 +43,7 @@ def get_config(
 
     elements_dict = {}
     elements_dict["shape_elements"] = get_shems(shape_class)
-    elements_dict["statement_template_elements"] = get_stems(state_class)[0]
+    elements_dict["statement_template_elements"] = get_stems(state_class)
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_template_elements"]
     )
@@ -94,7 +94,7 @@ def get_config(
 
 
 def get_shems(shape_class=None):
-    """List DCTAP elements supported by given shape class."""
+    """List TAP elements supported by given shape class."""
     main_shems = list(asdict(shape_class()))
     main_shems.remove("state_list")
     main_shems.remove("shape_warns")
@@ -102,17 +102,12 @@ def get_shems(shape_class=None):
     return main_shems
 
 
-def get_stems(state_class=None, config_dict=None):
-    """List DCTAP elements supported by statement template class."""
-    only_st_elements = list(asdict(state_class()))
-    only_st_elements.remove("state_warns")
-    only_st_elements.remove("state_extras")
-    extra_st_elements = []
-    if config_dict:
-        if config_dict.get("extra_statement_template_elements"):
-            for extra_element in config_dict.get("extra_statement_template_elements"):
-                extra_st_elements.append(extra_element)
-    return (only_st_elements, extra_st_elements)
+def get_stems(state_class=None):
+    """List TAP elements supported by given statement template class."""
+    main_stems = list(asdict(state_class()))
+    main_stems.remove("state_warns")
+    main_stems.remove("state_extras")
+    return main_stems
 
 
 def write_configfile(

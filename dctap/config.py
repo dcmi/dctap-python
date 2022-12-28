@@ -81,7 +81,7 @@ def get_config(
     # Settings from config file may override defaults.
     config_dict.update(config_dict_from_file)
 
-    # But extra element aliases, if declared, are added to element aliases.
+    # Then extra element aliases, if declared, are added to element aliases.
     extras = config_dict.get("extra_element_aliases")
     if extras:
         try:

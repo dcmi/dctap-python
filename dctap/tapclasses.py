@@ -48,14 +48,14 @@ class TAPStatementTemplate:
 
     def _warn_if_value_not_urilike(self):
         """Warns when values of given elements do not look like URIs."""
-        elements_that_may_take_uris = {
-            "propertyID": self.propertyID,
-            "valueDataType": self.valueDataType,
-        }
-        for (elem, statefield) in elements_that_may_take_uris.items():
-            if statefield:
-                if not is_uri_or_prefixed_uri(statefield):
-                    self.state_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
+        elements_that_may_take_uris = ["propertyID", "valueDataType", "valueShape"]
+        for elem in elements_that_may_take_uris:
+            value = getattr(self, elem)
+            warning = f"Value {repr(value)} does not look like a URI."
+            if value:
+                if not is_uri_or_prefixed_uri(value):
+                    self.state_warns[elem] = warning
+        return self
 
     def _normalize_booleans(self):
         """Coerces supported Boolean values to 'true' or 'false' or leaves unchanged."""
@@ -274,7 +274,7 @@ class TAPShape:
         """Normalize values where required."""
         self._normalize_default_shapeID(config_dict)
         self._warn_if_value_not_urilike()
-        return True
+        return self
 
     def _normalize_default_shapeID(self, config_dict):
         """If shapeID not specified, looks first in config, else sets "default"."""
@@ -284,11 +284,14 @@ class TAPShape:
 
     def _warn_if_value_not_urilike(self):
         """Warns when values of given elements do not look like URIs."""
-        elements_that_may_take_uris = {"shapeID": self.shapeID}
-        for (elem, shapefield) in elements_that_may_take_uris.items():
-            if shapefield:
-                if not is_uri_or_prefixed_uri(shapefield):
-                    self.shape_warns[elem] = f"{repr(elem)} is not IRI or Compact IRI."
+        elements_that_may_take_uris = ["shapeID"]
+        for elem in elements_that_may_take_uris:
+            value = getattr(self, elem)
+            warning = f"Value {repr(value)} does not look like a URI."
+            if value:
+                if not is_uri_or_prefixed_uri(value):
+                    self.shape_warns[elem] = warning
+        return self
 
     def get_warnings(self):
         """Emit warnings dictionary self.shape_warns, populated by normalize() method."""

@@ -6,7 +6,7 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from .config import get_shems, get_stems
+from .config import get_stems
 from .exceptions import DctapError
 from .utils import coerce_concise
 
@@ -201,7 +201,8 @@ def _mkshape(row_dict=None, config_dict=None, shape_class=None):
         Unpopulated instance of shape class, for example:
         TAPShape(shapeID='', state_list=[], shape_warns={}, state_extras={}, ...)
     """
-    (main_shems, xtra_shems) = get_shems(shape_class=shape_class, config_dict=config_dict)
+    main_shems = config_dict.get("shape_elements")
+    xtra_shems = config_dict.get("extra_shape_elements")
     tapshape_obj = shape_class()
     for key in row_dict:
         if key in main_shems:

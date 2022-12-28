@@ -1,21 +1,16 @@
 """Print CSV contents and warnings."""
 
 import sys
-from .config import get_stems
 from .loggers import stderr_logger
 
 
-def pprint_tapshapes(
-    tapshapes_dict=None, config_dict=None, shape_class=None, state_class=None
-):
+def pprint_tapshapes(tapshapes_dict=None, config_dict=None):
     """Pretty-print TAPShape objects to output list, ready for printing to console."""
     # pylint: disable=too-many-branches
-
     main_shems = config_dict.get("shape_elements")
     xtra_shems = config_dict.get("extra_shape_elements")
-    (only_st_elements, xtra_st_elements) = get_stems(
-        state_class=state_class, config_dict=config_dict
-    )
+    main_stems = config_dict.get("statement_template_elements")
+    xtra_stems = config_dict.get("extra_statement_template_elements")
     pprint_output = []
     pprint_output.append("Tabular Application Profile (TAP)")
     for tapshape_dict in tapshapes_dict.get("shapes"):
@@ -35,13 +30,13 @@ def pprint_tapshapes(
 
         for sc_dict in tapshape_dict.get("statement_templates"):
             pprint_output.append("        Statement Template")
-            for key in only_st_elements:
+            for key in main_stems :
                 if sc_dict.get(key):
                     indent12 = 12 * " " + key + " "
                     while len(indent12) < 33:
                         indent12 += " "
                     pprint_output.append(indent12 + str(sc_dict.get(key)))
-            for key in xtra_st_elements:
+            for key in xtra_stems:
                 indent08 = 12 * " " + "[" + key + "] "
                 while len(indent08) < 33:
                     indent08 += " "

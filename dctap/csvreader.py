@@ -6,7 +6,6 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from .config import get_stems
 from .exceptions import DctapError
 from .utils import coerce_concise
 
@@ -118,10 +117,8 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
     except KeyError:
         dshape = "default"
 
-    (main_stems, xtra_stems) = get_stems(
-        state_class=state_class, config_dict=config_dict
-    )
-
+    main_stems = config_dict.get("statement_template_elements")
+    xtra_stems = config_dict.get("extra_statement_template_elements")
     shapes = {}  # dict for shapeID-to-TAPShape_list
     warns = defaultdict(dict)  # dict for shapeID-to-warnings_list
 

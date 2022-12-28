@@ -42,7 +42,7 @@ def get_config(
         return {}
 
     elements_dict = {}
-    elements_dict["shape_elements"] = get_shems(shape_class)[0]
+    elements_dict["shape_elements"] = get_shems(shape_class)
     elements_dict["statement_template_elements"] = get_stems(state_class)[0]
     elements_dict["csv_elements"] = (
         elements_dict["shape_elements"] + elements_dict["statement_template_elements"]
@@ -93,18 +93,13 @@ def get_config(
     return config_dict
 
 
-def get_shems(shape_class=None, config_dict=None):
+def get_shems(shape_class=None):
     """List DCTAP elements supported by given shape class."""
-    only_shape_elements = list(asdict(shape_class()))
-    only_shape_elements.remove("state_list")
-    only_shape_elements.remove("shape_warns")
-    only_shape_elements.remove("shape_extras")
-    extra_shape_elements = []
-    if config_dict:
-        if config_dict.get("extra_shape_elements"):
-            for extra_element in config_dict.get("extra_shape_elements"):
-                extra_shape_elements.append(extra_element)
-    return (only_shape_elements, extra_shape_elements)
+    main_shems = list(asdict(shape_class()))
+    main_shems.remove("state_list")
+    main_shems.remove("shape_warns")
+    main_shems.remove("shape_extras")
+    return main_shems
 
 
 def get_stems(state_class=None, config_dict=None):

@@ -25,14 +25,15 @@ def csvreader(
     else:
         sys.exit("No data to process.")
     tapwarns = {**csvwarns, **tapwarns}
-    tapshapes = _add_namespaces(tapshapes, config_dict, csvrows)
+    prefixes_used = _get_prefixes_actually_used(csvrows)
+    tapshapes = _add_namespaces(tapshapes, config_dict, prefixes_used)
     tapshapes = _add_tapwarns(tapshapes, tapwarns)
     return tapshapes
 
 
-def _add_namespaces(tapshapes=None, config_dict=None, csvrows=None):
+def _add_namespaces(tapshapes=None, config_dict=None, prefixes_used=None):
     """Adds key 'namespaces' to tapshapes dict."""
-    prefixes_used = _get_prefixes_actually_used(csvrows)
+    breakpoint(context=5)
     tapshapes["namespaces"] = {}
     if config_dict.get("prefixes"):
         for prefix in prefixes_used:
@@ -48,7 +49,7 @@ def _add_tapwarns(tapshapes=None, tapwarns=None):
 
 
 def _get_prefixes_actually_used(csvrows):
-    """@@@"""
+    """List strings before colon in values of elements that could take URI prefixes."""
     prefixes = set()
     for row in csvrows:
         for element in [
@@ -61,7 +62,8 @@ def _get_prefixes_actually_used(csvrows):
             if row.get(element):
                 pre = re.match(r"(.*:)", row.get(element))
                 if pre:
-                    prefixes.add(pre.group(0))
+                    pre_stripped = pre.group(0).rstrip(":")
+                    prefixes.add(pre_stripped)
     return prefixes
 
 
@@ -69,7 +71,6 @@ def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
     # pylint: disable=too-many-locals
 
-    # breakpoint(context=5)
     csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]

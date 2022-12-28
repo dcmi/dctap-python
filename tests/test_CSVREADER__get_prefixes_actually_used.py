@@ -28,5 +28,5 @@ def test_get_prefixes_actually_used():
             "note": "Typically: the author.",
         }
     ]
-    expected_prefixes = {":", "dc:", "xsd:", "foaf:"}
+    expected_prefixes = {"", "dc", "xsd", "foaf"}
     assert _get_prefixes_actually_used(csvrows) == expected_prefixes

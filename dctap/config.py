@@ -3,38 +3,34 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from ruamel.yaml import YAML, YAMLError
-from ruamel.yaml.scanner import ScannerError
 from .defaults import CONFIGFILE1, CONFIGFILE2, CONFIG_YAML
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementTemplate
-from .utils import coerce_concise, load_yaml_to_dict
+from .utils import load_yaml_to_dict
 
 
 def config_defaults(
-    shape_class=None,
-    state_class=None,
-    configfile1=None, 
-    configfile2=None, 
-    yamldoc=None
+    shape_class=None, state_class=None, configfile1=None, configfile2=None, yamldoc=None
 ):
+    """Return dict of keyword arguments for passing to get_config()."""
     def decorator(func):
         def wrapper(*args, **kwargs):
-            kwargs['shape_class'] = kwargs.get('shape_class', shape_class)
-            kwargs['state_class'] = kwargs.get('state_class', state_class)
-            kwargs['configfile1'] = kwargs.get('configfile1', configfile1)
-            kwargs['configfile2'] = kwargs.get('configfile2', configfile2)
-            kwargs['yamldoc'] = kwargs.get('yamldoc', yamldoc)
+            kwargs["shape_class"] = kwargs.get("shape_class", shape_class)
+            kwargs["state_class"] = kwargs.get("state_class", state_class)
+            kwargs["configfile1"] = kwargs.get("configfile1", configfile1)
+            kwargs["configfile2"] = kwargs.get("configfile2", configfile2)
+            kwargs["yamldoc"] = kwargs.get("yamldoc", yamldoc)
             return func(*args, **kwargs)
         return wrapper
     return decorator
 
+
 @config_defaults(
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
-    configfile1=CONFIGFILE1, 
-    configfile2=CONFIGFILE2, 
-    yamldoc=CONFIG_YAML
+    configfile1=CONFIGFILE1,
+    configfile2=CONFIGFILE2,
+    yamldoc=CONFIG_YAML,
 )
 def get_config(
     shape_class=None,
@@ -43,18 +39,19 @@ def get_config(
     configfile2=None,
     yamldoc=None,
 ):
+    """Populates config dict:
+    1. Initializes config dict with element lists (computed) and placeholder keys.
+    2. Updates dict from YAML string if passed in with yamldoc, otherwise
+       updates dict from dctap-python built-in CONFIG_YAML.
+    3. Or if config file name is passed in, and file exists, updates dict from file.
+    """
     print(shape_class)
     print(state_class)
     print(configfile1)
     print(configfile2)
     print(yamldoc)
-    """Populates config dict:
 
-    2. Initializes config dict with element lists (computed) and placeholder keys.
-    3. Updates dict from YAML string if passed in with yamldoc, otherwise
-       updates dict from dctap-python built-in CONFIG_YAML.
-    4. Or if config file name is passed in, and file exists, updates dict from file.
-    """
+
 #    #if configfile1 and yamldoc:
 #    #    raise sys.exit("Cannot load config YAML from both string and file.")
 #    config_dict = _initialize_config_dict(shape_class, state_class)
@@ -90,6 +87,7 @@ def get_config(
 #
 #    return config_dict
 
+
 def _initialize_config_dict(shape_class, state_class):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
@@ -110,6 +108,7 @@ def _initialize_config_dict(shape_class, state_class):
     config_dict.update(ems_dict)
     return config_dict
 
+
 def _add_colons_to_prefixes_if_needed(config_dict=None):
     """Reconstitute config_dict.prefixes, ensuring that each prefix ends in colon."""
     prefixes = config_dict.get("prefixes")
@@ -122,6 +121,7 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
                 new_prefixes[prefix] = prefixes[prefix]
     config_dict["prefixes"] = new_prefixes
     return config_dict
+
 
 def get_shems(shape_class=None):
     """List TAP elements supported by given shape class."""

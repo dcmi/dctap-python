@@ -1,0 +1,3 @@
+shapeID,propertyID,valueNodeType,valueDataType,minoccurs,maxoccurs,mininclusive,maxinclusive
+school:Enrollee,ex:hasGuardian,iri,,1,2
+,foaf:age,,xsd:integer,,,13,20

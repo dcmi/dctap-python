@@ -4,7 +4,7 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .defaults import DEFAULT_CONFIGFILE_NAME, DEFAULT_HIDDEN_CONFIGFILE_NAME
+from .defaults import CONFIGFILE1, CONFIGFILE2
 from .config import get_config, write_configfile
 from .csvreader import csvreader
 from .inspect import pprint_tapshapes, print_warnings
@@ -46,9 +46,9 @@ def cli(context):
 def init(context, hidden):
     """Write config file [dctap.yaml]"""
     if hidden:
-        configfile = DEFAULT_HIDDEN_CONFIGFILE_NAME
+        configfile = CONFIGFILE2
     else:
-        configfile = DEFAULT_CONFIGFILE_NAME
+        configfile = CONFIGFILE1
     write_configfile(configfile)
 
 

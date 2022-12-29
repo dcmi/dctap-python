@@ -97,4 +97,4 @@ def test_valueConstraintType_IRIstem_warns_if_not_IRIlike():
 #     """Exit with ConfigError if config file specified as argument is not found."""
 #     os.chdir(tmp_path)
 #     with pytest.raises(ConfigError):
-#         get_config(configfile_name="dctap.yaml")
+#         get_config(configfile1="dctap.yaml")

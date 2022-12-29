@@ -5,13 +5,15 @@ import pytest
 from pathlib import Path
 from dctap.config import get_config
 from dctap.csvreader import csvreader
-from dctap.defaults import DEFAULT_CONFIGFILE_NAME
+from dctap.defaults import CONFIGFILE1
 from dctap.exceptions import ConfigError
 
+
+@pytest.mark.skip
 def test_get_config_file_extra_aliases(tmp_path):
     """@@@@@@."""
     os.chdir(tmp_path)
-    Path(DEFAULT_CONFIGFILE_NAME).write_text("""
+    Path(CONFIGFILE1).write_text("""
     extra_element_aliases:
         "ShapID": "shapeID"
     """)

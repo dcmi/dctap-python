@@ -1,10 +1,10 @@
 """Default settings."""
 
-DEFAULT_CONFIGFILE_NAME = "dctap.yaml"
+CONFIGFILE1 = "dctap.yaml"
 
-DEFAULT_HIDDEN_CONFIGFILE_NAME = ".dctaprc"
+CONFIGFILE2 = ".dctaprc"
 
-DEFAULT_CONFIG_YAML = """### dctap configuration file (in YAML format)
+CONFIG_YAML = """### dctap configuration file (in YAML format)
 
 # See https://dctap-python.readthedocs.io/en/latest/config/
 # for advanced configuration options

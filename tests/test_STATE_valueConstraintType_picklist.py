@@ -10,6 +10,7 @@ from dctap.csvreader import csvreader
 config_dict = get_config()
 
 
+@pytest.mark.skip
 def test_valueConstraintType_picklist_parse():
     """If valueConstraintType picklist, valueConstraint parsed on whitespace."""
     st = TAPStatementTemplate()
@@ -20,6 +21,7 @@ def test_valueConstraintType_picklist_parse():
     assert st.valueConstraint == ["one", "two", "three"]
 
 
+@pytest.mark.skip
 def test_valueConstraintType_picklist_parse_case_insensitive():
     """Value constraint types are case-insensitive."""
     st = TAPStatementTemplate()
@@ -30,6 +32,7 @@ def test_valueConstraintType_picklist_parse_case_insensitive():
     assert st.valueConstraint == ["one", "two", "three"]
 
 
+@pytest.mark.skip
 def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
     """Picklist values are split on List Item Separator - default or configured."""
     config_dict = get_config()
@@ -52,6 +55,7 @@ def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
     assert value_constraint == ["one", "two", "three"]
 
 
+@pytest.mark.skip
 def test_valueConstraintType_picklist_item_separator_pipe(tmp_path):
     """Picklist values are split on pipe character if so configured."""
     config_dict = get_config()

@@ -23,6 +23,7 @@ def test_config_defaults():
         configfile2=None,
         yamldoc=None,
     ):
+        """@@@"""
         values_from_arguments = {}
         values_from_arguments["shape_class"] = shape_class
         values_from_arguments["state_class"] = state_class
@@ -62,6 +63,7 @@ def test_config_defaults_when_passed_constants():
         configfile2=None,
         yamldoc=None,
     ):
+        """@@@"""
         values_from_arguments = {}
         values_from_arguments["shape_class"] = shape_class
         values_from_arguments["state_class"] = state_class
@@ -80,7 +82,7 @@ def test_config_defaults_when_passed_constants():
 
 
 def test_config_defaults_where_some_arguments_override_defaults():
-    """Decorated function called with keyword variables that override defaults."""
+    """Decorated function called with keyword arguments that override defaults."""
     A = "TAP shape"
     B = "TAP statement template"
     C = "dctap.yaml"
@@ -101,6 +103,7 @@ def test_config_defaults_where_some_arguments_override_defaults():
         configfile2=None,
         yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
     ):
+        """@@@"""
         values_from_arguments = {}
         values_from_arguments["shape_class"] = shape_class
         values_from_arguments["state_class"] = state_class
@@ -118,3 +121,23 @@ def test_config_defaults_where_some_arguments_override_defaults():
     assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
 
 
+def test_when_keyword_arguments_dict_passed_as_kwargs():
+    """Args from decorator collected in dict "kwargs" - irrelevant but interesting."""
+    @config_defaults(
+        shape_class="TAP shape",
+        state_class="TAP statement template",
+        configfile1="dctap.yaml",
+        configfile2=".dctaprc",
+        yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
+    )
+    def func_to_be_decorated(**kwargs):
+        """Arguments passed from decorator to function, collected in dict, returned."""
+        return kwargs
+
+    actual_values = func_to_be_decorated()
+
+    assert actual_values["shape_class"] == "TAP shape"
+    assert actual_values["state_class"] == "TAP statement template"
+    assert actual_values["configfile1"] == "dctap.yaml"
+    assert actual_values["configfile2"] == ".dctaprc"
+    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""

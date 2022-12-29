@@ -1,8 +1,33 @@
 """Utilities."""
 
 import re
+from pathlib import Path
+from ruamel.yaml import YAML, YAMLError
+from ruamel.yaml.scanner import ScannerError
 from urllib.parse import urlparse
 from .exceptions import ConfigError
+
+def load_yaml_to_dict(yamlstr=None, yaml_filename=None):
+    """Load YAML from string, Path object, or filename, into Python dict."""
+    yaml = YAML(typ='safe', pure=True)
+    bad_form = f"{repr(yaml_filename)} is badly formed: fix, re-generate, or delete."
+    dup_form = f"Dicts in {repr(yaml_filename)} may not have duplicate keys."
+    if yaml_filename and yamlstr:
+        raise sys.exit("Cannot load YAML from both string and file.")
+    if yaml_filename:
+        yaml_pathobj = Path(yaml_filename)
+        try:
+            yamlstr = yaml_pathobj.read_text(encoding="UTF-8")
+        except FileNotFoundError:
+            raise ConfigError(f"{repr(yaml_filename)} not found.")
+    if yamlstr:
+        try:
+            yaml_as_dict = yaml.load(yamlstr)
+        except (YAMLError, ScannerError) as error:
+            raise ConfigError(bad_form) from error
+    if yaml_as_dict:   # necessary?
+        return yaml_as_dict   # necessary?
+    return {}   # necessary?
 
 
 def coerce_concise(some_str=None):

@@ -4,7 +4,7 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .defaults import CONFIGFILE1, CONFIGFILE2
+from .defaults import CONFIGFILE1
 from .config import get_config, write_configfile
 from .csvreader import csvreader
 from .inspect import pprint_tapshapes, print_warnings
@@ -40,15 +40,11 @@ def cli(context):
 
 
 @cli.command()
-@click.option("--hidden", default=False, help="Write as dot file [.dctaprc]")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(context, hidden):
-    """Write config file [dctap.yaml]"""
-    if hidden:
-        configfile = CONFIGFILE2
-    else:
-        configfile = CONFIGFILE1
+    """Write config file: 'dctap.yaml'."""
+    configfile = CONFIGFILE1
     write_configfile(configfile)
 
 

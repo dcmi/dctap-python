@@ -2,8 +2,6 @@
 
 CONFIGFILE1 = "dctap.yaml"
 
-CONFIGFILE2 = ".dctaprc"
-
 CONFIG_YAML = """### dctap configuration file (in YAML format)
 
 # See https://dctap-python.readthedocs.io/en/latest/config/

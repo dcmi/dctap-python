@@ -147,3 +147,9 @@ def test_extra_shape_elements(tmp_path):
     assert config_dict["shape_elements"] == ["shapeID", "shapeLabel"]
     config_dict["shape_elements"].extend(config_dict["extra_shape_elements"])
     assert config_dict["shape_elements"] == ["shapeID", "shapeLabel", "closed", "start"]
+
+
+# def test_get_config():
+#     """@@@"""
+#     with pytest.raises(ConfigError):
+#         get_config(configfile_name=nondefault_configfile_name)

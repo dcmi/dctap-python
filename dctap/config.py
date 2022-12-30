@@ -3,22 +3,19 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from .defaults import CONFIGFILE1, CONFIGFILE2, CONFIG_YAML
+from .defaults import CONFIGFILE1, CONFIG_YAML
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import load_yaml_to_dict
 
 
-def config_defaults(
-    shape_class=None, state_class=None, configfile1=None, configfile2=None, yamldoc=None
-):
+def config_defaults(shape_class=None, state_class=None, configfile1=None, yamldoc=None):
     """Return dict of keyword arguments for passing to get_config()."""
     def decorator(func):
         def wrapper(*args, **kwargs):
             kwargs["shape_class"] = kwargs.get("shape_class", shape_class)
             kwargs["state_class"] = kwargs.get("state_class", state_class)
             kwargs["configfile1"] = kwargs.get("configfile1", configfile1)
-            kwargs["configfile2"] = kwargs.get("configfile2", configfile2)
             kwargs["yamldoc"] = kwargs.get("yamldoc", yamldoc)
             return func(*args, **kwargs)
         return wrapper
@@ -28,32 +25,25 @@ def config_defaults(
 @config_defaults(
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
-    configfile1=CONFIGFILE1,
-    configfile2=CONFIGFILE2,
     yamldoc=CONFIG_YAML,
+    configfile1=CONFIGFILE1,
 )
 def get_config(
     shape_class=None,
     state_class=None,
     configfile1=None,
-    configfile2=None,
     yamldoc=None,
 ):
     """Populates config dict:
-    1. Initializes config dict with element lists (computed) and placeholder keys.
-    2. Updates dict from YAML string if passed in with yamldoc, otherwise
+    2. Initializes config dict with element lists (computed) and placeholder keys.
+    3. Updates dict from YAML string if passed in with yamldoc, otherwise
        updates dict from dctap-python built-in CONFIG_YAML.
-    3. Or if config file name is passed in, and file exists, updates dict from file.
+    4. Or if config file name is passed in, and file exists, updates dict from file.
     """
-    print(shape_class)
-    print(state_class)
-    print(configfile1)
-    print(configfile2)
-    print(yamldoc)
+    # 1. REVISIT THIS.
+    # if configfile1 and yamldoc:
+    #     raise sys.exit("Cannot load config YAML from both string and file.")
 
-
-#    #if configfile1 and yamldoc:
-#    #    raise sys.exit("Cannot load config YAML from both string and file.")
 #    config_dict = _initialize_config_dict(shape_class, state_class)
 #    if yamldoc:
 #        config_dict.update(load_yaml_to_dict(yamlstr=yamldoc))
@@ -67,8 +57,6 @@ def get_config(
 #            raise ConfigError(f"{repr(configfile1)} not found.") from error
 #    elif Path(CONFIGFILE1).exists():
 #        config_dict_from_file.update(load_yaml_to_dict(CONFIGFILE1))
-#    elif Path(CONFIGFILE2).exists():
-#        config_dict_from_file.update(load_yaml_to_dict(CONFIGFILE2))
 #
 #    # Settings from config file may override defaults.
 #    config_dict.update(config_dict_from_file)

@@ -7,7 +7,7 @@ from pathlib import Path
 from dctap.defaults import dctap_defaults
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
-def default_shapeclass(stateclass=None):
+def default_shapeclass():
     """Passes hard-wired default DCTAP class argument values to decorated function."""
     def decorator(func):
         @wraps(func)
@@ -23,7 +23,7 @@ def default_shapeclass(stateclass=None):
         return wrapper
     return decorator
 
-def default_stateclass(stateclass=None):
+def default_stateclass():
     """Passes hard-wired default DCTAP class argument values to decorated function."""
     def decorator(func):
         @wraps(func)
@@ -39,7 +39,7 @@ def default_stateclass(stateclass=None):
         return wrapper
     return decorator
 
-def default_configfile(configfile=None):
+def default_configfile():
     """Passes hard-wired default configfile argument to decorated function."""
     def decorator(func):
         @wraps(func)

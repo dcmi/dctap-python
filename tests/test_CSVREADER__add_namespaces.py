@@ -13,7 +13,7 @@ import pytest
 from dctap.config import get_config
 from dctap.csvreader import _add_namespaces
 
-NONDEFAULT_CONFIG_YAMLDOC = """\
+NONDEFAULT_CONFIGYAML = """\
 default_shape_identifier: "default"
 
 prefixes:
@@ -32,10 +32,10 @@ def test_get_config_from_default_config_file_if_present():
 
     Args:
     - tapshapes   - takes precomputed dict with one key: 'shapes'
-    - config_dict - computes from NONDEFAULT_CONFIG_YAMLDOC
+    - config_dict - computes from NONDEFAULT_CONFIGYAML
     - csvrows     - takes precomputed list of dicts
     """
-    given_config_dict = get_config(config_yamldoc=NONDEFAULT_CONFIG_YAMLDOC)
+    given_config_dict = get_config(configyaml=NONDEFAULT_CONFIGYAML)
     assert "school:" in given_config_dict.get("prefixes")
 #    assert "ex:" in given_config_dict.get("prefixes")
 #    assert "dct:" in given_config_dict.get("prefixes")

@@ -3,7 +3,7 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from .defaults import CONFIGFILE, CONFIG_YAML
+from .defaults import CONFIGFILE, CONFIGYAML
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import load_yaml_to_dict
@@ -25,7 +25,7 @@ def config_defaults(shape_class=None, state_class=None, configfile=None, yamldoc
 @config_defaults(
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
-    yamldoc=CONFIG_YAML,
+    yamldoc=CONFIGYAML,
     configfile=CONFIGFILE,
 )
 def get_config(
@@ -37,7 +37,7 @@ def get_config(
     """Populates config dict:
     2. Initializes config dict with element lists (computed) and placeholder keys.
     3. Updates dict from YAML string if passed in with yamldoc, otherwise
-       updates dict from dctap-python built-in CONFIG_YAML.
+       updates dict from dctap-python built-in CONFIGYAML.
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
     # 1. REVISIT THIS.
@@ -48,7 +48,7 @@ def get_config(
 #    if yamldoc:
 #        config_dict.update(load_yaml_to_dict(yamlstr=yamldoc))
 #    else:
-#        config_dict.update(load_yaml_to_dict(yamlstr=CONFIG_YAML))
+#        config_dict.update(load_yaml_to_dict(yamlstr=CONFIGYAML))
 #    if configfile:
 #        config_dict_from_file = {}
 #        try:
@@ -128,13 +128,13 @@ def get_stems(state_class=None):
     return main_stems
 
 
-def write_configfile(configfile_name=CONFIGFILE, config_yamldoc=CONFIG_YAML):
+def write_configfile(configfile_name=CONFIGFILE, configyaml=CONFIGYAML):
     """Write initial config file or exit trying."""
     if Path(configfile_name).exists():
         raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")
     try:
         with open(configfile_name, "w", encoding="utf-8") as outfile:
-            outfile.write(config_yamldoc)
+            outfile.write(configyaml)
             print(
                 f"Built-in settings written to {str(configfile_name)} for editing.",
                 file=sys.stderr,

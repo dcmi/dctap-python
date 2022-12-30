@@ -2,7 +2,7 @@
 
 CONFIGFILE = "dctap.yaml"
 
-CONFIG_YAML = """### dctap configuration file (in YAML format)
+CONFIGYAML = """### dctap configuration file (in YAML format)
 
 # See https://dctap-python.readthedocs.io/en/latest/config/
 # for advanced configuration options

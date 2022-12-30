@@ -11,14 +11,14 @@ from dctap.exceptions import ConfigError
 @pytest.mark.skip
 def test_get_config_from_passed_nondefault_yaml_even_if_prefixes_lack_colons():
     """Prefixes without colons are tolerated in YAML docs but added by get_config."""
-    some_config_yamlstring = """\
+    some_configyaml = """\
     default_shape_identifier: "default"
     prefixes:
         "": "http://example.org/"
         "dcterms": "http://purl.org/dc/terms/"
         "school": "http://school.example/#"
     """
-    config_dict = get_config(config_yamldoc=some_config_yamlstring)
+    config_dict = get_config(configyaml=some_configyaml)
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_identifier")
     assert ":" in config_dict.get("prefixes")
@@ -81,14 +81,14 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
 @pytest.mark.skip
 def test_get_config_from_passed_nondefault_yaml():
     """Get config dict when passed non-default YAML."""
-    some_config_yamlstring = """\
+    some_configyaml = """\
     default_shape_identifier: "default"
     prefixes:
         ":": "http://example.org/"
         "dcterms:": "http://purl.org/dc/terms/"
         "school:": "http://school.example/#"
     """
-    config_dict = get_config(config_yamldoc=some_config_yamlstring)
+    config_dict = get_config(configyaml=some_configyaml)
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_identifier")
     assert ":" in config_dict.get("prefixes")
@@ -106,9 +106,9 @@ def test_exit_with_configerror_if_configfile_specified_but_not_found(tmp_path):
 def test_exit_with_configerror_if_specified_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if config file specified as argument has bad YAML."""
     os.chdir(tmp_path)
-    bad_config_yaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
+    bad_configyaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
     nondefault_configfile_name = "dctap_settings.yml"
-    Path(nondefault_configfile_name).write_text(bad_config_yaml)
+    Path(nondefault_configfile_name).write_text(bad_configyaml)
     with pytest.raises(ConfigError):
         get_config(configfile_name=nondefault_configfile_name)
 
@@ -117,8 +117,8 @@ def test_exit_with_configerror_if_specified_configfile_found_with_bad_yaml(tmp_p
 def test_exit_with_ConfigError_if_default_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if default config file has bad YAML."""
     os.chdir(tmp_path)
-    bad_config_yaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
-    Path(CONFIGFILE).write_text(bad_config_yaml)
+    bad_configyaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
+    Path(CONFIGFILE).write_text(bad_configyaml)
     with pytest.raises(ConfigError):
         get_config()
 

@@ -2,6 +2,7 @@
 
 import sys
 from dataclasses import asdict
+from functools import wraps
 from pathlib import Path
 from .defaults import CONFIGFILE, CONFIGYAML
 from .exceptions import ConfigError
@@ -12,6 +13,7 @@ from .utils import load_yaml_to_dict
 def config_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=None):
     """Return dict of keyword arguments for passing to get_config()."""
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             kwargs["shape_class"] = kwargs.get("shape_class", shape_class)
             kwargs["state_class"] = kwargs.get("state_class", state_class)

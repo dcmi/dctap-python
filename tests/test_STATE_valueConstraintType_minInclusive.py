@@ -15,7 +15,7 @@ from dctap.config import get_config
 from dctap.tapclasses import TAPStatementTemplate
 from dctap.csvreader import csvreader
 
-config_dict = get_config()
+# config_dict = get_config()
 
 def test_valueConstraintType_minmaxinclusive_parse():
     """If valueConstraintType minInclusive, valueConstraint must be numeric."""

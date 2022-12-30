@@ -5,6 +5,7 @@ import pytest
 from functools import wraps
 from pathlib import Path
 from dctap.defaults import dctap_defaults
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_dctap_defaults_decorator_defines_default_arguments():
     """Default argument values are hard-wired into the decorator itself."""
@@ -19,8 +20,8 @@ def test_dctap_defaults_decorator_defines_default_arguments():
         return values_from_arguments
 
     actual_values = some_func()
-    assert actual_values["shape_class"] == "TAPShape"
-    assert actual_values["state_class"] == "TAPStatementTemplate"
+    assert actual_values["shape_class"] == TAPShape
+    assert actual_values["state_class"] == TAPStatementTemplate
     assert actual_values["configfile"] == "dctap.yaml"
     assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
 
@@ -45,8 +46,8 @@ def test_decorator_needs_not_support_all_args_of_decorated_function():
         return values_from_arguments
 
     actual_values = some_func()
-    assert actual_values["shape_class"] == "TAPShape"
-    assert actual_values["state_class"] == "TAPStatementTemplate"
+    assert actual_values["shape_class"] == TAPShape
+    assert actual_values["state_class"] == TAPStatementTemplate
     assert actual_values["configfile"] == "dctap.yaml"
     assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
     assert actual_values["foobar"] == "ARGUMENT UNSUPPORTED BY DECORATOR"

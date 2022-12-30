@@ -7,6 +7,10 @@ from pathlib import Path
 from dctap.defaults import dctap_defaults
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
+#################
+# @dctap_defaults
+#################
+
 def test_dctap_defaults_decorator_defines_default_arguments():
     """Default argument values are hard-wired into the decorator itself."""
     @dctap_defaults()

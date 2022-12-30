@@ -4,92 +4,19 @@ import os
 import pytest
 from functools import wraps
 from pathlib import Path
-from dctap.config import config_defaults
 
-def dctap_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=None):
-    """Passes hard-wired default argument values to decorated function."""
+def config_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=None):
+    """Return dict of keyword arguments for passing to get_config()."""
     def decorator(func):
         @wraps(func)
-        def wrapper(**kwargs):
-            kwargs["shape_class"] = "TAPShape"
-            kwargs["state_class"] = "TAPStatementTemplate"
-            kwargs["configfile"] = "dctap.yaml"
-            kwargs["yamldoc"] = """prefixes:\n "ex:": "http://example.org/"\n"""
-            try:
-                return func(**kwargs)
-            except TypeError as te:
-                name = func.__name__
-                deco = dctap_defaults.__name__
-                raise TypeError(f"{name}() got unexpected kwarg from @{deco}") from te
+        def wrapper(*args, **kwargs):
+            kwargs["shape_class"] = kwargs.get("shape_class", shape_class)
+            kwargs["state_class"] = kwargs.get("state_class", state_class)
+            kwargs["configfile"] = kwargs.get("configfile", configfile)
+            kwargs["yamldoc"] = kwargs.get("yamldoc", yamldoc)
+            return func(*args, **kwargs)
         return wrapper
     return decorator
-
-
-def test_dctap_defaults_decorator_defines_default_arguments():
-    """Default argument values are hard-wired into the decorator itself."""
-    @dctap_defaults()
-    def some_func(shape_class=None, state_class=None, configfile=None, yamldoc=None):
-        """@@@"""
-        values_from_arguments = {}
-        values_from_arguments["shape_class"] = shape_class
-        values_from_arguments["state_class"] = state_class
-        values_from_arguments["configfile"] = configfile
-        values_from_arguments["yamldoc"] = yamldoc
-        return values_from_arguments
-
-    actual_values = some_func()
-    assert actual_values["shape_class"] == "TAPShape"
-    assert actual_values["state_class"] == "TAPStatementTemplate"
-    assert actual_values["configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
-
-
-def test_dctap_defaults_decorator_need_not_support_all_args_of_decorated_function():
-    """Decorator needs not support all arguments of functions to be decorated."""
-    @dctap_defaults()
-    def some_func(
-        shape_class=None, 
-        state_class=None, 
-        configfile=None, 
-        yamldoc=None,
-        foobar="ARGUMENT UNSUPPORTED BY DECORATOR",
-    ):
-        """@@@"""
-        values_from_arguments = {}
-        values_from_arguments["shape_class"] = shape_class
-        values_from_arguments["state_class"] = state_class
-        values_from_arguments["configfile"] = configfile
-        values_from_arguments["yamldoc"] = yamldoc
-        values_from_arguments["foobar"] = foobar
-        return values_from_arguments
-
-    actual_values = some_func()
-    assert actual_values["shape_class"] == "TAPShape"
-    assert actual_values["state_class"] == "TAPStatementTemplate"
-    assert actual_values["configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
-    assert actual_values["foobar"] == "ARGUMENT UNSUPPORTED BY DECORATOR"
-
-
-def test_dctap_defaults_function_must_support_all_args_passed_by_decorator():
-    """However, decorated function must support all arguments passed by decorator."""
-    @dctap_defaults()
-    def some_func(
-        shape_class=None, 
-        state_class=None, 
-        configfile=None, 
-    ):
-        """@@@"""
-        values_from_arguments = {}
-        values_from_arguments["shape_class"] = shape_class
-        values_from_arguments["state_class"] = state_class
-        values_from_arguments["configfile"] = configfile
-        values_from_arguments["yamldoc"] = yamldoc
-        values_from_arguments["foobar"] = foobar
-        return values_from_arguments
-
-    with pytest.raises(TypeError):
-        actual_values = some_func()
 
 
 def test_config_defaults_decorator_need_not_pass_all_required_arguments():

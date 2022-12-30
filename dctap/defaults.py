@@ -1,5 +1,7 @@
 """Default settings."""
 
+from functools import wraps
+
 CONFIGFILE = "dctap.yaml"
 
 CONFIGYAML = """### dctap configuration file (in YAML format)
@@ -34,3 +36,24 @@ prefixes:
 #     "Mand": "mandatory"
 #     "Rep": "repeatable"
 """
+
+
+def dctap_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=None):
+    """Passes hard-wired default argument values to decorated function."""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(**kwargs):
+            kwargs["shape_class"] = "TAPShape"
+            kwargs["state_class"] = "TAPStatementTemplate"
+            kwargs["configfile"] = "dctap.yaml"
+            kwargs["yamldoc"] = """prefixes:\n "ex:": "http://example.org/"\n"""
+            try:
+                return func(**kwargs)
+            except TypeError as te:
+                name = func.__name__
+                deco = dctap_defaults.__name__
+                raise TypeError(f"{name}() got unexpected kwarg from @{deco}") from te
+        return wrapper
+    return decorator
+
+

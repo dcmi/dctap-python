@@ -18,28 +18,25 @@ def get_config(
     yamldoc=None,
 ):
     """Populates config dict:
-    2. Initializes config dict with element lists (computed) and placeholder keys.
     3. Updates dict from YAML string if passed in with yamldoc, otherwise
        updates dict from dctap-python built-in CONFIGYAML.
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
-    config_dict = _initialize_config_dict(shape_class, state_class)
+    # 1. Initializes config dict with element lists (computed) and placeholder keys.
+    config_dict = _initialize_config_dict()
+    if yamldoc:
+        dict_from_yamlstr = load_yaml_to_dict(yamlstr=yamldoc)
+        config_dict.update(dict_from_yamlstr)
 
-#    if yamldoc:
-#        config_dict.update(load_yaml_to_dict(yamlstr=yamldoc))
-#    else:
-#        config_dict.update(load_yaml_to_dict(yamlstr=CONFIGYAML))
-#    if configfile:
-#        config_dict_from_file = {}
-#        try:
-#            config_dict_from_file.update(load_yaml_to_dict(configfile))
-#        except FileNotFoundError as error:
-#            raise ConfigError(f"{repr(configfile)} not found.") from error
-#    elif Path(CONFIGFILE).exists():
-#        config_dict_from_file.update(load_yaml_to_dict(CONFIGFILE))
-#
-#    # Settings from config file may override defaults.
-#    config_dict.update(config_dict_from_file)
+    # 2. Settings from configfile, if passed in and file exists, update defaults.
+    if configfile:
+        try:
+            config_dict.update(load_yaml_to_dict(yaml_filename=configfile))
+        except (FileNotFoundError, ConfigError):
+            pass
+
+    return config_dict
+
 #
 #    # Then extra element aliases, if declared, are added to element aliases.
 #    extras = config_dict.get("extra_element_aliases")

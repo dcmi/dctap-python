@@ -45,7 +45,7 @@ def dctap_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=
             kwargs["shape_class"] = TAPShape
             kwargs["state_class"] = TAPStatementTemplate
             kwargs["configfile"] = "dctap.yaml"
-            kwargs["yamldoc"] = """prefixes:\n "ex:": "http://example.org/"\n"""
+            kwargs["yamldoc"] = CONFIGYAML
             try:
                 return func(**kwargs)
             except TypeError as te:

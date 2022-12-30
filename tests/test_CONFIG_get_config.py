@@ -17,7 +17,7 @@ def test_get_config_from_passed_nondefault_yaml_even_if_prefixes_lack_colons():
         "dcterms": "http://purl.org/dc/terms/"
         "school": "http://school.example/#"
     """
-    config_dict = get_config(configyaml=some_configyaml)
+    config_dict = get_config(yamldoc=some_configyaml)
     assert config_dict.get("prefixes")
     assert config_dict.get("default_shape_identifier")
     assert ":" in config_dict.get("prefixes")
@@ -25,7 +25,6 @@ def test_get_config_from_passed_nondefault_yaml_even_if_prefixes_lack_colons():
     assert "school:" in config_dict.get("prefixes")
 
 
-@pytest.mark.skip
 def test_get_config_from_builtins():
     """Get config dict from built-in settings."""
     config_dict = get_config()

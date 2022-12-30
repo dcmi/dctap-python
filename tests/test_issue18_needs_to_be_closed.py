@@ -10,7 +10,6 @@ from tempfile import TemporaryDirectory
 import pytest
 from dctap.config import get_config
 from dctap.csvreader import csvreader, _get_rows
-from dctap.defaults import CONFIGFILE, CONFIGYAML
 
 PHIL_CONFIGYAML = """### dctap configuration file (in YAML format)
 extra_statement_template_elements:

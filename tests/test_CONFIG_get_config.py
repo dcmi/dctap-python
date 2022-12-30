@@ -4,7 +4,6 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config
-from dctap.defaults import CONFIGFILE
 from dctap.exceptions import ConfigError
 
 

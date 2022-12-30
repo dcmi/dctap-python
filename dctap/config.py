@@ -13,8 +13,8 @@ from .utils import load_yaml_to_dict
 @dctap_defaults()
 def get_config(
     hardwired_shapeclass=None,
-    state_class=None,
-    configfile=None,
+    hardwired_stateclass=None,
+    hardwired_configfile=None,
     yamldoc=None,
 ):
     """Populates config dict:
@@ -29,9 +29,9 @@ def get_config(
         config_dict.update(dict_from_yamlstr)
 
     # 2. Settings from configfile, if passed in and file exists, update defaults.
-    if configfile:
+    if hardwired_configfile:
         try:
-            config_dict.update(load_yaml_to_dict(yaml_filename=configfile))
+            config_dict.update(load_yaml_to_dict(yaml_filename=hardwired_configfile))
         except (FileNotFoundError, ConfigError):
             pass
 
@@ -54,12 +54,12 @@ def get_config(
 
 
 @dctap_defaults()
-def _initialize_config_dict(hardwired_shapeclass=None, state_class=None, configfile=None, yamldoc=None):
+def _initialize_config_dict(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, yamldoc=None):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
     ems_dict = {}
     shems = ems_dict["shape_elements"] = get_shems(hardwired_shapeclass)
-    stems = ems_dict["statement_template_elements"] = get_stems(state_class)
+    stems = ems_dict["statement_template_elements"] = get_stems(hardwired_stateclass)
     ems_dict["csv_elements"] = shems + stems
     config_dict["element_aliases"] = {}
     config_dict["element_aliases"].update(_get_aliases_dict(ems_dict["csv_elements"]))
@@ -98,26 +98,26 @@ def get_shems(hardwired_shapeclass=None):
     return main_shems
 
 
-def get_stems(state_class=None):
+def get_stems(hardwired_stateclass=None):
     """List TAP elements supported by given statement template class."""
-    main_stems = list(asdict(state_class()))
+    main_stems = list(asdict(hardwired_stateclass()))
     main_stems.remove("state_warns")
     main_stems.remove("state_extras")
     return main_stems
 
 
 @dctap_defaults()
-def write_configfile(hardwired_shapeclass=None, state_class=None, configfile=None, configyaml=None):
+def write_configfile(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, configyaml=None):
     """Write initial config file or exit trying."""
-    message = f"Built-in settings written to {str(configfile)}."
-    if Path(configfile).exists():
-        raise ConfigError(f"{repr(configfile)} exists - will not overwrite.")
+    message = f"Built-in settings written to {str(hardwired_configfile)}."
+    if Path(hardwired_configfile).exists():
+        raise ConfigError(f"{repr(hardwired_configfile)} exists - will not overwrite.")
     try:
-        with open(configfile, "w", encoding="utf-8") as outfile:
+        with open(hardwired_configfile, "w", encoding="utf-8") as outfile:
             outfile.write(configyaml)
             print(message, file=sys.stderr)
     except FileNotFoundError as error:
-        raise ConfigError(f"{repr(configfile)} not writeable.") from error
+        raise ConfigError(f"{repr(hardwired_configfile)} not writeable.") from error
 
 
 def _get_aliases_dict(csv_elements_list=None):

@@ -66,7 +66,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
         open_csvfile_obj=csvfile_obj,
         config_dict=config_dict,
         hardwired_shapeclass=TAPShape,
-        state_class=TAPStatementTemplate,
+        hardwired_stateclass=TAPStatementTemplate,
     )
 
     if expand_prefixes:

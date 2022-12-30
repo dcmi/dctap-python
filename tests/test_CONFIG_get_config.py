@@ -93,22 +93,22 @@ def test_get_config_from_passed_nondefault_yaml():
 
 
 @pytest.mark.skip
-def test_exit_with_configerror_if_configfile_specified_but_not_found(tmp_path):
+def test_exit_with_configerror_if_my_configfile_specified_but_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""
     os.chdir(tmp_path)
     with pytest.raises(ConfigError):
-        get_config(configfile="dctap.yaml")
+        get_config(my_configfile="dctap.yaml")
 
 
 @pytest.mark.skip
-def test_exit_with_configerror_if_specified_configfile_found_with_bad_yaml(tmp_path):
+def test_exit_with_configerror_if_specified_my_configfile_found_with_bad_yaml(tmp_path):
     """Exit with ConfigError if config file specified as argument has bad YAML."""
     os.chdir(tmp_path)
     bad_configyaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
-    nondefault_configfile_name = "dctap_settings.yml"
-    Path(nondefault_configfile_name).write_text(bad_configyaml)
+    my_configfile = "dctap_settings.yml"
+    Path(my_configfile).write_text(bad_configyaml)
     with pytest.raises(ConfigError):
-        get_config(configfile_name=nondefault_configfile_name)
+        get_config(my_configfile=my_configfile)
 
 
 @pytest.mark.skip

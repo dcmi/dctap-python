@@ -11,7 +11,7 @@ from .utils import coerce_concise
 
 
 def csvreader(
-    open_csvfile_obj=None, config_dict=None, hardwired_shapeclass=None, state_class=None
+    open_csvfile_obj=None, config_dict=None, hardwired_shapeclass=None, hardwired_stateclass=None
 ):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
@@ -20,7 +20,7 @@ def csvreader(
             rows=csvrows,
             config_dict=config_dict,
             hardwired_shapeclass=hardwired_shapeclass,
-            state_class=state_class,
+            hardwired_stateclass=hardwired_stateclass,
         )
     else:
         sys.exit("No data to process.")
@@ -112,7 +112,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(rows=None, config_dict=None, hardwired_shapeclass=None, state_class=None):
+def _get_tapshapes(rows=None, config_dict=None, hardwired_shapeclass=None, hardwired_stateclass=None):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
@@ -161,7 +161,7 @@ def _get_tapshapes(rows=None, config_dict=None, hardwired_shapeclass=None, state
         if not row.get("propertyID"):
             continue
 
-        st_obj = state_class()
+        st_obj = hardwired_stateclass()
         for col in row:
             if col in main_stems:
                 setattr(st_obj, col, row[col])

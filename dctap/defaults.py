@@ -1,6 +1,7 @@
 """Default settings."""
 
 from functools import wraps
+from .tapclasses import TAPShape, TAPStatementTemplate
 
 CONFIGYAML = """### dctap configuration file (in YAML format)
 
@@ -41,8 +42,8 @@ def dctap_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=
     def decorator(func):
         @wraps(func)
         def wrapper(**kwargs):
-            kwargs["shape_class"] = "TAPShape"
-            kwargs["state_class"] = "TAPStatementTemplate"
+            kwargs["shape_class"] = TAPShape
+            kwargs["state_class"] = TAPStatementTemplate
             kwargs["configfile"] = "dctap.yaml"
             kwargs["yamldoc"] = """prefixes:\n "ex:": "http://example.org/"\n"""
             try:

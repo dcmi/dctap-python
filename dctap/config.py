@@ -23,11 +23,8 @@ def get_config(
        updates dict from dctap-python built-in CONFIGYAML.
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
-    # 1. REVISIT THIS.
-    # if configfile and yamldoc:
-    #     raise sys.exit("Cannot load config YAML from both string and file.")
+    config_dict = _initialize_config_dict(shape_class, state_class)
 
-#    config_dict = _initialize_config_dict(shape_class, state_class)
 #    if yamldoc:
 #        config_dict.update(load_yaml_to_dict(yamlstr=yamldoc))
 #    else:
@@ -59,7 +56,8 @@ def get_config(
 #    return config_dict
 
 
-def _initialize_config_dict(shape_class, state_class):
+@dctap_defaults()
+def _initialize_config_dict(shape_class=None, state_class=None, configfile=None, yamldoc=None):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
     ems_dict = {}

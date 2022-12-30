@@ -50,4 +50,4 @@ def test_initialize_config_dict():
 										 'valueShape',
 										 'note']
 	}
-	assert _initialize_config_dict(TAPShape, TAPStatementTemplate) == expected_output
+	assert _initialize_config_dict() == expected_output

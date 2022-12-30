@@ -10,43 +10,43 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 def test_dctap_defaults_decorator_defines_default_arguments():
     """Default argument values are hard-wired into the decorator itself."""
     @dctap_defaults()
-    def some_func(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, yamldoc=None):
+    def some_func(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
         """@@@"""
         values_from_arguments = {}
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         return values_from_arguments
 
     actual_values = some_func()
     assert actual_values["hardwired_shapeclass"] == TAPShape
     assert actual_values["hardwired_stateclass"] == TAPStatementTemplate
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"]
+    assert actual_values["hardwired_yamldoc"]
 
 
 def test_decorated_function_cannot_be_called_with_args_that_override_decorator():
     """Decorated function cannot be called with args that override decorator."""
     @dctap_defaults()
-    def some_func(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, yamldoc=None):
+    def some_func(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
         """@@@"""
         values_from_arguments = {}
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         return values_from_arguments
 
-    actual_values = some_func(yamldoc="QUUX")
-    assert actual_values["yamldoc"] != "QUUX"
+    actual_values = some_func(hardwired_yamldoc="QUUX")
+    assert actual_values["hardwired_yamldoc"] != "QUUX"
 
 
 ##############################
 # Reference
 ##############################
 
-def config_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, yamldoc=None):
+def config_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
     """Return dict of keyword arguments for passing to get_config()."""
     def decorator(func):
         @wraps(func)
@@ -54,7 +54,7 @@ def config_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwi
             kwargs["hardwired_shapeclass"] = kwargs.get("hardwired_shapeclass", hardwired_shapeclass)
             kwargs["hardwired_stateclass"] = kwargs.get("hardwired_stateclass", hardwired_stateclass)
             kwargs["hardwired_configfile"] = kwargs.get("hardwired_configfile", hardwired_configfile)
-            kwargs["yamldoc"] = kwargs.get("yamldoc", yamldoc)
+            kwargs["hardwired_yamldoc"] = kwargs.get("hardwired_yamldoc", hardwired_yamldoc)
             return func(*args, **kwargs)
         return wrapper
     return decorator
@@ -71,21 +71,21 @@ def test_config_defaults_decorator_need_not_pass_all_required_arguments():
         hardwired_shapeclass=None,
         hardwired_stateclass=None,
         hardwired_configfile=None,
-        yamldoc=None,
+        hardwired_yamldoc=None,
     ):
         """@@@"""
         values_from_arguments = {}
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         return values_from_arguments
 
     actual_values = func_to_be_decorated()
     assert actual_values["hardwired_shapeclass"] == "TAPShape"
     assert actual_values["hardwired_stateclass"] == "TAPStatementTemplate"
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == None
+    assert actual_values["hardwired_yamldoc"] == None
 
 
 def test_config_defaults():
@@ -94,27 +94,27 @@ def test_config_defaults():
         hardwired_shapeclass="TAP shape",
         hardwired_stateclass="TAP statement template",
         hardwired_configfile="dctap.yaml",
-        yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
+        hardwired_yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
     )
     def func_to_be_decorated(
         hardwired_shapeclass=None,
         hardwired_stateclass=None,
         hardwired_configfile=None,
-        yamldoc=None,
+        hardwired_yamldoc=None,
     ):
         """@@@"""
         values_from_arguments = {}
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         return values_from_arguments
 
     actual_values = func_to_be_decorated()
     assert actual_values["hardwired_shapeclass"] == "TAP shape"
     assert actual_values["hardwired_stateclass"] == "TAP statement template"
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
+    assert actual_values["hardwired_yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
 
 
 def test_config_defaults_when_passed_constants():
@@ -129,27 +129,27 @@ def test_config_defaults_when_passed_constants():
         hardwired_shapeclass=A,
         hardwired_stateclass=B,
         hardwired_configfile=C,
-        yamldoc=E
+        hardwired_yamldoc=E
     )
     def func_to_be_decorated(
         hardwired_shapeclass=None,
         hardwired_stateclass=None,
         hardwired_configfile=None,
-        yamldoc=None,
+        hardwired_yamldoc=None,
     ):
         """@@@"""
         values_from_arguments = {}
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         return values_from_arguments
 
     actual_values = func_to_be_decorated()
     assert actual_values["hardwired_shapeclass"] == "TAP shape"
     assert actual_values["hardwired_stateclass"] == "TAP statement template"
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
+    assert actual_values["hardwired_yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
 
 
 def test_config_defaults_where_some_arguments_override_defaults():
@@ -164,27 +164,27 @@ def test_config_defaults_where_some_arguments_override_defaults():
         hardwired_shapeclass=A,
         hardwired_stateclass=B,
         hardwired_configfile=C,
-        yamldoc=E
+        hardwired_yamldoc=E
     )
     def func_to_be_decorated(
         hardwired_shapeclass=None,
         hardwired_stateclass=None,
         hardwired_configfile=None,
-        yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
+        hardwired_yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
     ):
         """@@@"""
         values_from_arguments = {}
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         return values_from_arguments
 
     actual_values = func_to_be_decorated()
     assert actual_values["hardwired_shapeclass"] == "TAP shape"
     assert actual_values["hardwired_stateclass"] == "TAP statement template"
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
+    assert actual_values["hardwired_yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
 
 
 def test_when_keyword_arguments_dict_passed_as_kwargs():
@@ -193,7 +193,7 @@ def test_when_keyword_arguments_dict_passed_as_kwargs():
         hardwired_shapeclass="TAP shape",
         hardwired_stateclass="TAP statement template",
         hardwired_configfile="dctap.yaml",
-        yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
+        hardwired_yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
     )
     def func_to_be_decorated(**kwargs):
         """Arguments passed from decorator to function, collected in dict, returned."""
@@ -203,7 +203,7 @@ def test_when_keyword_arguments_dict_passed_as_kwargs():
     assert actual_values["hardwired_shapeclass"] == "TAP shape"
     assert actual_values["hardwired_stateclass"] == "TAP statement template"
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
+    assert actual_values["hardwired_yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
 
 
 def test_config_defaults_decorator_needs_not_support_all_args_of_decorated_function():
@@ -212,13 +212,13 @@ def test_config_defaults_decorator_needs_not_support_all_args_of_decorated_funct
         hardwired_shapeclass="TAP shape",
         hardwired_stateclass="TAP statement template",
         hardwired_configfile="dctap.yaml",
-        yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
+        hardwired_yamldoc="""prefixes:\n "ex:": "http://example.org/"\n"""
     )
     def some_func(
         hardwired_shapeclass=None, 
         hardwired_stateclass=None, 
         hardwired_configfile=None, 
-        yamldoc=None,
+        hardwired_yamldoc=None,
         foobar="ARGUMENT UNSUPPORTED BY DECORATOR",
     ):
         """@@@"""
@@ -226,7 +226,7 @@ def test_config_defaults_decorator_needs_not_support_all_args_of_decorated_funct
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         values_from_arguments["foobar"] = foobar
         return values_from_arguments
 
@@ -234,7 +234,7 @@ def test_config_defaults_decorator_needs_not_support_all_args_of_decorated_funct
     assert actual_values["hardwired_shapeclass"] == "TAP shape"
     assert actual_values["hardwired_stateclass"] == "TAP statement template"
     assert actual_values["hardwired_configfile"] == "dctap.yaml"
-    assert actual_values["yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
+    assert actual_values["hardwired_yamldoc"] == """prefixes:\n "ex:": "http://example.org/"\n"""
     assert actual_values["foobar"] == "ARGUMENT UNSUPPORTED BY DECORATOR"
 
 def test_dctap_defaults_function_must_support_all_args_passed_by_decorator(capsys):
@@ -252,7 +252,7 @@ def test_dctap_defaults_function_must_support_all_args_passed_by_decorator(capsy
         values_from_arguments["hardwired_shapeclass"] = hardwired_shapeclass
         values_from_arguments["hardwired_stateclass"] = hardwired_stateclass
         values_from_arguments["hardwired_configfile"] = hardwired_configfile
-        values_from_arguments["yamldoc"] = yamldoc
+        values_from_arguments["hardwired_yamldoc"] = hardwired_yamldoc
         values_from_arguments["foobar"] = foobar
         return values_from_arguments
 

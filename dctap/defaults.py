@@ -37,7 +37,7 @@ prefixes:
 """
 
 
-def dctap_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, yamldoc=None):
+def dctap_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
     """Passes hard-wired default argument values to decorated function."""
     def decorator(func):
         @wraps(func)
@@ -45,7 +45,7 @@ def dctap_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwir
             kwargs["hardwired_shapeclass"] = TAPShape
             kwargs["hardwired_stateclass"] = TAPStatementTemplate
             kwargs["hardwired_configfile"] = "dctap.yaml"
-            kwargs["yamldoc"] = CONFIGYAML
+            kwargs["hardwired_yamldoc"] = CONFIGYAML
             try:
                 return func(**kwargs)
             except TypeError as te:

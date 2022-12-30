@@ -15,17 +15,17 @@ def get_config(
     hardwired_shapeclass=None,
     hardwired_stateclass=None,
     hardwired_configfile=None,
-    yamldoc=None,
+    hardwired_yamldoc=None,
 ):
     """Populates config dict:
-    3. Updates dict from YAML string if passed in with yamldoc, otherwise
+    3. Updates dict from YAML string if passed in with hardwired_yamldoc, otherwise
        updates dict from dctap-python built-in CONFIGYAML.
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
     # 1. Initializes config dict with element lists (computed) and placeholder keys.
     config_dict = _initialize_config_dict()
-    if yamldoc:
-        dict_from_yamlstr = load_yaml_to_dict(yamlstr=yamldoc)
+    if hardwired_yamldoc:
+        dict_from_yamlstr = load_yaml_to_dict(yamlstr=hardwired_yamldoc)
         config_dict.update(dict_from_yamlstr)
 
     # 2. Settings from configfile, if passed in and file exists, update defaults.
@@ -54,7 +54,7 @@ def get_config(
 
 
 @dctap_defaults()
-def _initialize_config_dict(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, yamldoc=None):
+def _initialize_config_dict(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
     ems_dict = {}

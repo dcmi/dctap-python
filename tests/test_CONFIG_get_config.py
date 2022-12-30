@@ -4,7 +4,7 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config
-from dctap.defaults import CONFIGFILE1
+from dctap.defaults import CONFIGFILE
 from dctap.exceptions import ConfigError
 
 
@@ -44,7 +44,7 @@ def test_get_config_from_builtins():
 def test_get_config_from_default_config_file_even_if_empty(tmp_path):
     """Get well-formed config dict even if config file is empty."""
     os.chdir(tmp_path)
-    Path(CONFIGFILE1).write_text("""###""")
+    Path(CONFIGFILE).write_text("""###""")
     config_dict = get_config()
     assert config_dict.get("prefixes")                    # here: built-in defaults
     assert config_dict.get("default_shape_identifier")
@@ -58,9 +58,9 @@ def test_get_config_from_default_config_file_even_if_empty(tmp_path):
 
 @pytest.mark.skip
 def test_get_config_from_default_config_file_if_present(tmp_path):
-    """Get config dict from config file CONFIGFILE1 if present."""
+    """Get config dict from config file CONFIGFILE if present."""
     os.chdir(tmp_path)
-    Path(CONFIGFILE1).write_text("""\
+    Path(CONFIGFILE).write_text("""\
     default_shape_identifier: "default"
     prefixes:
         ":": "http://example.org/"
@@ -99,7 +99,7 @@ def test_exit_with_configerror_if_configfile_specified_but_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""
     os.chdir(tmp_path)
     with pytest.raises(ConfigError):
-        get_config(configfile1="dctap.yaml")
+        get_config(configfile="dctap.yaml")
 
 
 @pytest.mark.skip
@@ -118,7 +118,7 @@ def test_exit_with_ConfigError_if_default_configfile_found_with_bad_yaml(tmp_pat
     """Exit with ConfigError if default config file has bad YAML."""
     os.chdir(tmp_path)
     bad_config_yaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
-    Path(CONFIGFILE1).write_text(bad_config_yaml)
+    Path(CONFIGFILE).write_text(bad_config_yaml)
     with pytest.raises(ConfigError):
         get_config()
 

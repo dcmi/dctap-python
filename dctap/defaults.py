@@ -1,6 +1,6 @@
 """Default settings."""
 
-CONFIGFILE1 = "dctap.yaml"
+CONFIGFILE = "dctap.yaml"
 
 CONFIG_YAML = """### dctap configuration file (in YAML format)
 

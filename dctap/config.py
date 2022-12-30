@@ -3,19 +3,19 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from .defaults import CONFIGFILE1, CONFIG_YAML
+from .defaults import CONFIGFILE, CONFIG_YAML
 from .exceptions import ConfigError
 from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import load_yaml_to_dict
 
 
-def config_defaults(shape_class=None, state_class=None, configfile1=None, yamldoc=None):
+def config_defaults(shape_class=None, state_class=None, configfile=None, yamldoc=None):
     """Return dict of keyword arguments for passing to get_config()."""
     def decorator(func):
         def wrapper(*args, **kwargs):
             kwargs["shape_class"] = kwargs.get("shape_class", shape_class)
             kwargs["state_class"] = kwargs.get("state_class", state_class)
-            kwargs["configfile1"] = kwargs.get("configfile1", configfile1)
+            kwargs["configfile"] = kwargs.get("configfile", configfile)
             kwargs["yamldoc"] = kwargs.get("yamldoc", yamldoc)
             return func(*args, **kwargs)
         return wrapper
@@ -26,12 +26,12 @@ def config_defaults(shape_class=None, state_class=None, configfile1=None, yamldo
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
     yamldoc=CONFIG_YAML,
-    configfile1=CONFIGFILE1,
+    configfile=CONFIGFILE,
 )
 def get_config(
     shape_class=None,
     state_class=None,
-    configfile1=None,
+    configfile=None,
     yamldoc=None,
 ):
     """Populates config dict:
@@ -41,7 +41,7 @@ def get_config(
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
     # 1. REVISIT THIS.
-    # if configfile1 and yamldoc:
+    # if configfile and yamldoc:
     #     raise sys.exit("Cannot load config YAML from both string and file.")
 
 #    config_dict = _initialize_config_dict(shape_class, state_class)
@@ -49,14 +49,14 @@ def get_config(
 #        config_dict.update(load_yaml_to_dict(yamlstr=yamldoc))
 #    else:
 #        config_dict.update(load_yaml_to_dict(yamlstr=CONFIG_YAML))
-#    if configfile1:
+#    if configfile:
 #        config_dict_from_file = {}
 #        try:
-#            config_dict_from_file.update(load_yaml_to_dict(configfile1))
+#            config_dict_from_file.update(load_yaml_to_dict(configfile))
 #        except FileNotFoundError as error:
-#            raise ConfigError(f"{repr(configfile1)} not found.") from error
-#    elif Path(CONFIGFILE1).exists():
-#        config_dict_from_file.update(load_yaml_to_dict(CONFIGFILE1))
+#            raise ConfigError(f"{repr(configfile)} not found.") from error
+#    elif Path(CONFIGFILE).exists():
+#        config_dict_from_file.update(load_yaml_to_dict(CONFIGFILE))
 #
 #    # Settings from config file may override defaults.
 #    config_dict.update(config_dict_from_file)
@@ -128,7 +128,7 @@ def get_stems(state_class=None):
     return main_stems
 
 
-def write_configfile(configfile_name=CONFIGFILE1, config_yamldoc=CONFIG_YAML):
+def write_configfile(configfile_name=CONFIGFILE, config_yamldoc=CONFIG_YAML):
     """Write initial config file or exit trying."""
     if Path(configfile_name).exists():
         raise ConfigError(f"{repr(configfile_name)} exists - will not overwrite.")

@@ -4,7 +4,7 @@ import sys
 import json as j
 from ruamel.yaml import YAML
 import click
-from .defaults import CONFIGFILE1
+from .defaults import CONFIGFILE
 from .config import get_config, write_configfile
 from .csvreader import csvreader
 from .inspect import pprint_tapshapes, print_warnings
@@ -44,7 +44,7 @@ def cli(context):
 @click.pass_context
 def init(context, hidden):
     """Write config file: 'dctap.yaml'."""
-    configfile = CONFIGFILE1
+    configfile = CONFIGFILE
     write_configfile(configfile)
 
 

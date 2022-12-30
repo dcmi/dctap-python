@@ -12,7 +12,7 @@ from .utils import load_yaml_to_dict
 
 @dctap_defaults()
 def get_config(
-    shape_class=None,
+    hardwired_shapeclass=None,
     state_class=None,
     configfile=None,
     yamldoc=None,
@@ -54,11 +54,11 @@ def get_config(
 
 
 @dctap_defaults()
-def _initialize_config_dict(shape_class=None, state_class=None, configfile=None, yamldoc=None):
+def _initialize_config_dict(hardwired_shapeclass=None, state_class=None, configfile=None, yamldoc=None):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
     ems_dict = {}
-    shems = ems_dict["shape_elements"] = get_shems(shape_class)
+    shems = ems_dict["shape_elements"] = get_shems(hardwired_shapeclass)
     stems = ems_dict["statement_template_elements"] = get_stems(state_class)
     ems_dict["csv_elements"] = shems + stems
     config_dict["element_aliases"] = {}
@@ -89,9 +89,9 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
     return config_dict
 
 
-def get_shems(shape_class=None):
+def get_shems(hardwired_shapeclass=None):
     """List TAP elements supported by given shape class."""
-    main_shems = list(asdict(shape_class()))
+    main_shems = list(asdict(hardwired_shapeclass()))
     main_shems.remove("state_list")
     main_shems.remove("shape_warns")
     main_shems.remove("shape_extras")
@@ -107,7 +107,7 @@ def get_stems(state_class=None):
 
 
 @dctap_defaults()
-def write_configfile(shape_class=None, state_class=None, configfile=None, configyaml=None):
+def write_configfile(hardwired_shapeclass=None, state_class=None, configfile=None, configyaml=None):
     """Write initial config file or exit trying."""
     message = f"Built-in settings written to {str(configfile)}."
     if Path(configfile).exists():

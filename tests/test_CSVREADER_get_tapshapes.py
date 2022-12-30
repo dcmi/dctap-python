@@ -22,7 +22,7 @@ def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     (shapes, warns) = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     assert len(shapes["shapes"]) == 2
@@ -44,7 +44,7 @@ def test_get_tapshapes_two_shapes_declare_on_separate_rows():
     (shapes, warns) = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     assert len(shapes["shapes"]) == 2
@@ -64,7 +64,7 @@ def test_get_tapshapes_shape_elements_declared_on_separate_row():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -85,7 +85,7 @@ def test_get_tapshapes_one_default_shape_with_shapeID_asserted():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -105,7 +105,7 @@ def test_get_tapshapes_one_default_shape_with_shapeID_not_asserted():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -125,7 +125,7 @@ def test_get_tapshapes_two_shapes_first_is_default():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -145,7 +145,7 @@ def test_get_tapshapes_two_shapes_where_rows_are_out_of_order():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -223,7 +223,7 @@ def test_get_tapshapes_two_shapes_spelled_out_entirely():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -263,7 +263,7 @@ def test_get_tapshapes_two_shapes_shapeID_most_recently_used():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]
@@ -298,7 +298,7 @@ def test_get_tapshapes_two_shapes_shapeID_not_always_asserted():
     tapshapes_output = _get_tapshapes(
         rows=rows,
         config_dict=SETTINGS_DICT,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
     expected_shapes = tapshapes_output[0]

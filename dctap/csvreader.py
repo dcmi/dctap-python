@@ -11,7 +11,7 @@ from .utils import coerce_concise
 
 
 def csvreader(
-    open_csvfile_obj=None, config_dict=None, shape_class=None, state_class=None
+    open_csvfile_obj=None, config_dict=None, hardwired_shapeclass=None, state_class=None
 ):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
@@ -19,7 +19,7 @@ def csvreader(
         (tapshapes, tapwarns) = _get_tapshapes(
             rows=csvrows,
             config_dict=config_dict,
-            shape_class=shape_class,
+            hardwired_shapeclass=hardwired_shapeclass,
             state_class=state_class,
         )
     else:
@@ -112,7 +112,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=None):
+def _get_tapshapes(rows=None, config_dict=None, hardwired_shapeclass=None, state_class=None):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
@@ -144,7 +144,7 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
         if sh_id:
             if sh_id not in list(shapes):
                 sh_obj = _mkshape(
-                    row_dict=row, config_dict=config_dict, shape_class=shape_class
+                    row_dict=row, config_dict=config_dict, hardwired_shapeclass=hardwired_shapeclass
                 )
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
@@ -193,7 +193,7 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
     return (shapes_dict, warns_dict)
 
 
-def _mkshape(row_dict=None, config_dict=None, shape_class=None):
+def _mkshape(row_dict=None, config_dict=None, hardwired_shapeclass=None):
     """Populates shape fields of dataclass shape object from dict for one row.
 
     Args:
@@ -208,7 +208,7 @@ def _mkshape(row_dict=None, config_dict=None, shape_class=None):
     """
     main_shems = config_dict.get("shape_elements")
     xtra_shems = config_dict.get("extra_shape_elements")
-    tapshape_obj = shape_class()
+    tapshape_obj = hardwired_shapeclass()
     for key in row_dict:
         if key in main_shems:
             setattr(tapshape_obj, key, row_dict[key])

@@ -65,7 +65,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
     tapshapes_dict = csvreader(
         open_csvfile_obj=csvfile_obj,
         config_dict=config_dict,
-        shape_class=TAPShape,
+        hardwired_shapeclass=TAPShape,
         state_class=TAPStatementTemplate,
     )
 

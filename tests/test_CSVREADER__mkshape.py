@@ -34,7 +34,7 @@ def test_mkshapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path
         "shapeLabel": "Book",
     }
     assert _mkshape(
-        row_dict=one_row, config_dict=config_dict, shape_class=TAPShape
+        row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     ) == TAPShape(
         shapeID=":a", shapeLabel="Book", state_list=[], shape_warns={}, shape_extras={}
     )
@@ -52,7 +52,7 @@ def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
         "closed": False,
         "start": True,
     }
-    assert _mkshape(one_row, config_dict=config_dict, shape_class=TAPShape) == TAPShape(
+    assert _mkshape(one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape) == TAPShape(
         shapeID=":a",
         shapeLabel="Book",
         state_list=[],
@@ -75,7 +75,7 @@ def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
         "start": True,
     }
     assert _mkshape(
-        row_dict=one_row, config_dict=config_dict, shape_class=TAPShape
+        row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     ) == TAPShape(
         shapeID=":a",
         shapeLabel="Book",
@@ -99,7 +99,7 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
         "propertyID": "ex:name",
         "valueNodeType": "literal",
     }
-    shape = _mkshape(row_dict=one_row, config_dict=config_dict, shape_class=TAPShape)
+    shape = _mkshape(row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape)
     assert shape.shapeID == ":a"
     assert shape.shapeLabel == "Book"
     assert shape.shape_warns == {}
@@ -120,7 +120,7 @@ def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path
         "closed": "",
     }
     assert _mkshape(
-        row_dict=one_row, config_dict=config_dict, shape_class=TAPShape
+        row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     ) == TAPShape(
         shapeID=":a",
         shapeLabel="",

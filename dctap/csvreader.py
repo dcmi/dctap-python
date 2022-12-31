@@ -11,7 +11,10 @@ from .utils import coerce_concise
 
 
 def csvreader(
-    open_csvfile_obj=None, config_dict=None, hardwired_shapeclass=None, hardwired_stateclass=None
+    open_csvfile_obj=None,
+    config_dict=None,
+    hardwired_shapeclass=None,
+    hardwired_stateclass=None,
 ):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
@@ -112,7 +115,9 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(rows=None, config_dict=None, hardwired_shapeclass=None, hardwired_stateclass=None):
+def _get_tapshapes(
+    rows=None, config_dict=None, hardwired_shapeclass=None, hardwired_stateclass=None
+):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
@@ -144,7 +149,9 @@ def _get_tapshapes(rows=None, config_dict=None, hardwired_shapeclass=None, hardw
         if sh_id:
             if sh_id not in list(shapes):
                 sh_obj = _mkshape(
-                    row_dict=row, config_dict=config_dict, hardwired_shapeclass=hardwired_shapeclass
+                    row_dict=row,
+                    config_dict=config_dict,
+                    hardwired_shapeclass=hardwired_shapeclass,
                 )
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj

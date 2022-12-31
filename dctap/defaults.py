@@ -1,12 +1,14 @@
 """Default settings."""
 
 from functools import wraps
+import dctap
 from .tapclasses import TAPShape, TAPStatementTemplate
 
-CONFIGYAML = """### dctap configuration file (in YAML format)
 
-# See https://dctap-python.readthedocs.io/en/latest/config/
-# for advanced configuration options
+CONFIGFILE = "dctap.yaml"
+CONFIGYAML = """\
+# dctap configuration file (in YAML format)
+# See https://dctap-python.readthedocs.io/en/latest/config/ for more options
 
 prefixes:
     ":":        "http://example.org/"
@@ -22,37 +24,25 @@ prefixes:
     "skosxl:":  "http://www.w3.org/2008/05/skos-xl#"
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
-
-### Element aliases for shorter, translated, or preferred CSV column names.
-# extra_element_aliases:
-#     "PropID": "propertyID"
-#     "PropLabel": "propertyLabel"
-#     "Value": "valueConstraint"
-#     "ValueType": "valueConstraintType"
-#     "DataType": "valueDataType"
-#     "NodeType": "valueNodeType"
-#     "ShapeRef": "valueShape"
-#     "Mand": "mandatory"
-#     "Rep": "repeatable"
 """
 
-
-def dctap_defaults(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
-    """Passes hard-wired default argument values to decorated function."""
+def dctap_defaults():
+    """Decorator that passes dctap package defaults."""
     def decorator(func):
         @wraps(func)
         def wrapper(**kwargs):
-            kwargs["hardwired_shapeclass"] = TAPShape
-            kwargs["hardwired_stateclass"] = TAPStatementTemplate
-            kwargs["hardwired_configfile"] = "dctap.yaml"
-            kwargs["hardwired_yamldoc"] = CONFIGYAML
-            try:
+            kwargs["shapeclass"] = dctap.tapclasses.TAPShape
+            kwargs["stateclass"] = dctap.tapclasses.TAPStatementTemplate
+            kwargs["configyaml"] = dctap.defaults.CONFIGYAML
+            kwargs["configfile"] = dctap.defaults.CONFIGFILE
+            try:  # if decorated function does not receive defaults in **kwargs
                 return func(**kwargs)
             except TypeError as te:
                 name = func.__name__
                 deco = dctap_defaults.__name__
-                raise TypeError(f"{name}() got unexpected kwarg from @{deco}") from te
+                message = f"@{deco} passed unexpected kwarg 'configfile' to {name}()."
+                raise TypeError(message) 
+            return func(**kwargs)
         return wrapper
     return decorator
-
 

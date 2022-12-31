@@ -11,15 +11,20 @@ from .utils import load_yaml_to_dict
 
 
 @dctap_defaults()
-def get_config(**kwargs):
+def get_config(config_filename=None, config_yamldoc=None, **kwargs):
     """Populates config dict:
     3. Updates dict from YAML string if passed in with configyaml, otherwise
        updates dict from dctap-python built-in CONFIGYAML.
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
+    shapeclass = kwargs["shapeclass"]
+    stateclass = kwargs["stateclass"]
+    configfile = kwargs["configfile"]
+    configyaml = kwargs["configyaml"]
+
     # 1. Initializes config dict with element lists (computed) and placeholder keys.
     config_dict = _initialize_config_dict()
-    if yamldoc:
+    if configyaml:
         dict_from_yamlstr = load_yaml_to_dict(yamlstr=configyaml)
         config_dict.update(dict_from_yamlstr)
 
@@ -51,6 +56,8 @@ def get_config(**kwargs):
 @dctap_defaults()
 def _initialize_config_dict(**kwargs):
     """Initialize config dict with element lists (computed) and placeholder keys."""
+    shapeclass = kwargs["shapeclass"]
+    stateclass = kwargs["stateclass"]
     config_dict = {}
     ems_dict = {}
     shems = ems_dict["shape_elements"] = get_shems(shapeclass)

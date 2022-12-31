@@ -11,27 +11,22 @@ from .utils import load_yaml_to_dict
 
 
 @dctap_defaults()
-def get_config(
-    hardwired_shapeclass=None,
-    hardwired_stateclass=None,
-    hardwired_configfile=None,
-    hardwired_yamldoc=None,
-):
+def get_config(**kwargs):
     """Populates config dict:
-    3. Updates dict from YAML string if passed in with hardwired_yamldoc, otherwise
+    3. Updates dict from YAML string if passed in with configyaml, otherwise
        updates dict from dctap-python built-in CONFIGYAML.
     4. Or if config file name is passed in, and file exists, updates dict from file.
     """
     # 1. Initializes config dict with element lists (computed) and placeholder keys.
     config_dict = _initialize_config_dict()
-    if hardwired_yamldoc:
-        dict_from_yamlstr = load_yaml_to_dict(yamlstr=hardwired_yamldoc)
+    if yamldoc:
+        dict_from_yamlstr = load_yaml_to_dict(yamlstr=configyaml)
         config_dict.update(dict_from_yamlstr)
 
     # 2. Settings from configfile, if passed in and file exists, update defaults.
-    if hardwired_configfile:
+    if configfile:
         try:
-            config_dict.update(load_yaml_to_dict(yaml_filename=hardwired_configfile))
+            config_dict.update(load_yaml_to_dict(yaml_filename=configfile))
         except (FileNotFoundError, ConfigError):
             pass
 
@@ -54,12 +49,12 @@ def get_config(
 
 
 @dctap_defaults()
-def _initialize_config_dict(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, hardwired_yamldoc=None):
+def _initialize_config_dict(**kwargs):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
     ems_dict = {}
-    shems = ems_dict["shape_elements"] = get_shems(hardwired_shapeclass)
-    stems = ems_dict["statement_template_elements"] = get_stems(hardwired_stateclass)
+    shems = ems_dict["shape_elements"] = get_shems(shapeclass)
+    stems = ems_dict["statement_template_elements"] = get_stems(stateclass)
     ems_dict["csv_elements"] = shems + stems
     config_dict["element_aliases"] = {}
     config_dict["element_aliases"].update(_get_aliases_dict(ems_dict["csv_elements"]))
@@ -89,35 +84,35 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
     return config_dict
 
 
-def get_shems(hardwired_shapeclass=None):
+def get_shems(shapeclass=None):
     """List TAP elements supported by given shape class."""
-    main_shems = list(asdict(hardwired_shapeclass()))
+    main_shems = list(asdict(shapeclass()))
     main_shems.remove("state_list")
     main_shems.remove("shape_warns")
     main_shems.remove("shape_extras")
     return main_shems
 
 
-def get_stems(hardwired_stateclass=None):
+def get_stems(stateclass=None):
     """List TAP elements supported by given statement template class."""
-    main_stems = list(asdict(hardwired_stateclass()))
+    main_stems = list(asdict(stateclass()))
     main_stems.remove("state_warns")
     main_stems.remove("state_extras")
     return main_stems
 
 
 @dctap_defaults()
-def write_configfile(hardwired_shapeclass=None, hardwired_stateclass=None, hardwired_configfile=None, configyaml=None):
+def write_configfile(shapeclass=None, stateclass=None, configfile=None, configyaml=None):
     """Write initial config file or exit trying."""
-    message = f"Built-in settings written to {str(hardwired_configfile)}."
-    if Path(hardwired_configfile).exists():
-        raise ConfigError(f"{repr(hardwired_configfile)} exists - will not overwrite.")
+    message = f"Built-in settings written to {str(configfile)}."
+    if Path(configfile).exists():
+        raise ConfigError(f"{repr(configfile)} exists - will not overwrite.")
     try:
-        with open(hardwired_configfile, "w", encoding="utf-8") as outfile:
+        with open(configfile, "w", encoding="utf-8") as outfile:
             outfile.write(configyaml)
             print(message, file=sys.stderr)
     except FileNotFoundError as error:
-        raise ConfigError(f"{repr(hardwired_configfile)} not writeable.") from error
+        raise ConfigError(f"{repr(configfile)} not writeable.") from error
 
 
 def _get_aliases_dict(csv_elements_list=None):

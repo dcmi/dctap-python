@@ -2,11 +2,9 @@
 
 import sys
 from dataclasses import asdict
-from functools import wraps
 from pathlib import Path
 from .defaults import CONFIGYAML, dctap_defaults
 from .exceptions import ConfigError
-from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import load_yaml_to_dict
 
 
@@ -109,17 +107,25 @@ def get_stems(stateclass=None):
 
 
 @dctap_defaults()
-def write_configfile(shapeclass=None, stateclass=None, configfile=None, configyaml=None):
+def write_configfile(config_filename=None, config_yamldoc=None, **kwargs):
     """Write initial config file or exit trying."""
-    message = f"Built-in settings written to {str(configfile)}."
+    shapeclass = kwargs["shapeclass"]
+    stateclass = kwargs["stateclass"]
+    configfile = kwargs["configfile"]
+    configyaml = kwargs["configyaml"]
     if Path(configfile).exists():
-        raise ConfigError(f"{repr(configfile)} exists - will not overwrite.")
+        raise ConfigError(f"'{configfile}' exists - will not overwrite.")
+    if config_filename:
+        configfile = config_filename
+    if config_yamldoc:  # useful for testing
+        configyaml = config_yamldoc
     try:
         with open(configfile, "w", encoding="utf-8") as outfile:
             outfile.write(configyaml)
+            message = f"Settings written to '{configfile}'."
             print(message, file=sys.stderr)
     except FileNotFoundError as error:
-        raise ConfigError(f"{repr(configfile)} not writeable.") from error
+        raise ConfigError(f"'{configfile}' not writeable.") from error
 
 
 def _get_aliases_dict(csv_elements_list=None):

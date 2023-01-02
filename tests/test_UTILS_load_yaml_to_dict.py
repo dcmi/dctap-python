@@ -1,11 +1,9 @@
 """
 Tests utils.load_yaml_to_dict
 
-Args - accepts one of following::
-- yamlstr
+Args - just one of the following (or none):
+- yamlstring
 - yamlfile
-
-Works by 
 """
 
 import os
@@ -15,6 +13,19 @@ from dctap.defaults import CONFIGFILE
 from dctap.exceptions import ConfigError, BadYamlError
 from dctap.utils import load_yaml_to_dict
 
+
+@pytest.mark.done
+def test_return_none_if_yaml_in_configfile_gets_parser_error(tmp_path, capsys):
+    """Return None if given configfile gets YAML parser error."""
+    os.chdir(tmp_path)
+    Path(CONFIGFILE).write_text("""default_shape_identifier: "default"
+    prefixes:
+        ":": "http://example.org/"
+        "dcterms:": "http://purl.org/dc/terms/"
+        "school:": "http://school.example/#"
+    """)
+    assert load_yaml_to_dict(yamlfile=CONFIGFILE) is None
+    assert capsys.readouterr().err == "YAML in 'dctap.yaml' is badly formed.\n"
 
 @pytest.mark.done
 def test_return_none_if_yaml_in_configfile_is_bad(tmp_path):

@@ -31,8 +31,8 @@ def load_yaml_to_dict(yamlstring=None, yamlfile=None):
                 raise ConfigError(f"YAML in '{yamlfile}' is badly formed.") from error
             else:
                 raise ConfigError(f"YAML is badly formed.") from error
-        if dict_from_yamlstring is None:
-            dict_from_yamlstring = {}  # YAML.load() returns None if empty
+        # if dict_from_yamlstring is None:
+        #     dict_from_yamlstring = {}  # YAML.load() returns None if empty
         return dict_from_yamlstring
 
 

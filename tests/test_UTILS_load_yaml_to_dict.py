@@ -16,6 +16,7 @@ from dctap.exceptions import ConfigError
 from dctap.utils import load_yaml_to_dict
 
 
+@pytest.mark.done
 def test_exit_with_filenotfounderror_if_configfile_not_found(tmp_path, capsys):
     """Exit with FileNotFoundError if config file not found."""
     os.chdir(tmp_path)
@@ -25,8 +26,8 @@ def test_exit_with_filenotfounderror_if_configfile_not_found(tmp_path, capsys):
 @pytest.mark.done
 def test_load_yaml_to_dict_from_yamlstring_when_string_empty():
     """But what if the passed YAML string is 'empty'?"""
-    assert load_yaml_to_dict(yamlstring="") == {}
-    assert load_yaml_to_dict(yamlstring="###") == {}
+    assert load_yaml_to_dict(yamlstring="") == None
+    assert load_yaml_to_dict(yamlstring="###") == None
 
 
 @pytest.mark.done

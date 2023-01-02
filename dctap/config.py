@@ -9,46 +9,60 @@ from .utils import load_yaml_to_dict
 
 
 @dctap_defaults()
-def get_config(config_filename=None, config_yamldoc=None, **kwargs):
-    """Populates config dict:
-    3. Updates dict from YAML string if passed in with configyaml, otherwise
-       updates dict from dctap-python built-in CONFIGYAML.
-    4. Or if config file name is passed in, and file exists, updates dict from file.
-    """
-    shapeclass = kwargs["shapeclass"]
+def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
+    """@@@."""
+    shapeclass = kwargs["shapeclass"]  # Any kwarg not listed here is ignored.
     stateclass = kwargs["stateclass"]
     configfile = kwargs["configfile"]
     configyaml = kwargs["configyaml"]
-
-    # 1. Initializes config dict with element lists (computed) and placeholder keys.
     config_dict = _initialize_config_dict()
-    if configyaml:
-        dict_from_yamlstr = load_yaml_to_dict(yamlstr=configyaml)
-        config_dict.update(dict_from_yamlstr)
+    configyaml_from_file = None
+    configdict_from_file = None
 
-    # 2. Settings from configfile, if passed in and file exists, update defaults.
-    if configfile:
+    # Makes no sense to specify two arguments, config_yamlfile and config_yamlstring.
+    if config_yamlfile and config_yamlstring:
+        raise ConfigError("Cannot load YAML from both string and file.")
+
+    # If no arguments passed, try to parse default config file, update config_dict.
+    if not config_yamlstring and not config_yamlfile:
+        if Path(configfile).is_file():  # No need to warn if file does not exist.
+            configyaml_from_file = Path(configfile).read_text()
+        else:
+            configyaml_from_file = configyaml
+
+        if configyaml_from_file is not None:
+            configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
+            if configdict_from_file is not None:  # But YAML contents could be bad.
+                config_dict.update(configdict_from_file)
+
+    # If config_yamlfile was passed, try to read and parse, then update config_dict.
+    if config_yamlfile and not config_yamlstring:
         try:
-            config_dict.update(load_yaml_to_dict(yaml_filename=configfile))
-        except (FileNotFoundError, ConfigError):
-            pass
+            configyaml_from_file = Path(config_yamlfile).read_text()
+        except FileNotFoundError as err:
+            raise ConfigError(f"Config file '{config_yamlfile}' not found.") from err
+        if configyaml_from_file is not None:
+            configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
+            if configdict_from_file is not None:  # But YAML contents could be bad.
+                config_dict.update(configdict_from_file)
+    
+    # If config_yamlstring was passed, try to use it to update config_dict.
+    if config_yamlstring and not config_yamlfile:
+        configdict_from_yamlstring = load_yaml_to_dict(yamlstring=config_yamlstring)
+        if configdict_from_yamlstring is not None:
+            config_dict.update(configdict_from_yamlstring)
 
+    # Extra element aliases, if declared, are added to element aliases.
+    extras = config_dict.get("extra_element_aliases")
+    if extras:
+        try:
+            extras = {coerce_concise(str(k).lower()): v for (k, v) in extras.items()}
+        except AttributeError:
+            extras = {}
+        config_dict["element_aliases"].update(extras)
+
+    config_dict = _add_colons_to_prefixes_if_needed(config_dict)
     return config_dict
-
-#
-#    # Then extra element aliases, if declared, are added to element aliases.
-#    extras = config_dict.get("extra_element_aliases")
-#    if extras:
-#        try:
-#            extras = {coerce_concise(str(k).lower()): v for (k, v) in extras.items()}
-#        except AttributeError:
-#            extras = {}
-#        config_dict["element_aliases"].update(extras)
-#
-#    # Ensure that each prefix ends in a colon.
-#    config_dict = _add_colons_to_prefixes_if_needed(config_dict)
-#
-#    return config_dict
 
 
 @dctap_defaults()
@@ -107,7 +121,7 @@ def get_stems(stateclass=None):
 
 
 @dctap_defaults()
-def write_configfile(config_filename=None, config_yamldoc=None, **kwargs):
+def write_configfile(config_filename=None, config_yamlstring=None, **kwargs):
     """Write initial config file or exit trying."""
     shapeclass = kwargs["shapeclass"]
     stateclass = kwargs["stateclass"]
@@ -117,8 +131,8 @@ def write_configfile(config_filename=None, config_yamldoc=None, **kwargs):
         raise ConfigError(f"'{configfile}' exists - will not overwrite.")
     if config_filename:
         configfile = config_filename
-    if config_yamldoc:  # useful for testing
-        configyaml = config_yamldoc
+    if config_yamlstring:  # useful for testing
+        configyaml = config_yamlstring
     try:
         with open(configfile, "w", encoding="utf-8") as outfile:
             outfile.write(configyaml)

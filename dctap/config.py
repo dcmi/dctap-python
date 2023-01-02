@@ -4,7 +4,7 @@ import sys
 from dataclasses import asdict
 from pathlib import Path
 from .defaults import CONFIGYAML, dctap_defaults
-from .exceptions import ConfigError
+from .exceptions import ConfigError, BadYamlError
 from .utils import load_yaml_to_dict
 
 
@@ -27,13 +27,15 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     if not config_yamlstring and not config_yamlfile:
         if Path(configfile).is_file():  # No need to warn if file does not exist.
             configyaml_from_file = Path(configfile).read_text()
-        else:
-            configyaml_from_file = configyaml
 
-        if configyaml_from_file is not None:
+        if not configyaml_from_file:
+            configyaml_from_file = configyaml
+            configdict_from_file = load_yaml_to_dict(yamlstring=configyaml)
+        else:
             configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
-            if configdict_from_file is not None:  # But YAML contents could be bad.
-                config_dict.update(configdict_from_file)
+            
+        if configdict_from_file is not None:  # But YAML contents could be bad.
+            config_dict.update(configdict_from_file)
 
     # If config_yamlfile was passed, try to read and parse, then update config_dict.
     if config_yamlfile and not config_yamlstring:
@@ -46,8 +48,9 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
             if configdict_from_file is not None:  # But YAML contents could be bad.
                 config_dict.update(configdict_from_file)
     
+    # breakpoint(context=5)
     # If config_yamlstring was passed, try to use it to update config_dict.
-    if config_yamlstring and not config_yamlfile:
+    if config_yamlstring:
         configdict_from_yamlstring = load_yaml_to_dict(yamlstring=config_yamlstring)
         if configdict_from_yamlstring is not None:
             config_dict.update(configdict_from_yamlstring)

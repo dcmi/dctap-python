@@ -6,8 +6,9 @@ from pathlib import Path
 from urllib.parse import urlparse
 from ruamel.yaml import YAML, YAMLError
 from ruamel.yaml.scanner import ScannerError
-from .exceptions import ConfigError
+from .exceptions import ConfigError, BadYamlError
 from .loggers import stderr_logger
+
 
 def load_yaml_to_dict(yamlstring=None, yamlfile=None):
     """Convert YAML from string or file (filename or Path object) into Python dict."""
@@ -19,21 +20,21 @@ def load_yaml_to_dict(yamlstring=None, yamlfile=None):
         try:
             yamlstring = Path(yamlfile).read_text(encoding="UTF-8")
         except FileNotFoundError as e:
-            echo = stderr_logger()
-            echo.warning(f"File '{yamlfile}' not found.")
+            print(f"File '{yamlfile}' not found.", file=sys.stderr)
 
     if yamlstring is not None:
         yaml = YAML(typ='safe', pure=True)
+        # breakpoint(context=5)
         try:
             dict_from_yamlstring = yaml.load(yamlstring)
         except (YAMLError, ScannerError) as error:
+            dict_from_yamlstring = None
             if yamlfile:
-                raise ConfigError(f"YAML in '{yamlfile}' is badly formed.") from error
+                print(f"YAML in '{yamlfile}' is badly formed.", file=sys.stderr)
             else:
-                raise ConfigError(f"YAML is badly formed.") from error
-        # if dict_from_yamlstring is None:
-        #     dict_from_yamlstring = {}  # YAML.load() returns None if empty
-        return dict_from_yamlstring
+                print(f"YAML is badly formed.", file=sys.stderr)
+
+    return dict_from_yamlstring
 
 
 def coerce_concise(some_str=None):

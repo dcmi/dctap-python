@@ -7,27 +7,33 @@ from urllib.parse import urlparse
 from ruamel.yaml import YAML, YAMLError
 from ruamel.yaml.scanner import ScannerError
 from .exceptions import ConfigError
+from .loggers import stderr_logger
 
-def load_yaml_to_dict(yamlstr=None, yaml_filename=None):
-    """Load YAML from string, Path object, or filename, into Python dict."""
-    yaml = YAML(typ='safe', pure=True)
-    bad_form = f"{repr(yaml_filename)} is badly formed: fix, re-generate, or delete."
-    if yaml_filename and yamlstr:
-        raise sys.exit("Cannot load YAML from both string and file.")
-    if yaml_filename:
-        yaml_pathobj = Path(yaml_filename)
+def load_yaml_to_dict(yamlstring=None, yamlfile=None):
+    """Convert YAML from string or file (filename or Path object) into Python dict."""
+    dict_from_yamlstring = {}
+    if yamlfile and yamlstring:
+        raise DctapError("Can load YAML from string or file, but not both.")
+
+    if yamlfile:
         try:
-            yamlstr = yaml_pathobj.read_text(encoding="UTF-8")
+            yamlstring = Path(yamlfile).read_text(encoding="UTF-8")
         except FileNotFoundError as e:
-            raise ConfigError(f"{repr(yaml_filename)} not found.") from e
-    if yamlstr:
+            echo = stderr_logger()
+            echo.warning(f"File '{yamlfile}' not found.")
+
+    if yamlstring is not None:
+        yaml = YAML(typ='safe', pure=True)
         try:
-            yaml_as_dict = yaml.load(yamlstr)
+            dict_from_yamlstring = yaml.load(yamlstring)
         except (YAMLError, ScannerError) as error:
-            raise ConfigError(bad_form) from error
-    if yaml_as_dict:   # necessary?
-        return yaml_as_dict   # necessary?
-    return {}   # necessary?
+            if yamlfile:
+                raise ConfigError(f"YAML in '{yamlfile}' is badly formed.") from error
+            else:
+                raise ConfigError(f"YAML is badly formed.") from error
+        if dict_from_yamlstring is None:
+            dict_from_yamlstring = {}  # YAML.load() returns None if empty
+        return dict_from_yamlstring
 
 
 def coerce_concise(some_str=None):

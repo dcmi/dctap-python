@@ -5,7 +5,7 @@ from dataclasses import asdict
 from pathlib import Path
 from .defaults import CONFIGYAML, dctap_defaults
 from .exceptions import ConfigError, BadYamlError
-from .utils import load_yaml_to_dict
+from .utils import load_yaml_to_dict, coerce_concise
 
 
 @dctap_defaults()

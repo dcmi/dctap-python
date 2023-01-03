@@ -6,8 +6,8 @@ dctap.csvreader._mkshape - from docstring:
     Args:
         tapshape_obj: Unpopulated instance of dctap.tapclasses.TAPShape:
             TAPShape(shapeID='', shapeLabel='', state_list=[], shape_warns={}, shape_extras={})
-        row_dict: Dictionary of all columns headers (keys) and cell values (values) 
-            found in a given row, with no distinction between shape elements and 
+        row_dict: Dictionary of all columns headers (keys) and cell values (values)
+            found in a given row, with no distinction between shape elements and
             statement template elements.
         main_shape_elements: Default TAPClass fields related to shapes.
         xtra_shape_elements: Extra TAPClass fields as per optional config file.
@@ -102,6 +102,7 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
     )
     assert shape.shapeID == ":a"
     assert shape.shapeLabel == "Book"
+    # pylint: disable=use-implicit-booleaness-not-comparison
     assert shape.shape_warns == {}
     assert shape.shape_extras == {"closed": False, "start": True}
     assert shape.state_list == []  # _mkshape() sets shape fields only, not ST fields

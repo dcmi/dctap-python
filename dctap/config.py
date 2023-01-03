@@ -25,7 +25,7 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     # If no arguments passed, try to parse default config file, update config_dict.
     if not config_yamlstring and not config_yamlfile:
         if Path(configfile).is_file():  # No need to warn if file does not exist.
-            configyaml_from_file = Path(configfile).read_text(encoding='utf-8')
+            configyaml_from_file = Path(configfile).read_text(encoding="utf-8")
 
         if not configyaml_from_file:
             configyaml_from_file = configyaml
@@ -39,7 +39,7 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     # If config_yamlfile was passed, try to read and parse, then update config_dict.
     if config_yamlfile and not config_yamlstring:
         try:
-            configyaml_from_file = Path(config_yamlfile).read_text(encoding='utf-8')
+            configyaml_from_file = Path(config_yamlfile).read_text(encoding="utf-8")
         except FileNotFoundError as err:
             raise ConfigError(f"Config file '{config_yamlfile}' not found.") from err
         if configyaml_from_file is not None:

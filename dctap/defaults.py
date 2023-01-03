@@ -3,7 +3,6 @@
 from functools import wraps
 import dctap
 from .exceptions import DecoratorError
-from .tapclasses import TAPShape, TAPStatementTemplate
 
 
 CONFIGFILE = "dctap.yaml"
@@ -30,7 +29,6 @@ prefixes:
 
 def dctap_defaults():
     """Decorator that passes dctap package defaults."""
-
     def decorator(func):
         @wraps(func)
         def wrapper(**kwargs):
@@ -46,7 +44,5 @@ def dctap_defaults():
                 message = f"@{deco} passed a bad 'configfile' kwarg to {name}()."
                 raise DecoratorError(message) from te
             return func(**kwargs)
-
         return wrapper
-
     return decorator

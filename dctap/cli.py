@@ -29,7 +29,6 @@ def cli(context):
     \b
     Write starter config file:
     $ dctap init                           # Write dctap.yaml
-    $ dctap init --hidden                  # Write .dctaprc
     \b
     Show normalized view of TAP:
     $ dctap read x.csv                     # Output as plain text
@@ -93,8 +92,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
 
     if not (json or yaml):
         pprint_output = pprint_tapshapes(
-            tapshapes_dict=tapshapes_dict,
-            config_dict=config_dict
+            tapshapes_dict=tapshapes_dict, config_dict=config_dict
         )
         for line in pprint_output:
             print(line, file=sys.stdout)

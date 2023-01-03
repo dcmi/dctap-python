@@ -1,0 +1,76 @@
+cli.py =============================================
+def cli
+def init
+def read
+
+config.py =============================================
+def get_config
+def _initialize_config_dict
+def _add_colons_to_prefixes_if_needed
+def get_shems
+def get_stems
+def write_configfile
+def _get_aliases_dict
+
+csvreader.py =============================================
+def csvreader
+def _add_namespaces
+def _add_tapwarns
+def _get_prefixes_actually_used
+def _get_rows
+def _get_tapshapes
+def _mkshape
+def _normalize_element_name
+def _simplify
+
+defaults.py =============================================
+def dctap_defaults
+    def decorator
+        def wrapper
+
+inspect.py =============================================
+def pprint_tapshapes
+def print_warnings
+
+loggers.py =============================================
+def stderr_logger
+def warning_logger
+def debug_logger
+
+tapclasses.py =============================================
+class TAPStatementTemplate:
+    def normalize
+    def _warn_if_value_not_urilike
+    def _normalize_booleans
+    def _valueConstraintType_iristem_parse
+    def _valueConstraintType_iristem_warn_if_list_items_not_IRIs
+    def _valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer
+    def _valueConstraintType_minmaxinclusive_parse
+    def _valueConstraintType_minmaxinclusive_warn_if_value_not_numeric
+    def _valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex
+    def _valueConstraintType_pattern_warn_if_used_with_value_shape
+    def _valueConstraintType_languageTag_parse
+    def _valueConstraintType_warn_if_used_without_valueConstraint
+    def _valueConstraintType_picklist_parse
+    def _valueNodeType_is_from_enumerated_list
+    def _valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape
+    def _valueDataType_warn_if_used_with_valueShape
+    def _valueDataType_warn_if_used_with_valueNodeType_IRI
+    def _parse_elements_configured_as_picklist_elements
+    def get_warnings
+class TAPShape:
+    def normalize
+    def _normalize_default_shapeID
+    def _warn_if_value_not_urilike
+    def get_warnings
+
+utils.py =============================================
+def load_yaml_to_dict
+def coerce_concise
+def coerce_integer
+def coerce_numeric
+def expand_uri_prefixes
+def is_uri
+def is_uri_or_prefixed_uri
+def strip_enclosing_angle_brackets
+

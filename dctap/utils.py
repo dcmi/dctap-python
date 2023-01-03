@@ -6,6 +6,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from ruamel.yaml import YAML, YAMLError
 from ruamel.yaml.scanner import ScannerError
+from ruamel.yaml.parser import ParserError
 from .exceptions import ConfigError, BadYamlError
 from .loggers import stderr_logger
 
@@ -24,10 +25,9 @@ def load_yaml_to_dict(yamlstring=None, yamlfile=None):
 
     if yamlstring is not None:
         yaml = YAML(typ='safe', pure=True)
-        # breakpoint(context=5)
         try:
             dict_from_yamlstring = yaml.load(yamlstring)
-        except (YAMLError, ScannerError) as error:
+        except (YAMLError, ScannerError, ParserError) as error:
             dict_from_yamlstring = None
             if yamlfile:
                 print(f"YAML in '{yamlfile}' is badly formed.", file=sys.stderr)

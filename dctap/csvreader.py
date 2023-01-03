@@ -100,7 +100,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     csv_warns = defaultdict(dict)
     for column in new_header_line_list:
         if column.lower() not in recognized_elements:
-            warn = f"Non-DCTAP element {repr(column)} not configured as extra element."
+            warn = f"Non-DCTAP element '{column}' not configured as extra element."
             csv_warns["csv"] = {}
             csv_warns["csv"]["column"] = []
             csv_warns["csv"]["column"].append(warn)

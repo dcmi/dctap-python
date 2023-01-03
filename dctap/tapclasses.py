@@ -51,7 +51,7 @@ class TAPStatementTemplate:
         elements_that_may_take_uris = ["propertyID", "valueDataType", "valueShape"]
         for elem in elements_that_may_take_uris:
             value = getattr(self, elem)
-            warning = f"Value {repr(value)} does not look like a URI."
+            warning = f"Value '{value}' does not look like a URI."
             if value:
                 if not is_uri_or_prefixed_uri(value):
                     self.state_warns[elem] = warning
@@ -63,7 +63,7 @@ class TAPStatementTemplate:
         valid_values_for_false = ["false", "FALSE", "False", "0"]
         boolean_elements = ["mandatory", "repeatable"]
         for elem in boolean_elements:
-            warning_message = f"{repr(elem)} is not a supported Boolean value."
+            warning_message = f"'{elem}' is not a supported Boolean value."
             if getattr(self, elem):
                 if getattr(self, elem) in valid_values_for_true:
                     setattr(self, elem, "true")
@@ -88,8 +88,8 @@ class TAPStatementTemplate:
             for list_item in self.valueConstraint:
                 if not is_uri_or_prefixed_uri(list_item):
                     self.state_warns["valueConstraint"] = (
-                        f"Value constraint type is {repr(self.valueConstraintType)}, "
-                        f"but {repr(list_item)} does not look like an IRI or "
+                        f"Value constraint type is '{self.valueConstraintType}', "
+                        f"but '{list_item}' does not look like an IRI or "
                         "Compact IRI."
                     )
         return self
@@ -102,8 +102,8 @@ class TAPStatementTemplate:
         vctype = self.valueConstraintType.lower()
         vc = self.valueConstraint = coerce_integer(self.valueConstraint)
         bad_vc_warning = (
-            f"Value constraint type is {repr(self.valueConstraintType)}, "
-            f"but {repr(self.valueConstraint)} is not a positive integer."
+            f"Value constraint type is '{self.valueConstraintType}', "
+            f"but '{self.valueConstraint}' is not a positive integer."
         )
         if vctype in ("minlength", "maxlength"):
             if isinstance(vc, int):
@@ -134,8 +134,8 @@ class TAPStatementTemplate:
                 float(self.valueConstraint)
             except (ValueError, TypeError):
                 self.state_warns["valueConstraint"] = (
-                    f"Value constraint type is {repr(self.valueConstraintType)}, "
-                    f"but {repr(self.valueConstraint)} is not numeric."
+                    f"Value constraint type is '{self.valueConstraintType}', "
+                    f"but '{self.valueConstraint}' is not numeric."
                 )
         return self
 
@@ -147,8 +147,8 @@ class TAPStatementTemplate:
                 re.compile(self.valueConstraint)
             except (re.error, TypeError):
                 self.state_warns["valueConstraint"] = (
-                    f"Value constraint type is {repr(self.valueConstraintType)}, but "
-                    f"{repr(self.valueConstraint)} is not a valid regular expression."
+                    f"Value constraint type is '{self.valueConstraintType}', but "
+                    f"'{self.valueConstraint}' is not a valid regular expression."
                 )
         return self
 
@@ -158,8 +158,7 @@ class TAPStatementTemplate:
         if self.valueConstraintType == "pattern":
             if self.valueShape:
                 self.state_warns["valueConstraintType"] = (
-                    f"Value constraint type "
-                    f"({repr(self.valueConstraintType)}) "
+                    f"Value constraint type ('{self.valueConstraintType}') "
                     "cannot conform to a value shape."
                 )
 
@@ -179,7 +178,7 @@ class TAPStatementTemplate:
             if not self.valueConstraint:
                 self.state_warns["valueConstraint"] = (
                     f"Value constraint type "
-                    f"({repr(self.valueConstraintType)}) "
+                    f"('{self.valueConstraintType}') "
                     "but no value constraint."
                 )
         return self
@@ -196,7 +195,7 @@ class TAPStatementTemplate:
 
     def _valueNodeType_is_from_enumerated_list(self, config_dict):
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
-        warning = f"{repr(self.valueNodeType)} is not a valid node type."
+        warning = f"'{self.valueNodeType}' is not a valid node type."
         valid_types = ["iri", "bnode", "literal"]
         if config_dict.get("value_node_types"):
             valid_types += [vnt.lower() for vnt in config_dict["value_node_types"]]
@@ -225,7 +224,7 @@ class TAPStatementTemplate:
 
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """Value with datatype implies Literal and cannot be node type IRI."""
-        warning = f"Datatypes do not apply to nodes of type {repr(self.valueNodeType)}."
+        warning = f"Datatypes do not apply to nodes of type '{self.valueNodeType}'."
         node_type = self.valueNodeType.lower()
         if node_type in ("iri", "uri", "bnode"):
             if self.valueDataType:
@@ -287,7 +286,7 @@ class TAPShape:
         elements_that_may_take_uris = ["shapeID"]
         for elem in elements_that_may_take_uris:
             value = getattr(self, elem)
-            warning = f"Value {repr(value)} does not look like a URI."
+            warning = f"Value '{value}' does not look like a URI."
             if value:
                 if not is_uri_or_prefixed_uri(value):
                     self.shape_warns[elem] = warning

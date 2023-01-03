@@ -31,7 +31,6 @@ def test_get_config_from_default_config_file_if_present():
     Args:
     - tapshapes   - takes precomputed dict with one key: 'shapes'
     - config_dict - computes from NONDEFAULT_CONFIGYAML
-    - csvrows     - takes precomputed list of dicts
     """
     given_config_dict = get_config(config_yamlstring=NONDEFAULT_CONFIGYAML)
     assert "school:" in given_config_dict.get("prefixes")
@@ -41,56 +40,59 @@ def test_get_config_from_default_config_file_if_present():
     assert "dc11:" in given_config_dict.get("prefixes")
     assert "dc:" not in given_config_dict.get("prefixes")
 
-#    given_csvrows = [
-#        {
-#            'shapeID': 'school:a', 
-#            'propertyID': 'ex:quantity', 
-#            'valueDataType': 'xsd:integer'
-#        }, {
-#            'shapeID': 'ex:a', 
-#            'propertyID': 'dct:date', 
-#            'valueDataType': 'xsd:date'
-#        },
-#    ]
-#
-#    given_tapshapes = {
-#        'shapes': [
-#            {
-#                'shape_warns': {},
-#                'shapeID': 'default',
-#                'shapeLabel': '',
-#                'statement_templates': [
-#                    { 'propertyID': 'dc:creator' },
-#                    { 'propertyID': 'dc:type' }
-#                ]
-#            }
-#        ]
-#    }
-#
-#    expected_tapshapes = {
-#        'namespaces': {
-#            'ex:': 'http://example.org/',
-#            'dct:': 'http://purl.org/dc/terms/',
-#            'school:': 'http://school.example/#',
-#            'xsd:': 'http://www.w3.org/2001/XMLSchema#',
-#        },
-#        'shapes': [
-#            {
-#                'shape_warns': {},
-#                'shapeID': 'default',
-#                'shapeLabel': '',
-#                'statement_templates': [
-#                    { 'propertyID': 'dc:creator' },
-#                    { 'propertyID': 'dc:type' }
-#                ]
-#            }
-#        ]
-#    }
-#
-#    actual_tapshapes = _add_namespaces(
-#        tapshapes=given_tapshapes,
-#        config_dict=given_config_dict,
-#        csvrows=given_csvrows,
-#    )
-#
-#    assert actual_tapshapes == expected_tapshapes
+    given_csvrows = [
+        {
+            'shapeID': 'school:a', 
+            'propertyID': 'ex:quantity', 
+            'valueDataType': 'xsd:integer'
+        }, {
+            'shapeID': 'ex:a', 
+            'propertyID': 'dct:date', 
+            'valueDataType': 'xsd:date'
+        },
+    ]
+
+    given_tapshapes = {
+        'shapes': [
+            {
+                'shape_warns': {},
+                'shapeID': 'default',
+                'shapeLabel': '',
+                'statement_templates': [
+                    { 'propertyID': 'dc:creator' },
+                    { 'propertyID': 'dc:type' }
+                ]
+            }
+        ]
+    }
+
+    expected_tapshapes = {
+        'namespaces': {
+            'ex:': 'http://example.org/',
+            'dct:': 'http://purl.org/dc/terms/',
+            'school:': 'http://school.example/#',
+            'xsd:': 'http://www.w3.org/2001/XMLSchema#',
+        },
+        'shapes': [
+            {
+                'shape_warns': {},
+                'shapeID': 'default',
+                'shapeLabel': '',
+                'statement_templates': [
+                    { 'propertyID': 'dc:creator' },
+                    { 'propertyID': 'dc:type' }
+                ]
+            }
+        ]
+    }
+
+    # As computed by csvreader._get_prefixes_actually_used(given_csvrows)
+    prefixes_actually_used = ['ex:', 'xsd:', 'school:', 'dct:']
+
+    actual_tapshapes = _add_namespaces(
+        tapshapes=given_tapshapes,
+        config_dict=given_config_dict,
+        prefixes_used=prefixes_actually_used,
+    )
+
+    assert actual_tapshapes == expected_tapshapes

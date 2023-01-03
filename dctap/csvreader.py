@@ -6,25 +6,19 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
+from .defaults import dctap_defaults
 from .exceptions import DctapError
 from .utils import coerce_concise
 
 
-def csvreader(
-    open_csvfile_obj=None,
-    config_dict=None,
-    hardwired_shapeclass=None,
-    hardwired_stateclass=None,
-):
+@dctap_defaults()
+def csvreader(open_csvfile_obj=None, config_dict=None, **kwargs):
     """From open CSV file object, return shapes dict."""
+    shapeclass = kwargs["shapeclass"]
+    stateclass = kwargs["stateclass"]
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     if csvrows:
-        (tapshapes, tapwarns) = _get_tapshapes(
-            rows=csvrows,
-            config_dict=config_dict,
-            hardwired_shapeclass=hardwired_shapeclass,
-            hardwired_stateclass=hardwired_stateclass,
-        )
+        (tapshapes, tapwarns) = _get_tapshapes(rows=csvrows, config_dict=config_dict)
     else:
         sys.exit("No data to process.")
     tapwarns = {**csvwarns, **tapwarns}
@@ -114,14 +108,14 @@ def _get_rows(open_csvfile_obj, config_dict):
     csv_warns = dict(csv_warns)
     return (csv_rows, csv_warns)
 
-
-def _get_tapshapes(
-    rows=None, config_dict=None, hardwired_shapeclass=None, hardwired_stateclass=None
-):
+@dctap_defaults()
+def _get_tapshapes(rows=None, config_dict=None, **kwargs):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
+    shapeclass = kwargs["shapeclass"]
+    stateclass = kwargs["stateclass"]
 
     try:
         dshape = config_dict.get("default_shape_identifier")
@@ -148,11 +142,7 @@ def _get_tapshapes(
 
         if sh_id:
             if sh_id not in list(shapes):
-                sh_obj = _mkshape(
-                    row_dict=row,
-                    config_dict=config_dict,
-                    hardwired_shapeclass=hardwired_shapeclass,
-                )
+                sh_obj = _mkshape(row_dict=row, config_dict=config_dict)
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
                 warns[sh_id] = {}
@@ -168,7 +158,7 @@ def _get_tapshapes(
         if not row.get("propertyID"):
             continue
 
-        st_obj = hardwired_stateclass()
+        st_obj = stateclass()
         for col in row:
             if col in main_stems:
                 setattr(st_obj, col, row[col])
@@ -200,7 +190,8 @@ def _get_tapshapes(
     return (shapes_dict, warns_dict)
 
 
-def _mkshape(row_dict=None, config_dict=None, hardwired_shapeclass=None):
+@dctap_defaults()
+def _mkshape(row_dict=None, config_dict=None, **kwargs):
     """Populates shape fields of dataclass shape object from dict for one row.
 
     Args:
@@ -213,9 +204,10 @@ def _mkshape(row_dict=None, config_dict=None, hardwired_shapeclass=None):
         Unpopulated instance of shape class, for example:
         TAPShape(shapeID='', state_list=[], shape_warns={}, state_extras={}, ...)
     """
+    shapeclass = kwargs["shapeclass"]
     main_shems = config_dict.get("shape_elements")
     xtra_shems = config_dict.get("extra_shape_elements")
-    tapshape_obj = hardwired_shapeclass()
+    tapshape_obj = shapeclass()
     for key in row_dict:
         if key in main_shems:
             setattr(tapshape_obj, key, row_dict[key])

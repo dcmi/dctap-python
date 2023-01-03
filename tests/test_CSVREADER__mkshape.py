@@ -50,9 +50,7 @@ def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
         "closed": False,
         "start": True,
     }
-    assert _mkshape(
-        one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
-    ) == TAPShape(
+    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=":a",
         shapeLabel="Book",
         state_list=[],

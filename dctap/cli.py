@@ -61,12 +61,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
     # pylint: disable=too-many-locals,too-many-arguments
 
     config_dict = get_config(configfile_name=config)
-    tapshapes_dict = csvreader(
-        open_csvfile_obj=csvfile_obj,
-        config_dict=config_dict,
-        hardwired_shapeclass=TAPShape,
-        hardwired_stateclass=TAPStatementTemplate,
-    )
+    tapshapes_dict = csvreader(open_csvfile_obj=csvfile_obj, config_dict=config_dict)
 
     if expand_prefixes:
         tapshapes_dict = expand_uri_prefixes(tapshapes_dict, config_dict)

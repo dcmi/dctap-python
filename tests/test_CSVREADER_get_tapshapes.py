@@ -10,6 +10,7 @@ SETTINGS_DICT = get_config()
 
 def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     """Lines without shapeID and/or propertyID are ignored."""
+    settings = get_config()
     rows = [
         {"shapeID": ":bookshape"},
         {},
@@ -18,12 +19,7 @@ def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
         {"shapeID": ":author"},
         {"propertyID": "foaf:name"},
     ]
-    (shapes, warns) = _get_tapshapes(
-        rows=rows,
-        config_dict=SETTINGS_DICT,
-        hardwired_shapeclass=TAPShape,
-        hardwired_stateclass=TAPStatementTemplate,
-    )
+    (shapes, warns) = _get_tapshapes(rows=rows, config_dict=settings)
     assert len(shapes["shapes"]) == 2
     assert shapes["shapes"][0]["shapeID"] == ":bookshape"
     assert len(shapes["shapes"][0]["statement_templates"]) == 1
@@ -39,12 +35,7 @@ def test_get_tapshapes_two_shapes_declare_on_separate_rows():
         {"shapeID": ":author"},
         {"propertyID": "foaf:name"},
     ]
-    (shapes, warns) = _get_tapshapes(
-        rows=rows,
-        config_dict=SETTINGS_DICT,
-        hardwired_shapeclass=TAPShape,
-        hardwired_stateclass=TAPStatementTemplate,
-    )
+    (shapes, warns) = _get_tapshapes(rows=rows, config_dict=SETTINGS_DICT)
     assert len(shapes["shapes"]) == 2
     assert shapes["shapes"][0]["shapeID"] == ":bookshape"
     assert len(shapes["shapes"][0]["statement_templates"]) == 1

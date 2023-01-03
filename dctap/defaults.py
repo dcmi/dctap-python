@@ -41,7 +41,7 @@ def dctap_defaults():
             except TypeError as te:
                 name = func.__name__
                 deco = dctap_defaults.__name__
-                message = f"@{deco} passed a bad 'configfile' kwarg to {name}()."
+                message = f"@{deco}-only kwarg explicitly passed to {name}()."
                 raise DecoratorError(message) from te
         return wrapper
     return decorator

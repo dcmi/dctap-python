@@ -2,6 +2,7 @@
 
 from functools import wraps
 import dctap
+from .exceptions import DecoratorError
 from .tapclasses import TAPShape, TAPStatementTemplate
 
 
@@ -26,8 +27,10 @@ prefixes:
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 """
 
+
 def dctap_defaults():
     """Decorator that passes dctap package defaults."""
+
     def decorator(func):
         @wraps(func)
         def wrapper(**kwargs):
@@ -35,14 +38,15 @@ def dctap_defaults():
             kwargs["stateclass"] = dctap.tapclasses.TAPStatementTemplate
             kwargs["configyaml"] = dctap.defaults.CONFIGYAML
             kwargs["configfile"] = dctap.defaults.CONFIGFILE
-            try:  # if decorated function does not receive defaults in **kwargs
+            try:  # if decorated function is not set up to receive **kwargs
                 return func(**kwargs)
             except TypeError as te:
                 name = func.__name__
                 deco = dctap_defaults.__name__
-                message = f"@{deco} passed unexpected kwarg 'configfile' to {name}()."
-                raise TypeError(message) 
+                message = f"@{deco} passed a bad 'configfile' kwarg to {name}()."
+                raise DecoratorError(message) from te
             return func(**kwargs)
-        return wrapper
-    return decorator
 
+        return wrapper
+
+    return decorator

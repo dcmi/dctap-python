@@ -7,17 +7,15 @@ from dctap.config import get_config
 from dctap.tapclasses import TAPStatementTemplate
 from dctap.csvreader import csvreader
 
-# config_dict = get_config()
+config_dict = get_config()
 
-#config_dict["picklist_elements"] = [
-#    "propertyID", 
-#    "valueNodeType", 
-#    "valueDataType", 
-#    "valueShape",
-#]
+config_dict["picklist_elements"] = [
+    "propertyID", 
+    "valueNodeType", 
+    "valueDataType", 
+    "valueShape",
+]
 
-
-@pytest.mark.skip
 def test_picklist_elements_comma_separated():
     """Elements enumerated in config settings are parsed as lists."""
     config_dict["picklist_item_separator"] = ","
@@ -26,7 +24,6 @@ def test_picklist_elements_comma_separated():
     sc._parse_elements_configured_as_picklist_elements(config_dict)
     assert sc.propertyID == ["dcterms:creator", "dcterms:date"]
 
-@pytest.mark.skip
 def test_picklist_elements():
     """Elements enumerated in config settings are parsed as lists."""
     config_dict["picklist_item_separator"] = " "

@@ -5,7 +5,7 @@ from dctap.csvreader import _simplify
 
 def test_reduce_shapesdict():
     """Iterate thru shapes in shapes_dict, removing empty shape and sc elements."""
-    input = {
+    given_input = {
         "shapes": [
             {
                 "shapeID": "a",
@@ -80,4 +80,4 @@ def test_reduce_shapesdict():
             },
         ]
     }
-    assert _simplify(input) == expected_output
+    assert _simplify(given_input) == expected_output

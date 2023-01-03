@@ -30,6 +30,7 @@ def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     assert shapes["shapes"][1]["shapeID"] == ":author"
     assert len(shapes["shapes"][1]["statement_templates"]) == 1
 
+
 def test_get_tapshapes_two_shapes_declare_on_separate_rows():
     """Shape declared in own rows followed by rows with statement templates."""
     rows = [
@@ -50,6 +51,7 @@ def test_get_tapshapes_two_shapes_declare_on_separate_rows():
     assert shapes["shapes"][1]["shapeID"] == ":author"
     assert len(shapes["shapes"][1]["statement_templates"]) == 1
 
+
 def test_get_tapshapes_shape_elements_declared_on_separate_row():
     """One shape, declared on its own row."""
     rows = [
@@ -67,6 +69,7 @@ def test_get_tapshapes_shape_elements_declared_on_separate_row():
     assert expected_shapes["shapes"][0]["shapeID"] == ":bookshape"
     assert expected_shapes["shapes"][0]["shapeLabel"] == "Book"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 1
+
 
 def test_get_tapshapes_one_default_shape_with_shapeID_asserted():
     """One default shape with shapeID asserted."""
@@ -86,6 +89,7 @@ def test_get_tapshapes_one_default_shape_with_shapeID_asserted():
     assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 3
 
+
 def test_get_tapshapes_one_default_shape_with_shapeID_not_asserted():
     """One default shape with shapeID not asserted."""
     rows = [
@@ -103,6 +107,7 @@ def test_get_tapshapes_one_default_shape_with_shapeID_not_asserted():
     assert len(expected_shapes) == 1
     assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 3
+
 
 def test_get_tapshapes_two_shapes_first_is_default():
     """Two shapes, first of which is default."""
@@ -122,6 +127,7 @@ def test_get_tapshapes_two_shapes_first_is_default():
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
 
+
 def test_get_tapshapes_two_shapes_where_rows_are_out_of_order():
     """Two shapes in three rows, in mixed order (ABA)."""
     rows = [
@@ -140,6 +146,7 @@ def test_get_tapshapes_two_shapes_where_rows_are_out_of_order():
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
     assert len(expected_shapes["shapes"][1]["statement_templates"]) == 1
+
 
 def test_get_tapshapes_two_shapes_spelled_out_entirely():
     """Two shapes, first of which is default because shapeID is empty."""
@@ -215,11 +222,12 @@ def test_get_tapshapes_two_shapes_spelled_out_entirely():
     assert expected_shapes["shapes"][0]["shapeID"] == "default"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
-    assert type(tapshapes_output[0]) == dict
-    assert type(tapshapes_output[0]["shapes"]) == list
-    assert type(tapshapes_output[0]["shapes"][0]) == dict
-    assert type(tapshapes_output[0]["shapes"][0]["statement_templates"]) == list
-    assert type(tapshapes_output[0]["shapes"][0]["statement_templates"][0]) == dict
+    assert isinstance(tapshapes_output[0], dict)
+    assert isinstance(tapshapes_output[0]["shapes"], list)
+    assert isinstance(tapshapes_output[0]["shapes"][0], dict)
+    assert isinstance(tapshapes_output[0]["shapes"][0]["statement_templates"], list)
+    assert isinstance(tapshapes_output[0]["shapes"][0]["statement_templates"][0], dict)
+
 
 def test_get_tapshapes_two_shapes_shapeID_most_recently_used():
     """Two shapes, where shapeID left blank assigned "most recently used"."""
@@ -253,6 +261,7 @@ def test_get_tapshapes_two_shapes_shapeID_most_recently_used():
     assert expected_shapes["shapes"][0]["shapeID"] == ":book"
     assert expected_shapes["shapes"][1]["shapeID"] == ":author"
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
+
 
 def test_get_tapshapes_two_shapes_shapeID_not_always_asserted():
     """Two shapes, where one line does not assert shapeID at all"."""

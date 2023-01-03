@@ -7,8 +7,7 @@ from urllib.parse import urlparse
 from ruamel.yaml import YAML, YAMLError
 from ruamel.yaml.scanner import ScannerError
 from ruamel.yaml.parser import ParserError
-from .exceptions import ConfigError, BadYamlError
-from .loggers import stderr_logger
+from .exceptions import ConfigError, DctapError
 
 
 def load_yaml_to_dict(yamlstring=None, yamlfile=None):
@@ -20,19 +19,19 @@ def load_yaml_to_dict(yamlstring=None, yamlfile=None):
     if yamlfile:
         try:
             yamlstring = Path(yamlfile).read_text(encoding="UTF-8")
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             print(f"File '{yamlfile}' not found.", file=sys.stderr)
 
     if yamlstring is not None:
         yaml = YAML(typ='safe', pure=True)
         try:
             dict_from_yamlstring = yaml.load(yamlstring)
-        except (YAMLError, ScannerError, ParserError) as error:
+        except (YAMLError, ScannerError, ParserError):
             dict_from_yamlstring = None
             if yamlfile:
                 print(f"YAML in '{yamlfile}' is badly formed.", file=sys.stderr)
             else:
-                print(f"YAML is badly formed.", file=sys.stderr)
+                print("YAML is badly formed.", file=sys.stderr)
 
     return dict_from_yamlstring
 

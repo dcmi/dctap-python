@@ -3,17 +3,16 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from .defaults import CONFIGYAML, dctap_defaults
-from .exceptions import ConfigError, BadYamlError
+from .defaults import dctap_defaults
+from .exceptions import ConfigError
 from .utils import load_yaml_to_dict, coerce_concise
 
 
 @dctap_defaults()
 def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     """@@@."""
-    shapeclass = kwargs["shapeclass"]  # Any kwarg not listed here is ignored.
-    stateclass = kwargs["stateclass"]
-    configfile = kwargs["configfile"]
+    # pylint: disable=too-many-branches
+    configfile = kwargs["configfile"]  # Any kwarg not listed here is simply ignored.
     configyaml = kwargs["configyaml"]
     config_dict = _initialize_config_dict()
     configyaml_from_file = None
@@ -26,28 +25,28 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     # If no arguments passed, try to parse default config file, update config_dict.
     if not config_yamlstring and not config_yamlfile:
         if Path(configfile).is_file():  # No need to warn if file does not exist.
-            configyaml_from_file = Path(configfile).read_text()
+            configyaml_from_file = Path(configfile).read_text(encoding='utf-8')
 
         if not configyaml_from_file:
             configyaml_from_file = configyaml
             configdict_from_file = load_yaml_to_dict(yamlstring=configyaml)
         else:
             configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
-            
+
         if configdict_from_file is not None:  # But YAML contents could be bad.
             config_dict.update(configdict_from_file)
 
     # If config_yamlfile was passed, try to read and parse, then update config_dict.
     if config_yamlfile and not config_yamlstring:
         try:
-            configyaml_from_file = Path(config_yamlfile).read_text()
+            configyaml_from_file = Path(config_yamlfile).read_text(encoding='utf-8')
         except FileNotFoundError as err:
             raise ConfigError(f"Config file '{config_yamlfile}' not found.") from err
         if configyaml_from_file is not None:
             configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
             if configdict_from_file is not None:  # But YAML contents could be bad.
                 config_dict.update(configdict_from_file)
-    
+
     # breakpoint(context=5)
     # If config_yamlstring was passed, try to use it to update config_dict.
     if config_yamlstring:
@@ -126,8 +125,6 @@ def get_stems(stateclass=None):
 @dctap_defaults()
 def write_configfile(config_filename=None, config_yamlstring=None, **kwargs):
     """Write initial config file or exit trying."""
-    shapeclass = kwargs["shapeclass"]
-    stateclass = kwargs["stateclass"]
     configfile = kwargs["configfile"]
     configyaml = kwargs["configyaml"]
     if Path(configfile).exists():

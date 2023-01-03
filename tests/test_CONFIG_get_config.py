@@ -24,7 +24,7 @@ def test_get_config_from_builtins(tmp_path):
 
 
 @pytest.mark.done
-def test_get_config_from_default_config_file_if_present(tmp_path, capsys):
+def test_get_config_from_default_config_file_if_present(tmp_path):
     """Get config dict from default config file CONFIGFILE if present."""
     os.chdir(tmp_path)
     nondefault_yaml = """
@@ -107,7 +107,7 @@ def test_warn_about_bad_yaml_if_yaml_parsererror(tmp_path, capsys):
     assert Path(CONFIGFILE).is_file()
     assert "default_shape_identifier" in Path(CONFIGFILE).read_text(encoding="utf-8")
     config_dict = get_config()
-    assert capsys.readouterr().err == f"YAML is badly formed.\n"
+    assert capsys.readouterr().err == "YAML is badly formed.\n"
 
 
 @pytest.mark.done

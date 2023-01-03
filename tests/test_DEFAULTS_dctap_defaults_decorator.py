@@ -37,7 +37,7 @@ def test_decorator_default_classes_plus_default_configfile_passed_to_kwargs():
     assert actual_values["configfile"] == dctap.defaults.CONFIGFILE
     assert actual_values["configyaml"] == dctap.defaults.CONFIGYAML
     assert actual_values["config_filename"] == "my_configfile.yaml"
-    assert actual_values["config_yamldoc"] == None
+    assert actual_values["config_yamldoc"] is None
 
 
 def test_decorated_function_cannot_be_called_with_args_that_override_decorator():

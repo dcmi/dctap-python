@@ -5,7 +5,7 @@ import pytest
 from dctap.utils import expand_uri_prefixes
 
 
-def test_utils_expand_uri_prefixes(tmp_path):
+def test_utils_expand_uri_prefixes():
     """Expands prefixes in shapes dictionary according as per config settings."""
     config_dict = {
         "default_shape_identifier": "default",

@@ -1,5 +1,6 @@
 [MESSAGES CONTROL]
-disable=consider-using-with,invalid-name,unused-variable,protected-access,unused-import,unspecified-encoding,duplicate-code
+disable=consider-using-with,invalid-name,unused-variable,protected-access,unused-import,unspecified-encoding,duplicate-code,wrong-import-order,trailing-whitespace,line-too-long
+# trailing-whitespace: Black handles this except for docstrings, which Pylint is catching.
 # duplicate-code: Tests do have alot of duplicate code.
 # unspecified-encoding: Not really a problem, we use utf-8 everywhere, and these are just tests.
 # unused-import: Useful not to have to continually add `import pytest` when debugging.
@@ -7,6 +8,6 @@ disable=consider-using-with,invalid-name,unused-variable,protected-access,unused
 # using-with: No need to open these small files within a context manager.
 # unused-variable: These are just tests. Better to leave them for readability.
 # invalid-name: Test module names with uppercase letters do not conform to snake case.
-# disable=W0611,protected-access,duplicate-code,invalid-name,bad-continuation
-# disable=W0102
+#
+# Potentially useful, but not enabled:
 # bad-continuation: Black disagrees

@@ -2,7 +2,7 @@
 Tests TAPStatementTemplate._warn_if_value_not_urilike
 - Values of following properties should (or could) be 'IRI-like':
   - propertyID
-  - valueDataType 
+  - valueDataType
 - If found not to be IRI-like, records warning in sc.state_warns.
 
 Does not test:

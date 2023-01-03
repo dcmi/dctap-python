@@ -5,6 +5,7 @@ from dctap.tapclasses import TAPStatementTemplate
 
 
 def test_valueConstraintType_warn_if_used_without_valueConstraint():
+    """@@@"""
     sc = TAPStatementTemplate()
     sc.propertyID = ":status"
     sc.valueConstraintType = "pattern"

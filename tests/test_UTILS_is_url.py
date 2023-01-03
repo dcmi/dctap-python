@@ -2,9 +2,6 @@
 
 from dctap.utils import is_uri
 
-# TODO: test is valid URI or prefixed URI (Nov 7)
-# TODO: test strip angle brackets from URL (Nov 7)
-
 
 def test_utils_is_uri():
     """True if string is valid as URL."""

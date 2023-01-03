@@ -7,6 +7,7 @@ from dctap.config import get_config
 from dctap.tapclasses import TAPStatementTemplate
 from dctap.csvreader import csvreader
 
+# pylint: disable=redefined-outer-name
 config_dict = get_config()
 
 config_dict["picklist_elements"] = [

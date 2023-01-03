@@ -4,9 +4,10 @@ import os
 import pytest
 from pathlib import Path
 from dctap.config import get_config
+from dctap.defaults import CONFIGFILE
 from dctap.exceptions import ConfigError
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_config_file_extra_aliases(tmp_path):
     """Get extra element aliases from config file."""
     os.chdir(tmp_path)
@@ -19,7 +20,7 @@ def test_get_config_file_extra_aliases(tmp_path):
     assert "propertyid" in config_dict.get("element_aliases")
     assert "shapid" in config_dict.get("element_aliases")
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_config_file_even_propertyid_can_be_aliased(tmp_path):
     """Even propertyID can be aliased."""
     os.chdir(tmp_path)
@@ -33,7 +34,7 @@ def test_get_config_file_even_propertyid_can_be_aliased(tmp_path):
     assert "propid" in config_dict.get("element_aliases")
     assert config_dict["element_aliases"]["propid"] == "propertyID"
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_config_file_extra_aliases_numbers_acceptable(tmp_path):
     """Numbers as dict keys are handled as strings."""
     os.chdir(tmp_path)
@@ -46,7 +47,7 @@ def test_get_config_file_extra_aliases_numbers_acceptable(tmp_path):
     assert "propertyid" in config_dict.get("element_aliases")
     assert "1" in config_dict.get("element_aliases")
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_config_file_extra_aliases_blank_strings_as_keys_are_acceptable(tmp_path):
     """Blank strings are acceptable as dict keys, even if it makes no sense."""
     os.chdir(tmp_path)
@@ -60,7 +61,7 @@ def test_get_config_file_extra_aliases_blank_strings_as_keys_are_acceptable(tmp_
     assert "" in config_dict.get("element_aliases")
     assert config_dict.get("element_aliases")[""] == "shapeID"
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_extra_aliases_dict_none_harmless(tmp_path):
     """Harmless if YAML for extra_element_aliases evaluates to None."""
     os.chdir(tmp_path)
@@ -71,7 +72,7 @@ def test_get_extra_aliases_dict_none_harmless(tmp_path):
     assert "extra_element_aliases" in config_dict
     assert "propertyid" in config_dict.get("element_aliases")
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_extra_aliases_list_value(tmp_path):
     """If YAML for extra_element_aliases is a list, converted to empty dict."""
     os.chdir(tmp_path)
@@ -84,7 +85,7 @@ def test_get_extra_aliases_list_value(tmp_path):
     assert "extra_element_aliases" in config_dict
     assert "propertyid" in config_dict.get("element_aliases")
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_extra_aliases_dict_handles_spaces_and_punctuation(tmp_path):
     """In addition to lowercasing, drops punctuation and spaces."""
     os.chdir(tmp_path)

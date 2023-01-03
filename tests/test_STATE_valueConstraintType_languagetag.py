@@ -27,6 +27,7 @@ def test_valueConstraintType_languagetag_parse():
     sc._valueConstraintType_languageTag_parse(config_dict)
     assert sc.valueConstraint == ["fr", "it", "de"]
 
+
 def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     """@@@"""
     config_dict = get_config()
@@ -36,17 +37,18 @@ def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
-            'PropertyID,valueConstraintType,valueConstraint\n'
+            "PropertyID,valueConstraintType,valueConstraint\n"
             'ex:foo,languagetag,"fr, it, de"\n'
         )
     )
     value_constraint = csvreader(
-        open_csvfile_obj=open(csvfile_path), 
+        open_csvfile_obj=open(csvfile_path),
         config_dict=config_dict,
         hardwired_shapeclass=TAPShape,
         hardwired_stateclass=TAPStatementTemplate,
     )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["fr", "it", "de"]
+
 
 def test_valueConstraintType_languagetag_item_separator_pipe(tmp_path):
     """@@@"""
@@ -57,15 +59,14 @@ def test_valueConstraintType_languagetag_item_separator_pipe(tmp_path):
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         (
-            'PropertyID,valueConstraintType,valueConstraint\n'
+            "PropertyID,valueConstraintType,valueConstraint\n"
             'ex:foo,languagetag,"fr|it|de"\n'
         )
     )
     value_constraint = csvreader(
-        open_csvfile_obj=open(csvfile_path), 
+        open_csvfile_obj=open(csvfile_path),
         config_dict=config_dict,
         hardwired_shapeclass=TAPShape,
         hardwired_stateclass=TAPStatementTemplate,
     )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["fr", "it", "de"]
-

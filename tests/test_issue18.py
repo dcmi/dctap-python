@@ -17,13 +17,15 @@ element_aliases:
      "Rep": "repeatable"
 """
 
+
 def test_get_config_from_phils_yamldoc(tmp_path):
     """Get config dict when passed Phil's YAML."""
     os.chdir(tmp_path)
     Path(CONFIGFILE).write_text(PHIL_CONFIGYAML)
     config_dict = get_config()
-    assert config_dict["element_aliases"] == {'Mand': 'mandatory', 'Rep': 'repeatable'}
-    assert config_dict["extra_statement_template_elements"] == [ 'severity' ]
+    assert config_dict["element_aliases"] == {"Mand": "mandatory", "Rep": "repeatable"}
+    assert config_dict["extra_statement_template_elements"] == ["severity"]
+
 
 def test_get_element_aliases_from_default_yamldoc(tmp_path):
     """Get config dict (with element aliases) directly from built-in defaults."""

@@ -18,14 +18,17 @@ from dctap.utils import load_yaml_to_dict
 def test_return_none_if_yaml_in_configfile_gets_parser_error(tmp_path, capsys):
     """Return None if given configfile gets YAML parser error."""
     os.chdir(tmp_path)
-    Path(CONFIGFILE).write_text("""default_shape_identifier: "default"
+    Path(CONFIGFILE).write_text(
+        """default_shape_identifier: "default"
     prefixes:
         ":": "http://example.org/"
         "dcterms:": "http://purl.org/dc/terms/"
         "school:": "http://school.example/#"
-    """)
+    """
+    )
     assert load_yaml_to_dict(yamlfile=CONFIGFILE) is None
     assert capsys.readouterr().err == "YAML in 'dctap.yaml' is badly formed.\n"
+
 
 @pytest.mark.done
 def test_return_none_if_yaml_in_configfile_is_bad(tmp_path):
@@ -35,11 +38,13 @@ def test_return_none_if_yaml_in_configfile_is_bad(tmp_path):
     Path(CONFIGFILE).write_text(bad_configyaml)
     assert load_yaml_to_dict(yamlfile=CONFIGFILE) is None
 
+
 @pytest.mark.done
 def test_return_none_if_specified_yamlstring_is_bad_yaml(tmp_path):
     """Return None if specified YAML string has bad YAML."""
     bad_configyaml = "DELIBE\nRATELY BAD: -: ^^YAML CONTENT^^\n"
     assert load_yaml_to_dict(yamlstring=bad_configyaml) is None
+
 
 @pytest.mark.done
 def test_warn_if_configfile_not_found(tmp_path, capsys):
@@ -48,11 +53,13 @@ def test_warn_if_configfile_not_found(tmp_path, capsys):
     x = load_yaml_to_dict(yamlfile=CONFIGFILE)
     assert capsys.readouterr().err == f"File '{CONFIGFILE}' not found.\n"
 
+
 @pytest.mark.done
 def test_load_yaml_to_dict_from_yamlstring_when_string_empty():
     """Return None if passed YAML string is empty or devoid of YAML content"""
     assert load_yaml_to_dict(yamlstring="") == None
     assert load_yaml_to_dict(yamlstring="###") == None
+
 
 @pytest.mark.done
 def test_load_yaml_to_dict_from_yamlstring():
@@ -66,6 +73,7 @@ def test_load_yaml_to_dict_from_yamlstring():
     assert output_dict.get("prefixes")
     assert "dc:" in output_dict.get("prefixes")
     assert "xsd:" in output_dict.get("prefixes")
+
 
 @pytest.mark.done
 def test_load_yaml_to_dict_from_pathobj(tmp_path):
@@ -83,6 +91,7 @@ def test_load_yaml_to_dict_from_pathobj(tmp_path):
     assert "dc:" in output_dict.get("prefixes")
     assert "xsd:" in output_dict.get("prefixes")
 
+
 @pytest.mark.done
 def test_load_yaml_to_dict_from_yamlfile(tmp_path):
     """If YAML string in given filename is good, convert into Python dict."""
@@ -99,6 +108,7 @@ def test_load_yaml_to_dict_from_yamlfile(tmp_path):
     assert "dc:" in output_dict.get("prefixes")
     assert "xsd:" in output_dict.get("prefixes")
 
+
 @pytest.mark.done
 def test_exit_with_badyamlerror_if_configfile_has_dict_with_duplicate_keys(capsys):
     """Warn that YAML badly formed if config file has dict with duplicate keys."""
@@ -109,6 +119,7 @@ def test_exit_with_badyamlerror_if_configfile_has_dict_with_duplicate_keys(capsy
     """
     assert load_yaml_to_dict(yamlstring=bad_configyaml) == None
     assert capsys.readouterr().err == "YAML is badly formed.\n"
+
 
 @pytest.mark.done
 def test_load_yaml_to_dict_from_passed_some_configyaml():

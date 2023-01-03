@@ -38,6 +38,7 @@ def test_mkshapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path
         shapeID=":a", shapeLabel="Book", state_list=[], shape_warns={}, shape_extras={}
     )
 
+
 def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
     """Populates TAPShape object but ignores any statement template elements in row."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
@@ -49,13 +50,16 @@ def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
         "closed": False,
         "start": True,
     }
-    assert _mkshape(one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape) == TAPShape(
+    assert _mkshape(
+        one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
+    ) == TAPShape(
         shapeID=":a",
         shapeLabel="Book",
         state_list=[],
         shape_warns={},
         shape_extras={"closed": False},
     )
+
 
 def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
     """Reads all elements configured as extra shape elements."""
@@ -79,6 +83,7 @@ def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
         shape_extras={"closed": False, "start": True},
     )
 
+
 def test_mkshape_sets_shape_elements_only(tmp_path):
     """Populates TAPShape object but ignores any statement template elements in row."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
@@ -92,12 +97,15 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
         "propertyID": "ex:name",
         "valueNodeType": "literal",
     }
-    shape = _mkshape(row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape)
+    shape = _mkshape(
+        row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
+    )
     assert shape.shapeID == ":a"
     assert shape.shapeLabel == "Book"
     assert shape.shape_warns == {}
     assert shape.shape_extras == {"closed": False, "start": True}
     assert shape.state_list == []  # _mkshape() sets shape fields only, not ST fields
+
 
 def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path):
     """Empty shape elements are passed through, but not unasserted elements."""

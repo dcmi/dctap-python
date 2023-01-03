@@ -25,9 +25,9 @@ def test_valueConstraintType_IRIstem_single_value_parsed_as_singleton_list():
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:creator"
     sc.valueConstraintType = "IRIstem"
-    sc.valueConstraint = 'http://example.org/'
+    sc.valueConstraint = "http://example.org/"
     sc._valueConstraintType_iristem_parse()
-    expected_value = ['http://example.org/']
+    expected_value = ["http://example.org/"]
     assert sc.valueConstraint == expected_value
 
 
@@ -36,9 +36,9 @@ def test_valueConstraintType_IRIstem_multiple_values_parsed_as_list():
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:creator"
     sc.valueConstraintType = "IRIstem"
-    sc.valueConstraint = 'http://example.org/ http://elpmaxe.org'
+    sc.valueConstraint = "http://example.org/ http://elpmaxe.org"
     sc._valueConstraintType_iristem_parse()
-    expected_value = ['http://example.org/', 'http://elpmaxe.org']
+    expected_value = ["http://example.org/", "http://elpmaxe.org"]
     assert sc.valueConstraint == expected_value
 
 
@@ -47,9 +47,9 @@ def test_valueConstraintType_IRIstem_parser_accepts_non_uris():
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:creator"
     sc.valueConstraintType = "IRIstem"
-    sc.valueConstraint = 'example.org/ elpmaxe.org'
+    sc.valueConstraint = "example.org/ elpmaxe.org"
     sc._valueConstraintType_iristem_parse()
-    expected_value = ['example.org/', 'elpmaxe.org']
+    expected_value = ["example.org/", "elpmaxe.org"]
     assert sc.valueConstraint == expected_value
 
 

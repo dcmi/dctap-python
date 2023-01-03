@@ -38,3 +38,6 @@ doc = [
 
 [tool.flit.scripts]
 dctap = "dctap.cli:cli"
+
+[tool.black]
+line_length = 88

@@ -12,6 +12,7 @@ Does not test:
 import pytest
 from dctap.tapclasses import TAPStatementTemplate, TAPShape
 
+
 def test_warn_if_propertyID_not_URI():
     """Values of propertyID should be IRI-like."""
     sc = TAPStatementTemplate()
@@ -21,6 +22,7 @@ def test_warn_if_propertyID_not_URI():
     print(dict(sc.state_warns))
     print(len(dict(sc.state_warns)))
     assert len(dict(sc.state_warns)) == 1
+
 
 def test_warn_if_valueDataType_not_URI():
     """Values of valueDataType should be IRI-like."""
@@ -32,6 +34,7 @@ def test_warn_if_valueDataType_not_URI():
     print(dict(sc.state_warns))
     print(len(dict(sc.state_warns)))
     assert len(dict(sc.state_warns)) == 1
+
 
 def test_warn_if_shapeID_not_URI():
     """Values of shapeID should commonly be IRI-like."""

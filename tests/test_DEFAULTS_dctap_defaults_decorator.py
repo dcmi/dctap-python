@@ -11,6 +11,7 @@ from dctap.exceptions import ConfigError, DecoratorError
 
 def test_decorator_default_classes_plus_default_configfile_passed_to_kwargs():
     """Function call reads arguments named in signature, captures rest in **kwargs."""
+
     @dctap_defaults()
     def some_func(config_filename=None, config_yamldoc=None, **kwargs):
         # How expected kwargs would normally be captured for use in function.
@@ -45,6 +46,7 @@ def test_decorated_function_cannot_be_called_with_args_that_override_decorator()
     - but function can be called with keyword arguments that clash with decorator
     - decorator catches this and raises an error
     """
+
     @dctap_defaults()
     def some_func(shapeclass=None, stateclass=None, configfile=None, yamldoc=None):
         """Enumerates kwargs, not collecting them in **kwargs."""

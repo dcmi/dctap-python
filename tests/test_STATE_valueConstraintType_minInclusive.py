@@ -17,6 +17,7 @@ from dctap.csvreader import csvreader
 
 # config_dict = get_config()
 
+
 def test_valueConstraintType_minmaxinclusive_parse():
     """If valueConstraintType minInclusive, valueConstraint must be numeric."""
     # minInclusive
@@ -28,7 +29,7 @@ def test_valueConstraintType_minmaxinclusive_parse():
     assert sc.valueConstraint == 4.0
     assert str(sc.valueConstraint) != str(4)
     sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
-    assert not sc.state_warns                         # Here: no warnings at all, but
+    assert not sc.state_warns  # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
     # maxInclusive
@@ -40,7 +41,7 @@ def test_valueConstraintType_minmaxinclusive_parse():
     assert sc.valueConstraint == 4.0
     assert str(sc.valueConstraint) != str(4)
     sc._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
-    assert not sc.state_warns                         # Here: no warnings at all, but
+    assert not sc.state_warns  # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
 
@@ -63,6 +64,7 @@ def test_valueConstraintType_minmaxinclusive_parse_also_floats():
     sc._valueConstraintType_minmaxinclusive_parse()
     assert sc.valueConstraint == 4.123
     assert not sc.state_warns.get("valueConstraint")
+
 
 def test_valueConstraintType_minmaxinclusive_parse_also_floats_not():
     """Value of valueConstraint does not coerce to a float."""

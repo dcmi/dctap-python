@@ -13,6 +13,7 @@ from dctap.csvreader import csvreader
 
 # config_dict = get_config()
 
+
 def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     """valueConstraint minLength / maxLength must be integer."""
 
@@ -24,7 +25,7 @@ def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     assert sc.valueConstraint == "4"
     sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.valueConstraint == 4
-    assert not sc.state_warns                         # Here: no warnings at all, but
+    assert not sc.state_warns  # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
     # maxLength
@@ -35,7 +36,7 @@ def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     assert sc.valueConstraint == "4"
     sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.valueConstraint == 4
-    assert not sc.state_warns                         # Here: no warnings at all, but
+    assert not sc.state_warns  # Here: no warnings at all, but
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
 
@@ -60,6 +61,7 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_float():
     sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.state_warns.get("valueConstraint")
 
+
 def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
     """If minLength / maxLength is non-numeric string, passed through untouched."""
 
@@ -83,6 +85,7 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
     assert sc.state_warns.get("valueConstraint")
     assert "tom@" in sc.state_warns.get("valueConstraint")
 
+
 def test_valueConstraintType_minlength_parse_integer_may_be_negative_edge_case():
     """If minLength is a negative integer, issues warning."""
     sc = TAPStatementTemplate()
@@ -92,5 +95,5 @@ def test_valueConstraintType_minlength_parse_integer_may_be_negative_edge_case()
     assert sc.valueConstraint == "-4"
     sc._valueConstraintType_minmaxlength_warn_if_not_nonnegative_integer()
     assert sc.valueConstraint == -4
-    assert sc.state_warns                         # Here: there are warnings...
+    assert sc.state_warns  # Here: there are warnings...
     assert sc.state_warns.get("valueConstraint")  # specifically, a warning for...

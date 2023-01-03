@@ -2,6 +2,7 @@
 
 from dctap.utils import coerce_concise
 
+
 def test_coerce_concise():
     """Removes spaces, dashes, and underscores, returns in lowercase."""
     assert coerce_concise("Property ID") == "propertyid"

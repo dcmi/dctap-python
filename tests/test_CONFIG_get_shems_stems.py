@@ -5,10 +5,12 @@ from dataclasses import asdict
 from dctap.config import get_shems, get_stems
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
+
 def test_get_TAPShape_elements_when_no_config_dict_specified():
     """List TAPShape elements (minus shape_warns and state_list)."""
-    expected = ['shapeID', 'shapeLabel']
+    expected = ["shapeID", "shapeLabel"]
     assert get_shems(TAPShape) == expected
+
 
 def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
     """List TAPStatementTemplate elements (minus state_warns)."""

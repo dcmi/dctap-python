@@ -15,21 +15,23 @@ prefixes:
     "dcterms:": "http://purl.org/dc/terms/"
 """
 
+
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIGYAML to CONFIGFILE and read back as text."""
     os.chdir(tmp_path)
     write_configfile(config_yamlstring=NONDEFAULT_CONFIGYAML)
     assert open(CONFIGFILE).read() == NONDEFAULT_CONFIGYAML
 
+
 def test_write_specified_configfile_and_read_back(tmp_path):
     """Write specified configfile and read back as text."""
     os.chdir(tmp_path)
     specified_config_file = "foobar.yaml"
     write_configfile(
-        config_filename=specified_config_file, 
-        config_yamlstring=NONDEFAULT_CONFIGYAML
+        config_filename=specified_config_file, config_yamlstring=NONDEFAULT_CONFIGYAML
     )
     assert open(specified_config_file).read() == NONDEFAULT_CONFIGYAML
+
 
 def test_not_write_default_configfile_if_already_exists(tmp_path):
     """Exits if config file not specified and CONFIGFILE already exists."""
@@ -37,6 +39,7 @@ def test_not_write_default_configfile_if_already_exists(tmp_path):
     Path(CONFIGFILE).write_text("Config stuff")
     with pytest.raises(SystemExit):
         write_configfile()
+
 
 def test_exits_if_file_not_writeable(tmp_path):
     """Exits if config file not writeable. Note: throws two exceptions."""

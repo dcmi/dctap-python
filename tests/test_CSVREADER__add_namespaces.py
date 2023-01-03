@@ -24,6 +24,7 @@ prefixes:
     "dc11:":    "http://purl.org/dc/elements/1.1/"
 """
 
+
 def test_get_config_from_default_config_file_if_present():
     """
     Adds key 'namespaces' to dict 'tapshapes'.
@@ -42,52 +43,49 @@ def test_get_config_from_default_config_file_if_present():
 
     given_csvrows = [
         {
-            'shapeID': 'school:a', 
-            'propertyID': 'ex:quantity', 
-            'valueDataType': 'xsd:integer'
-        }, {
-            'shapeID': 'ex:a', 
-            'propertyID': 'dct:date', 
-            'valueDataType': 'xsd:date'
+            "shapeID": "school:a",
+            "propertyID": "ex:quantity",
+            "valueDataType": "xsd:integer",
         },
+        {"shapeID": "ex:a", "propertyID": "dct:date", "valueDataType": "xsd:date"},
     ]
 
     given_tapshapes = {
-        'shapes': [
+        "shapes": [
             {
-                'shape_warns': {},
-                'shapeID': 'default',
-                'shapeLabel': '',
-                'statement_templates': [
-                    { 'propertyID': 'dc:creator' },
-                    { 'propertyID': 'dc:type' }
-                ]
+                "shape_warns": {},
+                "shapeID": "default",
+                "shapeLabel": "",
+                "statement_templates": [
+                    {"propertyID": "dc:creator"},
+                    {"propertyID": "dc:type"},
+                ],
             }
         ]
     }
 
     expected_tapshapes = {
-        'namespaces': {
-            'ex:': 'http://example.org/',
-            'dct:': 'http://purl.org/dc/terms/',
-            'school:': 'http://school.example/#',
-            'xsd:': 'http://www.w3.org/2001/XMLSchema#',
+        "namespaces": {
+            "ex:": "http://example.org/",
+            "dct:": "http://purl.org/dc/terms/",
+            "school:": "http://school.example/#",
+            "xsd:": "http://www.w3.org/2001/XMLSchema#",
         },
-        'shapes': [
+        "shapes": [
             {
-                'shape_warns': {},
-                'shapeID': 'default',
-                'shapeLabel': '',
-                'statement_templates': [
-                    { 'propertyID': 'dc:creator' },
-                    { 'propertyID': 'dc:type' }
-                ]
+                "shape_warns": {},
+                "shapeID": "default",
+                "shapeLabel": "",
+                "statement_templates": [
+                    {"propertyID": "dc:creator"},
+                    {"propertyID": "dc:type"},
+                ],
             }
-        ]
+        ],
     }
 
     # As computed by csvreader._get_prefixes_actually_used(given_csvrows)
-    prefixes_actually_used = ['ex:', 'xsd:', 'school:', 'dct:']
+    prefixes_actually_used = ["ex:", "xsd:", "school:", "dct:"]
 
     actual_tapshapes = _add_namespaces(
         tapshapes=given_tapshapes,

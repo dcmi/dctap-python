@@ -1,8 +1,8 @@
 """Default settings."""
 
 from functools import wraps
-import dctap
 from .exceptions import DecoratorError
+from .tapclasses import TAPShape, TAPStatementTemplate
 
 
 CONFIGFILE = "dctap.yaml"
@@ -32,10 +32,10 @@ def dctap_defaults():
     def decorator(func):
         @wraps(func)
         def wrapper(**kwargs):
-            kwargs["shapeclass"] = dctap.tapclasses.TAPShape
-            kwargs["stateclass"] = dctap.tapclasses.TAPStatementTemplate
-            kwargs["configyaml"] = dctap.defaults.CONFIGYAML
-            kwargs["configfile"] = dctap.defaults.CONFIGFILE
+            kwargs["shapeclass"] = TAPShape
+            kwargs["stateclass"] = TAPStatementTemplate
+            kwargs["configyaml"] = CONFIGYAML
+            kwargs["configfile"] = CONFIGFILE
             try:  # if decorated function is not set up to receive **kwargs
                 return func(**kwargs)
             except TypeError as te:

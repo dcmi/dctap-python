@@ -2,14 +2,13 @@
 
 import pytest
 from dataclasses import asdict
-from dctap.config import get_shems, get_stems
-from dctap.tapclasses import TAPShape, TAPStatementTemplate
+from dctap.config import _get_shems, _get_stems
 
 
 def test_get_TAPShape_elements_when_no_config_dict_specified():
     """List TAPShape elements (minus shape_warns and state_list)."""
     expected = ["shapeID", "shapeLabel"]
-    assert get_shems(TAPShape) == expected
+    assert _get_shems() == expected
 
 
 def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
@@ -26,4 +25,4 @@ def test_get_TAPStatementTemplate_elements_when_no_config_dict_specified():
         "valueShape",
         "note",
     ]
-    assert sorted(get_stems(TAPStatementTemplate)) == sorted(expected)
+    assert sorted(_get_stems()) == sorted(expected)

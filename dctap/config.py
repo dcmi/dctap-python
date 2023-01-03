@@ -68,14 +68,35 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
 
 
 @dctap_defaults()
+def _get_shems(**kwargs):
+    """List TAP elements supported by given shape class."""
+    shapeclass = kwargs["shapeclass"]
+    main_shems = list(asdict(shapeclass()))
+    main_shems.remove("state_list")
+    main_shems.remove("shape_warns")
+    main_shems.remove("shape_extras")
+    return main_shems
+
+
+@dctap_defaults()
+def _get_stems(**kwargs):
+    """List TAP elements supported by given statement template class."""
+    stateclass = kwargs["stateclass"]
+    main_stems = list(asdict(stateclass()))
+    main_stems.remove("state_warns")
+    main_stems.remove("state_extras")
+    return main_stems
+
+
+@dctap_defaults()
 def _initialize_config_dict(**kwargs):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     shapeclass = kwargs["shapeclass"]
     stateclass = kwargs["stateclass"]
     config_dict = {}
     ems_dict = {}
-    shems = ems_dict["shape_elements"] = get_shems(shapeclass)
-    stems = ems_dict["statement_template_elements"] = get_stems(stateclass)
+    shems = ems_dict["shape_elements"] = _get_shems()
+    stems = ems_dict["statement_template_elements"] = _get_stems()
     ems_dict["csv_elements"] = shems + stems
     config_dict["element_aliases"] = {}
     config_dict["element_aliases"].update(_get_aliases_dict(ems_dict["csv_elements"]))
@@ -103,23 +124,6 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
                 new_prefixes[prefix] = prefixes[prefix]
     config_dict["prefixes"] = new_prefixes
     return config_dict
-
-
-def get_shems(shapeclass=None):
-    """List TAP elements supported by given shape class."""
-    main_shems = list(asdict(shapeclass()))
-    main_shems.remove("state_list")
-    main_shems.remove("shape_warns")
-    main_shems.remove("shape_extras")
-    return main_shems
-
-
-def get_stems(stateclass=None):
-    """List TAP elements supported by given statement template class."""
-    main_stems = list(asdict(stateclass()))
-    main_stems.remove("state_warns")
-    main_stems.remove("state_extras")
-    return main_stems
 
 
 @dctap_defaults()

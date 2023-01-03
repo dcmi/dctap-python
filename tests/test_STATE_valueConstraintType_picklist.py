@@ -46,8 +46,6 @@ def test_valueConstraintType_picklist_item_separator_comma(tmp_path):
     value_constraint = csvreader(
         open_csvfile_obj=open(csvfile_path),
         config_dict=config_dict,
-        hardwired_shapeclass=TAPShape,
-        hardwired_stateclass=TAPStatementTemplate,
     )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]
 
@@ -68,7 +66,5 @@ def test_valueConstraintType_picklist_item_separator_pipe(tmp_path):
     value_constraint = csvreader(
         open_csvfile_obj=open(csvfile_path),
         config_dict=config_dict,
-        hardwired_shapeclass=TAPShape,
-        hardwired_stateclass=TAPStatementTemplate,
     )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["one", "two", "three"]

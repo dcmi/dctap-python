@@ -11,11 +11,8 @@ from .exceptions import DctapError
 from .utils import coerce_concise
 
 
-@dctap_defaults()
-def csvreader(open_csvfile_obj=None, config_dict=None, **kwargs):
+def csvreader(open_csvfile_obj=None, config_dict=None):
     """From open CSV file object, return shapes dict."""
-    shapeclass = kwargs["shapeclass"]
-    stateclass = kwargs["stateclass"]
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     if csvrows:
         (tapshapes, tapwarns) = _get_tapshapes(rows=csvrows, config_dict=config_dict)
@@ -114,7 +111,6 @@ def _get_tapshapes(rows=None, config_dict=None, **kwargs):
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
-    shapeclass = kwargs["shapeclass"]
     stateclass = kwargs["stateclass"]
 
     try:

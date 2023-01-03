@@ -13,7 +13,7 @@ import pytest
 from dctap.config import get_config
 from dctap.csvreader import _add_namespaces
 
-NONDEFAULT_CONFIGYAML = """\
+NONDEFAULT_CONFIGYAML = """
 default_shape_identifier: "default"
 
 prefixes:
@@ -24,8 +24,6 @@ prefixes:
     "dc11:":    "http://purl.org/dc/elements/1.1/"
 """
 
-
-@pytest.mark.skip
 def test_get_config_from_default_config_file_if_present():
     """
     Adds key 'namespaces' to dict 'tapshapes'.
@@ -35,13 +33,13 @@ def test_get_config_from_default_config_file_if_present():
     - config_dict - computes from NONDEFAULT_CONFIGYAML
     - csvrows     - takes precomputed list of dicts
     """
-    given_config_dict = get_config(configyaml=NONDEFAULT_CONFIGYAML)
+    given_config_dict = get_config(config_yamlstring=NONDEFAULT_CONFIGYAML)
     assert "school:" in given_config_dict.get("prefixes")
-#    assert "ex:" in given_config_dict.get("prefixes")
-#    assert "dct:" in given_config_dict.get("prefixes")
-#    assert "xsd:" in given_config_dict.get("prefixes")
-#    assert "dc11:" in given_config_dict.get("prefixes")
-#    assert "dc:" not in given_config_dict.get("prefixes")
+    assert "ex:" in given_config_dict.get("prefixes")
+    assert "dct:" in given_config_dict.get("prefixes")
+    assert "xsd:" in given_config_dict.get("prefixes")
+    assert "dc11:" in given_config_dict.get("prefixes")
+    assert "dc:" not in given_config_dict.get("prefixes")
 
 #    given_csvrows = [
 #        {

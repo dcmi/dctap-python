@@ -43,6 +43,5 @@ def dctap_defaults():
                 deco = dctap_defaults.__name__
                 message = f"@{deco} passed a bad 'configfile' kwarg to {name}()."
                 raise DecoratorError(message) from te
-            return func(**kwargs)
         return wrapper
     return decorator

@@ -5,7 +5,6 @@ import pytest
 from dctap.config import _get_aliases_dict
 
 
-@pytest.mark.skip
 def test_config_get__alias2element_mappings():
     """Get basic computed aliases (lowercased)."""
 

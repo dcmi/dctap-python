@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 import pytest
 from dctap.defaults import CONFIGFILE
-from dctap.exceptions import ConfigError, BadYamlError
+from dctap.exceptions import ConfigError
 from dctap.utils import load_yaml_to_dict
 
 

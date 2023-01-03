@@ -6,7 +6,7 @@ from pathlib import Path
 import dctap
 from dctap.config import get_config
 from dctap.defaults import CONFIGFILE
-from dctap.exceptions import ConfigError, BadYamlError
+from dctap.exceptions import ConfigError
 
 @pytest.mark.done
 def test_get_config_from_builtins(tmp_path):

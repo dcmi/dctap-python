@@ -1,5 +1,5 @@
 """
-dctap.csvreader._mkshape - from docstring:
+dctap.csvreader._make_shape - from docstring:
 
     Populates shape fields of dataclass TAPShape object from dict for one row.
 
@@ -19,11 +19,11 @@ dctap.csvreader._mkshape - from docstring:
 import os
 import pytest
 from dctap.config import get_config
-from dctap.csvreader import _mkshape
+from dctap.csvreader import _make_shape
 from dctap.tapclasses import TAPShape
 
 
-def test_mkshapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path):
+def test_make_shapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path):
     """Populates TAPShape object even in the absence of a propertyID."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
     config_dict = get_config()
@@ -32,14 +32,14 @@ def test_mkshapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path
         "shapeID": ":a",
         "shapeLabel": "Book",
     }
-    assert _mkshape(
+    assert _make_shape(
         row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     ) == TAPShape(
         shapeID=":a", shapeLabel="Book", state_list=[], shape_warns={}, shape_extras={}
     )
 
 
-def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
+def test_make_shape_recognizes_only_shape_elements_so_configured(tmp_path):
     """Populates TAPShape object but ignores any statement template elements in row."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
     config_dict = get_config()
@@ -50,7 +50,7 @@ def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
         "closed": False,
         "start": True,
     }
-    assert _mkshape(row_dict=one_row, config_dict=config_dict) == TAPShape(
+    assert _make_shape(row_dict=one_row, config_dict=config_dict) == TAPShape(
         shapeID=":a",
         shapeLabel="Book",
         state_list=[],
@@ -59,7 +59,7 @@ def test_mkshape_recognizes_only_shape_elements_so_configured(tmp_path):
     )
 
 
-def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
+def test_make_shape_reads_all_extra_shape_elements_so_configured(tmp_path):
     """Reads all elements configured as extra shape elements."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
     config_dict = get_config()
@@ -71,7 +71,7 @@ def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
         "closed": False,
         "start": True,
     }
-    assert _mkshape(
+    assert _make_shape(
         row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     ) == TAPShape(
         shapeID=":a",
@@ -82,7 +82,7 @@ def test_mkshape_reads_all_extra_shape_elements_so_configured(tmp_path):
     )
 
 
-def test_mkshape_sets_shape_elements_only(tmp_path):
+def test_make_shape_sets_shape_elements_only(tmp_path):
     """Populates TAPShape object but ignores any statement template elements in row."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
     config_dict = get_config()
@@ -95,7 +95,7 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
         "propertyID": "ex:name",
         "valueNodeType": "literal",
     }
-    shape = _mkshape(
+    shape = _make_shape(
         row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     )
     assert shape.shapeID == ":a"
@@ -103,10 +103,10 @@ def test_mkshape_sets_shape_elements_only(tmp_path):
     # pylint: disable=use-implicit-booleaness-not-comparison
     assert shape.shape_warns == {}
     assert shape.shape_extras == {"closed": False, "start": True}
-    assert shape.state_list == []  # _mkshape() sets shape fields only, not ST fields
+    assert shape.state_list == []  # _make_shape() sets shape fields only, not ST fields
 
 
-def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path):
+def test_make_shape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path):
     """Empty shape elements are passed through, but not unasserted elements."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
     config_dict = get_config()
@@ -117,7 +117,7 @@ def test_mkshape_extra_shape_elements_that_are_empty_are_passed_through(tmp_path
         "shapeLabel": "",
         "closed": "",
     }
-    assert _mkshape(
+    assert _make_shape(
         row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
     ) == TAPShape(
         shapeID=":a",

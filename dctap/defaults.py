@@ -27,21 +27,25 @@ prefixes:
 """
 
 
-def dctap_defaults():
+def dctap_defaults(func):
     """Decorator that passes dctap package defaults."""
     def decorator(func):
         @wraps(func)
-        def wrapper(**kwargs):
-            kwargs["shapeclass"] = TAPShape
-            kwargs["stateclass"] = TAPStatementTemplate
-            kwargs["configyaml"] = CONFIGYAML
-            kwargs["configfile"] = CONFIGFILE
-            try:  # if decorated function is not set up to receive **kwargs
-                return func(**kwargs)
+        def wrapper(*args, **kwargs):
+            if not "shapeclass" in args:
+                kwargs["shapeclass"] = TAPShape
+            if not kwargs.get("stateclass"):
+                kwargs["stateclass"] = TAPStatementTemplate
+            if not kwargs.get("configyaml"):
+                kwargs["configyaml"] = CONFIGYAML
+            if not kwargs.get("configfile"):
+                kwargs["configfile"] = CONFIGFILE
+            try:
+                return func(*args, **kwargs)
             except TypeError as te:
                 name = func.__name__
                 deco = dctap_defaults.__name__
-                message = f"@{deco}-only kwarg explicitly passed to {name}()."
+                message = f"@{deco}-only kwarg was explicitly passed to {name}()."
                 raise DecoratorError(message) from te
         return wrapper
-    return decorator
+    return decorator(func)

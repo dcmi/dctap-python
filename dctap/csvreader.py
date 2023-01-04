@@ -105,7 +105,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     csv_warns = dict(csv_warns)
     return (csv_rows, csv_warns)
 
-@dctap_defaults()
+@dctap_defaults
 def _get_tapshapes(rows=None, config_dict=None, **kwargs):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
@@ -138,7 +138,7 @@ def _get_tapshapes(rows=None, config_dict=None, **kwargs):
 
         if sh_id:
             if sh_id not in list(shapes):
-                sh_obj = _mkshape(row_dict=row, config_dict=config_dict)
+                sh_obj = _make_shape(row_dict=row, config_dict=config_dict)
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
                 warns[sh_id] = {}
@@ -186,8 +186,8 @@ def _get_tapshapes(rows=None, config_dict=None, **kwargs):
     return (shapes_dict, warns_dict)
 
 
-@dctap_defaults()
-def _mkshape(row_dict=None, config_dict=None, **kwargs):
+@dctap_defaults
+def _make_shape(row_dict=None, config_dict=None, **kwargs):
     """Populates shape fields of dataclass shape object from dict for one row.
 
     Args:

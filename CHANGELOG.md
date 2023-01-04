@@ -1,14 +1,30 @@
 # Changelog
-Starting with version 0.3.2, notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+Documents notable changes to this project since version 0.3.2.
+
+The format is based on [Keep a Changelog]( https://keepachangelog.com/en/1.0.0/ ),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Keywords used: Added, Changed, Deprecated, Removed, Fixed, Security.
 
+## Unreleased (or under consideration)
+
+- Possibly take more "hard-wired" defaults out of function bodies and move them into `@dctap_defaults`, such as `default_shape_name` and `picklist_item_separator`, and maybe even `prefixes`.
+- Better documentation of function arguments in docstrings and their inclusion in [project documentation](https://tapshex.readthedocs.io/en/latest/).
+
 ## [0.4.0] - 2023-01-03
 
-Major changes:
+### Added
+
+- A new decorator, `@dctap_defaults`, serves as a single source of default settings for the package. It currently holds defaults for the shape class, statement template class, a default YAML text holding common namespace prefixes, and the name of the configuration file (`dctap.yaml`). The intended use of the decorator is to pass keyword arguments to a function that will collect them in a `**kwargs` argument. Attempts to call a decorator function by trying to pass a decorator-internal variable explicitly will trigger an exception. Creation of this decorator was motivated by a desire to make it easier for other projects downstream to create
+
+### Removed
+- `dctap init` no longer has an option to generate a "Hidden" configuration file ".dctaprc". Note that users can still rename "dctap.yaml" to ".dctaprc" (or anything else) by hand and point to it with `dctap read` or with various functions).
+
+### Changed
+- Arguments of `dctap.config.get_config`:
+  - 0.3.15: `configfile_name`, `config_yamldoc`, `shape_class`, `state_class`
+  - 0.4.0: `config_yamlfile`, `config_yamlstring`, `**kwargs` (which receives `configfile` and `configyaml` from decorator `@dctap_defaults`).
 
 ## [0.3.15] - 2022-12-26
 - Improve efficiency/readability of normalization functions, eg for Boolean values.

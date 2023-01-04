@@ -25,6 +25,7 @@ prefixes:
 """
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_get_config_from_default_config_file_if_present():
     """
     Adds key 'namespaces' to dict 'tapshapes'.

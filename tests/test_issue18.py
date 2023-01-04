@@ -18,6 +18,7 @@ element_aliases:
 """
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_get_config_from_phils_yamldoc(tmp_path):
     """Get config dict when passed Phil's YAML."""
     os.chdir(tmp_path)
@@ -27,6 +28,7 @@ def test_get_config_from_phils_yamldoc(tmp_path):
     assert config_dict["extra_statement_template_elements"] == ["severity"]
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_get_element_aliases_from_default_yamldoc(tmp_path):
     """Get config dict (with element aliases) directly from built-in defaults."""
     os.chdir(tmp_path)

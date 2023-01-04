@@ -1,0 +1,36 @@
+Functions decorated with @dctap_defaults:
+
+---------------------------------------------------------
+config.get_config
+- Replace: config_yamlfile    -> configfile=DEFAULT
+- Replace: config_yamlstring  -> configyaml=DEFAULT
+- Add: shapeclass=DEFAULT
+- Add: stateclass=DEFAULT
+
+config.get_config._get_shems 
+- Add: shapeclass=None - gets from _initialize_config_dict, which gets from get_config
+
+config.get_config._get_stems 
+- Add: stateclass=None - gets from _initialize_config_dict, which gets from get_config
+
+config.get_config._initialize_config_dict 
+- Add: shapeclass=None - gets from get_config
+- Add: stateclass=None - gets from get_config
+
+config.get_config.write_configfile
+- Replace: config_yamlfile    -> configfile=DEFAULT
+- Replace: config_yamlstring  -> configyaml=DEFAULT
+
+---------------------------------------------------------
+csvreader
+- Add: stateclass=DEFAULT
+
+csvreader._get_tapshapes
+- Add: stateclass=None - gets from csvreader
+
+csvreader._make_shape
+- Add: stateclass=None - gets from _get_tapshapes
+
+---------------------------------------------------------
+dctap_defaults(func) - itself!
+- DELETE

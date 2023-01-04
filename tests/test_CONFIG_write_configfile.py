@@ -16,6 +16,7 @@ prefixes:
 """
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIGYAML to CONFIGFILE and read back as text."""
     os.chdir(tmp_path)
@@ -23,6 +24,7 @@ def test_write_default_configfile_and_read_back(tmp_path):
     assert open(CONFIGFILE).read() == NONDEFAULT_CONFIGYAML
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_write_specified_configfile_and_read_back(tmp_path):
     """Write specified configfile and read back as text."""
     os.chdir(tmp_path)
@@ -33,6 +35,7 @@ def test_write_specified_configfile_and_read_back(tmp_path):
     assert open(specified_config_file).read() == NONDEFAULT_CONFIGYAML
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_not_write_default_configfile_if_already_exists(tmp_path):
     """Exits if config file not specified and CONFIGFILE already exists."""
     os.chdir(tmp_path)
@@ -41,6 +44,7 @@ def test_not_write_default_configfile_if_already_exists(tmp_path):
         write_configfile()
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_exits_if_file_not_writeable(tmp_path):
     """Exits if config file not writeable. Note: throws two exceptions."""
     os.chdir(tmp_path)

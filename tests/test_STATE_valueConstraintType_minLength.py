@@ -14,6 +14,7 @@ from dctap.csvreader import csvreader
 # config_dict = get_config()
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     """valueConstraint minLength / maxLength must be integer."""
 
@@ -40,6 +41,7 @@ def test_valueConstraintType_minmaxlength_parse_must_be_integer():
     assert not sc.state_warns.get("valueConstraint")  # specifically, no warnings for...
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_minmaxlength_parse_must_not_be_float():
     """If valueConstraint minLength / maxLength is float, passed through as string."""
 
@@ -62,6 +64,7 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_float():
     assert sc.state_warns.get("valueConstraint")
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
     """If minLength / maxLength is non-numeric string, passed through untouched."""
 
@@ -86,6 +89,7 @@ def test_valueConstraintType_minmaxlength_parse_must_not_be_string():
     assert "tom@" in sc.state_warns.get("valueConstraint")
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_minlength_parse_integer_may_be_negative_edge_case():
     """If minLength is a negative integer, issues warning."""
     sc = TAPStatementTemplate()

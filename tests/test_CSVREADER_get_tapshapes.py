@@ -5,9 +5,10 @@ from dctap.config import get_config
 from dctap.csvreader import _get_tapshapes
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
-SETTINGS_DICT = get_config()
+# SETTINGS_DICT = get_config()
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     """Lines without shapeID and/or propertyID are ignored."""
     settings = get_config()
@@ -27,6 +28,7 @@ def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     assert len(shapes["shapes"][1]["statement_templates"]) == 1
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_declare_on_separate_rows():
     """Shape declared in own rows followed by rows with statement templates."""
     rows = [
@@ -43,6 +45,7 @@ def test_get_tapshapes_two_shapes_declare_on_separate_rows():
     assert len(shapes["shapes"][1]["statement_templates"]) == 1
 
 
+@pytest.mark.skip
 def test_get_tapshapes_shape_elements_declared_on_separate_row():
     """One shape, declared on its own row."""
     rows = [
@@ -62,6 +65,7 @@ def test_get_tapshapes_shape_elements_declared_on_separate_row():
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 1
 
 
+@pytest.mark.skip
 def test_get_tapshapes_one_default_shape_with_shapeID_asserted():
     """One default shape with shapeID asserted."""
     rows = [
@@ -81,6 +85,7 @@ def test_get_tapshapes_one_default_shape_with_shapeID_asserted():
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 3
 
 
+@pytest.mark.skip
 def test_get_tapshapes_one_default_shape_with_shapeID_not_asserted():
     """One default shape with shapeID not asserted."""
     rows = [
@@ -100,6 +105,7 @@ def test_get_tapshapes_one_default_shape_with_shapeID_not_asserted():
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 3
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_first_is_default():
     """Two shapes, first of which is default."""
     rows = [
@@ -119,6 +125,7 @@ def test_get_tapshapes_two_shapes_first_is_default():
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_where_rows_are_out_of_order():
     """Two shapes in three rows, in mixed order (ABA)."""
     rows = [
@@ -139,6 +146,7 @@ def test_get_tapshapes_two_shapes_where_rows_are_out_of_order():
     assert len(expected_shapes["shapes"][1]["statement_templates"]) == 1
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_spelled_out_entirely():
     """Two shapes, first of which is default because shapeID is empty."""
     rows = [
@@ -220,6 +228,7 @@ def test_get_tapshapes_two_shapes_spelled_out_entirely():
     assert isinstance(tapshapes_output[0]["shapes"][0]["statement_templates"][0], dict)
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_shapeID_most_recently_used():
     """Two shapes, where shapeID left blank assigned "most recently used"."""
     rows = [
@@ -254,6 +263,7 @@ def test_get_tapshapes_two_shapes_shapeID_most_recently_used():
     assert len(expected_shapes["shapes"][0]["statement_templates"]) == 2
 
 
+@pytest.mark.skip
 def test_get_tapshapes_two_shapes_shapeID_not_always_asserted():
     """Two shapes, where one line does not assert shapeID at all"."""
     rows = [

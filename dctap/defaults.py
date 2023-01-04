@@ -32,7 +32,7 @@ def dctap_defaults(func):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not "shapeclass" in args:
+            if "shapeclass" not in args:
                 kwargs["shapeclass"] = TAPShape
             if not kwargs.get("stateclass"):
                 kwargs["stateclass"] = TAPStatementTemplate

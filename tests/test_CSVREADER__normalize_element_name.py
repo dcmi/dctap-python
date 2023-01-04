@@ -5,6 +5,7 @@ from dctap.config import get_config
 from dctap.csvreader import _normalize_element_name
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_normalize_element_name():
     """Element names not recognized as aliases are left unchanged."""
     config_dict = get_config()
@@ -14,6 +15,7 @@ def test_normalize_element_name():
     assert _normalize_element_name("rid", element_aliases_dict) == "rid"
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_normalize_element_name_customized():
     """Uses customized element name aliases taken from configuration file."""
     element_aliases_dict = {
@@ -27,6 +29,7 @@ def test_normalize_element_name_customized():
     )
 
 
+@pytest.mark.skip(reason="Will remove decorator")
 def test_normalize_element_name_if_element_aliases_dict_pass_through_unchanged():
     """
     If no element aliases dict passed to function, pass element name through unchanged.

@@ -7,7 +7,3 @@ class DctapError(SystemExit):
 
 class ConfigError(DctapError):
     """Exceptions related to configuration."""
-
-
-class DecoratorError(DctapError):
-    """Exceptions raised about use of decorator."""

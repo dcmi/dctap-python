@@ -1,10 +1,5 @@
 """Default settings."""
 
-from functools import wraps
-from .exceptions import DecoratorError
-from .tapclasses import TAPShape, TAPStatementTemplate
-
-
 CONFIGFILE = "dctap.yaml"
 CONFIGYAML = """\
 # dctap configuration file (in YAML format)

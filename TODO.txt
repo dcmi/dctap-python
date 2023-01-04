@@ -2,35 +2,58 @@ Functions decorated with @dctap_defaults:
 
 ---------------------------------------------------------
 config.get_config
+- /Users/tbaker/github/tap/dctap-python/dctap/get_config.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG_get_config.py
 - Replace: config_yamlfile    -> configfile=DEFAULT
 - Replace: config_yamlstring  -> configyaml=DEFAULT
 - Add: shapeclass=DEFAULT
 - Add: stateclass=DEFAULT
 
 config.get_config._get_shems 
+- /Users/tbaker/github/tap/dctap-python/dctap/get_config.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG_get_shems_stems.py
 - Add: shapeclass=None - gets from _initialize_config_dict, which gets from get_config
 
 config.get_config._get_stems 
+- /Users/tbaker/github/tap/dctap-python/dctap/get_config.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG_get_shems_stems.py
 - Add: stateclass=None - gets from _initialize_config_dict, which gets from get_config
 
 config.get_config._initialize_config_dict 
+- /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG__initialize_config_dict.py
 - Add: shapeclass=None - gets from get_config
 - Add: stateclass=None - gets from get_config
 
 config.get_config.write_configfile
+- /Users/tbaker/github/tap/dctap-python/dctap/get_config.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG_write_configfile.py
 - Replace: config_yamlfile    -> configfile=DEFAULT
 - Replace: config_yamlstring  -> configyaml=DEFAULT
 
+Downstream
+- /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG_get_config_extra_element_aliases.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_STATE_picklist_elements.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_STATE_valueConstraintType_languagetag.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_STATE_valueConstraintType_minLength.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_STATE_valueConstraintType_picklist.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_issue18.py
+
 ---------------------------------------------------------
 csvreader
+- /Users/tbaker/github/tap/dctap-python/dctap/csvreader.py
 - Add: stateclass=DEFAULT
 
 csvreader._get_tapshapes
+- /Users/tbaker/github/tap/dctap-python/dctap/csvreader.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER_get_tapshapes.py
 - Add: stateclass=None - gets from csvreader
 
 csvreader._make_shape
+- /Users/tbaker/github/tap/dctap-python/dctap/csvreader.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER__make_shape.py
 - Add: stateclass=None - gets from _get_tapshapes
 
----------------------------------------------------------
-dctap_defaults(func) - itself!
-- DELETE
+Downstream
+- /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER__add_namespaces.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER__normalize_element_name.py
+- /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER_get_rows.py

@@ -25,27 +25,3 @@ prefixes:
     "wdt:":     "http://www.wikidata.org/prop/direct/"
     "xsd:":     "http://www.w3.org/2001/XMLSchema#"
 """
-
-
-def dctap_defaults(func):
-    """Decorator that passes dctap package defaults."""
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            if "shapeclass" not in args:
-                kwargs["shapeclass"] = TAPShape
-            if not kwargs.get("stateclass"):
-                kwargs["stateclass"] = TAPStatementTemplate
-            if not kwargs.get("configyaml"):
-                kwargs["configyaml"] = CONFIGYAML
-            if not kwargs.get("configfile"):
-                kwargs["configfile"] = CONFIGFILE
-            try:
-                return func(*args, **kwargs)
-            except TypeError as te:
-                name = func.__name__
-                deco = dctap_defaults.__name__
-                message = f"@{deco}-only kwarg was explicitly passed to {name}()."
-                raise DecoratorError(message) from te
-        return wrapper
-    return decorator(func)

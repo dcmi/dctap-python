@@ -3,12 +3,10 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from .defaults import dctap_defaults
 from .exceptions import ConfigError
 from .utils import load_yaml_to_dict, coerce_concise
 
 
-# @dctap_defaults
 def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     """@@@."""
     # pylint: disable=too-many-branches
@@ -67,7 +65,6 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     return config_dict
 
 
-# @dctap_defaults
 def _get_shems(**kwargs):
     """List TAP elements supported by given shape class."""
     shapeclass = kwargs["shapeclass"]
@@ -78,7 +75,6 @@ def _get_shems(**kwargs):
     return main_shems
 
 
-# @dctap_defaults
 def _get_stems(**kwargs):
     """List TAP elements supported by given statement template class."""
     stateclass = kwargs["stateclass"]
@@ -123,7 +119,6 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
     return config_dict
 
 
-# @dctap_defaults
 def write_configfile(config_filename=None, config_yamlstring=None, **kwargs):
     """Write initial config file or exit trying."""
     configfile = kwargs["configfile"]

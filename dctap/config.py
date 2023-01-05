@@ -3,24 +3,31 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
+from .defaults import CONFIGFILE, CONFIGYAML
 from .exceptions import ConfigError
+from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import load_yaml_to_dict, coerce_concise
 
 
-def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
-    """@@@."""
+def get_config(
+    shape_class=TAPShape,
+    state_class=TAPStatementTemplate,
+    config_yamlfile=CONFIGFILE,
+    config_yamlstring=CONFIGYAML,
+    nondefault_config_yamlstring=None,
+):
+    """Get configuration dictionary from package defaults."""
     # pylint: disable=too-many-branches
-    configfile = kwargs["configfile"]  # Any kwarg not listed here is simply ignored.
-    configyaml = kwargs["configyaml"]
-    config_dict = _initialize_config_dict()
+    breakpoint(context=5)
+    config_dict = _initialize_config_dict(shape_class, state_class)
     configyaml_from_file = None
     configdict_from_file = None
 
-    # Makes no sense to specify two arguments, config_yamlfile and config_yamlstring.
-    if config_yamlfile and config_yamlstring:
-        raise ConfigError("Cannot load YAML from both string and file.")
+    ## Makes no sense to specify two arguments, config_yamlfile and config_yamlstring.
+    #if config_yamlfile and config_yamlstring:
+    #    raise ConfigError("Cannot load YAML from both string and file.")
 
-    # If no arguments passed, try to parse default config file, update config_dict.
+    # Try to parse default config file, update config_dict.
     if not config_yamlstring and not config_yamlfile:
         if Path(configfile).is_file():  # No need to warn if file does not exist.
             configyaml_from_file = Path(configfile).read_text(encoding="utf-8")
@@ -45,7 +52,6 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
             if configdict_from_file is not None:  # But YAML contents could be bad.
                 config_dict.update(configdict_from_file)
 
-    # breakpoint(context=5)
     # If config_yamlstring was passed, try to use it to update config_dict.
     if config_yamlstring:
         configdict_from_yamlstring = load_yaml_to_dict(yamlstring=config_yamlstring)
@@ -65,31 +71,29 @@ def get_config(config_yamlfile=None, config_yamlstring=None, **kwargs):
     return config_dict
 
 
-def _get_shems(**kwargs):
+def _get_shems(shape):
     """List TAP elements supported by given shape class."""
-    shapeclass = kwargs["shapeclass"]
-    main_shems = list(asdict(shapeclass()))
+    main_shems = list(asdict(shape()))
     main_shems.remove("state_list")
     main_shems.remove("shape_warns")
     main_shems.remove("shape_extras")
     return main_shems
 
 
-def _get_stems(**kwargs):
+def _get_stems(state):
     """List TAP elements supported by given statement template class."""
-    stateclass = kwargs["stateclass"]
-    main_stems = list(asdict(stateclass()))
+    main_stems = list(asdict(state()))
     main_stems.remove("state_warns")
     main_stems.remove("state_extras")
     return main_stems
 
 
-def _initialize_config_dict():
+def _initialize_config_dict(shapeclass, stateclass):
     """Initialize config dict with element lists (computed) and placeholder keys."""
     config_dict = {}
     ems_dict = {}
-    shems = ems_dict["shape_elements"] = _get_shems()
-    stems = ems_dict["statement_template_elements"] = _get_stems()
+    shems = ems_dict["shape_elements"] = _get_shems(shapeclass)
+    stems = ems_dict["statement_template_elements"] = _get_stems(stateclass)
     ems_dict["csv_elements"] = shems + stems
     config_dict["element_aliases"] = {}
     config_dict["element_aliases"].update(_get_aliases_dict(ems_dict["csv_elements"]))
@@ -118,24 +122,22 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
     config_dict["prefixes"] = new_prefixes
     return config_dict
 
-
-def write_configfile(config_filename=None, config_yamlstring=None, **kwargs):
+def write_configfile(
+    config_filename=CONFIGFILE,
+    config_yamlstring=CONFIGYAML,
+    nondefault_config_yamlstring=None
+):
     """Write initial config file or exit trying."""
-    configfile = kwargs["configfile"]
-    configyaml = kwargs["configyaml"]
-    if Path(configfile).exists():
-        raise ConfigError(f"'{configfile}' exists - will not overwrite.")
-    if config_filename:
-        configfile = config_filename
-    if config_yamlstring:  # useful for testing
-        configyaml = config_yamlstring
+    if Path(config_filename).exists():
+        raise ConfigError(f"'{config_filename}' exists - will not overwrite.")
+    if nondefault_config_yamlstring:  # useful for testing
+        config_yamlstring = nondefault_config_yamlstring
     try:
-        with open(configfile, "w", encoding="utf-8") as outfile:
-            outfile.write(configyaml)
-            message = f"Settings written to '{configfile}'."
-            print(message, file=sys.stderr)
+        with open(config_filename, "w", encoding="utf-8") as outfile:
+            outfile.write(config_yamlstring)
+            print(f"Settings written to '{config_filename}'.", file=sys.stderr)
     except FileNotFoundError as error:
-        raise ConfigError(f"'{configfile}' not writeable.") from error
+        raise ConfigError(f"'{config_filename}' not writeable.") from error
 
 
 def _get_aliases_dict(csv_elements_list=None):

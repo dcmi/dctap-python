@@ -19,7 +19,7 @@ prefixes:
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIGYAML to CONFIGFILE and read back as text."""
     os.chdir(tmp_path)
-    write_configfile(nondefault_configyaml_string=NONDEFAULT_CONFIGYAML)
+    write_configfile(nondefault_configyaml_str=NONDEFAULT_CONFIGYAML)
     assert open(CONFIGFILE).read() == NONDEFAULT_CONFIGYAML
 
 
@@ -29,7 +29,7 @@ def test_write_specified_configfile_and_read_back(tmp_path):
     specified_config_file = "foobar.yaml"
     write_configfile(
         default_configfile_name=specified_config_file,
-        nondefault_configyaml_string=NONDEFAULT_CONFIGYAML,
+        nondefault_configyaml_str=NONDEFAULT_CONFIGYAML,
     )
     assert open(specified_config_file).read() == NONDEFAULT_CONFIGYAML
 
@@ -49,10 +49,10 @@ def test_exits_if_file_not_writeable(tmp_path):
     with pytest.raises(SystemExit):
         write_configfile(
             default_configfile_name=config_filename,
-            nondefault_configyaml_string=NONDEFAULT_CONFIGYAML,
+            nondefault_configyaml_str=NONDEFAULT_CONFIGYAML,
         )
     with pytest.raises(ConfigError):
         write_configfile(
             default_configfile_name=config_filename,
-            nondefault_configyaml_string=NONDEFAULT_CONFIGYAML,
+            nondefault_configyaml_str=NONDEFAULT_CONFIGYAML,
         )

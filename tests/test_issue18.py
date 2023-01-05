@@ -30,7 +30,7 @@ def test_get_config_from_issue18_yamldoc(tmp_path):
 def test_get_element_aliases_from_default_yamldoc(tmp_path):
     """Get config dict (with element aliases) directly from built-in defaults."""
     os.chdir(tmp_path)
-    config_dict = get_config(default_configyaml_string=CONFIGYAML)
+    config_dict = get_config(default_configyaml_str=CONFIGYAML)
     assert config_dict["element_aliases"]["propertyid"] == "propertyID"
     assert config_dict["element_aliases"]["mandatory"] == "mandatory"
     assert config_dict["element_aliases"]["repeatable"] == "repeatable"

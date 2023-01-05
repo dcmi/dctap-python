@@ -57,3 +57,34 @@ Downstream
 - /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER__add_namespaces.py
 - /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER__normalize_element_name.py
 - /Users/tbaker/github/tap/dctap-python/tests/test_CSVREADER_get_rows.py
+
+
+if nondefault configfile specified
+    try 
+        use it
+    except FileNotFound
+        raise ConfigError
+elif nondefault yamlstring specified
+    use it 
+    return
+else        
+    try 
+        use default configifle
+    except FileNotFound
+        use default configfile
+
+The function get_config computes the dictionary of configuration settings
+needed by dctap for proper execution. If called with no arguments, the function
+uses built-in package-level defaults: built-in dataclasses, built-in settings,
+and the default name of an optional configuration file. These defaults can be
+overridden by expert users or by other Python packages. Alternatively, the
+function will accept either nondefault configuration settings (YAML string) or
+a nondefault configuration file (filename name).
+
+Arguments for get_config are processed as follows:
+- If a nondefault configuration file is specified, get_config will try to use this and 
+  exit if the file is not found.
+- If no nondefault configuration file is specified, get_config will try to use it.
+- If no default configuration file is found, get_config will try 
+            
+    

@@ -10,66 +10,53 @@ from .utils import load_yaml_to_dict, coerce_concise
 
 
 def get_config(
+    nondefault_configyaml_str=None,
+    nondefault_configfile_name=None,
+    default_configyaml_str=CONFIGYAML,
+    default_configfile_name=CONFIGFILE,
     default_shape_class=TAPShape,
     default_state_class=TAPStatementTemplate,
-    default_configfile_name=CONFIGFILE,
-    default_configyaml_string=CONFIGYAML,
-    nondefault_configyaml_string=None,
 ):
-    """Get configuration dictionary from package defaults."""
-    # pylint: disable=too-many-branches
+    """Get configuration dictionary from package defaults (or from non-defaults)."""
+    # pylint: disable=too-many-arguments
+    configyaml_read = None
+    configdict_read = None
     config_dict = _initialize_config_dict(default_shape_class, default_state_class)
-    configyaml_from_file = None
-    configdict_from_file = None
 
-    ## Makes no sense to specify two arguments, default_configfile_name and default_configyaml_string.
-    # if default_configfile_name and default_configyaml_string:
-    #    raise ConfigError("Cannot load YAML from both string and file.")
+    if nondefault_configfile_name and nondefault_configyaml_str:
+        raise ConfigError("Can load YAML from either string or file, not both.")
 
-    # Try to parse default config file, update config_dict.
-    if not default_configyaml_string and not default_configfile_name:
-        if Path(
-            default_configfile_name
-        ).is_file():  # No need to warn if file does not exist.
-            configyaml_from_file = Path(default_configfile_name).read_text(
-                encoding="utf-8"
-            )
-
-        if not configyaml_from_file:
-            configyaml_from_file = default_configyaml_string
-            configdict_from_file = load_yaml_to_dict(
-                yamlstring=default_configyaml_string
-            )
-        else:
-            configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
-
-        if configdict_from_file is not None:  # But YAML contents could be bad.
-            config_dict.update(configdict_from_file)
-
-    # If default_configfile_name was passed, try to read and parse, then update config_dict.
-    if default_configfile_name and not default_configyaml_string:
+    elif nondefault_configfile_name:
         try:
-            configyaml_from_file = Path(default_configfile_name).read_text(
-                encoding="utf-8"
-            )
+            nondefault_configfile = Path(nondefault_configfile_name)
+            configyaml_read = nondefault_configfile.read_text(encoding="utf-8")
         except FileNotFoundError as err:
-            raise ConfigError(
-                f"Config file '{default_configfile_name}' not found."
-            ) from err
-        if configyaml_from_file is not None:
-            configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
-            if configdict_from_file is not None:  # But YAML contents could be bad.
-                config_dict.update(configdict_from_file)
+            raise ConfigError(f"Config file '{nondefault_configfile_name}' not found.") from err
 
-    # If default_configyaml_string was passed, try to use it to update config_dict.
-    if default_configyaml_string:
-        configdict_from_yamlstring = load_yaml_to_dict(
-            yamlstring=default_configyaml_string
-        )
-        if configdict_from_yamlstring is not None:
-            config_dict.update(configdict_from_yamlstring)
+    elif nondefault_configyaml_str:
+        configdict_read = load_yaml_to_dict(yamlstring=nondefault_configyaml_str)
+        if configdict_read is not None:
+            config_dict.update(configdict_read)
+        return config_dict
 
-    # Extra element aliases, if declared, are added to element aliases.
+    else:
+        try:
+            configyaml_read = Path(default_configfile_name).read_text(encoding="utf-8")
+        except FileNotFoundError as err:
+            configyaml_read = default_configyaml_str
+
+        configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
+        if configdict_read is not None:
+            config_dict.update(configdict_read)
+        return config_dict
+
+    config_dict = _add_extra_element_aliases(config_dict)
+    config_dict = _add_colons_to_prefixes_if_needed(config_dict)
+    return config_dict
+
+
+def _add_extra_element_aliases(config_dict):
+    """If extra element aliases are specified, add them to the configuration dict."""
     extras = config_dict.get("extra_element_aliases")
     if extras:
         try:
@@ -77,8 +64,20 @@ def get_config(
         except AttributeError:
             extras = {}
         config_dict["element_aliases"].update(extras)
+    return config_dict
 
-    config_dict = _add_colons_to_prefixes_if_needed(config_dict)
+
+def _add_colons_to_prefixes_if_needed(config_dict):
+    """Reconstitute config_dict.prefixes, ensuring that each prefix ends in colon."""
+    prefixes = config_dict.get("prefixes")
+    new_prefixes = {}
+    if prefixes:
+        for prefix in prefixes:
+            if not prefix.endswith(":"):
+                new_prefixes[prefix + ":"] = prefixes[prefix]
+            else:
+                new_prefixes[prefix] = prefixes[prefix]
+    config_dict["prefixes"] = new_prefixes
     return config_dict
 
 
@@ -120,33 +119,20 @@ def _initialize_config_dict(shapeclass, stateclass):
     return config_dict
 
 
-def _add_colons_to_prefixes_if_needed(config_dict=None):
-    """Reconstitute config_dict.prefixes, ensuring that each prefix ends in colon."""
-    prefixes = config_dict.get("prefixes")
-    new_prefixes = {}
-    if prefixes:
-        for prefix in prefixes:
-            if not prefix.endswith(":"):
-                new_prefixes[prefix + ":"] = prefixes[prefix]
-            else:
-                new_prefixes[prefix] = prefixes[prefix]
-    config_dict["prefixes"] = new_prefixes
-    return config_dict
-
 
 def write_configfile(
+    nondefault_configyaml_str=None,
     default_configfile_name=CONFIGFILE,
-    default_configyaml_string=CONFIGYAML,
-    nondefault_configyaml_string=None,
+    default_configyaml_str=CONFIGYAML,
 ):
     """Write initial config file or exit trying."""
     if Path(default_configfile_name).exists():
         raise ConfigError(f"'{default_configfile_name}' exists - will not overwrite.")
-    if nondefault_configyaml_string:  # useful for testing
-        default_configyaml_string = nondefault_configyaml_string
+    if nondefault_configyaml_str:  # useful for testing
+        default_configyaml_str = nondefault_configyaml_str
     try:
         with open(default_configfile_name, "w", encoding="utf-8") as outfile:
-            outfile.write(default_configyaml_string)
+            outfile.write(default_configyaml_str)
             print(f"Settings written to '{default_configfile_name}'.", file=sys.stderr)
     except FileNotFoundError as error:
         raise ConfigError(f"'{default_configfile_name}' not writeable.") from error

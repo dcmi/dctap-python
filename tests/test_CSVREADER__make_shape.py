@@ -1,20 +1,4 @@
-"""
-dctap.csvreader._make_shape - from docstring:
-
-    Populates shape fields of dataclass TAPShape object from dict for one row.
-
-    Args:
-        tapshape_obj: Unpopulated instance of dctap.tapclasses.TAPShape:
-            TAPShape(shapeID='', shapeLabel='', state_list=[], shape_warns={}, shape_extras={})
-        row_dict: Dictionary of all columns headers (keys) and cell values (values)
-            found in a given row, with no distinction between shape elements and
-            statement template elements.
-        main_shape_elements: Default TAPClass fields related to shapes.
-        xtra_shape_elements: Extra TAPClass fields as per optional config file.
-
-    Returns:
-        TAPShape object with shape fields set.
-"""
+"""dctap.csvreader._make_shape"""
 
 import os
 import pytest
@@ -22,8 +6,6 @@ from dctap.config import get_config
 from dctap.csvreader import _make_shape
 from dctap.tapclasses import TAPShape
 
-
-@pytest.mark.skip(reason="Will remove decorator")
 def test_make_shapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_path):
     """Populates TAPShape object even in the absence of a propertyID."""
     os.chdir(tmp_path)  # precaution to avoid interference among pytests
@@ -34,11 +16,10 @@ def test_make_shapes_returns_tapshape_object_even_in_absence_of_propertyID(tmp_p
         "shapeLabel": "Book",
     }
     assert _make_shape(
-        row_dict=one_row, config_dict=config_dict, hardwired_shapeclass=TAPShape
+        row_dict=one_row, config_dict=config_dict, shape_class=TAPShape
     ) == TAPShape(
         shapeID=":a", shapeLabel="Book", state_list=[], shape_warns={}, shape_extras={}
     )
-
 
 @pytest.mark.skip(reason="Will remove decorator")
 def test_make_shape_recognizes_only_shape_elements_so_configured(tmp_path):

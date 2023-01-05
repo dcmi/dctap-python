@@ -14,7 +14,9 @@ def csvreader(open_csvfile_obj=None, config_dict=None, stateclass=None):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     if csvrows:
-        (tapshapes, tapwarns) = _get_tapshapes(rows=csvrows, config_dict=config_dict, stateclass=stateclass)
+        (tapshapes, tapwarns) = _get_tapshapes(
+            rows=csvrows, config_dict=config_dict, stateclass=stateclass
+        )
     else:
         sys.exit("No data to process.")
     tapwarns = {**csvwarns, **tapwarns}

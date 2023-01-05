@@ -23,7 +23,7 @@ def get_config(
     configdict_from_file = None
 
     ## Makes no sense to specify two arguments, config_yamlfile and config_yamlstring.
-    #if config_yamlfile and config_yamlstring:
+    # if config_yamlfile and config_yamlstring:
     #    raise ConfigError("Cannot load YAML from both string and file.")
 
     # Try to parse default config file, update config_dict.
@@ -121,10 +121,11 @@ def _add_colons_to_prefixes_if_needed(config_dict=None):
     config_dict["prefixes"] = new_prefixes
     return config_dict
 
+
 def write_configfile(
     config_filename=CONFIGFILE,
     config_yamlstring=CONFIGYAML,
-    nondefault_config_yamlstring=None
+    nondefault_config_yamlstring=None,
 ):
     """Write initial config file or exit trying."""
     if Path(config_filename).exists():

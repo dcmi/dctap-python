@@ -23,7 +23,7 @@ def load_yaml_to_dict(yamlstring=None, yamlfile=None):
             print(f"File '{yamlfile}' not found.", file=sys.stderr)
 
     if yamlstring is not None:
-        yaml = YAML(typ='safe', pure=True)
+        yaml = YAML(typ="safe", pure=True)
         try:
             dict_from_yamlstring = yaml.load(yamlstring)
         except (YAMLError, ScannerError, ParserError):

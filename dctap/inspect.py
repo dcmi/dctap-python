@@ -30,7 +30,7 @@ def pprint_tapshapes(tapshapes_dict=None, config_dict=None):
 
         for sc_dict in tapshape_dict.get("statement_templates"):
             pprint_output.append("        Statement Template")
-            for key in main_stems :
+            for key in main_stems:
                 if sc_dict.get(key):
                     indent12 = 12 * " " + key + " "
                     while len(indent12) < 33:

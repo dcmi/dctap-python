@@ -16,8 +16,6 @@ from dctap.config import get_config
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 from dctap.csvreader import csvreader
 
-
-@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_languagetag_parse():
     """If valueConstraintType list, valueConstraint parsed on whitespace."""
     config_dict = get_config()
@@ -28,8 +26,6 @@ def test_valueConstraintType_languagetag_parse():
     sc._valueConstraintType_languageTag_parse(config_dict)
     assert sc.valueConstraint == ["fr", "it", "de"]
 
-
-@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     """@@@"""
     config_dict = get_config()
@@ -49,8 +45,6 @@ def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     )["shapes"][0]["statement_templates"][0]["valueConstraint"]
     assert value_constraint == ["fr", "it", "de"]
 
-
-@pytest.mark.skip(reason="Will remove decorator")
 def test_valueConstraintType_languagetag_item_separator_pipe(tmp_path):
     """@@@"""
     config_dict = get_config()

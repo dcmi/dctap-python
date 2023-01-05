@@ -5,7 +5,6 @@ from dctap.config import _initialize_config_dict
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 
-@pytest.mark.skip(reason="Will remove decorator")
 def test_initialize_config_dict():
     """Compute default config dict from TAP classes and add placeholders."""
     expected_output = {
@@ -59,4 +58,4 @@ def test_initialize_config_dict():
             "note",
         ],
     }
-    assert _initialize_config_dict() == expected_output
+    assert _initialize_config_dict(TAPShape, TAPStatementTemplate) == expected_output

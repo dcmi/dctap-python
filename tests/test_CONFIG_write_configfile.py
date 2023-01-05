@@ -19,22 +19,21 @@ prefixes:
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIGYAML to CONFIGFILE and read back as text."""
     os.chdir(tmp_path)
-    write_configfile(nondefault_config_yamlstring=NONDEFAULT_CONFIGYAML)
+    write_configfile(nondefault_configyaml_string=NONDEFAULT_CONFIGYAML)
     assert open(CONFIGFILE).read() == NONDEFAULT_CONFIGYAML
 
 
-@pytest.mark.skip(reason="Will remove decorator")
 def test_write_specified_configfile_and_read_back(tmp_path):
     """Write specified configfile and read back as text."""
     os.chdir(tmp_path)
     specified_config_file = "foobar.yaml"
     write_configfile(
-        config_filename=specified_config_file, config_yamlstring=NONDEFAULT_CONFIGYAML
+        default_configfile_name=specified_config_file,
+        nondefault_configyaml_string=NONDEFAULT_CONFIGYAML,
     )
     assert open(specified_config_file).read() == NONDEFAULT_CONFIGYAML
 
 
-@pytest.mark.skip(reason="Will remove decorator")
 def test_not_write_default_configfile_if_already_exists(tmp_path):
     """Exits if config file not specified and CONFIGFILE already exists."""
     os.chdir(tmp_path)
@@ -43,12 +42,17 @@ def test_not_write_default_configfile_if_already_exists(tmp_path):
         write_configfile()
 
 
-@pytest.mark.skip(reason="Will remove decorator")
 def test_exits_if_file_not_writeable(tmp_path):
     """Exits if config file not writeable. Note: throws two exceptions."""
     os.chdir(tmp_path)
     config_filename = "/asdf/asdf/asdf/asdf/foobar.yaml"
     with pytest.raises(SystemExit):
-        write_configfile(config_filename=config_filename)
+        write_configfile(
+            default_configfile_name=config_filename,
+            nondefault_configyaml_string=NONDEFAULT_CONFIGYAML,
+        )
     with pytest.raises(ConfigError):
-        write_configfile(config_filename=config_filename)
+        write_configfile(
+            default_configfile_name=config_filename,
+            nondefault_configyaml_string=NONDEFAULT_CONFIGYAML,
+        )

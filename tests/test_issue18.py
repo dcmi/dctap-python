@@ -17,7 +17,6 @@ element_aliases:
      "Rep": "repeatable"
 """
 
-@pytest.mark.skip
 def test_get_config_from_issue18_yamldoc(tmp_path):
     """Get config dict when passed Issue 18 YAML."""
     os.chdir(tmp_path)

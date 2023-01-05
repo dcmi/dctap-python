@@ -43,7 +43,6 @@ def test_get_config_from_default_config_file_if_present(tmp_path):
     assert config_dict.get("value_node_types") is None
     assert "school:" in config_dict.get("prefixes")
 
-@pytest.mark.skip
 def test_get_config_from_passed_nondefault_yaml_even_if_prefixes_lack_colons():
     """Prefixes without colons are tolerated in YAML docs but added by get_config."""
     some_configyaml = """\

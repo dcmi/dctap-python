@@ -7,15 +7,24 @@ from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
 from .exceptions import DctapError
+from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import coerce_concise
 
 
-def csvreader(open_csvfile_obj=None, config_dict=None, stateclass=None):
+def csvreader(
+    open_csvfile_obj=None,
+    config_dict=None,
+    shape_class=TAPShape,
+    state_class=TAPStatementTemplate,
+):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     if csvrows:
         (tapshapes, tapwarns) = _get_tapshapes(
-            rows=csvrows, config_dict=config_dict, stateclass=stateclass
+            rows=csvrows,
+            config_dict=config_dict,
+            shape_class=shape_class,
+            state_class=state_class,
         )
     else:
         sys.exit("No data to process.")
@@ -107,7 +116,9 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(rows=None, config_dict=None, stateclass=None):
+def _get_tapshapes(
+    rows=None, config_dict=None, shape_class=None, state_class=None
+):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
@@ -138,7 +149,11 @@ def _get_tapshapes(rows=None, config_dict=None, stateclass=None):
 
         if sh_id:
             if sh_id not in list(shapes):
-                sh_obj = _make_shape(row_dict=row, config_dict=config_dict)
+                sh_obj = _make_shape(
+                    row_dict=row,
+                    config_dict=config_dict,
+                    shape_class=shape_class,
+                )
                 sh_obj.normalize(config_dict)
                 shapes[sh_id] = sh_obj
                 warns[sh_id] = {}
@@ -154,7 +169,7 @@ def _get_tapshapes(rows=None, config_dict=None, stateclass=None):
         if not row.get("propertyID"):
             continue
 
-        st_obj = stateclass()
+        st_obj = state_class()
         for col in row:
             if col in main_stems:
                 setattr(st_obj, col, row[col])
@@ -186,7 +201,7 @@ def _get_tapshapes(rows=None, config_dict=None, stateclass=None):
     return (shapes_dict, warns_dict)
 
 
-def _make_shape(row_dict=None, config_dict=None, **kwargs):
+def _make_shape(row_dict=None, config_dict=None, shape_class=None):
     """Populates shape fields of dataclass shape object from dict for one row.
 
     Args:
@@ -199,10 +214,9 @@ def _make_shape(row_dict=None, config_dict=None, **kwargs):
         Unpopulated instance of shape class, for example:
         TAPShape(shapeID='', state_list=[], shape_warns={}, state_extras={}, ...)
     """
-    shapeclass = kwargs["shapeclass"]
     main_shems = config_dict.get("shape_elements")
     xtra_shems = config_dict.get("extra_shape_elements")
-    tapshape_obj = shapeclass()
+    tapshape_obj = shape_class()
     for key in row_dict:
         if key in main_shems:
             setattr(tapshape_obj, key, row_dict[key])

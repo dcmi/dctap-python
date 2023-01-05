@@ -49,7 +49,7 @@ def get_config(
 
     try:
         configyaml_read = Path(default_configfile_name).read_text(encoding="utf-8")
-    except FileNotFoundError as err:
+    except FileNotFoundError:
         configyaml_read = default_configyaml_str
     configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
     if configdict_read is not None:
@@ -57,7 +57,6 @@ def get_config(
     config_dict = _add_extra_element_aliases(config_dict)
     config_dict = _add_colons_to_prefixes_if_needed(config_dict)
     return config_dict
-
 
 
 def _add_extra_element_aliases(config_dict):

@@ -18,7 +18,6 @@ def get_config(
 ):
     """Get configuration dictionary from package defaults."""
     # pylint: disable=too-many-branches
-    breakpoint(context=5)
     config_dict = _initialize_config_dict(shape_class, state_class)
     configyaml_from_file = None
     configdict_from_file = None
@@ -29,8 +28,8 @@ def get_config(
 
     # Try to parse default config file, update config_dict.
     if not config_yamlstring and not config_yamlfile:
-        if Path(configfile).is_file():  # No need to warn if file does not exist.
-            configyaml_from_file = Path(configfile).read_text(encoding="utf-8")
+        if Path(config_yamlfile).is_file():  # No need to warn if file does not exist.
+            configyaml_from_file = Path(config_yamlfile).read_text(encoding="utf-8")
 
         if not configyaml_from_file:
             configyaml_from_file = configyaml

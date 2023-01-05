@@ -24,8 +24,6 @@ prefixes:
     "dc11:":    "http://purl.org/dc/elements/1.1/"
 """
 
-
-@pytest.mark.skip(reason="Will remove decorator")
 def test_get_config_from_default_config_file_if_present():
     """
     Adds key 'namespaces' to dict 'tapshapes'.
@@ -34,7 +32,7 @@ def test_get_config_from_default_config_file_if_present():
     - tapshapes   - takes precomputed dict with one key: 'shapes'
     - config_dict - computes from NONDEFAULT_CONFIGYAML
     """
-    given_config_dict = get_config(config_yamlstring=NONDEFAULT_CONFIGYAML)
+    given_config_dict = get_config(nondefault_configyaml_str=NONDEFAULT_CONFIGYAML)
     assert "school:" in given_config_dict.get("prefixes")
     assert "ex:" in given_config_dict.get("prefixes")
     assert "dct:" in given_config_dict.get("prefixes")

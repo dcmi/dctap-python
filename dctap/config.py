@@ -35,28 +35,29 @@ def get_config(
         configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
         if configdict_read is not None:
             config_dict.update(configdict_read)
+        config_dict = _add_extra_element_aliases(config_dict)
+        config_dict = _add_colons_to_prefixes_if_needed(config_dict)
         return config_dict
 
     if nondefault_configyaml_str:
         configdict_read = load_yaml_to_dict(yamlstring=nondefault_configyaml_str)
         if configdict_read is not None:
             config_dict.update(configdict_read)
+        config_dict = _add_extra_element_aliases(config_dict)
+        config_dict = _add_colons_to_prefixes_if_needed(config_dict)
         return config_dict
 
-    else:
-        try:
-            configyaml_read = Path(default_configfile_name).read_text(encoding="utf-8")
-        except FileNotFoundError as err:
-            configyaml_read = default_configyaml_str
-
-        configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
-        if configdict_read is not None:
-            config_dict.update(configdict_read)
-        return config_dict
-
+    try:
+        configyaml_read = Path(default_configfile_name).read_text(encoding="utf-8")
+    except FileNotFoundError as err:
+        configyaml_read = default_configyaml_str
+    configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
+    if configdict_read is not None:
+        config_dict.update(configdict_read)
     config_dict = _add_extra_element_aliases(config_dict)
     config_dict = _add_colons_to_prefixes_if_needed(config_dict)
     return config_dict
+
 
 
 def _add_extra_element_aliases(config_dict):

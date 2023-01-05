@@ -16,11 +16,10 @@ prefixes:
 """
 
 
-@pytest.mark.skip(reason="Will remove decorator")
 def test_write_default_configfile_and_read_back(tmp_path):
     """Write DEFAULT_CONFIGYAML to CONFIGFILE and read back as text."""
     os.chdir(tmp_path)
-    write_configfile(config_yamlstring=NONDEFAULT_CONFIGYAML)
+    write_configfile(nondefault_config_yamlstring=NONDEFAULT_CONFIGYAML)
     assert open(CONFIGFILE).read() == NONDEFAULT_CONFIGYAML
 
 

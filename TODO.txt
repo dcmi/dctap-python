@@ -2,7 +2,7 @@ Functions decorated with @dctap_defaults:
 
 ---------------------------------------------------------
 config.get_config
-- /Users/tbaker/github/tap/dctap-python/dctap/get_config.py
+- /Users/tbaker/github/tap/dctap-python/dctap/config.py
 - /Users/tbaker/github/tap/dctap-python/tests/test_CONFIG_get_config.py
 - Replace: config_yamlfile    -> configfile=DEFAULT
 - Replace: config_yamlstring  -> configyaml=DEFAULT

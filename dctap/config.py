@@ -32,8 +32,8 @@ def get_config(
             configyaml_from_file = Path(config_yamlfile).read_text(encoding="utf-8")
 
         if not configyaml_from_file:
-            configyaml_from_file = configyaml
-            configdict_from_file = load_yaml_to_dict(yamlstring=configyaml)
+            configyaml_from_file = config_yamlstring
+            configdict_from_file = load_yaml_to_dict(yamlstring=config_yamlstring)
         else:
             configdict_from_file = load_yaml_to_dict(yamlstring=configyaml_from_file)
 

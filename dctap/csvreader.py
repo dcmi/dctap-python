@@ -10,11 +10,11 @@ from .exceptions import DctapError
 from .utils import coerce_concise
 
 
-def csvreader(open_csvfile_obj=None, config_dict=None):
+def csvreader(open_csvfile_obj=None, config_dict=None, stateclass=None):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
     if csvrows:
-        (tapshapes, tapwarns) = _get_tapshapes(rows=csvrows, config_dict=config_dict)
+        (tapshapes, tapwarns) = _get_tapshapes(rows=csvrows, config_dict=config_dict, stateclass=stateclass)
     else:
         sys.exit("No data to process.")
     tapwarns = {**csvwarns, **tapwarns}
@@ -105,12 +105,11 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(rows=None, config_dict=None, **kwargs):
+def _get_tapshapes(rows=None, config_dict=None, stateclass=None):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
-    stateclass = kwargs["stateclass"]
 
     try:
         dshape = config_dict.get("default_shape_identifier")

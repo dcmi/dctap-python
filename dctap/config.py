@@ -26,14 +26,18 @@ def get_config(
     if nondefault_configfile_name and nondefault_configyaml_str:
         raise ConfigError("Can load YAML from either string or file, not both.")
 
-    elif nondefault_configfile_name:
+    if nondefault_configfile_name:
         try:
             nondefault_configfile = Path(nondefault_configfile_name)
             configyaml_read = nondefault_configfile.read_text(encoding="utf-8")
         except FileNotFoundError as err:
             raise ConfigError(f"Config file '{nondefault_configfile_name}' not found.") from err
+        configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
+        if configdict_read is not None:
+            config_dict.update(configdict_read)
+        return config_dict
 
-    elif nondefault_configyaml_str:
+    if nondefault_configyaml_str:
         configdict_read = load_yaml_to_dict(yamlstring=nondefault_configyaml_str)
         if configdict_read is not None:
             config_dict.update(configdict_read)

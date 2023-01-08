@@ -1,7 +1,6 @@
 """Parse TAP, return two-item tuple: (list of shape objects, list of warnings)."""
 
 import re
-import sys
 from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer

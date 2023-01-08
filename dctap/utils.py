@@ -110,8 +110,3 @@ def is_uri_or_prefixed_uri(uri):
     if re.match("[A-Za-z0-9_]*:[A-Za-z0-9_]*", uri):  # looks like prefixed URI
         return True
     return False
-
-
-def strip_enclosing_angle_brackets(url):
-    """Normalize URL by stripping angle brackets."""
-    return url.lstrip("<").rstrip(">")

@@ -336,8 +336,8 @@ def test_get_rows_with_complete_csvfile(tmp_path):
     assert len(actual_rows_list) == 2
     assert len(expected_rows_list) == 2
 
-def test_warns_if_header_not_recognized(tmp_path):
-    """@@@"""
+def test_warns_if_header_not_recognized(tmp_path, capsys):
+    """Warns about unrecognized header, 'ricearoni'."""
     os.chdir(tmp_path)
     config_dict = get_config()
     config_dict["default_shape_identifier"] = "default"
@@ -355,9 +355,11 @@ def test_warns_if_header_not_recognized(tmp_path):
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list
     assert len(actual_warnings) == 1
+    warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
+    assert warning in actual_warnings["csv"]["column"]
 
 def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
-    """@@@"""
+    """But does not warn about unrecognized header if configured as extra."""
     os.chdir(tmp_path)
     config_dict = get_config()
     config_dict["default_shape_identifier"] = "default"
@@ -376,3 +378,5 @@ def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list
     assert len(actual_warnings) == 0
+    warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
+    assert not actual_warnings.get("csv")

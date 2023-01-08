@@ -121,11 +121,7 @@ def _get_tapshapes(
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
 
-    try:
-        dshape = config_dict["default_shape_identifier"]
-    except KeyError:
-        dshape = "default"
-
+    dshape = config_dict["default_shape_identifier"]
     main_stems = config_dict.get("statement_template_elements")
     xtra_stems = config_dict.get("extra_statement_template_elements")
     shapes = {}  # dict for shapeID-to-TAPShape_list

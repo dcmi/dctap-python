@@ -40,7 +40,7 @@ class TAPStatementTemplate:
         self._valueConstraintType_minmaxinclusive_warn_if_value_not_numeric()
         self._valueConstraintType_warn_if_used_without_valueConstraint()
         self._valueDataType_warn_if_used_with_valueNodeType_IRI()
-        self._valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape()
+        self._valueNodeType_warn_if_valueNodeType_literal_used_with_any_valueShape()
         self._valueConstraintType_picklist_parse(config_dict)
         self._valueNodeType_is_from_enumerated_list(config_dict)
         self._parse_elements_configured_as_picklist_elements(config_dict)
@@ -63,11 +63,12 @@ class TAPStatementTemplate:
         valid_values_for_false = ["false", "FALSE", "False", "0"]
         boolean_elements = ["mandatory", "repeatable"]
         for elem in boolean_elements:
-            warning_message = f"'{elem}' is not a supported Boolean value."
-            if getattr(self, elem):
-                if getattr(self, elem) in valid_values_for_true:
+            value = getattr(self, elem)
+            if value:
+                warning_message = f"'{value}' is not a supported Boolean value."
+                if value in valid_values_for_true:
                     setattr(self, elem, "true")
-                elif getattr(self, elem) in valid_values_for_false:
+                elif value in valid_values_for_false:
                     setattr(self, elem, "false")
                 else:
                     self.state_warns[elem] = warning_message
@@ -158,7 +159,7 @@ class TAPStatementTemplate:
         if self.valueConstraintType == "pattern":
             if self.valueShape:
                 self.state_warns["valueConstraintType"] = (
-                    f"Value constraint type ('{self.valueConstraintType}') "
+                    f"Values of constraint type '{self.valueConstraintType}' "
                     "cannot conform to a value shape."
                 )
 
@@ -204,9 +205,9 @@ class TAPStatementTemplate:
                 self.state_warns["valueNodeType"] = warning
         return self
 
-    def _valueDataType_warn_if_valueNodeType_literal_used_with_any_valueShape(self):
+    def _valueNodeType_warn_if_valueNodeType_literal_used_with_any_valueShape(self):
         """Value with node type Literal cannot conform to a value shape."""
-        warning = "Datatypes are only for values that are literals, not shapes."
+        warning = "Values of node type 'literal' cannot conform to value shapes."
         self.valueNodeType = self.valueNodeType.lower()
         if self.valueShape:
             if self.valueNodeType == "literal":
@@ -215,7 +216,7 @@ class TAPStatementTemplate:
 
     def _valueDataType_warn_if_used_with_valueShape(self):
         """Value with any datatype cannot conform to a value shape."""
-        warning = "Datatypes are only for values that are literals, not shapes."
+        warning = "Values with datatypes are literals cannot conform to value shapes."
         if self.valueShape:
             if self.valueDataType:
                 self.state_warns["valueDataType"] = warning

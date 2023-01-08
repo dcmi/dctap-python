@@ -69,6 +69,15 @@ def test_extra_shape_elements(tmp_path):
     config_dict["shape_elements"].extend(config_dict["extra_shape_elements"])
     assert config_dict["shape_elements"] == ["shapeID", "shapeLabel", "closed", "start"]
 
+def test_warn_if_get_config_called_specify_nondefault_yamlstring_and_yamlfile(tmp_path):
+    """Exit with ConfigError if get_config specifies both YAML string and YAML file."""
+    os.chdir(tmp_path)
+    with pytest.raises(ConfigError) as err:
+        get_config(
+            nondefault_configfile_name="passed_in_filename.yaml",
+            nondefault_configyaml_str="passed_in_yaml_string",
+        )
+
 def test_warn_if_specified_configfile_not_found(tmp_path):
     """Exit with ConfigError if config file specified as argument is not found."""
     os.chdir(tmp_path)

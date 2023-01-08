@@ -43,6 +43,8 @@ def get_config(
     if nondefault_configyaml_str:
         configdict_read = load_yaml_to_dict(yamlstring=nondefault_configyaml_str)
         if configdict_read is not None:
+            if not configdict_read.get("default_shape_identifier"):
+                configdict_read["default_shape_identifier"] = "default"
             config_dict.update(configdict_read)
         config_dict = _add_extra_element_aliases(config_dict)
         config_dict = _add_colons_to_prefixes_if_needed(config_dict)

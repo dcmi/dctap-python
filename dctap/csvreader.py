@@ -6,7 +6,7 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from .exceptions import DctapError
+from .exceptions import DctapError, NoDataError
 from .tapclasses import TAPShape, TAPStatementTemplate
 from .utils import coerce_concise
 
@@ -19,15 +19,12 @@ def csvreader(
 ):
     """From open CSV file object, return shapes dict."""
     (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
-    if csvrows:
-        (tapshapes, tapwarns) = _get_tapshapes(
-            rows=csvrows,
-            config_dict=config_dict,
-            shape_class=shape_class,
-            state_class=state_class,
-        )
-    else:
-        sys.exit("No data to process.")
+    (tapshapes, tapwarns) = _get_tapshapes(
+        rows=csvrows,
+        config_dict=config_dict,
+        shape_class=shape_class,
+        state_class=state_class,
+    )
     tapwarns = {**csvwarns, **tapwarns}
     prefixes_used = _get_prefixes_actually_used(csvrows)
     tapshapes = _add_namespaces(tapshapes, config_dict, prefixes_used)
@@ -73,10 +70,11 @@ def _get_prefixes_actually_used(csvrows):
 def _get_rows(open_csvfile_obj, config_dict):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
     # pylint: disable=too-many-locals
-
     csvfile_contents_str = open_csvfile_obj.read()
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
+    if not csvlines_stripped:
+        raise NoDataError("No data to process.")
     raw_header_line_list = csvlines_stripped[0].split(",")
     new_header_line_list = []
 
@@ -125,7 +123,7 @@ def _get_tapshapes(
     # pylint: disable=too-many-statements
 
     try:
-        dshape = config_dict.get("default_shape_identifier")
+        dshape = config_dict["default_shape_identifier"]
     except KeyError:
         dshape = "default"
 

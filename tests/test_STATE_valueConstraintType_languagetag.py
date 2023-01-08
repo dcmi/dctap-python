@@ -17,7 +17,7 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 from dctap.csvreader import csvreader
 
 def test_valueConstraintType_languagetag_parse():
-    """If valueConstraintType list, valueConstraint parsed on whitespace."""
+    """If valueConstraintType languagetag, valueConstraint parsed on whitespace."""
     config_dict = get_config()
     sc = TAPStatementTemplate()
     sc.propertyID = "dcterms:creator"
@@ -27,7 +27,7 @@ def test_valueConstraintType_languagetag_parse():
     assert sc.valueConstraint == ["fr", "it", "de"]
 
 def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
-    """@@@"""
+    """But picklist_item_separator is configurable as comma (default is space)."""
     config_dict = get_config()
     config_dict["picklist_item_separator"] = ","
     config_dict["default_shape_identifier"] = "default"
@@ -46,7 +46,7 @@ def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     assert value_constraint == ["fr", "it", "de"]
 
 def test_valueConstraintType_languagetag_item_separator_pipe(tmp_path):
-    """@@@"""
+    """Or picklist_item_separator can be configured as pipe character."""
     config_dict = get_config()
     config_dict["picklist_item_separator"] = "|"
     config_dict["default_shape_identifier"] = "default"
@@ -56,6 +56,25 @@ def test_valueConstraintType_languagetag_item_separator_pipe(tmp_path):
         (
             "PropertyID,valueConstraintType,valueConstraint\n"
             'ex:foo,languagetag,"fr|it|de"\n'
+        )
+    )
+    value_constraint = csvreader(
+        open_csvfile_obj=open(csvfile_path),
+        config_dict=config_dict
+    )["shapes"][0]["statement_templates"][0]["valueConstraint"]
+    assert value_constraint == ["fr", "it", "de"]
+
+def test_valueConstraintType_languagetag_item_separator_tab(tmp_path):
+    """Or even a tab."""
+    config_dict = get_config()
+    config_dict["picklist_item_separator"] = "\t"
+    config_dict["default_shape_identifier"] = "default"
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(
+        (
+            "PropertyID,valueConstraintType,valueConstraint\n"
+            'ex:foo,languagetag,"fr\tit\tde"\n'
         )
     )
     value_constraint = csvreader(

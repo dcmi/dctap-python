@@ -24,7 +24,7 @@ prefixes:
     "dc11:":    "http://purl.org/dc/elements/1.1/"
 """
 
-def test_get_config_from_default_config_file_if_present():
+def test_add_key_namespaces_to_dict_tapshapes():
     """
     Adds key 'namespaces' to dict 'tapshapes'.
 

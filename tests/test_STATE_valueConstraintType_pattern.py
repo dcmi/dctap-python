@@ -3,7 +3,6 @@
 import pytest
 from dctap.tapclasses import TAPStatementTemplate
 
-
 def test_valueConstraintType_pattern_is_valid_regex():
     """For valueConstraintType pattern, valueConstraint must be valid regex."""
     sc = TAPStatementTemplate()
@@ -21,7 +20,6 @@ def test_valueConstraintType_pattern_is_valid_regex():
     sc.valueConstraint = "'confidential'"
     sc._valueConstraintType_pattern_warn_if_valueConstraint_not_valid_regex()
     assert sc.valueConstraint == "'confidential'"
-
 
 def test_valueConstraintType_pattern_warn_if_not_valid_regex():
     """For valueConstraintType pattern, warns if valueConstraint not valid regex."""

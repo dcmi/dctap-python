@@ -3,7 +3,7 @@
 Command-line tool
 ^^^^^^^^^^^^^^^^^
 
-The command-line tool **dctap** can:
+With the command-line tool **dctap**, one can:
 
 .. toctree::
 

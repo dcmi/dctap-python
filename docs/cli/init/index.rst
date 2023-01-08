@@ -8,14 +8,13 @@ The command **dctap read** works out of the box, with no options, but its behavi
 Per-directory config files
 ::::::::::::::::::::::::::
 
-The subcommand **dctap init** writes a starter configuration file, by default "dctap.yaml", in the working directory. If called with **--hidden**, the starter settings will be written to a **.dctaprc**. Thereafter, whenever **dctap read** is run, the program will look in the working directory first for **dctap.yaml**, then for **.dctaprc** and, if neither is found, will use built-in defaults.
+The subcommand **dctap init** writes a starter configuration file, **dctap.yaml**, in the working directory. Thereafter, whenever **dctap read** is run, the program will look in the working directory for **dctap.yaml** or, if it is not found, will use built-in defaults.
 
 .. code-block:: bash
 
     cd /home/tombaker/myproject/data/
     dctap init                   # Write default dctap.yaml
-    dctap init --hidden          # Write alternative .dctaprc
-    dctap read x.csv             # Use 1) dctap.yaml or 2) .dctaprc
+    dctap read x.csv             # Looks for dctap.yaml or reads defaults.
 
 Global config files
 :::::::::::::::::::

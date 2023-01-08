@@ -7,3 +7,7 @@ class DctapError(SystemExit):
 
 class ConfigError(DctapError):
     """Exceptions related to configuration."""
+
+
+class NoDataError(DctapError):
+    """Exception raised if there is no (TAP) data to process."""

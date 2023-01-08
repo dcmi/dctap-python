@@ -378,13 +378,15 @@ def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     config_dict = get_config()
     config_dict["default_shape_identifier"] = "default"
     config_dict["extra_statement_template_elements"] = ["ricearoni"]
+    config_dict["extra_shape_elements"] = ["sftreat"]
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
-        "propertyID,ricearoni\ndc:date,SFO treat\n", encoding="utf-8"
+        "sftreat,propertyID,ricearoni\natreat,dc:date,SFO treat\n", encoding="utf-8"
     )
     csvfile_obj = open(csvfile_path, encoding="utf-8")
     expected_rows_list = [
         {
+            "sftreat": "atreat",
             "propertyID": "dc:date",
             "ricearoni": "SFO treat",
         },
@@ -392,5 +394,4 @@ def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
     assert actual_rows_list == expected_rows_list
     assert len(actual_warnings) == 0
-    warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
     assert not actual_warnings.get("csv")

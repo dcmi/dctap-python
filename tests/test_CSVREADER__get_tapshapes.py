@@ -1,8 +1,10 @@
 """From list of rows-as-dictionaries, output dictionary of shapes-as-dictionaries."""
 
+import os
+from pathlib import Path
 import pytest
 from dctap.config import get_config
-from dctap.csvreader import _get_tapshapes
+from dctap.csvreader import _get_tapshapes, _get_rows, _add_tapwarns
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_get_tapshapes_one_default_shape_with_shapeID_not_asserted():

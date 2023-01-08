@@ -113,9 +113,7 @@ def _get_rows(open_csvfile_obj, config_dict):
     return (csv_rows, csv_warns)
 
 
-def _get_tapshapes(
-    rows=None, config_dict=None, shape_class=None, state_class=None
-):
+def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=None):
     """Return tuple: (shapes dict, warnings dict)."""
     # pylint: disable=too-many-locals
     # pylint: disable=too-many-branches

@@ -177,9 +177,8 @@ class TAPStatementTemplate:
         if self.valueConstraintType:
             if not self.valueConstraint:
                 self.state_warns["valueConstraint"] = (
-                    f"Value constraint type "
-                    f"('{self.valueConstraintType}') "
-                    "but no value constraint."
+                    f"Value constraint type '{self.valueConstraintType}' "
+                    "has no corresponding value constraint."
                 )
         return self
 

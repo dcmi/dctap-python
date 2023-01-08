@@ -123,7 +123,6 @@ def _initialize_config_dict(shapeclass, stateclass):
     return config_dict
 
 
-
 def write_configfile(
     nondefault_configyaml_str=None,
     default_configfile_name=CONFIGFILE,

@@ -53,7 +53,12 @@ def test_get_tapshapes_two_shapes_declare_on_separate_rows():
         {"shapeID": ":author"},
         {"propertyID": "foaf:name"},
     ]
-    (shapes, warns) = _get_tapshapes(rows=rows, config_dict=settings, shape_class=TAPShape, state_class=TAPStatementTemplate)
+    (shapes, warns) = _get_tapshapes(
+        rows=rows, 
+        config_dict=settings, 
+        shape_class=TAPShape, 
+        state_class=TAPStatementTemplate
+    )
     assert len(shapes["shapes"]) == 2
     assert shapes["shapes"][0]["shapeID"] == ":bookshape"
     assert len(shapes["shapes"][0]["statement_templates"]) == 1
@@ -308,4 +313,3 @@ def test_get_tapshapes_two_shapes_with_rows_that_are_ignored():
     assert len(shapes["shapes"][0]["statement_templates"]) == 1
     assert shapes["shapes"][1]["shapeID"] == ":author"
     assert len(shapes["shapes"][1]["statement_templates"]) == 1
-

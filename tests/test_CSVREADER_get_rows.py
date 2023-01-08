@@ -335,6 +335,7 @@ def test_get_rows_with_complete_csvfile(tmp_path):
     assert actual_rows_list[0]["mandatory"]
     assert len(actual_rows_list) == 2
     assert len(expected_rows_list) == 2
+    assert len(actual_warnings) == 0
 
 def test_warns_if_header_not_recognized(tmp_path, capsys):
     """Warns about unrecognized header, 'ricearoni'."""

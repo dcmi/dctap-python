@@ -11,7 +11,6 @@ def test_exits_if_no_data_to_process(tmp_path, capsys):
     """Exits with NoDataError if _get_rows is passed no data."""
     os.chdir(tmp_path)
     config_dict = get_config()
-    config_dict["default_shape_identifier"] = "default"
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text("")
     assert Path(csvfile_path).exists()
@@ -354,7 +353,6 @@ def test_warns_if_header_not_recognized(tmp_path, capsys):
     """Warns about unrecognized header, 'ricearoni'."""
     os.chdir(tmp_path)
     config_dict = get_config()
-    config_dict["default_shape_identifier"] = "default"
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(
         "propertyID,ricearoni\ndc:date,SFO treat\n", encoding="utf-8"
@@ -376,7 +374,6 @@ def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     """But does not warn about unrecognized header if configured as extra."""
     os.chdir(tmp_path)
     config_dict = get_config()
-    config_dict["default_shape_identifier"] = "default"
     config_dict["extra_statement_template_elements"] = ["ricearoni"]
     config_dict["extra_shape_elements"] = ["sftreat"]
     csvfile_path = Path(tmp_path).joinpath("some.csv")

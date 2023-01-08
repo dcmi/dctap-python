@@ -5,6 +5,19 @@ from pathlib import Path
 import pytest
 from dctap.config import get_config
 from dctap.csvreader import _get_rows
+from dctap.exceptions import NoDataError
+
+def test_exits_if_no_data_to_process(tmp_path, capsys):
+    """Exits with NoDataError if _get_rows is passed no data."""
+    os.chdir(tmp_path)
+    config_dict = get_config()
+    config_dict["default_shape_identifier"] = "default"
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text("")
+    assert Path(csvfile_path).exists()
+    csvfile_obj = open(csvfile_path, encoding="utf-8")
+    with pytest.raises(NoDataError):
+        actual_rows_list, actual_warnings = _get_rows(csvfile_obj, config_dict)
 
 def test_get_rows_when_header_values_are_quoted(tmp_path):
     """

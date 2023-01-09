@@ -119,72 +119,72 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
 
-    dshape = config_dict["default_shape_identifier"]
+    default_shape_id = config_dict["default_shape_identifier"]
     main_stems = config_dict.get("statement_template_elements")
     xtra_stems = config_dict.get("extra_statement_template_elements")
     shapes = {}  # dict for shapeID-to-TAPShape_list
     warns = defaultdict(dict)  # dict for shapeID-to-warnings_list
 
     for row in rows:
-        sh_id = ""
+        shape_id = ""
         if row.get("propertyID"):
             if row.get("shapeID"):
-                sh_id = row.get("shapeID")
+                shape_id = row.get("shapeID")
             elif not row.get("shapeID"):
                 try:
-                    sh_id = list(shapes)[-1]
+                    shape_id = list(shapes)[-1]
                 except IndexError:
-                    sh_id = row["shapeID"] = dshape
+                    shape_id = row["shapeID"] = default_shape_id
         elif row.get("shapeID"):
-            sh_id = row.get("shapeID")
+            shape_id = row.get("shapeID")
 
-        if sh_id:
-            if sh_id not in list(shapes):
-                sh_obj = _make_shape(
+        if shape_id:
+            if shape_id not in list(shapes):
+                shape_obj = _make_shape(
                     row_dict=row,
                     config_dict=config_dict,
                     shape_class=shape_class,
                 )
-                sh_obj.normalize(config_dict)
-                shapes[sh_id] = sh_obj
-                warns[sh_id] = {}
+                shape_obj.normalize(config_dict)
+                shapes[shape_id] = shape_obj
+                warns[shape_id] = {}
 
-            sh_warns = sh_obj.get_warnings()
-            for (elem, warn) in sh_warns.items():
+            shape_warnings = shape_obj.get_warnings()
+            for (elem, warn) in shape_warnings.items():
                 try:
-                    warns[sh_id][elem].append(warn)
+                    warns[shape_id][elem].append(warn)
                 except KeyError:
-                    warns[sh_id][elem] = []
-                    warns[sh_id][elem].append(warn)
+                    warns[shape_id][elem] = []
+                    warns[shape_id][elem].append(warn)
 
         if not row.get("propertyID"):
             continue
 
-        st_obj = state_class()
+        state_class_obj = state_class()
         for col in row:
             if col in main_stems:
-                setattr(st_obj, col, row[col])
+                setattr(state_class_obj, col, row[col])
             elif col in xtra_stems:
-                st_obj.state_extras[col] = row[col]
+                state_class_obj.state_extras[col] = row[col]
 
-        st_obj.normalize(config_dict)
-        shapes[sh_id].state_list.append(st_obj)
+        state_class_obj.normalize(config_dict)
+        shapes[shape_id].state_list.append(state_class_obj)
 
         # TODO: confirm that this is really not needed
-        # st_warns = st_obj.get_warnings()
+        # st_warns = state_class_obj.get_warnings()
         # for (elem, warn) in st_warns.items():
         #     try:
-        #         warns[sh_id][elem].append(warn)
+        #         warns[shape_id][elem].append(warn)
         #     except KeyError:
-        #         warns[sh_id][elem] = []
-        #         warns[sh_id][elem].append(warn)
+        #         warns[shape_id][elem] = []
+        #         warns[shape_id][elem].append(warn)
 
         warns_dict = dict(warns)
         shapes_dict = {}
         shapes_dict["shapes"] = []
 
-        for sh_obj in list(shapes.values()):
-            sh_dict = asdict(sh_obj)
+        for shape_obj in list(shapes.values()):
+            sh_dict = asdict(shape_obj)
             sh_dict["statement_templates"] = sh_dict.pop("state_list")
             shapes_dict["shapes"].append(sh_dict)
 

@@ -48,3 +48,4 @@ def test_extra_value_node_types():
     """
     config_dict = get_config(nondefault_configyaml_str=nondefault_configyaml_str)
     st._valueNodeType_is_from_enumerated_list(config_dict)
+    assert False

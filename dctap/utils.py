@@ -100,16 +100,14 @@ def looks_like_uri_or_curie(url_string):
         return False
 
     url_parsed = urlparse(url_string)
-    has_scheme_or_prefix = bool(url_parsed.scheme)
-    has_net_location = bool(url_parsed.netloc)
-    has_prefixed_name = bool(re.match(r"^:", url_parsed.path))
+    has_prefix = bool(url_parsed.scheme)  # could be URI scheme or CURIE prefix
+    has_net_location = bool(url_parsed.netloc)  # something with a dot
+    has_name = bool(re.match(r"^:", url_parsed.path))  # starts with a colon
 
-    if has_scheme_or_prefix and has_net_location:
+    if has_prefix and has_net_location:
         return True
-    if has_scheme_or_prefix and has_prefixed_name:
-        return True
-    if has_scheme_or_prefix:
-        return True  # could be prefix, expandable to URI
-    if has_prefixed_name:
+    if has_prefix:
+        return True  
+    if has_name:
         return True
     return False

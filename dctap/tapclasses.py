@@ -197,8 +197,8 @@ class TAPStatementTemplate:
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
         warning = f"'{self.valueNodeType}' is not a valid node type."
         valid_types = ["iri", "bnode", "literal"]
-        if config_dict.get("value_node_types"):
-            valid_types += [vnt.lower() for vnt in config_dict["value_node_types"]]
+        if config_dict.get("extra_value_node_types"):
+            valid_types += [v.lower() for v in config_dict["extra_value_node_types"]]
         if self.valueNodeType:
             self.valueNodeType = self.valueNodeType.lower()
             if self.valueNodeType not in valid_types:

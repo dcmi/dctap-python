@@ -102,14 +102,9 @@ def looks_like_uri_or_curie(url_string):
     url_parsed = urlparse(url_string)
     has_scheme_or_prefix = bool(url_parsed.scheme)
     has_net_location = bool(url_parsed.netloc)
-    path = url_parsed.path
+    has_prefixed_name = bool(re.match(r"^:", url_parsed.path))
 
-    if re.match(r"^:", path):
-        has_prefixed_name = True
-    else:
-        has_prefixed_name = False
-
-    if has_scheme_or_prefix and has_net_location: 
+    if has_scheme_or_prefix and has_net_location:
         return True
     if has_scheme_or_prefix and has_prefixed_name:
         return True

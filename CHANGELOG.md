@@ -8,9 +8,9 @@ Keywords: Added, Changed, Deprecated, Removed, Fixed, Security.
 
 ## Under consideration
 
-- Possibly take more "hard-wired" defaults out of function bodies and move them into `@dctap_defaults`, such as `default_shape_name` and `picklist_item_separator`.
 - Better documentation of function arguments in docstrings and their inclusion in [project documentation](https://tapshex.readthedocs.io/en/latest/).
-- Create dictionary of valid values for elements and value constraint types for folding into config_dict in order to facilitate customization when imported into other packages.
+- Create dictionary of valid values for elements and value constraint types, many of which are currently hard-wired in the shape and statement template classes, for folding into `config_dict` in order to facilitate customization when the classes imported and sub-classed in other packages.
+- Possibly remove and replace the arguably over-elaborate "loggers" (`loggers.py`).
 
 ## [0.4.0] - 2023-01-09
 

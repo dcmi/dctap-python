@@ -11,7 +11,7 @@ Keywords: Added, Changed, Deprecated, Removed, Fixed, Security.
 - Possibly take more "hard-wired" defaults out of function bodies and move them into `@dctap_defaults`, such as `default_shape_name` and `picklist_item_separator`.
 - Better documentation of function arguments in docstrings and their inclusion in [project documentation](https://tapshex.readthedocs.io/en/latest/).
 
-## [0.4.0] - 2023-01-07
+## [0.4.0] - 2023-01-09
 
 For this release, unit tests (and their docstrings) were updated. The command-line utility was slightly simplified. Function parameters, variables, and error messages were changed for the sake of consistency and clarity and to facilitate the reconfiguration of classes and functions in this package with different defaults when imported into other packages.
 
@@ -36,6 +36,7 @@ For this release, unit tests (and their docstrings) were updated. The command-li
   - 0.4.0: One optional parameter `nondefault_configyaml_str`. Two to which (overridable) defaults are passed: `default_configfile_name`, `default_configyaml_str`.
 - Changed `dctap.config.get_stems` and `dctap.config.get_shems` into "private" functions `_get_stems` and `_get_shems`, which are called by only one function, `dctap.config.get_config`.
 - Changed parameters of various other internal, "private" functions called by `get_config`.
+- Simplified `dctap.utils.is_uri_or_prefixed_uri` and renamed to `dctap.utils.looks_like_uri_or_curie`.
 
 ## [0.3.15] - 2022-12-26
 

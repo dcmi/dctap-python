@@ -107,7 +107,7 @@ def looks_like_uri_or_curie(url_string):
     if has_prefix and has_net_location:
         return True
     if has_prefix:
-        return True  
+        return True
     if has_name:
         return True
     return False

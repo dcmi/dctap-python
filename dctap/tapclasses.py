@@ -200,7 +200,7 @@ class TAPStatementTemplate:
         if config_dict.get("value_node_types"):
             valid_types += [vnt.lower() for vnt in config_dict["value_node_types"]]
         if self.valueNodeType:
-            self.valueNodeType = self.valueNodeType.lower()  # normalize to lowercase
+            self.valueNodeType = self.valueNodeType.lower()
             if self.valueNodeType not in valid_types:
                 self.state_warns["valueNodeType"] = warning
         return self
@@ -238,9 +238,7 @@ class TAPStatementTemplate:
         else:
             separator = " "
 
-        if config_dict.get("list_elements"):
-            picklist_elements = config_dict.get("list_elements")
-        elif config_dict.get("picklist_elements"):
+        if config_dict.get("picklist_elements"):
             picklist_elements = config_dict.get("picklist_elements")
         else:
             picklist_elements = []

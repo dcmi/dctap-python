@@ -1,6 +1,7 @@
 """Tests for private functions called by TAPStatementTemplate.normalize()."""
 
 import pytest
+from dctap.config import get_config
 from dctap.tapclasses import TAPStatementTemplate
 
 def test_warn_if_valueNodeType_literal_used_with_any_value_shape():
@@ -35,3 +36,15 @@ def test_warn_if_valueDataType_used_with_any_value_shape():
     assert len(sc.state_warns) == 1
     warning = "Values with datatypes are literals cannot conform to value shapes."
     assert sc.state_warns["valueDataType"] == warning
+
+def test_extra_value_node_types():
+    """Extra value node types."""
+    st = TAPStatementTemplate()
+    nondefault_configyaml_str = """
+    extra_value_node_types:
+    - uri
+    - nonliteral
+    - IRIOrLiteral
+    """
+    config_dict = get_config(nondefault_configyaml_str=nondefault_configyaml_str)
+    st._valueNodeType_is_from_enumerated_list(config_dict)

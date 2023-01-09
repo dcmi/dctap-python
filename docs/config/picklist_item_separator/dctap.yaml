@@ -1,0 +1,4 @@
+picklist_item_separator: ','
+picklist_elements:
+- propertyID
+- valueNodeType

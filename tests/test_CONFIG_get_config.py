@@ -52,6 +52,8 @@ def test_get_config_from_default_configfile(tmp_path):
         ":": "http://example.org/"
         "dcterms:": "http://purl.org/dc/terms/"
         "school:": "http://school.example/#"
+    extra_value_node_types:
+    - literal
     """
     Path(CONFIGFILE).write_text(nondefault_yaml)
     assert Path(CONFIGFILE).is_file()
@@ -62,7 +64,7 @@ def test_get_config_from_default_configfile(tmp_path):
     assert config_dict.get("shape_elements")  # computed
     assert config_dict.get("statement_template_elements")  # computed
     assert config_dict.get("element_aliases")  # asserted/computed
-    assert config_dict.get("value_node_types") is None
+    assert config_dict.get("extra_value_node_types") == ["literal"]
     assert "school:" in config_dict.get("prefixes")
 
 def test_get_config_from_nondefault_configfile_if_specified(tmp_path):

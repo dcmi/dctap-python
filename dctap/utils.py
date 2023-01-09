@@ -94,19 +94,28 @@ def expand_uri_prefixes(shapes_dict=None, config_dict=None):
     return shapes_dict
 
 
-def is_uri(url_string):
-    """True if string is valid as a URL."""
-    try:
-        result = urlparse(url_string)
-        return all([result.scheme, result.netloc])
-    except ValueError:
+def looks_like_uri_or_curie(url_string):
+    """True if string superficially looks like a URI or Compact URI."""
+    if not isinstance(url_string, str):
         return False
 
+    url_parsed = urlparse(url_string)
+    has_scheme_or_prefix = bool(url_parsed.scheme)
+    has_net_location = bool(url_parsed.netloc)
+    path = url_parsed.path
 
-def is_uri_or_prefixed_uri(uri):
-    """True if string is URI or superficially looks like a prefixed URI."""
-    if is_uri(uri):
+    if re.match(r"^:", path):
+        has_prefixed_name = True
+    else:
+        has_prefixed_name = False
+
+    if has_scheme_or_prefix and has_net_location: 
         return True
-    if re.match("[A-Za-z0-9_]*:[A-Za-z0-9_]*", uri):  # looks like prefixed URI
+    if has_scheme_or_prefix and has_prefixed_name:
         return True
-    return False
+    if has_scheme_or_prefix:
+        return True  # could be prefix, expandable to URI
+    if has_prefixed_name:
+        return True
+    else:
+        return False

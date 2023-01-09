@@ -34,7 +34,7 @@ def test_warn_if_valueDataType_used_with_any_value_shape():
     st.valueShape = "Person"
     st._valueDataType_warn_if_used_with_valueShape()
     assert len(st.state_warns) == 1
-    warning = "Values with datatypes are literals cannot conform to value shapes."
+    warning = "Values with datatypes (literals) cannot conform to value shapes."
     assert st.state_warns["valueDataType"] == warning
 
 def test_extra_value_node_types():

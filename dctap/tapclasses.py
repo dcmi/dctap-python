@@ -3,7 +3,7 @@
 import re
 from dataclasses import dataclass, field
 from typing import List
-from .utils import coerce_integer, coerce_numeric, is_uri_or_prefixed_uri
+from .utils import coerce_integer, coerce_numeric, looks_like_uri_or_curie
 
 
 @dataclass
@@ -53,7 +53,7 @@ class TAPStatementTemplate:
             value = getattr(self, elem)
             warning = f"Value '{value}' does not look like a URI."
             if value:
-                if not is_uri_or_prefixed_uri(value):
+                if not looks_like_uri_or_curie(value):
                     self.state_warns[elem] = warning
         return self
 
@@ -87,7 +87,7 @@ class TAPStatementTemplate:
         self.valueConstraintType = self.valueConstraintType.lower()
         if self.valueConstraintType == "iristem":
             for list_item in self.valueConstraint:
-                if not is_uri_or_prefixed_uri(list_item):
+                if not looks_like_uri_or_curie(list_item):
                     self.state_warns["valueConstraint"] = (
                         f"Value constraint type is '{self.valueConstraintType}', "
                         f"but '{list_item}' does not look like an IRI or "
@@ -117,8 +117,8 @@ class TAPStatementTemplate:
 
     def _valueConstraintType_minmaxinclusive_parse(self):
         """
-        valueConstraintType minInclusive / maxInclusive
-        - value of valueConstraint should be numeric (int or float)
+        If value of valueConstraintType is 'minInclusive' or 'maxInclusive',
+        value of valueConstraint should be numeric (int or float).
         """
         self.valueConstraintType = self.valueConstraintType.lower()
         value_constraint = self.valueConstraint
@@ -197,6 +197,7 @@ class TAPStatementTemplate:
         """Take valueNodeType from configurable enumerated list, case-insensitive."""
         warning = f"'{self.valueNodeType}' is not a valid node type."
         valid_types = ["iri", "bnode", "literal"]
+        # This should be moved out to defaults dictionary.
         if config_dict.get("extra_value_node_types"):
             valid_types += [v.lower() for v in config_dict["extra_value_node_types"]]
         if self.valueNodeType:
@@ -216,7 +217,7 @@ class TAPStatementTemplate:
 
     def _valueDataType_warn_if_used_with_valueShape(self):
         """Value with any datatype cannot conform to a value shape."""
-        warning = "Values with datatypes are literals cannot conform to value shapes."
+        warning = "Values with datatypes (literals) cannot conform to value shapes."
         if self.valueShape:
             if self.valueDataType:
                 self.state_warns["valueDataType"] = warning
@@ -288,7 +289,7 @@ class TAPShape:
             value = getattr(self, elem)
             warning = f"Value '{value}' does not look like a URI."
             if value:
-                if not is_uri_or_prefixed_uri(value):
+                if not looks_like_uri_or_curie(value):
                     self.shape_warns[elem] = warning
         return self
 

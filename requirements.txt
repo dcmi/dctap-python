@@ -1,6 +1,6 @@
 click==7.1.2
 pytest==6.2.4
-pytest-cov
+pytest-cov==4.0.0
 dataclasses==0.6
 ruamel.base==1.0.0
 ruamel.yaml==0.17.10

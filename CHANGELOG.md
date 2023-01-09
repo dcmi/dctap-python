@@ -16,17 +16,17 @@ Keywords: Added, Changed, Deprecated, Removed, Fixed, Security.
 
 For this release, unit tests (and their docstrings) were updated. The command-line utility was slightly simplified. Function parameters, variables, and error messages were changed for the sake of consistency and clarity and to facilitate the reconfiguration of classes and functions in this package with different defaults when imported into other packages.
 
-### Added
+#### Added
 
 - `dctap.utils.load_yaml_to_dict`, reads a YAML string or file and returns a Python dictionary.
 
-### Removed
+#### Removed
 
 - Removed from the command-line utility the option `dctap init --hidden`, which had generated `.dctaprc`. Users who want to have a "hidden" config file can rename `dctap.yaml` by hand and point to it with `dctap read --config PATH` or with `get_config(nondefault_configfile_name=PATH)`.
 - Removed from `dctap.inspect.pprint_tapshapes` the parameters `shape_class` and `state_class`, no longer needed.
 - Removed the utility `dctap.utils.strip_enclosing_angle_brackets`, not used (ie, no evidence that anyone records URIs in a TAP enclosed with angle brackets).
 
-### Changed
+#### Changed
 
 - Changed arguments of `dctap.config.get_config`:
   - 0.3.15: One optional parameter `configfile_name`. Three to which (overridable) defaults are passed: `config_yamldoc`, `shape_class`, `state_class`.

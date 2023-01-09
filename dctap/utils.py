@@ -112,5 +112,4 @@ def looks_like_uri_or_curie(url_string):
         return True  # could be prefix, expandable to URI
     if has_prefixed_name:
         return True
-    else:
-        return False
+    return False

@@ -15,6 +15,6 @@ def test_warn_if_propertyID_not_URI():
     sc.valueDataType = data_type = "xsd:integer"
     sc._valueDataType_warn_if_used_with_valueNodeType_IRI()
     assert len(dict(sc.state_warns)) == 1
-    warning = f"Datatype '{data_type}' incompatiable with node type '{node_type}'."
+    warning = f"Datatype '{data_type}' incompatible with node type '{node_type}'."
     assert sc.state_warns["valueDataType"] == warning
 

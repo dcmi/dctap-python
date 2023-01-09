@@ -224,7 +224,9 @@ class TAPStatementTemplate:
 
     def _valueDataType_warn_if_used_with_valueNodeType_IRI(self):
         """Value with datatype implies Literal and cannot be node type IRI."""
-        warning = f"Datatypes do not apply to nodes of type '{self.valueNodeType}'."
+        node_type = self.valueNodeType
+        data_type = self.valueDataType
+        warning = f"Datatype '{data_type}' incompatible with node type '{node_type}'."
         node_type = self.valueNodeType.lower()
         if node_type in ("iri", "uri", "bnode"):
             if self.valueDataType:

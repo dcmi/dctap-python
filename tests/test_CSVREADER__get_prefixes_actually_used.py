@@ -77,4 +77,5 @@ def test_get_prefixes_actually_used_including_prefix_of_shapeid():
         },
     ]
     expected_prefixes = sorted(["biblio:", "foaf:"])
-    assert _get_prefixes_actually_used(csvrows) == expected_prefixes
+    actual_prefixes = sorted(_get_prefixes_actually_used(csvrows))
+    assert actual_prefixes == expected_prefixes

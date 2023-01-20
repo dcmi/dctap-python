@@ -18,16 +18,20 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 description-file = 'README.rst'
 requires-python = '>=3.7'
 
 [tool.flit.metadata.requires-extra]
 test = [
+    "black",
     "coverage",
     "ipdb",
     "ipykernel",
     "ipython",
+    "pylint",
     "pytest",
     "pytest-cov",
 ]

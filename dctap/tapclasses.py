@@ -3,7 +3,7 @@
 import re
 from dataclasses import dataclass, field
 from typing import List
-from .utils import coerce_integer, coerce_numeric, looks_like_uri_or_curie
+from dctap.utils import coerce_integer, coerce_numeric, looks_like_uri_or_curie
 
 
 @dataclass

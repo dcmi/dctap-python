@@ -5,9 +5,9 @@ from collections import defaultdict
 from csv import DictReader
 from io import StringIO as StringBuffer
 from dataclasses import asdict
-from .exceptions import DctapError, NoDataError
-from .tapclasses import TAPShape, TAPStatementTemplate
-from .utils import coerce_concise
+from dctap.exceptions import DctapError, NoDataError
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
+from dctap.utils import coerce_concise
 
 
 def csvreader(

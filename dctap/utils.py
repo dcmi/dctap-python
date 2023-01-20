@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 from ruamel.yaml import YAML, YAMLError
 from ruamel.yaml.scanner import ScannerError
 from ruamel.yaml.parser import ParserError
-from .exceptions import ConfigError, DctapError
+from dctap.exceptions import ConfigError, DctapError
 
 
 def load_yaml_to_dict(yamlstring=None, yamlfile=None):

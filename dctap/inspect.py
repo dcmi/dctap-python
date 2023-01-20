@@ -1,7 +1,7 @@
 """Print CSV contents and warnings."""
 
 import sys
-from .loggers import stderr_logger
+from dctap.loggers import stderr_logger
 
 
 def pprint_tapshapes(tapshapes_dict=None, config_dict=None):

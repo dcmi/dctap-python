@@ -3,10 +3,10 @@
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from .defaults import CONFIGFILE, CONFIGYAML
-from .exceptions import ConfigError
-from .tapclasses import TAPShape, TAPStatementTemplate
-from .utils import load_yaml_to_dict, coerce_concise
+from dctap.defaults import CONFIGFILE, CONFIGYAML
+from dctap.exceptions import ConfigError
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
+from dctap.utils import load_yaml_to_dict, coerce_concise
 
 
 def get_config(

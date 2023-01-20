@@ -1,7 +1,7 @@
 """Normalize and debug a TAP (application profile in DCTAP format)."""
 
-from .tapclasses import TAPShape, TAPStatementTemplate
-from .csvreader import csvreader
+from dctap.tapclasses import TAPShape, TAPStatementTemplate
+from dctap.csvreader import csvreader
 
 __version__ = "0.4.0"
 

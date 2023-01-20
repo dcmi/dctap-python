@@ -170,15 +170,6 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
         state_class_obj.normalize(config_dict)
         shapes[shape_id].state_list.append(state_class_obj)
 
-        # TODO: confirm that this is really not needed
-        # st_warns = state_class_obj.get_warnings()
-        # for (elem, warn) in st_warns.items():
-        #     try:
-        #         warns[shape_id][elem].append(warn)
-        #     except KeyError:
-        #         warns[shape_id][elem] = []
-        #         warns[shape_id][elem].append(warn)
-
         warns_dict = dict(warns)
         shapes_dict = {}
         shapes_dict["shapes"] = []

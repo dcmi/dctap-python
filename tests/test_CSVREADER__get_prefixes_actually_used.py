@@ -33,7 +33,6 @@ def test_get_prefixes_actually_used():
     expected_prefixes = [":", "dc:", "xsd:", "foaf:"]
     assert sorted(_get_prefixes_actually_used(csvrows)) == sorted(expected_prefixes)
 
-
 def test_get_prefixes_actually_used_even_if_none_used():
     """Set config_dict.prefixes as empty dict if no prefixes used in TAP."""
     csvrows = [
@@ -55,4 +54,27 @@ def test_get_prefixes_actually_used_even_if_none_used():
         },
     ]
     expected_prefixes = []
+    assert _get_prefixes_actually_used(csvrows) == expected_prefixes
+
+def test_get_prefixes_actually_used_including_prefix_of_shapeid():
+    """Includes prefix for ShapeID. Note that returned list is sorted."""
+    csvrows = [
+        {
+            "shapeID": "biblio:book",
+            "propertyID": "creator",
+            "valueShape": "author",
+            "valueDataType": "integer",
+        },
+        {
+            "shapeID": "",
+            "propertyID": "type",
+            "valueConstraint": "Book",
+        },
+        {
+            "shapeID": "author",
+            "propertyID": "foaf:name",
+            "note": "Typically the author.",
+        },
+    ]
+    expected_prefixes = sorted(["biblio:", "foaf:"])
     assert _get_prefixes_actually_used(csvrows) == expected_prefixes

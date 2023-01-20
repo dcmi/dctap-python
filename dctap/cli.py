@@ -17,7 +17,7 @@ from dctap.utils import expand_uri_prefixes
 
 
 @click.group()
-@click.version_option("0.4.0", help="Show version and exit")
+@click.version_option("0.4.1", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(context):

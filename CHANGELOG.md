@@ -12,6 +12,12 @@ Keywords: Added, Changed, Deprecated, Removed, Fixed, Security.
 - Create dictionary of valid values for elements and value constraint types, many of which are currently hard-wired in the shape and statement template classes, for folding into `config_dict` in order to facilitate customization when the classes imported and sub-classed in other packages.
 - Possibly remove and replace the arguably over-elaborate "loggers" (`loggers.py`).
 
+## [0.4.1] - 2023-01-20
+
+- Change imports from relative to absolute, `from .exceptions...` to `from dctap.exceptions`.
+- Pylint, black.
+- Added unit tests.
+
 ## [0.4.0] - 2023-01-09
 
 For this release, unit tests (and their docstrings) were updated. The command-line utility was slightly simplified. Function parameters, variables, and error messages were changed for the sake of consistency and clarity and to facilitate the reconfiguration of classes and functions in this package with different defaults when imported into other packages.

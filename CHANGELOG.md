@@ -12,6 +12,10 @@ Keywords: Added, Changed, Deprecated, Removed, Fixed, Security.
 - Create dictionary of valid values for elements and value constraint types, many of which are currently hard-wired in the shape and statement template classes, for folding into `config_dict` in order to facilitate customization when the classes imported and sub-classed in other packages.
 - Possibly remove and replace the arguably over-elaborate "loggers" (`loggers.py`).
 
+## [0.4.2] - 2023-01-24
+
+- Function dctap.csvreader now can also take a CSV string as input (not just an open file object).
+
 ## [0.4.1] - 2023-01-20
 
 - Change imports from relative to absolute, `from .exceptions...` to `from dctap.exceptions`.

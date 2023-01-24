@@ -30,7 +30,7 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
             "ricearoni": "SFO treat",
         },
     ]
-    csvrows, csvwarns = _get_rows(open_csvfile_obj, config_dict)
+    csvrows, csvwarns = _get_rows(open_csvfile_obj, config_dict=config_dict)
     assert csvrows == expected_rows_list
     assert len(csvwarns) == 1
     warning = "Non-DCTAP element 'ricearoni' not configured as extra element."

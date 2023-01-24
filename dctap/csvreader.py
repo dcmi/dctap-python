@@ -12,12 +12,24 @@ from dctap.utils import coerce_concise
 
 def csvreader(
     open_csvfile_obj=None,
+    csvfile_str=None,
     config_dict=None,
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
 ):
     """From open CSV file object, return shapes dict."""
-    (csvrows, csvwarns) = _get_rows(open_csvfile_obj, config_dict)
+    if csvfile_str:
+        (csvrows, csvwarns) = _get_rows(
+            csvfile_str=csvfile_str,
+            config_dict=config_dict,
+        )
+    elif open_csvfile_obj:
+        (csvrows, csvwarns) = _get_rows(
+            open_csvfile_obj=open_csvfile_obj,
+            config_dict=config_dict,
+        )
+    else:
+        raise DctapError("No data provided.")
     (tapshapes, tapwarns) = _get_tapshapes(
         rows=csvrows,
         config_dict=config_dict,
@@ -66,10 +78,18 @@ def _get_prefixes_actually_used(csvrows):
     return list(prefixes)
 
 
-def _get_rows(open_csvfile_obj, config_dict):
+def _get_rows(
+    open_csvfile_obj=None,
+    csvfile_str=None,
+    config_dict=None,
+):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
     # pylint: disable=too-many-locals
-    csvfile_contents_str = open_csvfile_obj.read()
+    if csvfile_str:
+        csvfile_contents_str = csvfile_str
+    elif open_csvfile_obj:
+        csvfile_contents_str = open_csvfile_obj.read()
+
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
     if not csvlines_stripped:

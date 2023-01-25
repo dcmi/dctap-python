@@ -1,7 +1,7 @@
 dctap-python
 ============
 
-Basic validation of a DCTAP instance.
+Normalize and serialize a Tabular Application Profile.
 
 |Tests Badge| |Docs Badge| |Black Badge|
 

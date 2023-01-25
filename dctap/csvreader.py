@@ -11,9 +11,9 @@ from dctap.utils import coerce_concise
 
 
 def csvreader(
-    open_csvfile_obj=None,
     csvfile_str=None,
     config_dict=None,
+    open_csvfile_obj=None,
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
 ):

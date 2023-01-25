@@ -1,4 +1,4 @@
-"""Normalize and debug a TAP (application profile in DCTAP format)."""
+"""Convert a Tabular Application Profile from CSV into JSON."""
 
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 from dctap.csvreader import csvreader

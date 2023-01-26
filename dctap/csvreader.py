@@ -127,7 +127,6 @@ def _get_rows(
             csv_warns["csv"]["column"] = []
             csv_warns["csv"]["column"].append(warn)
 
-    breakpoint(context=5)
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
     if not csvlines_stripped[0]:

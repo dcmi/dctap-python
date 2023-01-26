@@ -17,24 +17,31 @@ from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     """Step by step from config and csv files to tapshapes."""
-    os.chdir(tmp_path)
     config_dict = get_config()
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(
-        "propertyID,ricearoni\ndc:date,SFO treat\n", encoding="utf-8"
+    csvfile_str = (
+        "propertyID,ricearoni\n"
+        "dc:date,SFO treat\n"
     )
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
     expected_rows_list = [
         {
             "propertyID": "dc:date",
             "ricearoni": "SFO treat",
         },
     ]
-    csvrows, csvwarns = _get_rows(open_csvfile_obj, config_dict=config_dict)
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (csvrows, csvwarns) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj, 
+        config_dict=config_dict
+    )
     assert csvrows == expected_rows_list
     assert len(csvwarns) == 1
     warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
     assert warning in csvwarns["csv"]["column"]
+    #
     (tapshapes, tapwarns) = _get_tapshapes(
         rows=csvrows,
         config_dict=config_dict,
@@ -47,7 +54,6 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
         ]
     }
     assert tapshapes == expected_tapshapes
-
     tapwarns = {**csvwarns, **tapwarns}
     prefixes_used = _get_prefixes_actually_used(csvrows)
     tapshapes = _add_namespaces(
@@ -75,17 +81,22 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
 
 def test_csvreader_to_tapshapes(tmp_path):
     """From config and csv files to tapshapes with csvreader()."""
-    os.chdir(tmp_path)
     config_dict = get_config()
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(
-        "propertyID,ricearoni\ndc:date,SFO treat\n", encoding="utf-8"
+    csvfile_str = (
+        "propertyID,ricearoni\n"
+        "dc:date,SFO treat\n"
     )
-    open_csvfile_obj = Path(csvfile_path).open(encoding="utf-8")
     tapshapes_expected = {
         "namespaces": {"dc:": "http://purl.org/dc/elements/1.1/"},
         "shapes": [
-            {"shapeID": "default", "statement_templates": [{"propertyID": "dc:date"}]}
+            {
+                "shapeID": "default", 
+                "statement_templates": [
+                    {
+                        "propertyID": "dc:date"
+                    }
+                ]
+            }
         ],
         "warnings": {
             "csv": {
@@ -93,9 +104,26 @@ def test_csvreader_to_tapshapes(tmp_path):
                     "Non-DCTAP element 'ricearoni' not configured as extra element."
                 ]
             },
-            "default": {"shapeID": ["Value 'default' does not look like a URI."]},
+            "default": {
+                "shapeID": [
+                    "Value 'default' does not look like a URI."
+                ]
+            },
         },
     }
+    #
+    actual_tapshapes = csvreader(
+        csvfile_str=csvfile_str,
+        config_dict=config_dict,
+        shape_class=TAPShape,
+        state_class=TAPStatementTemplate,
+    )
+    assert actual_tapshapes == tapshapes_expected
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = Path(csvfile_path).open(encoding="utf-8")
     actual_tapshapes = csvreader(
         open_csvfile_obj=open_csvfile_obj,
         config_dict=config_dict,

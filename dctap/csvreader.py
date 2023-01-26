@@ -80,16 +80,19 @@ def _get_prefixes_actually_used(csvrows):
 
 
 def _get_rows(
-    open_csvfile_obj=None,
     csvfile_str=None,
     config_dict=None,
+    open_csvfile_obj=None,
 ):
     """Extract from _io.TextIOWrapper object a list of CSV file rows as dicts."""
     # pylint: disable=too-many-locals
+    # pylint: disable=too-many-branches
     if csvfile_str:
         csvfile_contents_str = csvfile_str
     elif open_csvfile_obj:
         csvfile_contents_str = open_csvfile_obj.read()
+    else:
+        raise NoDataError("No data to process.")
 
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]

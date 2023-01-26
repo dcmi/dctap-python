@@ -30,6 +30,7 @@ def csvreader(
         )
     else:
         raise DctapError("No data provided.")
+
     (tapshapes, tapwarns) = _get_tapshapes(
         rows=csvrows,
         config_dict=config_dict,
@@ -125,6 +126,8 @@ def _get_rows(
 
     new_header_line_str = ",".join(new_header_line_list)
     csvlines_stripped[0] = new_header_line_str
+    if not csvlines_stripped[0]:
+        raise NoDataError("No data to process.")
     if "propertyID" not in csvlines_stripped[0]:
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))

@@ -9,7 +9,6 @@ author-email = "tom@tombaker.org"
 home-page = "https://github.com/dcmi/dctap-python"
 requires = [
     "click",
-    "dataclasses",
     "ruamel.base",
     "ruamel.yaml",
 ]

@@ -19,8 +19,8 @@ def get_config(
 ):
     """Get configuration dictionary from package defaults (or from non-defaults)."""
     # pylint: disable=too-many-arguments
-    configyaml_read = None
-    configdict_read = None
+    yamlstring = None
+    configdict_from_yamlstring = None
     config_dict = _initialize_config_dict(default_shape_class, default_state_class)
 
     if nondefault_configfile_name and nondefault_configyaml_str:
@@ -29,34 +29,36 @@ def get_config(
     if nondefault_configfile_name:
         nondefault_configfile = Path(nondefault_configfile_name)
         try:
-            configyaml_read = nondefault_configfile.read_text(encoding="utf-8")
+            yamlstring = nondefault_configfile.read_text(encoding="utf-8")
         except FileNotFoundError as err:
             message = f"Config file '{nondefault_configfile_name}' not found."
             raise ConfigError(message) from err
-        configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
-        if configdict_read is not None:
-            config_dict.update(configdict_read)
+        configdict_from_yamlstring = load_yaml_to_dict(yamlstring=yamlstring)
+        if configdict_from_yamlstring is not None:
+            config_dict.update(configdict_from_yamlstring)
         config_dict = _add_extra_element_aliases(config_dict)
         config_dict = _add_colons_to_prefixes_if_needed(config_dict)
         return config_dict
 
     if nondefault_configyaml_str:
-        configdict_read = load_yaml_to_dict(yamlstring=nondefault_configyaml_str)
-        if configdict_read is not None:
-            if not configdict_read.get("default_shape_identifier"):
-                configdict_read["default_shape_identifier"] = "default"
-            config_dict.update(configdict_read)
+        configdict_from_yamlstring = load_yaml_to_dict(
+            yamlstring=nondefault_configyaml_str
+        )
+        if configdict_from_yamlstring is not None:
+            if not configdict_from_yamlstring.get("default_shape_identifier"):
+                configdict_from_yamlstring["default_shape_identifier"] = "default"
+            config_dict.update(configdict_from_yamlstring)
         config_dict = _add_extra_element_aliases(config_dict)
         config_dict = _add_colons_to_prefixes_if_needed(config_dict)
         return config_dict
 
     try:
-        configyaml_read = Path(default_configfile_name).read_text(encoding="utf-8")
+        yamlstring = Path(default_configfile_name).read_text(encoding="utf-8")
     except FileNotFoundError:
-        configyaml_read = default_configyaml_str
-    configdict_read = load_yaml_to_dict(yamlstring=configyaml_read)
-    if configdict_read is not None:
-        config_dict.update(configdict_read)
+        yamlstring = default_configyaml_str
+    configdict_from_yamlstring = load_yaml_to_dict(yamlstring=yamlstring)
+    if configdict_from_yamlstring is not None:
+        config_dict.update(configdict_from_yamlstring)
     config_dict = _add_extra_element_aliases(config_dict)
     config_dict = _add_colons_to_prefixes_if_needed(config_dict)
     return config_dict

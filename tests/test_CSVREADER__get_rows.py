@@ -7,7 +7,6 @@ from dctap.config import get_config
 from dctap.csvreader import _get_rows
 from dctap.exceptions import NoDataError, DctapError
 
-
 def test_exits_if_no_data_to_process(tmp_path, capsys):
     """NoDataError if _get_rows passed empty string (or open file with empty string)."""
     config_dict = get_config()

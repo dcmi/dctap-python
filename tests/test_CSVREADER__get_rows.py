@@ -62,7 +62,6 @@ def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_with_elements_stripped_of_surrounding_whitespace(tmp_path):
     """Whitespace around CSV fields is stripped."""
     config_dict = get_config()
@@ -79,7 +78,6 @@ def test_get_rows_with_elements_stripped_of_surrounding_whitespace(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_header_with_elements_stripped_of_surrounding_whitespace(tmp_path):
     """Get rows where header elements are surrounded by whitespace."""
     config_dict = get_config()
@@ -106,7 +104,6 @@ def test_get_header_with_elements_stripped_of_surrounding_whitespace(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_exits_if_no_data_to_process(tmp_path, capsys):
     """NoDataError if _get_rows passed empty string (or open file with empty string)."""
     config_dict = get_config()
@@ -128,7 +125,6 @@ def test_exits_if_no_data_to_process(tmp_path, capsys):
             config_dict=config_dict
         )
 
-@pytest.mark.skip
 def test_get_rows_when_passed_csvfile_string(tmp_path):
     """Get rows when passed good CSV string (or file with good CSV string)."""
     config_dict = get_config()
@@ -156,7 +152,6 @@ def test_get_rows_when_passed_csvfile_string(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_when_header_values_are_quoted(tmp_path):
     """
     Get rows where header elements are in single or double quotes.
@@ -186,7 +181,6 @@ def test_get_rows_when_header_values_are_quoted(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
     """Get rows where one header element is not part of the DCTAP model."""
     config_dict = get_config()
@@ -213,7 +207,6 @@ def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_minimal(tmp_path):
     """Get list of rows, as dicts, from one-row, one-column CSV."""
     config_dict = get_config()
@@ -239,7 +232,6 @@ def test_get_rows_minimal(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_given_customized_element_alias(tmp_path):
     """Using customized element alias, normalized for case, dashes, underscores."""
     config_dict = get_config()
@@ -266,7 +258,6 @@ def test_get_rows_given_customized_element_alias(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
     """Where headers shorter than rows, adds one empty header."""
     config_dict = get_config()
@@ -294,7 +285,6 @@ def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     """Raises exception if first line of CSV has no propertyID."""
     config_dict = get_config()
@@ -315,7 +305,6 @@ def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
             config_dict=config_dict
         )
 
-@pytest.mark.skip
 def test_get_rows_with_unknown_column(tmp_path):
     """Non-DCTAP elements kept by _get_rows (but dropped by _get_shapes)."""
     config_dict = get_config()
@@ -362,7 +351,6 @@ def test_get_rows_with_unknown_column(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_with_unknown_column2(tmp_path):
     """Passes thru unknown header, lowercased."""
     config_dict = get_config()
@@ -402,7 +390,6 @@ def test_get_rows_with_unknown_column2(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_with_simple_csvfile(tmp_path):
     """Another simple CSV with three columns."""
     config_dict = get_config()
@@ -434,7 +421,6 @@ def test_get_rows_with_simple_csvfile(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path):
     """CSV columns not part of DCTAP model are simply ignored."""
     config_dict = get_config()
@@ -463,7 +449,6 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_correct_a_real_mess(tmp_path):
     """Messiness in headers (extra spaces, punctuation, wrong case) is corrected."""
     config_dict = get_config()
@@ -496,7 +481,6 @@ def test_get_rows_correct_a_real_mess(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
-@pytest.mark.skip
 def test_get_rows_with_complete_csvfile(tmp_path):
     """Simple CSV with all columns."""
     config_dict = get_config()
@@ -561,7 +545,6 @@ def test_get_rows_with_complete_csvfile(tmp_path):
     assert len(expected_rows_list) == 2
     assert len(actual_warnings) == 0
 
-@pytest.mark.skip
 def test_warns_if_header_field_not_recognized(tmp_path, capsys):
     """Warns about unrecognized header field, 'ricearoni'."""
     config_dict = get_config()
@@ -596,8 +579,7 @@ def test_warns_if_header_field_not_recognized(tmp_path, capsys):
     warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
     assert warning in actual_warnings["csv"]["column"]
 
-@pytest.mark.skip
-def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
+def test_does_not_warn_if_non_dctap_header_field_configured_as_extra(tmp_path):
     """But does not warn about unrecognized header if configured as extra."""
     config_dict = get_config()
     config_dict["extra_statement_template_elements"] = ["ricearoni"]

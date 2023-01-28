@@ -8,6 +8,23 @@ from dctap.csvreader import _get_rows
 from dctap.exceptions import NoDataError, DctapError
 
 @pytest.mark.done
+def test_rows_starting_with_comment_hash_are_ignored(tmp_path):
+    """CSV rows starting with a comment hash are ignored."""
+    config_dict = get_config()
+    csvfile_str = """\
+        # Comment
+        PropertyID
+        # Another comment line
+        dc:creator
+    """
+    expected_rows_list = [{"propertyID": "dc:creator"}]
+    (actual_rows_list, actual_warnings) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.done
 def test_get_rows_from_csv_passed_as_string_or_as_open_csvfile_object(tmp_path):
     """CSV can be passed as string or as open file object."""
     config_dict = get_config()

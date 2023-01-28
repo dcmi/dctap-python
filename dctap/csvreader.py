@@ -96,12 +96,12 @@ def _get_rows(
 
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
+    csvlines_stripped = [
+        line for line in csvlines_stripped if not re.match("#", line.strip())
+    ]
     if len(csvlines_stripped) < 2:
         raise NoDataError("No data to process.")
     raw_header_line_list = csvlines_stripped[0].split(",")
-    raw_header_line_list = [
-        line for line in raw_header_line_list if not re.match("#", line.strip())
-    ]
     new_header_line_list = []
 
     recognized_elements = config_dict.get("csv_elements")

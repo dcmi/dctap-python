@@ -96,9 +96,12 @@ def _get_rows(
 
     tmp_buffer = StringBuffer(csvfile_contents_str)
     csvlines_stripped = [line.strip() for line in tmp_buffer]
-    if not csvlines_stripped:
+    if len(csvlines_stripped) < 2:
         raise NoDataError("No data to process.")
     raw_header_line_list = csvlines_stripped[0].split(",")
+    raw_header_line_list = [
+        line for line in raw_header_line_list if not re.match("#", line.strip())
+    ]
     new_header_line_list = []
 
     recognized_elements = config_dict.get("csv_elements")
@@ -138,7 +141,8 @@ def _get_rows(
     csv_rows = list(DictReader(tmp_buffer2))
     for row in csv_rows:
         for key, value in row.items():
-            row[key] = value.strip()
+            if isinstance(value, str):  # ignore if instance of NoneType or list
+                row[key] = value.strip()
     csv_warns = dict(csv_warns)
     return (csv_rows, csv_warns)
 

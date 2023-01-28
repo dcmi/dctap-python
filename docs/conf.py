@@ -22,11 +22,11 @@ sys.path.insert(0, os.path.abspath("../dctap/"))
 # -- Project information -----------------------------------------------------
 
 project = "dctap-python"
-copyright = "2022, DCMI"
+copyright = "2023, DCMI"
 
 # The full version, including alpha/beta/rc tags
 # See ../dctap/__init__.py
-release = "0.4.2"
+release = "0.4.3"
 
 # -- General configuration ---------------------------------------------------
 

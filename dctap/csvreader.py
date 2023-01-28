@@ -133,8 +133,12 @@ def _get_rows(
         raise NoDataError("No data to process.")
     if "propertyID" not in csvlines_stripped[0]:
         raise DctapError("Valid DCTAP CSV must have a 'propertyID' column.")
+
     tmp_buffer2 = StringBuffer("".join([line + "\n" for line in csvlines_stripped]))
     csv_rows = list(DictReader(tmp_buffer2))
+    for row in csv_rows:
+        for key, value in row.items():
+            row[key] = value.strip()
     csv_warns = dict(csv_warns)
     return (csv_rows, csv_warns)
 

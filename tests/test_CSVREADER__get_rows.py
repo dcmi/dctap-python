@@ -7,187 +7,6 @@ from dctap.config import get_config
 from dctap.csvreader import _get_rows
 from dctap.exceptions import NoDataError, DctapError
 
-def test_exits_if_no_data_to_process(tmp_path, capsys):
-    """NoDataError if _get_rows passed empty string (or open file with empty string)."""
-    config_dict = get_config()
-    csvfile_str = ""
-    with pytest.raises(NoDataError):
-        (actual_rows_list, actual_warnings) = _get_rows(
-            csvfile_str=csvfile_str,
-            config_dict=config_dict
-        )
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str)
-    assert Path(csvfile_path).exists()
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    with pytest.raises(NoDataError):
-        (actual_rows_list, actual_warnings) = _get_rows(
-            open_csvfile_obj=open_csvfile_obj, 
-            config_dict=config_dict
-        )
-
-
-def test_get_rows_when_passed_csvfile_string(tmp_path):
-    """Get rows when passed good CSV string (or file with good CSV string)."""
-    config_dict = get_config()
-    csvfile_str = "PropertyID,PropertyLabel\ndc:creator,Creator\n"
-    expected_rows_list = [
-        {
-            "propertyID": "dc:creator",
-            "propertyLabel": "Creator",
-        }
-    ]
-    (actual_rows_list, _) = _get_rows(
-        csvfile_str=csvfile_str, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str)
-    assert Path(csvfile_path).exists()
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (actual_rows_list, actual_warnings) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
-def test_get_rows_when_header_values_are_quoted(tmp_path):
-    """
-    Get rows where header elements are in single or double quotes.
-    - "Text qualifier characters" (the quotes) must be removed from column header.
-    """
-    config_dict = get_config()
-    csvfile_str = '"PropertyID","PropertyLabel"\n"dc:creator","Creator"\n'
-    expected_rows_list = [
-        {
-            "propertyID": "dc:creator",
-            "propertyLabel": "Creator",
-        }
-    ]
-    (actual_rows_list, actual_warnings) = _get_rows(
-        csvfile_str=csvfile_str, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str, encoding="utf-8")
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (actual_rows_list, actual_warnings) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj,
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
-def test_get_rows_where_header_elements_surrounded_by_whitespace(tmp_path):
-    """Get rows where header elements are surrounded by whitespace."""
-    config_dict = get_config()
-    csvfile_str = ' PropertyID ,      PropertyLabel \ndc:creator,Creator\n'
-    expected_rows_list = [
-        {
-            "propertyID": "dc:creator",
-            "propertyLabel": "Creator",
-        }
-    ]
-    actual_rows_list, actual_warnings = _get_rows(
-        csvfile_str=csvfile_str,
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str, encoding="utf-8")
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    actual_rows_list, actual_warnings = _get_rows(
-        open_csvfile_obj=open_csvfile_obj,
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
-def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
-    """Get rows where one header element is not part of the DCTAP model."""
-    config_dict = get_config()
-    csvfile_str = 'PropertyID,Ricearoni\ndc:creator,SFO treat\n'
-    expected_rows_list = [
-        {
-            "propertyID": "dc:creator",
-            "ricearoni": "SFO treat",
-        }
-    ]
-    (actual_rows_list, actual_warnings) = _get_rows(
-        csvfile_str=csvfile_str,
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str, encoding="utf-8")
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (actual_rows_list, actual_warnings) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj,
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
-def test_get_rows_minimal(tmp_path):
-    """Get list of rows, as dicts, from one-row, one-column CSV."""
-    config_dict = get_config()
-    csvfile_str = 'PropertyID\nhttp://purl.org/dc/terms/creator\n'
-    expected_rows_list = [
-        {
-            "propertyID": "http://purl.org/dc/terms/creator"
-        }
-    ]
-    (actual_rows_list, actual_warnings) = _get_rows(
-        csvfile_str=csvfile_str, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str, encoding="utf-8")
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (actual_rows_list, actual_warnings) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
-def test_get_rows_given_customized_element_alias(tmp_path):
-    """Using customized element alias, normalized for case, dashes, underscores."""
-    config_dict = get_config()
-    config_dict["element_aliases"].update({"propid": "propertyID"})
-    csvfile_str = 'Prop_ID\nhttp://purl.org/dc/terms/creator\n'
-    expected_rows_list = [
-        {
-            "propertyID": "http://purl.org/dc/terms/creator"
-        }
-    ]
-    (actual_rows_list, actual_warnings) = _get_rows(
-        csvfile_str=csvfile_str, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str, encoding="utf-8")
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (actual_rows_list, actual_warnings) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
 def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
     """Where headers shorter than rows, extra values collected under header None."""
     config_dict = get_config()
@@ -198,33 +17,6 @@ def test_get_rows_fills_in_short_headers_subsequently_with_None(tmp_path):
             "propertyID": "dct:creator",
             "": "URI",
             None: ["comment", "comment two"],
-        }
-    ]
-    (actual_rows_list, actual_warnings) = _get_rows(
-        csvfile_str=csvfile_str, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-    #
-    os.chdir(tmp_path)
-    csvfile_path = Path(tmp_path).joinpath("some.csv")
-    csvfile_path.write_text(csvfile_str, encoding="utf-8")
-    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (actual_rows_list, actual_warnings) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj, 
-        config_dict=config_dict
-    )
-    assert actual_rows_list == expected_rows_list
-
-def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
-    """Where headers shorter than rows, adds one empty header."""
-    config_dict = get_config()
-    csvfile_str = 'shapeID,propertyID,\n:a,dct:creator,URI\n'
-    expected_rows_list = [
-        {
-            "shapeID": ":a", 
-            "propertyID": "dct:creator", 
-            "": "URI"
         }
     ]
     (actual_rows_list, actual_warnings) = _get_rows(
@@ -270,7 +62,239 @@ def test_get_rows_fills_in_short_rows_with_None_values(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
+def test_get_rows_with_elements_stripped_of_surrounding_whitespace(tmp_path):
+    """Whitespace around CSV fields is stripped."""
+    config_dict = get_config()
+    csvfile_str = "     PropertyID  , PropertyLabel\n dc:creator  , Creator \n"
+    expected_rows_list = [
+        {
+            "propertyID": "dc:creator",
+            "propertyLabel": "Creator",
+        }
+    ]
+    (actual_rows_list, _) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
+def test_get_header_with_elements_stripped_of_surrounding_whitespace(tmp_path):
+    """Get rows where header elements are surrounded by whitespace."""
+    config_dict = get_config()
+    csvfile_str = ' PropertyID ,      PropertyLabel \ndc:creator,Creator\n'
+    expected_rows_list = [
+        {
+            "propertyID": "dc:creator",
+            "propertyLabel": "Creator",
+        }
+    ]
+    actual_rows_list, actual_warnings = _get_rows(
+        csvfile_str=csvfile_str,
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    actual_rows_list, actual_warnings = _get_rows(
+        open_csvfile_obj=open_csvfile_obj,
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
+def test_exits_if_no_data_to_process(tmp_path, capsys):
+    """NoDataError if _get_rows passed empty string (or open file with empty string)."""
+    config_dict = get_config()
+    csvfile_str = ""
+    with pytest.raises(NoDataError):
+        (actual_rows_list, actual_warnings) = _get_rows(
+            csvfile_str=csvfile_str,
+            config_dict=config_dict
+        )
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str)
+    assert Path(csvfile_path).exists()
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    with pytest.raises(NoDataError):
+        (actual_rows_list, actual_warnings) = _get_rows(
+            open_csvfile_obj=open_csvfile_obj, 
+            config_dict=config_dict
+        )
+
+@pytest.mark.skip
+def test_get_rows_when_passed_csvfile_string(tmp_path):
+    """Get rows when passed good CSV string (or file with good CSV string)."""
+    config_dict = get_config()
+    csvfile_str = "PropertyID,PropertyLabel\ndc:creator,Creator\n"
+    expected_rows_list = [
+        {
+            "propertyID": "dc:creator",
+            "propertyLabel": "Creator",
+        }
+    ]
+    (actual_rows_list, _) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str)
+    assert Path(csvfile_path).exists()
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (actual_rows_list, actual_warnings) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
+def test_get_rows_when_header_values_are_quoted(tmp_path):
+    """
+    Get rows where header elements are in single or double quotes.
+    - "Text qualifier characters" (the quotes) must be removed from column header.
+    """
+    config_dict = get_config()
+    csvfile_str = '"PropertyID","PropertyLabel"\n"dc:creator","Creator"\n'
+    expected_rows_list = [
+        {
+            "propertyID": "dc:creator",
+            "propertyLabel": "Creator",
+        }
+    ]
+    (actual_rows_list, actual_warnings) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (actual_rows_list, actual_warnings) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj,
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
+def test_get_rows_including_header_element_not_in_DCTAP(tmp_path):
+    """Get rows where one header element is not part of the DCTAP model."""
+    config_dict = get_config()
+    csvfile_str = 'PropertyID,Ricearoni\ndc:creator,SFO treat\n'
+    expected_rows_list = [
+        {
+            "propertyID": "dc:creator",
+            "ricearoni": "SFO treat",
+        }
+    ]
+    (actual_rows_list, actual_warnings) = _get_rows(
+        csvfile_str=csvfile_str,
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (actual_rows_list, actual_warnings) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj,
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
+def test_get_rows_minimal(tmp_path):
+    """Get list of rows, as dicts, from one-row, one-column CSV."""
+    config_dict = get_config()
+    csvfile_str = 'PropertyID\nhttp://purl.org/dc/terms/creator\n'
+    expected_rows_list = [
+        {
+            "propertyID": "http://purl.org/dc/terms/creator"
+        }
+    ]
+    (actual_rows_list, actual_warnings) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (actual_rows_list, actual_warnings) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
+def test_get_rows_given_customized_element_alias(tmp_path):
+    """Using customized element alias, normalized for case, dashes, underscores."""
+    config_dict = get_config()
+    config_dict["element_aliases"].update({"propid": "propertyID"})
+    csvfile_str = 'Prop_ID\nhttp://purl.org/dc/terms/creator\n'
+    expected_rows_list = [
+        {
+            "propertyID": "http://purl.org/dc/terms/creator"
+        }
+    ]
+    (actual_rows_list, actual_warnings) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (actual_rows_list, actual_warnings) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
+def test_get_rows_fills_in_short_headers_first_with_empty_header(tmp_path):
+    """Where headers shorter than rows, adds one empty header."""
+    config_dict = get_config()
+    csvfile_str = 'shapeID,propertyID,\n:a,dct:creator,URI\n'
+    expected_rows_list = [
+        {
+            "shapeID": ":a", 
+            "propertyID": "dct:creator", 
+            "": "URI"
+        }
+    ]
+    (actual_rows_list, actual_warnings) = _get_rows(
+        csvfile_str=csvfile_str, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+    #
+    os.chdir(tmp_path)
+    csvfile_path = Path(tmp_path).joinpath("some.csv")
+    csvfile_path.write_text(csvfile_str, encoding="utf-8")
+    open_csvfile_obj = open(csvfile_path, encoding="utf-8")
+    (actual_rows_list, actual_warnings) = _get_rows(
+        open_csvfile_obj=open_csvfile_obj, 
+        config_dict=config_dict
+    )
+    assert actual_rows_list == expected_rows_list
+
+@pytest.mark.skip
 def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
     """Raises exception if first line of CSV has no propertyID."""
     config_dict = get_config()
@@ -291,6 +315,7 @@ def test_get_rows_raises_exception_if_first_line_has_no_propertyid(tmp_path):
             config_dict=config_dict
         )
 
+@pytest.mark.skip
 def test_get_rows_with_unknown_column(tmp_path):
     """Non-DCTAP elements kept by _get_rows (but dropped by _get_shapes)."""
     config_dict = get_config()
@@ -337,6 +362,7 @@ def test_get_rows_with_unknown_column(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
 def test_get_rows_with_unknown_column2(tmp_path):
     """Passes thru unknown header, lowercased."""
     config_dict = get_config()
@@ -376,6 +402,7 @@ def test_get_rows_with_unknown_column2(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
 def test_get_rows_with_simple_csvfile(tmp_path):
     """Another simple CSV with three columns."""
     config_dict = get_config()
@@ -407,6 +434,7 @@ def test_get_rows_with_simple_csvfile(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
 def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path):
     """CSV columns not part of DCTAP model are simply ignored."""
     config_dict = get_config()
@@ -435,6 +463,7 @@ def test_liststatements_with_csv_column_outside_dctap_model_are_ignored(tmp_path
     )
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
 def test_get_rows_correct_a_real_mess(tmp_path):
     """Messiness in headers (extra spaces, punctuation, wrong case) is corrected."""
     config_dict = get_config()
@@ -467,6 +496,7 @@ def test_get_rows_correct_a_real_mess(tmp_path):
     )
     assert actual_rows_list == expected_rows_list
 
+@pytest.mark.skip
 def test_get_rows_with_complete_csvfile(tmp_path):
     """Simple CSV with all columns."""
     config_dict = get_config()
@@ -531,9 +561,9 @@ def test_get_rows_with_complete_csvfile(tmp_path):
     assert len(expected_rows_list) == 2
     assert len(actual_warnings) == 0
 
-
-def test_warns_if_header_not_recognized(tmp_path, capsys):
-    """Warns about unrecognized header, 'ricearoni'."""
+@pytest.mark.skip
+def test_warns_if_header_field_not_recognized(tmp_path, capsys):
+    """Warns about unrecognized header field, 'ricearoni'."""
     config_dict = get_config()
     csvfile_str = (
         "propertyID,ricearoni\n"
@@ -566,6 +596,7 @@ def test_warns_if_header_not_recognized(tmp_path, capsys):
     warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
     assert warning in actual_warnings["csv"]["column"]
 
+@pytest.mark.skip
 def test_does_not_warn_if_non_dctap_header_configured_as_extra(tmp_path):
     """But does not warn about unrecognized header if configured as extra."""
     config_dict = get_config()

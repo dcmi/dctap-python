@@ -61,21 +61,24 @@ def _add_tapwarns(tapshapes=None, tapwarns=None):
 
 
 def _get_prefixes_actually_used(csvrows):
-    """List strings before colon in values of elements that could take URI prefixes."""
+    """List strings before colons in values of elements that could take URI prefixes."""
     prefixes = set()
     for row in csvrows:
         for element in [
             "shapeID",
             "propertyID",
             "valueDataType",
-            "shapeID",
             "valueShape",
         ]:
             if row.get(element):
-                prefix_plus_uri_pair = re.match(r"(.*:)", row.get(element))
-                if prefix_plus_uri_pair:  # there must be at least one
+                prefix_plus_uri_pair = re.match(r"([^:]*):", row.get(element))
+                if prefix_plus_uri_pair:  # if there is at least one
                     prefix_as_provided = prefix_plus_uri_pair.group(0)
                     prefixes.add(prefix_as_provided)
+        if row.get("valueConstraint"):
+            pattern = r"\b\w+:"
+            used_in_valueconstraint = re.findall(pattern, row.get("valueConstraint"))
+            prefixes = set(list(prefixes) + list(used_in_valueconstraint))
     return list(prefixes)
 
 

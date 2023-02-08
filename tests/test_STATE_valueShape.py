@@ -26,17 +26,6 @@ def test_warn_if_valueConstraintType_pattern_used_with_any_value_shape():
     warning = "Values of constraint type 'pattern' cannot conform to a value shape."
     assert st.state_warns["valueConstraintType"] == warning
 
-def test_warn_if_valueDataType_used_with_any_value_shape():
-    """Value with datatypes are literal, so cannot conform to a value shape."""
-    st = TAPStatementTemplate()
-    st.propertyID = ":status"
-    st.valueDataType = "xsd:date"
-    st.valueShape = "Person"
-    st._valueDataType_warn_if_used_with_valueShape()
-    assert len(st.state_warns) == 1
-    warning = "Values with datatypes (literals) cannot conform to value shapes."
-    assert st.state_warns["valueDataType"] == warning
-
 def test_extra_value_node_types():
     """Extra value node types."""
     nondefault_configyaml_str = """

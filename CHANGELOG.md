@@ -12,6 +12,11 @@ Keywords: Added, Changed, Deprecated, Removed, Fixed, Security.
 - Create dictionary of valid values for elements and value constraint types, many of which are currently hard-wired in the shape and statement template classes, for folding into `config_dict` in order to facilitate customization when the classes imported and sub-classed in other packages.
 - Possibly remove and replace the arguably over-elaborate "loggers" (`loggers.py`).
 
+## [0.4.4] - 2023-02-08
+
+- Csvreader now looks for prefixes used in value constraints.
+- Added unit tests.
+
 ## [0.4.3] - 2023-01-28
 
 - Make `csvreader._get_rows` more robust by testing for edge cases.

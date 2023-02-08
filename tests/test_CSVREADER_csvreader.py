@@ -14,14 +14,113 @@ from dctap.csvreader import (
 )
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
+NONDEFAULT_CONFIGYAML = """\
+prefixes:
+    'xsd:': 'http://www.w3.org/2001/XMLSchema#'
+    'ex:': 'http://ex.example/#'
+    'foaf:': 'http://xmlns.com/foaf/0.1/'
+    'my:': 'http://my.example/#'
+    'ui:': 'http://ui.example/#'
+"""
+
+
+def test_csvstring_from_tapshex(capsys):
+    """CSV string from tapshex project."""
+    config_dict = get_config(nondefault_configyaml_str=NONDEFAULT_CONFIGYAML)
+    # fmt: off
+    #
+    csvfile_str = """\
+    shapeID            , propertyID      , valueDataType , valueConstraint          , valueConstraintType , valueShape
+    my:IssueShape      , ex:state        ,               , ui:accepted ui:resolved  , picklist            ,
+                       , ex:reproducedBy ,               ,                          ,                     , my:TesterShape
+                       , ex:reproducedBy ,               ,                          ,                     , my:ProgrammerShape
+    my:TesterShape     , foaf:name       , xsd:string    ,                          ,                     ,
+                       , ex:role         ,               , ex:testingRole           ,                     ,
+    my:ProgrammerShape , foaf:name       , xsd:string    ,                          ,                     ,
+                       , ex:department   ,               , ex:ProgrammingDepartment ,                     ,
+    """
+    #
+    # fmt: on
+    (csvrows, csvwarnings) = _get_rows(csvfile_str=csvfile_str, config_dict=config_dict)
+    expected_prefixes = ["my:", "ex:", "xsd:", "foaf:", "ui:"]
+    # assert sorted(_get_prefixes_actually_used(csvrows)) == sorted(expected_prefixes)
+    expected_dict = {
+        "shapes": [
+            {
+                "shapeID": "my:IssueShape",
+                "statement_templates": [
+                    {
+                        "propertyID": "ex:state",
+                        "valueConstraint": ["ui:accepted", "ui:resolved"],
+                        "valueConstraintType": "picklist",
+                    },
+                    {"propertyID": "ex:reproducedBy", "valueShape": "my:TesterShape"},
+                    {
+                        "propertyID": "ex:reproducedBy",
+                        "valueShape": "my:ProgrammerShape",
+                    },
+                ],
+            },
+            {
+                "shapeID": "my:TesterShape",
+                "statement_templates": [
+                    {"propertyID": "foaf:name", "valueDataType": "xsd:string"},
+                    {
+                        "propertyID": "ex:role",
+                        "valueConstraint": "ex:testingRole",
+                    },
+                ],
+            },
+            {
+                "shapeID": "my:ProgrammerShape",
+                "statement_templates": [
+                    {"propertyID": "foaf:name", "valueDataType": "xsd:string"},
+                    {
+                        "propertyID": "ex:department",
+                        "valueConstraint": "ex:ProgrammingDepartment",
+                    },
+                ],
+            },
+        ],
+        "namespaces": {
+            "xsd:": "http://www.w3.org/2001/XMLSchema#",
+            "ex:": "http://ex.example/#",
+            "foaf:": "http://xmlns.com/foaf/0.1/",
+            "my:": "http://my.example/#",
+            "ui:": "http://ui.example/#",
+        },
+        "warnings": {
+            "my:IssueShape": {},
+            "my:TesterShape": {},
+            "my:ProgrammerShape": {},
+        },
+    }
+    # pylint: disable=invalid-name
+    actual_dict = csvreader(
+        csvfile_str=csvfile_str,
+        config_dict=config_dict,
+        shape_class=TAPShape,
+        state_class=TAPStatementTemplate,
+    )
+    assert isinstance(actual_dict, dict)
+    assert isinstance(actual_dict["namespaces"], dict)
+    assert sorted(actual_dict["namespaces"]) == sorted(expected_dict["namespaces"])
+    assert actual_dict["warnings"] == expected_dict["warnings"]
+    assert actual_dict["shapes"][1] == expected_dict["shapes"][1]
+    assert actual_dict["shapes"][2] == expected_dict["shapes"][2]
+    assert actual_dict["shapes"][0] == expected_dict["shapes"][0]
+    assert actual_dict == expected_dict
+    # with capsys.disabled():
+    #     print()
+    #     print(sorted(actual_dict["shapes"][0]))
+    #     print()
+    #     print(sorted(expected_dict["shapes"][0]))
+
 
 def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     """Step by step from config and csv files to tapshapes."""
     config_dict = get_config()
-    csvfile_str = (
-        "propertyID,ricearoni\n"
-        "dc:date,SFO treat\n"
-    )
+    csvfile_str = "propertyID,ricearoni\n" "dc:date,SFO treat\n"
     expected_rows_list = [
         {
             "propertyID": "dc:date",
@@ -34,8 +133,7 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     csvfile_path.write_text(csvfile_str, encoding="utf-8")
     open_csvfile_obj = open(csvfile_path, encoding="utf-8")
     (csvrows, csvwarns) = _get_rows(
-        open_csvfile_obj=open_csvfile_obj, 
-        config_dict=config_dict
+        open_csvfile_obj=open_csvfile_obj, config_dict=config_dict
     )
     assert csvrows == expected_rows_list
     assert len(csvwarns) == 1
@@ -79,24 +177,15 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     }
     assert tapshapes == expected_tapshapes2
 
+
 def test_csvreader_to_tapshapes(tmp_path):
     """From config and csv files to tapshapes with csvreader()."""
     config_dict = get_config()
-    csvfile_str = (
-        "propertyID,ricearoni\n"
-        "dc:date,SFO treat\n"
-    )
+    csvfile_str = "propertyID,ricearoni\n" "dc:date,SFO treat\n"
     tapshapes_expected = {
         "namespaces": {"dc:": "http://purl.org/dc/elements/1.1/"},
         "shapes": [
-            {
-                "shapeID": "default", 
-                "statement_templates": [
-                    {
-                        "propertyID": "dc:date"
-                    }
-                ]
-            }
+            {"shapeID": "default", "statement_templates": [{"propertyID": "dc:date"}]}
         ],
         "warnings": {
             "csv": {
@@ -104,11 +193,7 @@ def test_csvreader_to_tapshapes(tmp_path):
                     "Non-DCTAP element 'ricearoni' not configured as extra element."
                 ]
             },
-            "default": {
-                "shapeID": [
-                    "Value 'default' does not look like a URI."
-                ]
-            },
+            "default": {"shapeID": ["Value 'default' does not look like a URI."]},
         },
     }
     #

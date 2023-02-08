@@ -6,9 +6,8 @@ import pytest
 from dctap.config import get_config
 from dctap.csvreader import _get_prefixes_actually_used
 
-
 def test_get_prefixes_actually_used():
-    """Get prefixes actually used in shapeID, propertyID, valueShape, valueDataType."""
+    """Get prefixes actually used in selected elements (not including note)."""
     csvrows = [
         {
             "shapeID": "biblio:a",
@@ -19,7 +18,7 @@ def test_get_prefixes_actually_used():
         {
             "shapeID": "",
             "propertyID": "dc:type",
-            "valueConstraint": "so:Book",
+            "valueConstraint": "so:Book bl:Article",
             "valuegestalt": "",
         },
         {
@@ -30,7 +29,7 @@ def test_get_prefixes_actually_used():
             "note": "Typically: the author.",
         },
     ]
-    expected_prefixes = [":", "biblio:", "dc:", "xsd:", "foaf:"]
+    expected_prefixes = [":", "biblio:", "dc:", "xsd:", "foaf:", "so:", "bl:"]
     assert sorted(_get_prefixes_actually_used(csvrows)) == sorted(expected_prefixes)
 
 def test_get_prefixes_actually_used_even_if_none_used():
@@ -50,17 +49,17 @@ def test_get_prefixes_actually_used_even_if_none_used():
         {
             "shapeID": "author",
             "propertyID": "name",
-            "note": "Typically the author.",
+            "note": "Typically: the author.",
         },
     ]
     expected_prefixes = []
     assert _get_prefixes_actually_used(csvrows) == expected_prefixes
 
 def test_get_prefixes_actually_used_including_prefix_of_shapeid():
-    """Includes prefix for ShapeID. Note that returned list is sorted."""
+    """Includes prefix for ShapeID. Must compare _sorted_ lists."""
     csvrows = [
         {
-            "shapeID": "biblio:book",
+            "shapeID": "libro:book",
             "propertyID": "creator",
             "valueShape": "author",
             "valueDataType": "integer",
@@ -76,6 +75,6 @@ def test_get_prefixes_actually_used_including_prefix_of_shapeid():
             "note": "Typically the author.",
         },
     ]
-    expected_prefixes = sorted(["biblio:", "foaf:"])
+    expected_prefixes = sorted(["libro:", "foaf:"])
     actual_prefixes = sorted(_get_prefixes_actually_used(csvrows))
     assert actual_prefixes == expected_prefixes

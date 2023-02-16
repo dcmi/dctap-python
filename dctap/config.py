@@ -147,9 +147,10 @@ def write_configfile(
 
 
 def _get_aliases_dict(csv_elements_list=None):
-    """Compute shortkey/lowerkey-to-element mappings from list of CSV elements."""
+    """Short/lowerkey-to-element dict from CSV elements, minus privates."""
     aliases_to_elements = {}
     for csv_elem in csv_elements_list:
-        lowerkey = csv_elem.lower()
-        aliases_to_elements[lowerkey] = csv_elem  # { foobar: fooBar }
+        if csv_elem[0] != "_":
+            lowerkey = csv_elem.lower()
+            aliases_to_elements[lowerkey] = csv_elem  # { foobar: fooBar }
     return aliases_to_elements

@@ -17,7 +17,7 @@ def csvreader(
     shape_class=TAPShape,
     state_class=TAPStatementTemplate,
 ):
-    """From open CSV file object, return shapes dict."""
+    """From CSV string or open file object, return shapes dict."""
     if csvfile_str:
         (csvrows, csvwarns) = _get_rows(
             csvfile_str=csvfile_str,
@@ -206,11 +206,9 @@ def _get_tapshapes(rows=None, config_dict=None, shape_class=None, state_class=No
 
         state_class_obj.normalize(config_dict)
         shapes[shape_id].state_list.append(state_class_obj)
-
         warns_dict = dict(warns)
         shapes_dict = {}
         shapes_dict["shapes"] = []
-
         for shape_obj in list(shapes.values()):
             sh_dict = asdict(shape_obj)
             sh_dict["statement_templates"] = sh_dict.pop("state_list")

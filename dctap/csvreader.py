@@ -15,7 +15,7 @@ def csvreader(config_dict, csvfile_str=None, open_csvfile_obj=None):
     if open_csvfile_obj:
         csvfile_str = open_csvfile_obj.read()
 
-    if not csvfile_str:
+    if not len(csvfile_str.splitlines()) > 1:
         raise NoDataError("No data provided.")
 
     csvlines = [
@@ -26,9 +26,10 @@ def csvreader(config_dict, csvfile_str=None, open_csvfile_obj=None):
     (csvlines[0], warnings) = _normalize_header_line(csvlines[0], config_dict)
 
     csv_warnings = defaultdict(dict)
-    csv_warnings["csv"] = {}
-    csv_warnings["csv"]["header"] = []
-    csv_warnings["csv"]["header"].extend(warnings)
+    if warnings:
+        if not csv_warnings["csv"].get("header"):
+            csv_warnings["csv"]["header"] = []
+        csv_warnings["csv"]["header"].extend(warnings)
 
     csv_rows = list(DictReader(csvlines))
     for row in csv_rows:

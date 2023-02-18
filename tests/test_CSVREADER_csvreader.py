@@ -266,7 +266,7 @@ def test_warns_when_header_unrecognized():
     assert actual_rows_list == expected_rows_list
     assert actual_warnings_dict == expected_warnings_dict
 
-def test_no_warns_when_nondctap_header_configured_as_extra():
+def test_no_warns_when_nondctap_header_configured_as_extra(capsys):
     """But does not warn about unrecognized header if configured as extra."""
     config_dict = get_config()
     config_dict["extra_statement_template_elements"] = ["status"]
@@ -286,10 +286,13 @@ def test_no_warns_when_nondctap_header_configured_as_extra():
     )
     assert actual_rows_list == expected_rows_list
     assert actual_warnings_dict == expected_warnings_dict
+    # with capsys.disabled():
+    #     print()
+    #     print(actual_warnings_dict)
 
 
-
-def test_csvreader_with_complete_csvfile():
+@pytest.mark.now
+def test_csvreader_with_complete_csvfile(capsys):
     """Simple CSV with all columns."""
     config_dict = get_config()
     csvfile_str = (
@@ -340,3 +343,6 @@ def test_csvreader_with_complete_csvfile():
     assert len(actual_rows_list) == 2
     assert len(expected_rows_list) == 2
     assert len(actual_warnings) == 0
+    # with capsys.disabled():
+    #     print()
+    #     print(actual_warnings)

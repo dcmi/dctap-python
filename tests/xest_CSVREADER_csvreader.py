@@ -16,7 +16,7 @@ prefixes:
     'ui:': 'http://ui.example/#'
 """
 
-
+@pytest.mark.skip(reason="Refactoring")
 def test_csvstring_from_tapshex(capsys):
     """CSV string from tapshex project."""
     config_dict = get_config(nondefault_configyaml_str=NONDEFAULT_CONFIGYAML)
@@ -110,6 +110,7 @@ def test_csvstring_from_tapshex(capsys):
     #     print(sorted(expected_dict["shapes"][0]))
 
 
+@pytest.mark.skip(reason="Refactoring")
 def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     """Step by step from config and csv files to tapshapes."""
     config_dict = get_config()
@@ -171,6 +172,7 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     assert tapshapes == expected_tapshapes2
 
 
+@pytest.mark.skip(reason="Refactoring")
 def test_csvreader_to_tapshapes(tmp_path):
     """From config and csv files to tapshapes with csvreader()."""
     config_dict = get_config()

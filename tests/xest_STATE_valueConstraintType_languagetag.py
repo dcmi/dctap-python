@@ -1,6 +1,6 @@
 """
 Tests for TAPStatementTemplate._languageTag_parse
-- Called by sc.normalize().
+- Called by st.normalize().
 
 2022-09-21 definition: "One or more language tags that can be applied to
 strings used with the property are given valueConstraintType languageTag.
@@ -19,12 +19,12 @@ from dctap.csvreader import csvreader
 def test_valueConstraintType_languagetag_parse():
     """If valueConstraintType languagetag, valueConstraint parsed on whitespace."""
     config_dict = get_config()
-    sc = TAPStatementTemplate()
-    sc.propertyID = "dcterms:creator"
-    sc.valueConstraintType = "languagetag"
-    sc.valueConstraint = "fr it de"
-    sc._valueConstraintType_languageTag_parse(config_dict)
-    assert sc.valueConstraint == ["fr", "it", "de"]
+    st = TAPStatementTemplate()
+    st.propertyID = "dcterms:creator"
+    st.valueConstraintType = "languagetag"
+    st.valueConstraint = "fr it de"
+    st._valueConstraintType_languageTag_parse(config_dict)
+    assert st.valueConstraint == ["fr", "it", "de"]
 
 def test_valueConstraintType_languagetag_item_separator_comma(tmp_path):
     """But picklist_item_separator is configurable as comma (default is space)."""

@@ -8,24 +8,24 @@ from dctap.exceptions import DctapError, NoDataError
 from dctap.utils import coerce_concise
 
 
-def csvreader(csvfile_str=None, config_dict=None, open_csvfile_obj=None):
+def csvreader(config_dict, csvfile_str=None, open_csvfile_obj=None):
     """Get list of CSV row dicts and related warnings."""
+    recognized_elements = _list_recognized_elements(config_dict)
+    csv_warns = defaultdict(dict)
+
     if open_csvfile_obj:
-        csvfile_contents_str = open_csvfile_obj.read()
-    elif csvfile_str:
-        csvfile_contents_str = csvfile_str
-    else:
+        csvfile_str = open_csvfile_obj.read()
+
+    if not csvfile_str:
         raise NoDataError("No data to process.")
 
-    tmp_buffer = StringBuffer(csvfile_contents_str)
+    tmp_buffer = StringBuffer(csvfile_str)
     csvlines = [line.strip() for line in tmp_buffer if not re.match("#", line.strip())]
     if len(csvlines) < 2:
         raise NoDataError("No data to process.")
     header_line_list = csvlines[0].split(",")
     header_line_list = _normalize_header_line(header_line_list, config_dict)
 
-    recognized_elements = _list_recognized_elements(config_dict)
-    csv_warns = defaultdict(dict)
     for header in header_line_list:
         if header.lower() not in recognized_elements:
             warn = f"Non-DCTAP element '{header}' not configured as extra element."
@@ -45,9 +45,8 @@ def csvreader(csvfile_str=None, config_dict=None, open_csvfile_obj=None):
         for key, value in row.items():
             if isinstance(value, str):  # ignore if instance of, say, NoneType or list
                 row[key] = value.strip()
-    csv_warns = dict(csv_warns)
 
-    return (csv_rows, csv_warns)
+    return (csv_rows, dict(csv_warns))
 
 def _list_recognized_elements(config_dict):
     """Return list of recognized elements."""

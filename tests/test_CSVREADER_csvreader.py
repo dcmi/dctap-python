@@ -4,14 +4,7 @@ import os
 from pathlib import Path
 import pytest
 from dctap.config import get_config
-from dctap.csvreader import (
-    csvreader,
-    _get_prefixes_actually_used,
-    _add_namespaces,
-    _get_tapshapes,
-    _get_rows,
-    _add_tapwarns,
-)
+from dctap.csvreader import csvreader
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
 NONDEFAULT_CONFIGYAML = """\
@@ -41,7 +34,7 @@ def test_csvstring_from_tapshex(capsys):
     """
     #
     # fmt: on
-    (csvrows, csvwarnings) = _get_rows(csvfile_str=csvfile_str, config_dict=config_dict)
+    (csvrows, csvwarnings) = csvreader(csvfile_str=csvfile_str, config_dict=config_dict)
     expected_prefixes = ["my:", "ex:", "xsd:", "foaf:", "ui:"]
     # assert sorted(_get_prefixes_actually_used(csvrows)) == sorted(expected_prefixes)
     expected_dict = {
@@ -132,7 +125,7 @@ def test_manually_steps_through_csvreader_from_files_to_tapshapes(tmp_path):
     csvfile_path = Path(tmp_path).joinpath("some.csv")
     csvfile_path.write_text(csvfile_str, encoding="utf-8")
     open_csvfile_obj = open(csvfile_path, encoding="utf-8")
-    (csvrows, csvwarns) = _get_rows(
+    (csvrows, csvwarns) = csvreader(
         open_csvfile_obj=open_csvfile_obj, config_dict=config_dict
     )
     assert csvrows == expected_rows_list

@@ -65,7 +65,7 @@ def test_unrecognized_headers_passed_thru_lowercased_with_warning():
     ]
     expected_warnings_dict = {
         "csv": {
-            "column": ["Non-DCTAP element 'status' not configured as extra element."]
+            "header": ["Non-DCTAP element 'status' not configured as extra element."]
         }
     }
     (actual_rows_list, actual_warnings_dict) = csvreader(
@@ -101,7 +101,7 @@ def test_rows_starting_with_comment_hash_are_ignored():
     csvfile_str = """\
         # Comment
         PropertyID
-        # Another comment line
+             # Another comment line
         dc:creator
     """
     expected_rows_list = [{"propertyID": "dc:creator"}]
@@ -242,26 +242,29 @@ def test_messiness_in_headers_cleaned_up():
     )
     assert actual_rows_list == expected_rows_list
 
-
-def test_warns_when_header_value_not_recognized():
-    """Warns about unrecognized header value, 'ricearoni'."""
+def test_warns_when_header_unrecognized():
+    """Warns when header is unrecognized (ie, not configured as extra)."""
     config_dict = get_config()
-    csvfile_str = "propertyID,ricearoni\ndc:date,SFO treat\n"
+    config_dict["extra_shape_elements"] = ["closed"]
+    csvfile_str = "closed,propertyID,status\ntrue,dc:date,lost or found\n"
     expected_rows_list = [
         {
+            "closed": "true",
             "propertyID": "dc:date",
-            "ricearoni": "SFO treat",
-        },
+            "status": "lost or found",
+        }
     ]
+    expected_warnings_dict = {
+        'csv': {
+            'header': ["Non-DCTAP element 'status' not configured as extra element."]
+        }
+    }
     #
-    (actual_rows_list, actual_warnings) = csvreader(
+    (actual_rows_list, actual_warnings_dict) = csvreader(
         csvfile_str=csvfile_str, config_dict=config_dict
     )
     assert actual_rows_list == expected_rows_list
-    assert len(actual_warnings) == 1
-    warning = "Non-DCTAP element 'ricearoni' not configured as extra element."
-    assert warning in actual_warnings["csv"]["column"]
-
+    assert actual_warnings_dict == expected_warnings_dict
 
 def test_no_warns_when_nondctap_header_configured_as_extra():
     """But does not warn about unrecognized header if configured as extra."""
@@ -283,6 +286,7 @@ def test_no_warns_when_nondctap_header_configured_as_extra():
     )
     assert actual_rows_list == expected_rows_list
     assert actual_warnings_dict == expected_warnings_dict
+
 
 
 def test_csvreader_with_complete_csvfile():

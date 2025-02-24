@@ -1,12 +1,14 @@
 """DC Tabular Application Profiles (DCTAP) command-line utility."""
 
-import sys
 import json as j
-from ruamel.yaml import YAML
+import sys
+
 import click
-from dctap.defaults import CONFIGFILE
+from ruamel.yaml import YAML
+
 from dctap.config import get_config, write_configfile
 from dctap.csvreader import csvreader
+from dctap.defaults import CONFIGFILE
 from dctap.inspect import pprint_tapshapes, print_warnings
 from dctap.loggers import stderr_logger
 from dctap.utils import expand_uri_prefixes
@@ -40,10 +42,10 @@ def cli(context):
 @cli.command()
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(context, hidden):
+def init(context):
     """Write config file: 'dctap.yaml'."""
     configfile = CONFIGFILE
-    write_configfile(configfile)
+    write_configfile(default_configfile_name=configfile)
 
 
 @cli.command()
@@ -88,9 +90,7 @@ def read(context, csvfile_obj, config, expand_prefixes, warnings, json, yaml):
         y.dump(tapshapes_dict, sys.stdout)
 
     if not (json or yaml):
-        pprint_output = pprint_tapshapes(
-            tapshapes_dict=tapshapes_dict, config_dict=config_dict
-        )
+        pprint_output = pprint_tapshapes(tapshapes_dict=tapshapes_dict, config_dict=config_dict)
         for line in pprint_output:
             print(line, file=sys.stdout)
         if warnings:

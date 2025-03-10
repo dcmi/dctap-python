@@ -90,11 +90,11 @@ Run without arguments, "dctap" shows what options and commands are available.
 
       Examples:
 
-      $ dctap generate my_profile.csv
-      $ dctap generate --json my_profile.csv
-      $ dctap generate --expand-prefixes my_profile.csv
-      $ dctap generate --warnings my_profile.csv
-      $ dctap generate --warnings --expand-prefixes --json my_profile.csv
+      $ dctap read my_profile.csv
+      $ dctap read --json my_profile.csv
+      $ dctap read --expand-prefixes my_profile.csv
+      $ dctap read --warnings my_profile.csv
+      $ dctap read --warnings --expand-prefixes --json my_profile.csv
       $ dctap init
       Built-in settings written to dctap.yml - edit as needed.
       $ dctap init /Users/tbaker/dctap.yml

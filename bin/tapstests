@@ -1,0 +1,1 @@
+find /Users/tbaker/github/tap/tapshex/tests -name '*.py' 2>/dev/null | sort

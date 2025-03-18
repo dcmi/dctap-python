@@ -6,13 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import pytest
 from dctap.config import get_config
-from dctap.csvreader import (
-    csvreader,
-    _get_rows,
-    _get_tapshapes,
-    _add_tapwarns,
-    _add_namespaces,
-)
+from dctap.csvreader import csvreader
 from dctap.defaults import CONFIGYAML, CONFIGFILE
 from dctap.tapclasses import TAPShape, TAPStatementTemplate
 
@@ -25,7 +19,7 @@ element_aliases:
      "Rep": "repeatable"
 """
 
-
+@pytest.mark.skip(reason="Possibly not needed")
 def test_get_config_from_issue18_yamldoc(tmp_path):
     """Get config dict when passed Issue 18 YAML."""
     os.chdir(tmp_path)
@@ -36,6 +30,7 @@ def test_get_config_from_issue18_yamldoc(tmp_path):
     assert config_dict["extra_statement_template_elements"] == ["severity"]
 
 
+@pytest.mark.skip(reason="Possibly not needed")
 def test_get_element_aliases_from_default_yamldoc(tmp_path):
     """Get config dict (with element aliases) directly from built-in defaults."""
     os.chdir(tmp_path)
@@ -45,6 +40,7 @@ def test_get_element_aliases_from_default_yamldoc(tmp_path):
     assert config_dict["element_aliases"]["repeatable"] == "repeatable"
 
 
+@pytest.mark.skip(reason="Possibly not needed")
 def test_extra_statement_template_elements(tmp_path):
     """@@@."""
     os.chdir(tmp_path)

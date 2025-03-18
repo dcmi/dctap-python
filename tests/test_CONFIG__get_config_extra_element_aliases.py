@@ -7,6 +7,17 @@ from dctap.config import get_config, _add_extra_element_aliases
 from dctap.defaults import CONFIGFILE
 from dctap.exceptions import ConfigError
 
+def test_configyaml_str_with_extra_alias():
+    """Extra element alias specified."""
+    nondefault_configyaml_str = """
+    extra_element_aliases:
+        "ShapID": "shapeID"
+    """
+    config_dict = get_config(nondefault_configyaml_str=nondefault_configyaml_str)
+    assert "extra_element_aliases" in config_dict
+    assert "propertyid" in config_dict.get("element_aliases")
+    assert "shapid" in config_dict.get("element_aliases")
+
 def test_get_config_file_extra_aliases(tmp_path):
     """Get extra element aliases from config file."""
     os.chdir(tmp_path)
